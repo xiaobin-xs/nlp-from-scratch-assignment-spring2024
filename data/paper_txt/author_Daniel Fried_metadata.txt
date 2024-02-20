@@ -1,0 +1,48 @@
+{
+    "authorId": "47070750",
+    "url": "https://www.semanticscholar.org/author/47070750",
+    "name": "Daniel Fried"
+}
+
+{
+    "paperId": "19f59c14b3d79e3203c696128a135d33eb35e468",
+    "url": "https://www.semanticscholar.org/paper/19f59c14b3d79e3203c696128a135d33eb35e468",
+    "title": "Pragmatic Inference with a CLIP Listener for Contrastive Captioning",
+    "year": 2023
+}
+{
+    "paperId": "1bf21dabbdfc81fd4f9e92b1201ecce744cabb6a",
+    "url": "https://www.semanticscholar.org/paper/1bf21dabbdfc81fd4f9e92b1201ecce744cabb6a",
+    "title": "SantaCoder: don't reach for the stars!",
+    "year": 2023
+}
+{
+    "paperId": "2b2d9ee18507aa89a7f1ecba0bf68844c7d9aa75",
+    "url": "https://www.semanticscholar.org/paper/2b2d9ee18507aa89a7f1ecba0bf68844c7d9aa75",
+    "title": "Grounding Language Models to Images for Multimodal Generation",
+    "year": 2023
+}
+{
+    "paperId": "3e4085e5869f1b7959707a1e1d7d273b6057eb4e",
+    "url": "https://www.semanticscholar.org/paper/3e4085e5869f1b7959707a1e1d7d273b6057eb4e",
+    "title": "StarCoder: may the source be with you!",
+    "year": 2023
+}
+{
+    "paperId": "6173520a1eb2814d067e8c5fd16212b7cbf6ee78",
+    "url": "https://www.semanticscholar.org/paper/6173520a1eb2814d067e8c5fd16212b7cbf6ee78",
+    "title": "Grounding Language Models to Images for Multimodal Inputs and Outputs",
+    "year": 2023
+}
+{
+    "paperId": "6fb5c0eff3696ef252aca9638e10176ecce7cecb",
+    "url": "https://www.semanticscholar.org/paper/6fb5c0eff3696ef252aca9638e10176ecce7cecb",
+    "title": "Generating Images with Multimodal Language Models",
+    "year": 2023
+}
+{
+    "paperId": "e41482f4ee984f17382f6cdd900df094d928be06",
+    "url": "https://www.semanticscholar.org/paper/e41482f4ee984f17382f6cdd900df094d928be06",
+    "title": "WebArena: A Realistic Web Environment for Building Autonomous Agents",
+    "year": 2023
+}

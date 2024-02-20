@@ -1,0 +1,1405 @@
+UTOPIA: Unconstrained Tracking Objects without
+Preliminary Examination via Cross-Domain Adaptation
+Pha Nguyen1*, Kha Gia Quach2, John Gauch1, Samee U. Khan3, Bhiksha Raj4,
+Khoa Luu1*
+1Department of CSCE, University of Arkansas, Fayettevile, AR, USA.
+2pdActive Inc.
+3Dept. of Electrical and Computer Engineering, Mississippi State University, USA.
+4Carnegie Mellon University, USA.
+*Corresponding author(s). E-mail(s): panguyen@uark.edu; khoaluu@uark.edu;
+Contributing authors: kquach@ieee.org; jgauch@uark.edu; skhan@ece.msstate.edu;
+bhiksha@cs.cmu.edu;
+Abstract
+Multiple Object Tracking (MOT) aims to find bounding boxes and identities of targeted objects
+in consecutive video frames. While fully-supervised MOT methods have achieved high accuracy on
+existing datasets, they cannot generalize well on a newly obtained dataset or a new unseen domain. In
+this work, we first address the MOT problem from the cross-domain point of view, imitating the process
+of new data acquisition in practice. Then, a new cross-domain MOT adaptation from existing datasets
+is proposed without any pre-defined human knowledge in understanding and modeling objects. It can
+also learn and update itself from the target data feedback. The intensive experiments are designed on
+fourchallenging settings, including MOTSynth →MOT17,MOT17→MOT20,MOT17→VisDrone ,
+andMOT17→DanceTrack . We then prove the adaptability of the proposed self-supervised learning
+strategy. The experiments also show superior performance on tracking metrics MOTA and IDF1,
+compared to fully supervised, unsupervised, and self-supervised state-of-the-art methods.
+Keywords: Multiple Object Tracking, Domain Adaptation, Self-supervised Learning
+1 Introduction
+Multiple Object Tracking (MOT) has become
+one of the most critical problems in computer
+vision. Since 2015, almost every year, a new visual
+MOT dataset has been introduced [ 1–8]. These
+methods deeply evaluate and inspect numerous
+challenging aspects of the problem, such as dense
+view [5], identical appearance [ 6], a camera on the
+move [3,4], showing its importance and emergence.
+However, annotating training data for MOT isan intensive and enormously time-consuming task.
+On average, annotating pedestrian tracks in a six-
+minute video in the training set of the MOT15 [ 1]
+requires about 22 hours of manually labeling [ 9,10]
+using LabelMe tool [ 11]. Given a newly obtained
+dataset, naively creating pseudo-labels from a
+model trained on existing datasets is considered
+an understandable solution [ 12]. However, the
+performance will be significantly decreased when
+directly employing an off-the-shell tracker trained
+on existing datasets, i.e., source domain, to the
+1arXiv:2306.09613v1  [cs.CV]  16 Jun 2023
+(a) Domain gap visualization.
+(b)MOT17 →VisDrone . Ambiguity examples with
+detected scores.
+Fig. 1: Directly performing the object detector
+trained on the source dataset causes ambiguous
+predictions on the target dataset because of the
+domain gap. Best viewed in color.
+new dataset, i.e., target domain, without updating
+feedback signals. It is because of the domain gap
+in the cross-domain setting, as shown in Fig. 1.
+Moreover, MOT is also an extremely non-
+trivial problem since it requires massive analyses
+to comprehensively model the given datasets’ char-
+acteristics. For example, prior works are proposed
+to study the MOT Challenge [ 1,2,5,13] in detail
+underavarietyofcharacteristics,includingobject’s
+type [14], displacement [ 15], motion [ 16,17], object
+state [18], object management [ 19], Bird’s-eye-view
+reconstruction [ 20], open-vocabulary [ 21], and cam-
+era motion [ 22–24] in long sequences. Nevertheless,
+the challenge of cross-domain adaptation persists
+due to a significant domain gap. Therefore, it is
+necessary to have a ready-to-use method that can
+adaptively learn and update itself on the target
+domain without requiring any pre-defined human
+knowledge in understanding and modeling objects.
+Some recent tracking-by-detection studies intro-
+duced to apply self-supervised learning for training
+feature extraction models [ 10,25,26]. However,
+these methods have not fully solved the self-
+supervised MOT. By the assumption of having arobust detector, these works opt out of the detec-
+tion step. Furthermore, they have not intensively
+explored the cross-domain evaluation setting, a
+preferable principle and widely used benchmarking
+in other domain adaptation tasks, i.e., semantic
+segmentation [27, 28], object detection [29].
+To address all these challenges, we pro-
+pose a novel self-supervised cross-domain learn-
+ing approach to multiple object tracking,
+namedUnconstrained TrackingObjects with-
+outPreliminary exam ination (UTOPIA). First,
+a new two-branch deep network attaching both
+source and target domains will be introduced, as
+illustrated in Fig. 2. Then a consistency training
+paradigmwillbeproposedtoguaranteedomaindis-
+crepancy minimization, leveraging Unsupervised
+Data Augmentation [ 30,31]. Next, a new pro-
+posal assignment mechanism will be presented
+to learn the similarity. Far apart from prior
+works [10,25,26], the proposed entire process is
+trained end-to-end. In the scope of this paper, we
+specifically targeted the gap in the camera perspec-
+tive, synthesized data, occlusion, and appearance.
+Finally, to prove the substantial generalization
+of the proposed method, a cross-domain evalua-
+tion protocol will be presented to imitate the data
+acquisition process in practice. To the best of our
+knowledge, the proposed UTOPIA is one of the
+first works to introduce MOT in cross-domain con-
+ditions. To summarize, the contributions of this
+work can be listed as follows:
+•Introduce one of the first studies in cross-domain
+MOT with the new evaluation settings. Four
+challenging scenarios are chosen so that the
+target domain poses more challenges than the
+source domain in many aspects.
+•Introduce an Object Consistency Agreement
+(OCA) paradigm to propagate label information
+from labeled samples to unlabeled ones in the
+form of a consistency metric and an agreement
+loss.
+•Present a Optimal Proposal Assignment ( OPA)
+mechanism to self-train the similarity learning.
+The new Sinkhorn-Knopp Iteration strategy [ 32]
+is presented to solve One-to-One and One-to-
+Many matching, further defined as the objective
+losses in the tracking deep network.
+•Achieve substantial improvement in detection
+andtrackingperformancecomparedtonumerous
+2
+Fig. 2: Our proposed UTOPIA to learn self-
+supervised cross-domain MOT. The proposed
+method is trained on two data branches simul-
+taneously: source samples (with ground truths)
+and target samples (without ground truths). The
+proposed adapted operations will be presented in
+Section 4. Objects presented in circles are samples
+without ground truth. Best viewed in color.
+methods, including fully supervised, unsuper-
+vised, and self-supervised, under the unseen
+domains.
+In the following sections, we first overview the
+related works in Section 2, then define the problem
+formulation in Section 3 and overview the current
+approaches as illustrated in Fig. 3. Then a new
+frameworkisdevelopedinSection4asillustratedin
+Fig. 2 to simultaneously incorporate the unlabeled
+data into the entire training process. In Section 5,
+we conduct experiments to demonstrate the perfor-
+mance of our proposed approach in various domain
+settings.
+2 Related Work
+2.1 Fully-supervised MOT
+Learning ID assignment Yin et al. [ 33]
+trained a Siamese neural network for the joint taskofsimultaneoussingle-objecttrackingandmultiple-
+object association. Rajasegaran et al. [ 14] lifted
+people’s 3D information to represent the 3D pose
+of the person, their location in the 3D space, and
+the 3D appearance then computed the similarity
+between predicted states and observations in a
+probabilistic manner.
+Learning object’s motion Xiao et al. [ 34]
+adopted an optical flow network to estimate the
+object’s location. Zhou et al. [ 15] employed a
+straightforward approach, which trained a network
+to predict the movement offset from the previous
+frameandthenmatcheditwiththenearesttracklet
+center point. Bergmann et al. [ 35] showed a simple
+approach by exploiting the bounding box regres-
+sion of the object detector to guess the position of
+objectsinthenextframeinahigh-frame-ratevideo
+sequence without camera motion. Sun et al. [ 18]
+constructed three networks to compute three matri-
+ces representing the object’s motion, type, and
+visibility for every matching step.
+Joint detection and tracking Chan et
+al. [36] proposed an end-to-end network for simul-
+taneously detecting and tracking multiple objects.
+Pang et al. [ 37] presented a combination of similar-
+ity learning and other detection methods [ 38,39],
+which densely samples many region proposals on a
+single pair of images. Meinhardt et al. [ 40] intro-
+duced a new tracking-by-attention mechanism with
+data association via attention between the frames.
+Wu et al. [ 41] presented a joint online detection
+and tracking model which explores tracking infor-
+mation during inference to guide the detection and
+segmentation. Yan et al. [ 42] presented a unified
+model to solve four tracking problems with a sin-
+gle network and the same parameters. It maintains
+the same input, backbone, head, and embedding
+among all tracking tasks.
+2.2Unsupervised MOT by Heuristics
+Heuristics on ID assignment Zhang et
+al. [43] introduced a generic tracking method to
+associate all the detection boxes, including low-
+confident bounding boxes, instead of only the
+high-scored boxes. In the case of low-score boxes,
+they use similar tracklets to recover proper objects.
+Stadler et al. [ 19] proposed a novel occlusion han-
+dling strategy that explicitly models the relation
+3
+(a) Fully-supervised MOT approach
+ (b) Unsupervised MOT approach
+Fig. 3: Two common learning types used in most multiple objects tracking methods, including fully-
+supervised and unsupervised. Best viewed in color.
+betweenoccludingandoccludedtracksinbothtem-
+poral directions while not depending on a separate
+re-identification network.
+Assumptions on object’s motion Kalman
+filter is one of the most used methods to model
+linear object’s velocity (i.e., in [ 16,17,22,44]). Cao
+et al. [44] showed that a simple motion model could
+better track without the appearance information.
+They emphasized observation during the loss of
+recovery tracks to reduce the error. Aharon et
+al. [22] proposed a camera motion compensation-
+based features tracker and a suitable Kalman filter
+state vector for better box localization.
+2.3 Self-supervised MOT
+Many works assume having a robust object
+detector and only focus on training a self-
+supervised feature extractor. Bastani et al. [ 10]
+proposed a method to train a model to produce
+consistent tracks between two distinct inputs from
+the same video sequence. Karthik et al. [ 25] pre-
+sented a method to generate tracking labels using
+SORT [16] for given unlabeled videos. They used a
+ReID network with Cross-Entropy loss to predict
+the generated labels. Yu et al. [ 26] combined both
+one-stage and two-stage methods to predict thedetections and their embeddings with the help of
+distillation. Valverde et al. [ 45] presented a frame-
+work consisting of multiple teacher networks, each
+of which takes a specific modality as input, i.e.,
+RGB, depth, and thermal, to maximize the com-
+plementary cues, i.e., appearance, geometry, and
+reflectance.
+Difference from Previous Works Prior
+works remove the error-prone detection step
+using ground-truth bounding boxes for the self-
+supervised setting and focus on the self-supervised
+contrastive learning for the tracklet association
+step. We instead propose an end-to-end self-
+learning framework, from object detection to
+similarity learning, and show its substantial gener-
+alization by performing on four challenging data
+settings presented in the sections below.
+3 Preliminaries
+3.1 Problem Definition
+We denote xt
+srcis a source sample at a par-
+ticular time step tin the source domain scenes
+Xsrc, here xt
+src∈ XsrcandXsrc⊂RW×H×3the
+image space. Along with each sample xt
+src, a set
+of ground-truth objects Ot
+src={ot
+i}associated
+4
+with their locations and identities. The ground-
+truth object is denoted as ot
+i= (ox, oy, ow, oh, oid).
+LetDbe the object detector, which takes an
+input sample xt
+srcand produces a list of detec-
+tionsD(xt
+src) = Dt
+src={dt
+j|0≤j < M }by
+localizing and estimating the proposal regions to
+obtain locations, sizes and foreground confident
+scores dt
+j= (dx, dy, dw, dh, dscore), thresholding
+dscore≥γ. To determine the identity of each
+proposal dt
+j, we denote Tas the multiple object
+tracker, and Tt
+srcas the set of tracklets at the time
+stept, which contains detected objects with con-
+sistent identity throughout the period. We define:
+Tt
+src={trt
+k= (trx, try, trw, trh, trid)|0≤k <
+N}, The object tracker takes the previous object
+states and the currently detected objects and then
+performs an affinity step to update new states as
+in Eqn. (1).
+Tt
+src=(
+initialize (Dt
+src)ift= 0
+T(Tt−1
+src,Dt
+src)ift >0(1)
+In general, there are many approaches proposed to
+solvetheequation Tt
+src=T(Tt−1
+src,Dt
+src)indifferent
+ways [15,37,40,43,46]. Without loss of generality,
+theseapproachescanbedividedintotwocategories,
+i.e., fully supervised and unsupervised methods. In
+fully-supervised approaches, Fig. 3a illustrates the
+processing flow, and the equation is formulated as
+in Eqn. (2).
+Tt
+src=argmax 
+sim
+F(Tt−1
+src),F(Dt
+src)!
+(2)
+where Fis a feature extractor, which can simply
+be an RoI pooling layer as in [ 38,39] or a Re-
+Identification model [ 47,48]. In other words, these
+approaches learn a similarity function simto cal-
+culate the probability of merging a detection and
+a tracklet based on their deep features.
+On the other hand, the unsupervised approach
+is shown in Fig. 3b, and it formulates the solution
+as in Eqn. (3).
+Tt
+src=argmax 
+IoU
+M(Tt−1
+src),Dt
+src!
+(3)
+where Mis a non-parametric motion model esti-
+mating an object’s future state based on previousstates, i.e., Kalman Filter, as used in [ 14,16,17,
+19].
+Besides, there are also some fully-supervised
+variants using a parametric motion model M
+θ
+(i.e., visual offset [ 15], LSTM [ 49], attention [ 46],
+transformer [ 23]), and supervised-unsupervised
+crossovers [17, 43].
+3.2 Limitations of Fully-supervised
+Losses
+Object Detection Given ground-truth
+objects Ot
+src, the Smooth ℓ1distance and Cross-
+Entropy loss are adopted to effortlessly learn two
+supervised tasks, i.e., bounding box regression and
+object classification, respectively as in Eqn. (4).
+Ldet=1
+|Dsrc|DsrcX
+dih
+λregℓ1(o+,di) +λclsℓCE(o+,di)i
+(4)
+where λreg,λclsare weighted parameters to bal-
+ance corresponding objective functions, diis a
+object proposal, o+is the positiveground-truth
+object that have maximum IoU with that proposal
+dt
+i, following [38, 39].
+Similarity Learning In order to train the
+instance similarity, some approaches use an off-
+the-shelf Re-Identification model [ 17,35,43]. The
+Softmax with Cross-Entropy loss function [ 50,51]
+to train the feature extractor Fis then defined as
+in Eqn. (5).
+Lsim=1
+|Tsrc|TsrcX
+trilog(
+1 +X
+o−h
+exp
+F(tri)· F(o−)
+−exp
+F(tri)· F(o+)i)
+(5)
+where triis drawn from the tracker’s output set
+Tsrcas an anchor, and o−arenegative ground-
+truth objects drawn from Osrc. These negative
+objects are all remaining objects other than o+.
+However, in the self-supervised setting, the
+components o+ando−in Eqn.(4)and Eqn. (5)
+are missing, so the losses could not be calculated.
+A new strategy for making full use of the ambi-
+guity or uncertainty predictions [ 37,43,52] and
+enhancing the certainty in selecting those miss-
+ing components will be introduced to address the
+incalculability problem in the Subsection 4.1. Fur-
+thermore, although the Eqn. (5)is a fundamental
+5
+loss that is widely used, it elevates the unbalance in
+the number of positive and negative samples. Only
+one positive sample can be matched, while multi-
+ple negative samples are considered. This problem
+can be solved in our One-to-Many matching strat-
+egy via Optimal Transport and Multiple-Positive
+loss presented in our Subsection 4.3.
+3.3 Optimal Transport in ID
+Assignment
+After obtaining a good similarity represen-
+tation model guided by the Eqn. (5), the next
+step is to assign the object identity. We use the
+Optimal Transport method to develop our ID
+Assignment strategy. While the same objective
+methods, i.e., the Hungarian algorithm, can only
+estimate hard-matching pairs in a fixed One-to-
+One assignment manner, we instead explore the
+usability of Optimal Transport in both One-to-One
+and One-to-Many strategies that are well fit in our
+problem. Let C(Tt−1
+src,Dt
+src) = (c[i, j])be the trans-
+portation cost matrix where c[i, j]measures the
+cosine distance to associate from trt−1
+itodt
+jas in
+Eqn. (6).
+c[i, j] = 1−F(trt−1
+i)⊺· F(dt
+j)
+||F(trt−1
+i)|| ||F (dt
+j)||(6)
+where iandjare the indexers for the rows and
+columns, which will be used in the rest of the paper.
+Optimal Transport addresses the problem of
+finding the best assignment solution πin the
+set of all possible couplings Π(p,q) ={π∈
+RN×M|π1M=p, π⊺1N=q}to transport
+the mass that minimizes the transportation cost
+between two distributions as in Eqn. (7).
+min
+π∈Π(p,q)NX
+iMX
+jc[i, j]π[i, j] (7)
+where pandqare the marginal weights, which are
+attached to πon its rows and columns, respectively.
+From the formulation for Optimal Transport-based
+Assignment, as defined in Eqn. (7), it can be solved
+as a linear programming problem.
+Optimal Transport is a well-studied topic in
+Optimization Theory and recently received atten-
+tion in Computer Vision due to its potential in
+many relevant topics, i.e., visual matching [ 53],object detection [ 54], in-flow and out-flow count-
+ing [55]. The method explores not only the conti-
+nuity and the differentiability [ 56,57] but also the
+flexibly optimal assigning strategy [ 58,59] in an
+end-to-end training network.
+However, when there are multiple proposals
+and sampling bounding boxes, i.e., N×1000in our
+One-to-Many setting, the resulting linear program
+can be very low-efficient by the polynomial time
+complexity. This problem will be addressed in the
+Subsection 4.2.
+3.4 Unsupervised Data
+Augmentation
+Given a new sample from an unseen domain dif-
+ferent from the training source domain, a trained
+object detector is usually unable to produce a
+high-confident prediction as illustrated in Fig. 1.
+However, as a result of taking low-confident objects
+into account, the false positive rate also increases.
+To mitigate the trade-off between sensitivity
+and specificity, Unsupervised Data Augmentation
+(UDA) [30,31] is inspected in teaching the detec-
+tor to consistently recognize objects over many
+data augmentation methods applied in source sam-
+plesxt
+src, furthermore enhance the precision rate
+in detecting objects from target samples xt
+tgt.
+UDA presents a mechanism to propagate label
+information from labeled to unlabeled examples. It
+originally injects noise or a simple augmentation
+aug(·)into an unlabeled sample xtgt. Then it opti-
+mizes the consistency objective between them via
+Cross-Entropy loss as in Eqn. (8).
+LUDA =ℓCE 
+F(xtgt),F
+aug(xtgt)!
+(8)
+Although the loss function in Eqn. (8)influ-
+ences the consistency in the feature space, it
+cannot regulate the detection problem. Inspired
+by UDA, a new agreement loss is introduced for
+complex scenes containing multiple objects as in
+Subsection 4.1.
+4 The Proposed Approach
+On the target domain Xtgt, we propose the new
+Object Consistency Agreement ( OCA) approach,
+as in Subsection 4.1, to maximize the consistency
+6
+Fig. 4: Our proposed UTOPIA training flow consists of two data branches trained simultaneously. Ldet
+¯π
+andLsim
+¯πare computed based on the selection strategy ¯π
+1:1, so we consider them as adapted operations.
+Best viewed in color.
+of the object’s existence, and the new Optimal
+Proposal Assignment ( OPA), as in Subsection 4.3,
+to adaptively train the similarity learning process.
+The proposed training flow is shown in Fig. 4.
+4.1 Object Consistency Agreement
+(OCA)
+Randomly drawing two augmentation meth-
+odsaugandaug′from augmentation set Aug
+and applying to an input image xt
+src. Ini-
+tially, the detection loss in Eqn. (4)has to be
+held and optimized, i.e., Ldet 
+D
+aug(xt
+src)!
++
+Ldet 
+D
+aug′(xt
+src)!
+.
+The agreement metric is defined for differently
+augmented views of the same data sample as a
+GIoU [60] cost matrix as in Eqn. (9).
+agr(xt
+src) =GIoU 
+D
+aug(xt
+src)
+,D
+aug′(xt
+src)!
+(9)
+and take that agreement metric as a loss function:
+Lagr=avg
+i 
+1−max
+j
+agr(xt
+src)!
+(10)In other words, two separate stochastic transforma-
+tions, which are applied to any given data sample,
+first smoothen the model’s prediction with respect
+to changes in the Input. With a good selection of
+augmentation methods Aug, the model successfully
+produces consistent prediction over two stochas-
+tic transformations meaning that it is one step
+closer to bridging the domain gap between source
+and target. The agreement loss Lagris added to
+guarantee this learning process. In this selection,
+we present our investigation and recommendation
+in the ablation study section 5.4. Keeping origi-
+nal input image aug(xt
+src) =xt
+src, termed identity
+operation, is by default included in the Augset.
+Alternatively, the agreement is employed as
+a metric in the proposal selection strategy on
+the target domain. Let eDtgtbe the list of detec-
+tions which is an extended set of Dtgt, addition-
+ally containing low confident detections eDtgt=
+{(edx,edy,edw,edh,edscore)|edscore≥eγ}. Here γ >eγ
+is a low threshold (i.e. 0.1):
+eDtgt=argmax
+j
+agr(xt
+tgt)
+(11)
+argmaxreturns a list of indices used to obtain eDtgt
+via indexing. Object features are extracted on the
+original image F(xt
+tgt)and then the tracker Tis
+performed: eTt
+tgt=T(eTt−1
+tgt,eDt
+tgt).
+7
+(a) The input GIoUcost (lower is
+better)
+(b) The optimized one-to-one plan
+¯π(higher is better)
+(c) The optimized one-to-many
+plan ¯π(higher is better)
+Fig. 5: Input and outputs for each optimization strategy of the Sinkhorn-Knopp Iteration algorithm [ 32]
+in our implementation. Best viewed in color.
+The agreement metric in Eqn. (11)calculated
+on object proposals in a new domain, even with
+the low confident edones, indicates the existence of
+objects. In this step, we empirically pick maximum-
+intersection pairs with GIoU to score GIoU[i, j]
+more significant than 0.4, then perform non-
+maximum suppression to get the final bounding
+boxes.
+4.2 Sinkhorn-Knopp Iteration
+Algorithm
+The polynomial time complexity in the Sub-
+section 3.3 can be addressed by a fast iterative
+solution named Sinkhorn-Knopp [ 32]. It converts
+the optimization target in Eqn. (7)into a non-
+linear but convex form using a regularization term
+Eas in Eqn. (12).
+min
+π∈Π(p,q)NX
+iMX
+jc[i, j]π[i, j] +γE(π[i, j])(12)
+where E(π[i, j]) = π[i, j](log(π[i, j])−1), and γ
+is a learnable parameter, initially set to 0.5 and
+used to control the intensity of the regulation. The
+iteration algorithm in Eqn. (13)as implemented
+in [53, 55] updates the cost.
+ut+1
+j=qjP
+iWijvt
+i, vt+1
+i=piP
+jWijut
+j(13)
+where vanduare two non-negative vectors of
+scaling coefficients [54].After repeating this iteration multiple times,
+i.e., 100in our experiments, the approximate
+optimal plan ¯πcan be obtained as in Eqn. (14).
+¯π=diag(v)Wdiag(u) (14)
+where W=e−1
+γC. The higher the returned value
+¯π[i, j], the more units are recommended to be
+transported. In other words, the more likely that
+two samples should be matched. We provide a
+matching sample to intuitively illustrate Input
+and outputs for each optimization strategy of the
+Sinkhorn-Knopp Iteration algorithm [ 32] in our
+implementation as shown in Fig. 5. The marginal
+weights (i.e., pandq) controlling the total sup-
+plying units are attached to the sides of the
+matrices.
+4.3 Optimal Proposal Assignment
+(OPA)
+One-to-One (1:1) Assignment The
+marginal weights (i.e. pandq) control the total
+supplying units:
+p[i] =MX
+jπ[i, j]andq[j] =NX
+iπ[i, j](15)
+On the target domain, when matching two out-
+puteTt−1
+tgtandeDt
+tgtof two consecutive frames, one
+sample should be associated with another sam-
+ple, so p=1Nandq=1M. We use Ldet
+¯πas in
+8
+Eqn.(4)andLsim
+¯πas in Eqn. (5)to train the net-
+work, positive and negative soft-labels are balanced
+by choosing one sample for each type, and selected
+based on the optimal plan ¯π, where o+ando−
+now are replaced by argmax
+j(¯π)andargmin
+j(¯π).
+One-to-Many (1:M) Assignment On the
+source domain Xsrcwhere ground-truth boxes
+are provided, a proposal sampler can be used
+to firstly guarantee the balanced number of
+positive and negative bounding boxes, secondly,
+provide more informative observations to the net-
+work for similarity learning. We adapt the cost
+toC(Tt
+src,sample (Ot
+src))by using the IoU sam-
+pler [61]. For that sampleoperation, we know the
+number of positive samples sample+(Osrc)and
+negative samples sample−(Osrc), so the values of
+pandqnow become:
+p[i] =|sample+(o+)|,
+q[j] =(
+1ifoj∈sample+(Osrc)
+0ifoj∈sample−(Osrc)(16)
+The Multiple-Positive loss function [ 37,62] is
+then adapted from Eqn. (5)to train this scenario:
+LMP= log(
+1 +X
+o+X
+o−h
+exp
+F(tri)· F(o−)
+−exp
+F(tri)· F(o+)i)
+(17)
+In this branch, optimal plan ¯πis used as an
+auxiliary loss in addition to the Multiple-Positive
+loss function with ground-truth matches:
+Laux
+1:M= ¯π[i, j]−cwhere c=(
+1ifoj∈sample+(Osrc)
+0ifoj∈sample−(Osrc)
+(18)
+5 Experimental Results
+5.1 Datasets
+MOT Challenge [2,5] is a commonly used
+benchmarkingdatasetforpedestriantracking.This
+dataset has two versions, including MOT17 [ 2] and
+MOT20 [ 5]. Each set consists of real-world surveil-
+lance and handheld camera footage with various
+challenging conditions, such as occlusions, crowded
+walking people, viewing angles, illuminations, and
+frame rates.MOTSynth [8] is a large-scale synthetic
+dataset comprising 768 video sequences for detec-
+tion, tracking, and segmentation problems. Each
+video sequence is generated by the GTA-V game
+with various pedestrian models in different clothes,
+backpacks, bags, masks, hair, and beard styles.
+Eachframecontains29.5peopleonaverageand125
+people at max, with over 9,519 unique pedestrian
+identities.
+VisDrone [63] contains 288 video sequences
+captured by cameras mounted on various types
+of drones. The dataset was collected in different
+scenarios and under various weather and light-
+ing conditions. There are more than 2.6 million
+manually annotated bounding boxes of objects of
+interest, including pedestrians, cars, bicycles, and
+tricycles.
+DanceTrack [7] contains 100 dance videos of
+different dance genres, including classical dance,
+street dance, pop dance, large group dance, and
+sports. This dataset is more challenging for motion-
+based tracking approaches since the object motion
+is highly non-linear frequently occluding and
+crossing over each other.
+5.2 Experimental Setups
+To demonstrate the robustness of UTOPIA, we
+construct four challenging cross-domain scenarios
+on MOT datasets described in 5.1.
+Scenario 1 – from synthesized to real-
+data:MOTSynth [ 8] is used as the source train.
+The target train is MOT17 half-train while MOT17
+half-valis used as a validation set with half-train
+andhalf-valsplits as in [64]
+Scenario 2 – from sparse to dense scene:
+MOT17 [ 2] is used as the source train. The target
+train is MOT20 half-train while MOT20 half-val
+is used as a validation set.
+Scenario 3 – from surveillance view to
+drone view: MOT17 [ 2] is used as the source
+train, and the target domain is VisDrone [ 63] for
+pedestrians only. The VisDrone validation set is
+used to evaluate.
+Scenario 4 – from distinguishable appear-
+ance to identical appearance: MOT17 [ 2] is
+used as the source train, and DanceTrack [ 7] train-
+ing is set as the target domain. The DanceTrack [ 7]
+validation set is used to evaluate.
+5.3 Implement Details
+9
+Algorithm 1 The training pipeline of UTOPIA
+1:forxt
+src∈ Xsrcandxt
+tgt∈ Xtgtdo
+2:Draw the corresponding Ot
+src
+3:Draw aug∈Augandaug′∈Aug
+4:Calculate ℓsrc
+det← L det(D(aug(xt
+src))) +
+Ldet(D(aug′(xt
+src)))
+5:Calculate ℓsrc
+arg← L agr =avg
+i(1−
+max
+j(agr(xt
+src)))
+6:Obtain Dt
+src←argmax
+j(agr(xt
+src))
+7:Sample {o+
+j},{o−
+j} ∈sampling (Ot
+src)
+8:Construct the cost matrix
+C(sampling (Ot
+src),Dt
+src)
+9:Obtain the optimal plan ¯π
+10:Calculate ℓsrc
+aux← L aux
+1:M=¯π[i, j]−cvia Eqn.
+(18)
+11:Calculate ℓsrc
+MP← L MPvia Eqn. (17)
+12:Optimize Lsrc=ℓsrc
+det+ℓsrc
+arg+ℓsrc
+MP+ℓsrc
+aux
+w.r.txt
+src
+13:Obtain eDtgt←argmax
+j(agr(xt
+tgt))
+14:Construct the cost matrix C(eTt−1
+tgt,eDt
+tgt)
+15:Obtain the optimal plan ¯π
+16:Calculate ℓtgt
+det← L det
+¯πvia Eqn. (4)
+17:Calculate ℓtgt
+sim← L sim
+¯πvia Eqn. (5)
+18:Optimize Ltgt=ℓtgt
+sim+ℓtgt
+detw.r.txt
+tgt
+19:end for
+Table 1: Comparison on augmentation set choices
+MOTA ↑ mAP↑ MOTA ↑ mAP↑
+SET MOTSynth →MOT17 MOT17 →DanceTrack
+All 59.40 0.673 74.3 0.778
+Best 61.70 0.774 79.6 0.815
+SET MOT17 →MOT20 MOT17 →VisDrone
+All 55.20 0.645 13.4 0.489
+Best 63.90 0.785 16.4 0.651
+Algorithm 1 presents the training process of our
+proposed framework. We use the mmdetection [ 61]
+as the base framework, we use IoU-balanced sam-
+pling in that framework to sample RoIs. ResNet-50
+[65] is used as the backbone, and Faster-RCNN
+[39] as the detector. The channel number of embed-
+ding features is set to 512. We train our models
+simultaneously between source and target samples
+with an initial learning rate of 0.01 for 48 epochs.
+To obtain eDtgt, the detection threshold eγ= 0.3
+(a)MOTSynth →MOT17
+(b)MOT17 →VisDrone
+Fig. 6: Adaptively refining the object detector by
+our proposed agreement can recover low-confident
+objects.Best viewed in color.
+is the best chosen. Additionally, we used the bi-
+directional softmax in [ 37] as the object-association
+metric. The track management is the same as the
+implementation in [37].
+5.4 Ablation Study
+Augmentation selection We provide our
+analyses in Table 1 to understand the effects
+of selecting augmentation methods in Eqn. 9.
+Specifically, we achieve the Bestaccuracies when
+employed methods implicitly reflect the character-
+istic transition of the target domain. Particularly,
+in the MOTSynth →MOT17 setting, since the
+MOT17 has motion blur in moving subjects while
+objects in MOTSynth are apparent, we simulate
+the effect by adding random- σGaussian blur as
+shown in Fig. 6a. Similarly, we use CutMix [ 66] +
+color distortion for highly occluded objects in both
+MOT17 →DanceTrack andMOT17 →MOT20
+settings. We apply random affine transformations
+for the MOT17 →VisDrone setting as shown
+in Fig. 6b, and it requires to do the inverted
+transforming to the original coordinates before
+calculating the agreement. Allmeans the augmen-
+tation composition of color distortion, CutMix [ 66],
+Gaussian noise and random affine transformations.
+False positive / False negative tradeoff
+The detection threshold eγis a sensitive hyper-
+parameter since it determines the False Negative /
+10
+0.20.25 0.30.35 0.40.45 0.50.10.20.30.4
+False PositiveFalse Negative
+0.3 0.4 0.5 0.60.20.30.40.5
+False PositiveFalse Negative
+0.3 0.4 0.5 0.6 0.70.30.40.50.6
+False PositiveFalse Negative
+0.15 0.20.25 0.30.35 0.40.10.20.3
+False PositiveFalse Negativew/oLagr
+w/Lagr
+w/Lent
+Fig. 7: False positive/False negative tradeoff rate measured on four settings: (a) MOTSynth →MOT17,
+(b)MOT17 →MOT20, (c) MOT17 →VisDrone , (d) MOT17 →DanceTrack .Best viewed in color.
+False Positive tradeoff rate. To prove the effective-
+ness of the Object Consistency Agreement strategy,
+we train the base Faster-RCNN detector [ 39] and
+change the threshold from 0.1 to 0.4 to analyze
+the tradeoff rate, compared to the same detector
+adding the consistency training. The results are
+shown in Fig. 7, proving the robustness of the self-
+trained detector in unseen domains. It is because
+the detector adaptively learns to recover objects
+whose scores are lower than γ. The effect is numer-
+ically described in Table 2 on MOTA and mAP
+metrics. We also compare with entropy minimiza-
+tionLent[27] employed as a soft-label strategy.
+Since the Lent’s objective is to maximize prediction
+certainty in the target domain, or other words, it
+pushes the score to either 0 or 1, ranging scores donot affect the results much, so we choose eγ= 0.5
+forLentexperiments.
+Configurations We alternatively add and
+remove the proposed components into the training
+process and report results in Table 2. Overall, the
+self-supervisedoperations OCAandOPAimprove
+the performance of the base strategy ✗on both
+Det.andAssg.steps. Compared with training on
+augmented source data only (i.e., Aug), ourOCA
+also takes the target domain feedback into account,
+resulting in obtaining performance gain over all
+the settings. On MOT17 →MOT20,OCAgains a
+17.8%MOTA increase on Det., andOPAgains a
+14.3%IDF1 increase on Assg., compared to the ✗
+one, showing the adaptability on the target domain.
+OnMOT17 →DanceTrack , although it has been
+proved that an off-the-shelf feature extractor is not
+11
+Table 2: Comparison of configurations. Det.andAssg.columns are experiments for the detection and ID
+assignment steps, respectively. ✗is the strategy in which the network is only trained on the source domain,
+while the network in Augis trained on the augmented source data. OCAandOPAare our proposed self-
+supervised methods, and Supstands for fully supervised uses of the ground truth of the target domain.
+Det.Assg.MOTA ↑IDF1 ↑MT↑ML↓IDs↓mAP ↑
+MOTSynth →MOT17
+✗ ✗30.20% 38.60% 76265 1378 0.582
+Aug ✗30.70% 39.20% 178 148 1412 0.595
+OCA ✗38.40% 48.70% 208 88 996 0.735
+OCAOPA61.70% 65.60% 271944680.774
+Sup ✗67.00% 71.70% 247 70 346 0.876
+SupOPA67.90% 72.10% 356743430.878
+MOT17 →MOT20
+✗ ✗25.70% 23.10% 1051037 18741 0.386
+Aug ✗28.30% 25.10% 118 84620845 0.476
+OCA ✗43.50% 36.00% 393 34919464 0.602
+OCAOPA63.90% 50.30% 90819872370.785
+Sup ✗55.10% 39.40% 506 41129417 0.825
+SupOPA73.90% 67.10% 111215525030.866
+MOT17 →VisDrone
+Aug ✗10.80% 22.30% 262 12 0.343
+OCA ✗15.40% 25.60% 748 80.525
+OCAOPA16.40% 26.2% 935 60.651
+Sup ✗22.70% 37.00% 11 26 40.838
+SupOPA22.80% 37.20% 1324 00.851
+MOT17 →DanceTrack
+✗ ✗38.70% 13.50% 37 55103212 0.599
+Aug ✗56.20% 19.40% 82 3699328 0.721
+OCA ✗75.40% 23.60% 188 413177 0.821
+OCAOPA79.60% 38.00% 199 36866 0.815
+Sup ✗72.70% 26.10% 143 1312172 0.864
+SupOPA79.70% 38.80% 205 354990.903
+always reliable [ 7], our adaptable framework can
+learn to embed discriminative features in pose and
+shape, result in an enhancement in IDF1 by 12.7%,
+from 26.10% to 38.80%.
+5.5 Comparisons to the
+State-of-the-Art Methods
+Cross-domain setting In Table 3, we com-
+pare UTOPIA with different state-of-the-art
+tracker types: fully-supervised Sup, unsupervised
+Unsand self-supervised Self. For a fair com-
+parison, in each setting, the first sub-block usesno ground-truth bounding boxes, and the second
+sub-block is compared with Visual-Spatial [ 10]
+using ground-truth bounding boxes. The Visual-
+Spatial [ 10] learns an RNN and a Matching
+Network, it has no self-learning mechanism in
+object localization, so we have to train with bound-
+ing box locations and categorize it into the second
+sub-block. On MOT17 →VisDrone , only Visual-
+Spatial [10] is reported since Trackformer [ 40] and
+ByteTrack [ 43] could not perform well without
+provided ground-truth bounding boxes, return-
+ing NaNin most of the metrics. It is worth
+noting that UTOPIA achieves strong MOTA in
+12
+Table 3: Comparison against State-of-the-arts under the cross-domain setting
+Type Method MOTA ↑IDF1 ↑MT↑ML↓IDs↓
+MOTSynth →MOT17
+Sup Trackformer [40] 39.10% 51.40% 225 37870
+Uns ByteTrack [43] 41.90% 61.0% 33633797
+Self UTOPIA 61.70% 65.60% 271 94468
+SelfVisual-Spatial [10] 62.10% 64.10% 229 80383
+Self UTOPIA 67.90% 72.10% 35674343
+MOT17 →MOT20
+Sup Trackformer [40] 36.30% 31.30% 202 6869857
+Uns ByteTrack [43] 51.10% 49.60% 658 3694399
+Self UTOPIA 63.90% 50.30% 9081987237
+SelfVisual-Spatial [10] 63.60% 64.30% 929 2112635
+Self UTOPIA 73.90% 67.10% 11121552503
+MOT17 →VisDrone
+SelfVisual-Spatial [10] 20 .70% 32.50% 10 34 5
+Self UTOPIA 22.80% 37.20% 13240
+MOT17 →DanceTrack
+Sup Trackformer [40] 69.20% 32.30% 134 87454
+Uns ByteTrack [43] 72.30% 41.20% 176 31946
+Self UTOPIA 79.60% 38.00% 199 36866
+SelfVisual-Spatial [10] 73.90% 27.90% 161 36357
+Self UTOPIA 79.70% 38.80% 205 35499
+most settings. The superior results indicate that
+UTOPIA is robust to complex cross-scenes. For
+MOT17 →DanceTrack , UTOPIA shows a lower
+but comparable IDF1 performance compared with
+ByteTrack [ 43] since diverse non-linear motion pat-
+terns in DanceTrack [ 7] require temporal dynamics
+to facilitate better association in the tracking pro-
+cess, which we have not addressed it under a
+self-supervised manner in this work.
+5.6 Qualitative Results
+Fig. 8 shows some cases that our UTOPIA
+can recover from false-negative compared to Track-
+former [ 40]. Fig. 9 shows some fail cases of
+our UTOPIA: false-positive, false-negative, and
+merging objects errors.
+6 Conclusions
+This paper has presented the MOT problem
+from the cross-domain viewpoint, imitating the
+process of new data acquisition. Furthermore, itproposed a new MOT domain adaptation without
+pre-defined human knowledge in understanding
+and modeling objects. Still, it can learn and update
+itself from the target data feedback. Through inten-
+sive experiments on four challenging settings, we
+first prove the adaptability on self-supervised con-
+figurations and then show superior performance on
+tracking metrics MOTA and IDF1, compared to
+fully-supervised, unsupervised, and self-supervised
+methods.
+Limitations We acknowledge that the motion
+model is essential in advanced tracking frame-
+works. However, this work has not been formulated
+adaptively in a self-supervised manner, meaning
+that a motion model could be flexibly integrated.
+However, it still requires ground truths for fully-
+supervised training or pre-defined parameters in
+unsupervised testing. Moreover, the object type
+adapted to target data is currently limited to the
+same object type as source data. The discovery of
+new kinds of objects is an excellent research avenue
+for future work.
+13
+Fig. 8: Trackformer [ 40] trained on the source
+domain fails to detect objects, while our UTOPIA
+can handle these cases. The green arrows indicate
+the true-positive detection samples; the red arrows
+indicate the false-negative detection and tracking
+samples.Best viewed in color.
+7 Data Availability Statement
+The MOT17, MOT20, and MOTSynth datasets
+analyzed during the current study are avail-
+able in the MOT Challenge, an open-access
+data repository. The dataset includes video
+and annotations, and it can be accessed at
+https://motchallenge.net/. The data is pub-
+lished under the Creative Commons Attribution-
+NonCommercial-ShareAlike 3.0 License.
+The VisDrone dataset analyzed dur-
+ing the current study is available on
+GitHub. The dataset includes video and
+annotations, and it can be accessed at
+https://github.com/VisDrone/VisDrone-Dataset.
+The DanceTrack dataset analyzed dur-
+ing the current study is available on
+GitHub. The dataset includes video and
+annotations, and it can be accessed at
+https://github.com/DanceTrack/DanceTrack.
+The data is published under the Creative Com-
+mons Attribution-NonCommercial-ShareAlike 4.0
+License.
+(a) False-postive cases
+(b) False-negative cases
+(c) Merging objects error
+Fig. 9: Fail cases. Best viewed in color.
+Pleasenotethatcertainethicalandlegalrestric-
+tions may apply to the data, and access may
+require compliance with applicable regulations and
+obtaining appropriate permissions.
+References
+[1]Leal-Taixé, L., Milan, A., Reid, I., Roth,
+14
+S., Schindler, K.: MOTChallenge 2015:
+Towards a benchmark for multi-target track-
+ing. arXiv:1504.01942 [cs] (2015). arXiv:
+1504.01942
+[2]Milan, A., Leal-Taixé, L., Reid, I., Roth, S.,
+Schindler,K.:MOT16:Abenchmarkformulti-
+object tracking. arXiv:1603.00831 [cs] (2016).
+arXiv: 1603.00831
+[3]Chen, X.W.W.X.Y., Darrell, F.L.V.M.T., Yu,
+F., Chen, H.: Bdd100k: A diverse driving
+dataset for heterogeneous multitask learning.
+arXiv preprint arXiv: 1805.04687 (2018)
+[4]Caesar, H., Bankiti, V., Lang, A.H., Vora, S.,
+Liong, V.E., Xu, Q., Krishnan, A., Pan, Y.,
+Baldan, G., Beijbom, O.: nuscenes: A mul-
+timodal dataset for autonomous driving. In:
+Proceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition
+(CVPR), pp. 11621–11631 (2020)
+[5]Dendorfer, P., Rezatofighi, H., Milan, A., Shi,
+J., Cremers, D., Reid, I., Roth, S., Schindler,
+K., Leal-Taixé, L.: Mot20: A benchmark for
+multi object tracking in crowded scenes. arXiv
+preprint arXiv:2003.09003 (2020)
+[6]Bai, H., Cheng, W., Chu, P., Liu, J., Zhang,
+K., Ling, H.: Gmot-40: A benchmark for
+generic multiple object tracking. In: Pro-
+ceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition,
+pp. 6719–6728 (2021)
+[7]Sun, P., Cao, J., Jiang, Y., Yuan, Z., Bai, S.,
+Kitani, K., Luo, P.: Dancetrack: Multi-object
+tracking in uniform appearance and diverse
+motion. In: Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern
+Recognition, pp. 20993–21002 (2022)
+[8]Fabbri, M., Brasó, G., Maugeri, G., Cetintas,
+O., Gasparini, R., Ošep, A., Calderara, S.,
+Leal-Taixé, L., Cucchiara, R.: Motsynth: How
+can synthetic data help pedestrian detec-
+tion and tracking? In: Proceedings of the
+IEEE/CVF International Conference on Com-
+puter Vision, pp. 10849–10859 (2021)
+[9]Manen, S., Gygli, M., Dai, D., Van Gool, L.:Pathtrack: Fast trajectory annotation with
+path supervision. In: Proceedings of the IEEE
+International Conference on Computer Vision,
+pp. 290–299 (2017)
+[10]Bastani, F., He, S., Madden, S.: Self-
+supervised multi-object tracking with cross-
+input consistency. Advances in Neural Infor-
+mation Processing Systems 34, 13695–13706
+(2021)
+[11]Yuen, J., Russell, B., Liu, C., Torralba, A.:
+Labelmevideo:Buildingavideodatabasewith
+human annotations. In: 2009 IEEE 12th Inter-
+national Conference on Computer Vision, pp.
+1451–1458 (2009). IEEE
+[12]Xiong, B., Fan, H., Grauman, K., Feicht-
+enhofer, C.: Multiview pseudo-labeling for
+semi-supervised learning from video. In: Pro-
+ceedings of the IEEE/CVF International Con-
+ference on Computer Vision, pp. 7209–7219
+(2021)
+[13]Dave, A., Khurana, T., Tokmakov, P., Schmid,
+C., Ramanan, D.: Tao: A large-scale bench-
+mark for tracking any object. In: Computer
+Vision–ECCV 2020: 16th European Confer-
+ence, Glasgow, UK, August 23–28, 2020,
+Proceedings, Part V 16, pp. 436–454 (2020).
+Springer
+[14]Rajasegaran, J., Pavlakos, G., Kanazawa,
+A., Malik, J.: Tracking people by predicting
+3d appearance, location and pose. In: Pro-
+ceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition,
+pp. 2740–2749 (2022)
+[15]Zhou, X., Koltun, V., Krähenbühl, P.: Track-
+ing objects as points. In: Proceedings of the
+European Conference on Computer Vision
+(ECCV), pp. 474–490 (2020)
+[16]Bewley, A., Ge, Z., Ott, L., Ramos, F.,
+Upcroft, B.: Simple online and realtime track-
+ing. In: 2016 IEEE International Conference
+on Image Processing (ICIP), pp. 3464–3468
+(2016). IEEE
+[17]Wojke, N., Bewley, A., Paulus, D.: Simple
+15
+online and realtime tracking with a deep asso-
+ciation metric. In: 2017 IEEE International
+Conference on Image Processing (ICIP), pp.
+3645–3649 (2017). IEEE
+[18]Sun, S., Akhtar, N., Song, X., Song, H., Mian,
+A., Shah, M.: Simultaneous detection and
+tracking with motion modelling for multi-
+ple object tracking. In: Proceedings of the
+European Conference on Computer Vision
+(ECCV), pp. 626–643 (2020)
+[19]Stadler, D., Beyerer, J.: Improving multiple
+pedestrian tracking by track management and
+occlusion handling. In: Proceedings of the
+IEEE/CVF Conference on Computer Vision
+and Pattern Recognition, pp. 10958–10967
+(2021)
+[20]Dendorfer, P., Yugay, V., Ošep, A., Leal-Taixé,
+L.: Quo vadis: Is trajectory forecasting the
+key towards long-term multi-object tracking?
+Advances in Neural Information Processing
+Systems36(2022)
+[21]Li, S., Fischer, T., Ke, L., Ding, H., Danell-
+jan, M., Yu, F.: Ovtrack: Open-vocabulary
+multiple object tracking. In: Proceedings of
+the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pp. 5567–
+5577 (2023)
+[22]Aharon, N., Orfaig, R., Bobrovsky, B.-Z.: Bot-
+sort: Robust associations multi-pedestrian
+tracking. arXiv preprint arXiv:2206.14651
+(2022)
+[23]Nguyen, P., Quach, K.G., Duong, C.N., Le,
+N., Nguyen, X.-B., Luu, K.: Multi-camera
+multiple 3d object tracking on the move for
+autonomous vehicles. In: Proceedings of the
+IEEE/CVF Conference on Computer Vision
+and Pattern Recognition (CVPR) Workshops,
+pp. 2569–2578 (2022)
+[24]Nguyen, P., Quach, K.G., Duong, C.N.,
+Phung, S.L., Le, N., Luu, K.: Multi-camera
+multi-object tracking on the move via single-
+stage global association approach. arXiv
+preprint arXiv:2211.09663 (2022)[25]Karthik, S., Prabhu, A., Gandhi, V.: Sim-
+ple unsupervised multi-object tracking. arXiv
+preprint arXiv:2006.02609 (2020)
+[26]Yu, S., Wu, G., Gu, C., Fathy, M.E.: Tdt:
+Teaching detectors to track without fully
+annotated videos. In: Proceedings of the
+IEEE/CVF Conference on Computer Vision
+and Pattern Recognition, pp. 3940–3950
+(2022)
+[27]Vu, T.-H., Jain, H., Bucher, M., Cord, M.,
+Pérez, P.: Advent: Adversarial entropy min-
+imization for domain adaptation in seman-
+tic segmentation. In: Proceedings of the
+IEEE/CVF Conference on Computer Vision
+and Pattern Recognition, pp. 2517–2526
+(2019)
+[28]Truong, T.-D., Duong, C.N., Le, N., Phung,
+S.L., Rainwater, C., Luu, K.: Bimal: Bijec-
+tive maximum likelihood approach to domain
+adaptation in semantic scene segmentation.
+In: Proceedings of the IEEE/CVF Interna-
+tional Conference on Computer Vision, pp.
+8548–8557 (2021)
+[29]He, M., Wang, Y., Wu, J., Wang, Y., Li, H.,
+Li, B., Gan, W., Wu, W., Qiao, Y.: Cross
+domain object detection by target-perceived
+dual branch distillation. In: Proceedings of
+the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pp. 9570–
+9580 (2022)
+[30]Xie, Q., Dai, Z., Hovy, E., Luong, T., Le,
+Q.: Unsupervised data augmentation for con-
+sistency training. Advances in Neural Infor-
+mation Processing Systems 33, 6256–6268
+(2020)
+[31]Chen, T., Kornblith, S., Norouzi, M., Hin-
+ton, G.: A simple framework for contrastive
+learning of visual representations. In: Interna-
+tional Conference on Machine Learning, pp.
+1597–1607 (2020). PMLR
+[32]Cuturi, M.: Sinkhorn distances: Lightspeed
+computation of optimal transport. Advances
+in neural information processing systems 26
+(2013)
+16
+[33]Yin, J., Wang, W., Meng, Q., Yang, R.,
+Shen, J.: A unified object motion and affin-
+ity model for online multi-object tracking. In:
+Proceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition
+(CVPR), pp. 6768–6777 (2020)
+[34]Xiao, B., Wu, H., Wei, Y.: Simple base-
+lines for human pose estimation and tracking.
+In: Proceedings of the European Conference
+on Computer Vision (ECCV), pp. 466–481
+(2018)
+[35]Bergmann, P., Meinhardt, T., Leal-Taixe, L.:
+Tracking without bells and whistles. In: Pro-
+ceedings of the IEEE International Conference
+on Computer Vision (ICCV), pp. 941–951
+(2019)
+[36]Chan, S., Jia, Y., Zhou, X., Bai, C., Chen,
+S., Zhang, X.: Online multiple object tracking
+using joint detection and embedding network.
+Pattern Recognition 130, 108793 (2022) https:
+//doi.org/10.1016/j.patcog.2022.108793
+[37]Pang, J., Qiu, L., Li, X., Chen, H., Li, Q., Dar-
+rell,T.,Yu,F.:Quasi-densesimilaritylearning
+for multiple object tracking. In: Proceedings
+of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pp. 164–173
+(2021)
+[38]Girshick, R.: Fast r-cnn. In: Proceedings of the
+IEEE International Conference on Computer
+Vision, pp. 1440–1448 (2015)
+[39]Ren, S., He, K., Girshick, R., Sun, J.: Faster r-
+cnn: Towards real-time object detection with
+regionproposalnetworks.In:AdvancesinNeu-
+ral Information Processing Systems, pp. 91–99
+(2015)
+[40]Meinhardt, T., Kirillov, A., Leal-Taixe, L.,
+Feichtenhofer, C.: Trackformer: Multi-object
+tracking with transformers. In: Proceedings
+of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pp. 8844–
+8854 (2022)
+[41]Wu, J., Cao, J., Song, L., Wang, Y., Yang, M.,
+Yuan, J.: Track to detect and segment: An
+online multi-object tracker. In: Proceedingsof the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pp. 12352–
+12361 (2021)
+[42]Yan, B., Jiang, Y., Sun, P., Wang, D., Yuan,
+Z., Luo, P., Lu, H.: Towards grand unification
+of object tracking. In: ECCV (2022)
+[43]Zhang, Y., Sun, P., Jiang, Y., Yu, D., Weng,
+F., Yuan, Z., Luo, P., Liu, W., Wang, X.:
+Bytetrack: Multi-object tracking by associat-
+ing every detection box. In: Proceedings of
+the European Conference on Computer Vision
+(ECCV) (2022)
+[44]Cao, J., Weng, X., Khirodkar, R., Pang, J.,
+Kitani, K.: Observation-centric sort: Rethink-
+ingsortforrobustmulti-objecttracking.arXiv
+preprint arXiv:2203.14360 (2022)
+[45]Valverde, F.R., Hurtado, J.V., Valada, A.:
+There is more than meets the eye: Self-
+supervised multi-object detection and track-
+ing with sound by distilling multimodal
+knowledge. In: Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern
+Recognition, pp. 11612–11621 (2021)
+[46]Weng, X., Ivanovic, B., Kitani, K., Pavone,
+M.: Whose track is it anyway? improving
+robustness to tracking errors with affinity-
+based trajectory prediction. In: Proceedings
+of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pp. 6573–
+6582 (2022)
+[47] He, L., Liao, X., Liu, W., Liu, X., Cheng, P.,
+Mei, T.: Fastreid: A pytorch toolbox for gen-
+eral instance re-identification. arXiv preprint
+arXiv:2006.02631 (2020)
+[48]Wang, Z., Zhao, H., Li, Y.-L., Wang, S.,
+Torr, P., Bertinetto, L.: Do different track-
+ing tasks require different appearance models?
+Advances in Neural Information Processing
+Systems34, 726–738 (2021)
+[49]Chaabane, M., Zhang, P., Beveridge, R.,
+O’Hara, S.: Deft: Detection embeddings for
+tracking. arXiv preprint arXiv:2102.02267
+(2021)
+17
+[50]Wu, Z., Xiong, Y., Yu, S.X., Lin, D.: Unsu-
+pervised feature learning via non-parametric
+instance discrimination. In: Proceedings of the
+IEEE Conference on Computer Vision and
+Pattern Recognition, pp. 3733–3742 (2018)
+[51]Oord, A.v.d., Li, Y., Vinyals, O.: Repre-
+sentation learning with contrastive predic-
+tive coding. arXiv preprint arXiv:1807.03748
+(2018)
+[52]He, Y., Zhu, C., Wang, J., Savvides, M.,
+Zhang, X.: Bounding box regression with
+uncertainty for accurate object detection. In:
+Proceedings of the Ieee/cvf Conference on
+Computer Vision and Pattern Recognition,
+pp. 2888–2897 (2019)
+[53]Sarlin, P.-E., DeTone, D., Malisiewicz, T.,
+Rabinovich, A.: SuperGlue: Learning feature
+matching with graph neural networks. In:
+CVPR (2020)
+[54]Ge, Z., Liu, S., Li, Z., Yoshie, O., Sun, J.:
+Ota: Optimal transport assignment for object
+detection. In: Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern
+Recognition, pp. 303–312 (2021)
+[55]Han, T., Bai, L., Gao, J., Wang, Q., Ouyang,
+W.: Dr. vic: Decomposition and reasoning
+for video individual counting. In: Proceedings
+of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition, pp. 3083–
+3092 (2022)
+[56]Fragalà,I.,Gelli,M.S.,Pratelli,A.:Continuity
+of an optimal transport in monge problem.
+Journal de mathématiques pures et appliquées
+84(9), 1261–1294 (2005)
+[57]Di Marino, S., Gerolin, A.: Optimal trans-
+port losses and sinkhorn algorithm with
+general convex regularization. arXiv preprint
+arXiv:2007.00976 (2020)
+[58]Dong, Y., Sawin, W.: Copt: Coordinated
+optimal transport on graphs. Advances in
+Neural Information Processing Systems 33,
+19327–19338 (2020)
+[59]Maretic, H.P., Gheche, M.E., Minder, M.,Chierchia, G., Frossard, P.: Wasserstein-based
+graph alignment. IEEE Transactions on Sig-
+nal and Information Processing over Networks
+8, 353–363 (2022) https://doi.org/10.1109/
+TSIPN.2022.3169632
+[60]Rezatofighi, H., Tsoi, N., Gwak, J., Sadeghian,
+A., Reid, I., Savarese, S.: Generalized inter-
+section over union. In: The IEEE Conference
+on Computer Vision and Pattern Recognition
+(CVPR) (2019)
+[61]Chen, K., Wang, J., Pang, J., Cao, Y., Xiong,
+Y., Li, X., Sun, S., Feng, W., Liu, Z., Xu,
+J., et al.: Mmdetection: Open mmlab detec-
+tion toolbox and benchmark. arXiv preprint
+arXiv:1906.07155 (2019)
+[62]Sun, Y., Cheng, C., Zhang, Y., Zhang, C.,
+Zheng, L., Wang, Z., Wei, Y.: Circle loss:
+A unified perspective of pair similarity opti-
+mization. In: Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern
+Recognition, pp. 6398–6407 (2020)
+[63]Zhu, P., Wen, L., Du, D., Bian, X., Fan, H.,
+Hu, Q., Ling, H.: Detection and tracking meet
+drones challenge. IEEE Transactions on Pat-
+tern Analysis and Machine Intelligence, 1–1
+(2021) https://doi.org/10.1109/TPAMI.2021.
+3119563
+[64]Contributors, M.: MMTracking: OpenMMLab
+video perception toolbox and bench-
+mark. https://github.com/open-mmlab/
+mmtracking (2020)
+[65]He, K., Zhang, X., Ren, S., Sun, J.: Deep
+residual learningfor image recognition. Com-
+puterScience (2015)
+[66]Yun, S., Han, D., Oh, S.J., Chun, S., Choe,
+J., Yoo, Y.: Cutmix: Regularization strat-
+egy to train strong classifiers with localizable
+features. In: Proceedings of the IEEE/CVF
+International Conference on Computer Vision,
+pp. 6023–6032 (2019)
+18

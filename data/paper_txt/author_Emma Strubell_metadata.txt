@@ -1,0 +1,84 @@
+{
+    "authorId": "2268272",
+    "url": "https://www.semanticscholar.org/author/2268272",
+    "name": "Emma Strubell"
+}
+
+{
+    "paperId": "1433b8d43d446fcc7f3e1370b22f744a4dd7c8e4",
+    "url": "https://www.semanticscholar.org/paper/1433b8d43d446fcc7f3e1370b22f744a4dd7c8e4",
+    "title": "To Build Our Future, We Must Know Our Past: Contextualizing Paradigm Shifts in Natural Language Processing",
+    "year": 2023
+}
+{
+    "paperId": "3ba0b9250d5e91c01eb7cca8269afec23f24c515",
+    "url": "https://www.semanticscholar.org/paper/3ba0b9250d5e91c01eb7cca8269afec23f24c515",
+    "title": "Energy and Carbon Considerations of Fine-Tuning BERT",
+    "year": 2023
+}
+{
+    "paperId": "45e50baac4d341f0cf1a40af096bfa9c3f555235",
+    "url": "https://www.semanticscholar.org/paper/45e50baac4d341f0cf1a40af096bfa9c3f555235",
+    "title": "Understanding the Effect of Model Compression on Social Bias in Large Language Models",
+    "year": 2023
+}
+{
+    "paperId": "667ba2e8f1933b6c32e9672012526904b4c5dc31",
+    "url": "https://www.semanticscholar.org/paper/667ba2e8f1933b6c32e9672012526904b4c5dc31",
+    "title": "Surveying (Dis)Parities and Concerns of Compute Hungry NLP Research",
+    "year": 2023
+}
+{
+    "paperId": "71debf888acd57bb1baa4c146f31e58c66ea51af",
+    "url": "https://www.semanticscholar.org/paper/71debf888acd57bb1baa4c146f31e58c66ea51af",
+    "title": "On the Interactions of Structural Constraints and Data Resources for Structured Prediction",
+    "year": 2023
+}
+{
+    "paperId": "84d20ad9f42d80dfd5130a6362d5422be8a6bdc3",
+    "url": "https://www.semanticscholar.org/paper/84d20ad9f42d80dfd5130a6362d5422be8a6bdc3",
+    "title": "Efficiency Pentathlon: A Standardized Arena for Efficiency Evaluation",
+    "year": 2023
+}
+{
+    "paperId": "88549b4f48b9709acdfb8b9e41656b6d133c5390",
+    "url": "https://www.semanticscholar.org/paper/88549b4f48b9709acdfb8b9e41656b6d133c5390",
+    "title": "Queer People are People First: Deconstructing Sexual Identity Stereotypes in Large Language Models",
+    "year": 2023
+}
+{
+    "paperId": "9eb476cd15becf02163d6f3dab75d207eed52214",
+    "url": "https://www.semanticscholar.org/paper/9eb476cd15becf02163d6f3dab75d207eed52214",
+    "title": "Power Hungry Processing: Watts Driving the Cost of AI Deployment?",
+    "year": 2023
+}
+{
+    "paperId": "a815c3209e7baff4466dbf6e129129511f842b7e",
+    "url": "https://www.semanticscholar.org/paper/a815c3209e7baff4466dbf6e129129511f842b7e",
+    "title": "Making Scalable Meta Learning Practical",
+    "year": 2023
+}
+{
+    "paperId": "b13da1161d65a8de7a96051b5bc68d5eaa8eb37b",
+    "url": "https://www.semanticscholar.org/paper/b13da1161d65a8de7a96051b5bc68d5eaa8eb37b",
+    "title": "Regularizing Self-training for Unsupervised Domain Adaptation via Structural Constraints",
+    "year": 2023
+}
+{
+    "paperId": "b777aa86b5a1d49ce8eababc5c2ee56d3562801e",
+    "url": "https://www.semanticscholar.org/paper/b777aa86b5a1d49ce8eababc5c2ee56d3562801e",
+    "title": "The Framework Tax: Disparities Between Inference Efficiency in Research and Deployment",
+    "year": 2023
+}
+{
+    "paperId": "ba31ccac5fe5ea151727e8427e78bb300c35f899",
+    "url": "https://www.semanticscholar.org/paper/ba31ccac5fe5ea151727e8427e78bb300c35f899",
+    "title": "Data-efficient Active Learning for Structured Prediction with Partial Annotation and Self-Training",
+    "year": 2023
+}
+{
+    "paperId": "c5376bf4c5b76d969a9bd2f3eedc64e4a3b4edf2",
+    "url": "https://www.semanticscholar.org/paper/c5376bf4c5b76d969a9bd2f3eedc64e4a3b4edf2",
+    "title": "How To Train Your (Compressed) Large Language Model",
+    "year": 2023
+}

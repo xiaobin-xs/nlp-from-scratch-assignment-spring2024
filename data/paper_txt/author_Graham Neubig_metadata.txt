@@ -1,0 +1,216 @@
+{
+    "authorId": "1700325",
+    "url": "https://www.semanticscholar.org/author/1700325",
+    "name": "Graham Neubig"
+}
+
+{
+    "paperId": "0004c4e27e54f13577951416d8ed476e93f00ef9",
+    "url": "https://www.semanticscholar.org/paper/0004c4e27e54f13577951416d8ed476e93f00ef9",
+    "title": "DiffusER: Diffusion via Edit-based Reconstruction",
+    "year": 2023
+}
+{
+    "paperId": "03c7f61b0c6bc4c480ed6da4e9d7dda104ddfec3",
+    "url": "https://www.semanticscholar.org/paper/03c7f61b0c6bc4c480ed6da4e9d7dda104ddfec3",
+    "title": "Cross-Modal Fine-Tuning: Align then Refine",
+    "year": 2023
+}
+{
+    "paperId": "11a571eaab42a6ffb1d938635a093315e392756d",
+    "url": "https://www.semanticscholar.org/paper/11a571eaab42a6ffb1d938635a093315e392756d",
+    "title": "ChatGPT MT: Competitive for High- (but Not Low-) Resource Languages",
+    "year": 2023
+}
+{
+    "paperId": "17605c43ca3eb982c99642052ddc21a93d116594",
+    "url": "https://www.semanticscholar.org/paper/17605c43ca3eb982c99642052ddc21a93d116594",
+    "title": "GlobalBench: A Benchmark for Global Progress in Natural Language Processing",
+    "year": 2023
+}
+{
+    "paperId": "1786a2f9140ed7211b21302977de64e948b92308",
+    "url": "https://www.semanticscholar.org/paper/1786a2f9140ed7211b21302977de64e948b92308",
+    "title": "Learning Performance-Improving Code Edits",
+    "year": 2023
+}
+{
+    "paperId": "31366ff634fc905affd78dbd8ddc9a872c006a87",
+    "url": "https://www.semanticscholar.org/paper/31366ff634fc905affd78dbd8ddc9a872c006a87",
+    "title": "CodeBERTScore: Evaluating Code Generation with Pretrained Models of Code",
+    "year": 2023
+}
+{
+    "paperId": "3194a28bcab3c7dcd556fc5f6895b9c38311308d",
+    "url": "https://www.semanticscholar.org/paper/3194a28bcab3c7dcd556fc5f6895b9c38311308d",
+    "title": "Divergences between Language Models and Human Brains",
+    "year": 2023
+}
+{
+    "paperId": "405f1a5602867c66e015491c26d2be5504eed458",
+    "url": "https://www.semanticscholar.org/paper/405f1a5602867c66e015491c26d2be5504eed458",
+    "title": "Neural Machine Translation for the Indigenous Languages of the Americas: An Introduction",
+    "year": 2023
+}
+{
+    "paperId": "43c0f77f116f986b53eb04f5c9b33f10132ded55",
+    "url": "https://www.semanticscholar.org/paper/43c0f77f116f986b53eb04f5c9b33f10132ded55",
+    "title": "User-Centric Evaluation of OCR Systems for Kwak\u2019wala",
+    "year": 2023
+}
+{
+    "paperId": "4c711000915f8f45c54fdcb70c9db7880e3373ea",
+    "url": "https://www.semanticscholar.org/paper/4c711000915f8f45c54fdcb70c9db7880e3373ea",
+    "title": "EXCALIBUR: Encouraging and Evaluating Embodied Exploration",
+    "year": 2023
+}
+{
+    "paperId": "4d74a5048b884e8bb3842240abf98915c619c8f8",
+    "url": "https://www.semanticscholar.org/paper/4d74a5048b884e8bb3842240abf98915c619c8f8",
+    "title": "Multi-Dimensional Evaluation of Text Summarization with In-Context Learning",
+    "year": 2023
+}
+{
+    "paperId": "5ea8eedcb31859c5730dd1da3804e1be529ffabb",
+    "url": "https://www.semanticscholar.org/paper/5ea8eedcb31859c5730dd1da3804e1be529ffabb",
+    "title": "A Gold Standard Dataset for the Reviewer Assignment Problem",
+    "year": 2023
+}
+{
+    "paperId": "659be1ff350634f50cc066d258ee6a45e697e552",
+    "url": "https://www.semanticscholar.org/paper/659be1ff350634f50cc066d258ee6a45e697e552",
+    "title": "SigMoreFun Submission to the SIGMORPHON Shared Task on Interlinear Glossing",
+    "year": 2023
+}
+{
+    "paperId": "6cfbbf7604adda1df65932e3c4d157770a2df000",
+    "url": "https://www.semanticscholar.org/paper/6cfbbf7604adda1df65932e3c4d157770a2df000",
+    "title": "Alignment for Honesty",
+    "year": 2023
+}
+{
+    "paperId": "74b05bba46db21e589a2cc0f916f81069b0368ef",
+    "url": "https://www.semanticscholar.org/paper/74b05bba46db21e589a2cc0f916f81069b0368ef",
+    "title": "Bridging the Gap: A Survey on Integrating (Human) Feedback for Natural Language Generation",
+    "year": 2023
+}
+{
+    "paperId": "76f6142d2b62972de89cb8651ea036d0dd6be68b",
+    "url": "https://www.semanticscholar.org/paper/76f6142d2b62972de89cb8651ea036d0dd6be68b",
+    "title": "Program-Aided Reasoners (better) Know What They Know",
+    "year": 2023
+}
+{
+    "paperId": "7848d4b4e6ba0897a85cebb6467e94eb0b60d583",
+    "url": "https://www.semanticscholar.org/paper/7848d4b4e6ba0897a85cebb6467e94eb0b60d583",
+    "title": "Learning to Filter Context for Retrieval-Augmented Generation",
+    "year": 2023
+}
+{
+    "paperId": "7a5b44ea10a51708e18786595c8d70b18950da11",
+    "url": "https://www.semanticscholar.org/paper/7a5b44ea10a51708e18786595c8d70b18950da11",
+    "title": "FacTool: Factuality Detection in Generative AI - A Tool Augmented Framework for Multi-Task and Multi-Domain Scenarios",
+    "year": 2023
+}
+{
+    "paperId": "88884b8806262a4095036041e3567d450dba39f7",
+    "url": "https://www.semanticscholar.org/paper/88884b8806262a4095036041e3567d450dba39f7",
+    "title": "Active Retrieval Augmented Generation",
+    "year": 2023
+}
+{
+    "paperId": "8e8a1489bf4d782d2435cdeb93f7d1f165747c63",
+    "url": "https://www.semanticscholar.org/paper/8e8a1489bf4d782d2435cdeb93f7d1f165747c63",
+    "title": "Large Language Models Enable Few-Shot Clustering",
+    "year": 2023
+}
+{
+    "paperId": "9bce3661f01825ad56dc9d2b3d254fd9e3792360",
+    "url": "https://www.semanticscholar.org/paper/9bce3661f01825ad56dc9d2b3d254fd9e3792360",
+    "title": "Solving NLP Problems through Human-System Collaboration: A Discussion-based Approach",
+    "year": 2023
+}
+{
+    "paperId": "b4987da792dd45a84232cfb06d71b1c2ec488f38",
+    "url": "https://www.semanticscholar.org/paper/b4987da792dd45a84232cfb06d71b1c2ec488f38",
+    "title": "Crossing the Threshold: Idiomatic Machine Translation through Retrieval Augmentation and Loss Weighting",
+    "year": 2023
+}
+{
+    "paperId": "c432aff446d55e72a28394a1508e760cc9a25c08",
+    "url": "https://www.semanticscholar.org/paper/c432aff446d55e72a28394a1508e760cc9a25c08",
+    "title": "Why do Nearest Neighbor Language Models Work?",
+    "year": 2023
+}
+{
+    "paperId": "c5207241406586f4263b235667e004b71ea68953",
+    "url": "https://www.semanticscholar.org/paper/c5207241406586f4263b235667e004b71ea68953",
+    "title": "Syntax and Semantics Meet in the \u201cMiddle\u201d: Probing the Syntax-Semantics Interface of LMs Through Agentivity",
+    "year": 2023
+}
+{
+    "paperId": "cc1705fe421c70d85254b557634bd4669fdd49b0",
+    "url": "https://www.semanticscholar.org/paper/cc1705fe421c70d85254b557634bd4669fdd49b0",
+    "title": "DataFinder: Scientific Dataset Recommendation from Natural Language Descriptions",
+    "year": 2023
+}
+{
+    "paperId": "d5dd7230cccace7e77095d3b5fd8394850f59170",
+    "url": "https://www.semanticscholar.org/paper/d5dd7230cccace7e77095d3b5fd8394850f59170",
+    "title": "Multi-lingual and Multi-cultural Figurative Language Understanding",
+    "year": 2023
+}
+{
+    "paperId": "d6ae4c0679bdceb029f652efd2a854ac5ade772f",
+    "url": "https://www.semanticscholar.org/paper/d6ae4c0679bdceb029f652efd2a854ac5ade772f",
+    "title": "It\u2019s MBR All the Way Down: Modern Generation Techniques Through the Lens of Minimum Bayes Risk",
+    "year": 2023
+}
+{
+    "paperId": "dbc368bc8b49347dd27679894524fa62f88492c9",
+    "url": "https://www.semanticscholar.org/paper/dbc368bc8b49347dd27679894524fa62f88492c9",
+    "title": "Unlimiformer: Long-Range Transformers with Unlimited Length Input",
+    "year": 2023
+}
+{
+    "paperId": "e41482f4ee984f17382f6cdd900df094d928be06",
+    "url": "https://www.semanticscholar.org/paper/e41482f4ee984f17382f6cdd900df094d928be06",
+    "title": "WebArena: A Realistic Web Environment for Building Autonomous Agents",
+    "year": 2023
+}
+{
+    "paperId": "e69684fb06a7b1fe621d7ef0c97fc2ca0e122c43",
+    "url": "https://www.semanticscholar.org/paper/e69684fb06a7b1fe621d7ef0c97fc2ca0e122c43",
+    "title": "Prompt2Model: Generating Deployable Models from Natural Language Instructions",
+    "year": 2023
+}
+{
+    "paperId": "e7b3b692b0816821aafc0d354749bc3802cbf6ac",
+    "url": "https://www.semanticscholar.org/paper/e7b3b692b0816821aafc0d354749bc3802cbf6ac",
+    "title": "Computational Language Acquisition with Theory of Mind",
+    "year": 2023
+}
+{
+    "paperId": "eeb6601a3c557e970817ed056265a6c62e5d09dc",
+    "url": "https://www.semanticscholar.org/paper/eeb6601a3c557e970817ed056265a6c62e5d09dc",
+    "title": "DeMuX: Data-efficient Multilingual Learning",
+    "year": 2023
+}
+{
+    "paperId": "f640e89fcede075b4bde3b2fa0dc78f591589ba3",
+    "url": "https://www.semanticscholar.org/paper/f640e89fcede075b4bde3b2fa0dc78f591589ba3",
+    "title": "Improving Factuality of Abstractive Summarization via Contrastive Reward Learning",
+    "year": 2023
+}
+{
+    "paperId": "f6e893b3e2ee7a62c2fe8a3b0e33920c3e596969",
+    "url": "https://www.semanticscholar.org/paper/f6e893b3e2ee7a62c2fe8a3b0e33920c3e596969",
+    "title": "SOTOPIA: Interactive Evaluation for Social Intelligence in Language Agents",
+    "year": 2023
+}
+{
+    "paperId": "fd80f7f3673fc6ca02f192d5d73426f11a4be659",
+    "url": "https://www.semanticscholar.org/paper/fd80f7f3673fc6ca02f192d5d73426f11a4be659",
+    "title": "The Devil Is in the Errors: Leveraging Large Language Models for Fine-grained Machine Translation Evaluation",
+    "year": 2023
+}

@@ -1,0 +1,6 @@
+{
+    "authorId": "2260563",
+    "url": "https://www.semanticscholar.org/author/2260563",
+    "name": "R. Frederking"
+}
+

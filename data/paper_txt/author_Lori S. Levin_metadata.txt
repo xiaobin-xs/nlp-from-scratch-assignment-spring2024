@@ -1,0 +1,30 @@
+{
+    "authorId": "1686960",
+    "url": "https://www.semanticscholar.org/author/1686960",
+    "name": "Lori S. Levin"
+}
+
+{
+    "paperId": "2cdc646a6b70418e7cbd7fbdb8bb113176c4659f",
+    "url": "https://www.semanticscholar.org/paper/2cdc646a6b70418e7cbd7fbdb8bb113176c4659f",
+    "title": "Somatosensory and motor representations following bilateral transplants of the hands: A 6-year longitudinal case report on the first pediatric bilateral hand transplant patient",
+    "year": 2023
+}
+{
+    "paperId": "2f540bab03c2672715539ecf17ff4872ea521605",
+    "url": "https://www.semanticscholar.org/paper/2f540bab03c2672715539ecf17ff4872ea521605",
+    "title": "Identifying Health-Related Quality of Life Domains after Upper Extremity Transplantation.",
+    "year": 2023
+}
+{
+    "paperId": "52a97ad16605c18e23c9750a388a26a9cdf12200",
+    "url": "https://www.semanticscholar.org/paper/52a97ad16605c18e23c9750a388a26a9cdf12200",
+    "title": "Assessment of quality of life after upper extremity transplantation: Framework for patient-reported outcome scale domains",
+    "year": 2023
+}
+{
+    "paperId": "802400da9f7098c25c82cb780fdc92126557a096",
+    "url": "https://www.semanticscholar.org/paper/802400da9f7098c25c82cb780fdc92126557a096",
+    "title": "What is needed to ensure long-term sustainability for the field of vascularized composite allotransplantation?",
+    "year": 2023
+}

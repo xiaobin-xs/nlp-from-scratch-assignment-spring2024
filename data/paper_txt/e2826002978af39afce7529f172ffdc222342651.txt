@@ -1,0 +1,464 @@
+  
+Delft University of Technology
+The Multimodal Information Based Speech Processing (Misp) 2022 Challenge
+Audio-Visual Diarization And Recognition
+Wang, Zhe; Wu, Shilong ; Chen, Hang ; He, Mao-Kui ; Du, Jun ; Lee, Chin-Hui ; Chen, Jingdong ;
+Watanabe, Shinji ; Siniscalchi, Sabato Marco ; Scharenborg, Odette
+DOI
+10.1109/ICASSP49357.2023.10094836
+Publication date
+2023
+Document Version
+Final published version
+Published in
+Proceedings of the ICASSP 2023 - 2023 IEEE International Conference on Acoustics, Speech and Signal
+Processing (ICASSP)
+Citation (APA)
+Wang, Z., Wu, S., Chen, H., He, M-K., Du, J., Lee, C-H., Chen, J., Watanabe, S., Siniscalchi, S. M.,
+Scharenborg, O., Liu, D., & More Authors (2023). The Multimodal Information Based Speech Processing
+(Misp) 2022 Challenge: Audio-Visual Diarization And Recognition. In Proceedings of the ICASSP 2023 - 
+2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) (ICASSP, 
+IEEE International Conference on Acoustics, Speech and Signal Processing - Proceedings; Vol. 2023-
+June). IEEE . https://doi.org/10.1109/ICASSP49357.2023.10094836
+Important note
+To cite this publication, please use the final published version (if applicable).
+Please check the document version above.
+Copyright
+Other than for strictly personal use, it is not permitted to download, forward or distribute the text or part of it, without the consent
+of the author(s) and/or copyright holder(s), unless the work is under an open content license such as Creative Commons.
+Takedown policy
+Please contact us and provide details if you believe this document breaches copyrights.
+We will remove access to the work immediately and investigate your claim.
+This work is downloaded from Delft University of Technology. 
+For technical reasons the number of authors shown on this cover page is limited to a maximum of 10. 
+Green Open Access added to TU Delft Institutional Repository 'You share, we take care!' - Taverne project   https://www.openaccess.nl/en/you-share-we-take-care Otherwise as indicated in the copyright section: the publisher is the copyright holder of this work and the author uses the Dutch legislation to make this work public.   
+THE MULTIMODAL INFORMATION BASED SPEECH PROCESSING (MISP) 2022
+CHALLENGE: AUDIO-VISUAL DIARIZATION AND RECOGNITION
+Zhe Wang1, Shilong Wu1, Hang Chen1, Mao-Kui He1, Jun Du1,*, Chin-Hui Lee2,
+Jingdong Chen6, Shinji Watanabe3, Sabato Siniscalchi2,4, Odette Scharenborg7,
+Diyuan Liu5, Baocai Yin5, Jia Pan5, Jianqing Gao5, Cong Liu5
+1University of Science and Technology of China, China2Georgia Institute of Technology, USA
+3Carnegie Mellon University, USA4Kore University of Enna, Italy5iFlytek, China
+6Northwestern Polytechnical University, China7Delft University of Technology, The Netherlands
+ABSTRACT
+The Multi-modal Information based Speech Processing (MISP)
+challenge aims to extend the application of signal processing tech-
+nology in speciﬁc scenarios by promoting the research into wake-up
+words, speaker diarization, speech recognition, and other technolo-
+gies. The MISP2022 challenge has two tracks: 1) audio-visual
+speaker diarization (A VSD), aiming to solve “who spoken when”
+using both audio and visual data; 2) a novel audio-visual diarization
+and recognition (A VDR) task that focuses on addressing “who spo-
+ken what when” with audio-visual speaker diarization results. Both
+tracks focus on the Chinese language, and use far-ﬁeld audio and
+video in real home-tv scenarios: 2-6 people communicating each
+other with TV noise in the background. This paper introduces the
+dataset, track settings, and baselines of the MISP2022 challenge.
+Our analyses of experiments and examples indicate the good per-
+formance of A VDR baseline system, and the potential difﬁculties in
+this challenge due to, e.g., the far-ﬁeld video quality, the presence of
+TV noise in the background, and the indistinguishable speakers.
+Index T erms — MISP challenge, speaker diarization, speech
+recognition, multimodality
+1. INTRODUCTION
+Modern speech-enabled systems still suffer from performance degra-
+dation in real-world scenarios (e.g., at home and in meetings) due
+to factors associated with adverse acoustic environments and con-
+versational multi-speaker interactions. Inspired by the ﬁnding that
+visual cues can help human speech perception [1], many researchers
+have proposed to use the visual modality to improve acoustic ro-
+bustness [2, 3]. The MISP2021 challenge [4] released a large dis-
+tant multi-microphone conversational Chinese audio-visual corpus,
+and some advanced audio-visual speech recognition (A VSR) sys-
+tems have been proposed [5, 6]. However, these systems assume
+that the correspondence between speech segments and speakers is
+known in advance, which greatly limits its scope in real-world ap-
+plications. For the second MISP challenge, we target the problem of
+audio-visual speaker diarization (A VSD), and audio-visual diariza-
+tion and recognition (A VDR) in the home-tv scenarios. Speciﬁcally,
+the A VDR is an extended task from A VSR, replacing oracle speaker
+diarization results with A VSD results.
+Many approaches have been proposed on speaker diarization
+and speech recognition under the audio-only condition. [7] utilized
+*corresponding authorx-vector [8], agglomerative hierarchical clustering (AHC) and an
+LSTM-based overlap detector to get diarization results, which can
+be used for the guided source separation (GSS) and the deep neural
+network-hidden markov model (DNN-HMM). [9] proposed a novel
+system, which includes a speaker diarization module with target-
+speaker voice activity detection (TS-V AD), and a speech recogni-
+tion module with self-attention. However, the audio-only speaker
+diarization and speech recognition task in the real scenes is still a
+huge challenge because of the potential strong background noise and
+high ratios of overlapping speech [10].
+Facial behavior is highly correlated with speech activity [11],
+and visual modality is not disturbed by harsh acoustic environment.
+Researchers show great interest in audio-visual speaker diarization
+(A VSD) and audio-visual speech recognition (A VSR). For A VSD
+system, some related works have been proposed. [12] utilized mu-
+tual information to fuse the audio and video modalities, while [13]
+used a Bayesian method for audio-visual speaker diarization. In re-
+cent years, many deep learning methods have emerged. [14] used
+an audio-visual synchronization model, [15] proposed a diarization
+method using self-supervised learning, achieving positive results.
+For A VSR system, [3] proposed a ‘Watch, Listen, Attend and Spell’
+(WLAS) network on the LRS data set and [2] adopted a Transformer-
+based model. [16] developed a CTC/Attention model based on con-
+former blocks. A DNN-HMM hybrid A VSR system with a gating
+layer [17] also showed good performance. Although A VSD and
+A VSR have received increased attention and have been shown to
+signiﬁcantly outperform conventional audio-only methods, there is
+as yet little research done on audio-visual diarization and recogni-
+tion (A VDR) which concentrates on A VSR with A VSD results.
+The MISP2022 challenge includes two tracks: audio-visual
+speaker diarization (A VSD), and audio-visual diarization and recog-
+nition (A VDR). In this paper, we discuss the MISP2022 challenge,
+the data, tracks, and provide a detailed description of the baseline
+A VDR system, followed by a deep analysis. Besides, we point out
+the difﬁculties that participants may encounter in this challenge,
+including the low quality of far-ﬁeld videos, the background noise
+in the home-tv scenarios, and the existence of indistinguishable
+speakers. To the best of our knowledge, we proposed a brand-new
+A VDR task, and our proposed A VDR baseline system is the ﬁrst
+to concatenate the A VSD and A VSR into one large system. The
+resulting system has broad application prospects. More challenge
+details1and the baseline code2can be found on the websites.
+1https://mispchallenge.github.io/mispchallenge2022
+2https://github.com/mispchallenge/misp2022 baselineICASSP 2023 - 2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP) | 978-1-7281-6327-7/23/$31.00 ©2023 IEEE | DOI: 10.1109/ICASSP49357.2023.10094836
+Authorized licensed use limited to: TU Delft Library. Downloaded on August 24,2023 at 10:38:09 UTC from IEEE Xplore.  Restrictions apply. 
+Time
+Lip ROI:
+SessionkSPKN SPK1I-vector
+Extractor
+Speaker
+ProbabilitiesPost-Processing
+Far Ch0
+Far Ch5WPE
+TjstartTjend
+EncoderVDecoder
+Fbank
+Lip ROI
+Audio InputVisual Input
+TimeDecoder
+PosterioriTextVideo Segment
+Audio SegmentTjstartTjend
+AVSD AVSRC C
+EncoderAEncoderV
+EncoderASPK0Video
+SPKi
+SPKNTime
+1 j-1 j MAudio
+SPKN-1SPK0
+SPKN
+Diarization ResultSPK1
+BeamformItTimeTjstartTjend
+Fig. 1 . The architecture of the audio-visual diarization and recognition baseline system
+2. DATASET AND TRACKS
+2.1. Training, Development, and Evaluation Sets
+We adopted the same training set as in the updated A VSR corpus of
+the MISP2021 challenge [18] and picked a new 3h development set
+from the previous development and evaluation sets. The new devel-
+opment set consists of the audio and video recordings of 8 rooms and26 participants, including 10 males and 16 females. In the future, toeliminate overlapping speakers in each subset, a new evaluation setwill be released and used for ﬁnal ranking. The evaluation set onlycontains the recordings from the far-ﬁeld devices.
+2.2. Track 1: Audio-Visual Speaker Diarization
+Audio-visual speaker diarization aims to solve the “who spoke
+when” problem by labeling speech timestamps with classes thatcorrespond to speaker identity using audio and video data. For
+evaluation, only the far-ﬁeld audio and video data is available. We
+will provide the oracle speech segmentation timestamp. Participants
+need to submit a rich transcription time marked (RTTM) ﬁle for eachsession. RTTM ﬁles are text ﬁles containing one turn per line [10].The start time (4th column), duration (5th column), and speaker ID(8th column) must remain in the same columns.
+Diarization error rate (DER) [19] is adopted as the evaluation
+metric. The lower the DER value (with 0 being a perfect score),
+the higher the ranking. It is worth noting that we do not set the “no
+score” collar, and overlapping speech will be evaluated.
+DER =FA + MISS + SPKERR
+TOTAL(1)
+where FA, MISS, SPKERR are the total durations of the false alarm,
+missed detection and speaker error, respectively, and TOTAL is thesum of durations of all reference speakers’ speech.
+In Track 1, external audio data can be used to train the A VSD
+model, such as V oxCeleb 1, 2 [20, 21], CN-Celeb [22], and otherpublic datasets. Additional video data is also allowed to be used.However, participants should inform the organizers in advance aboutsuch data sources, so that all competitors know about them and havean equal opportunity to use them.
+2.3. Track 2: Audio-Visual Diarization and Recognition
+Track 2 moves beyond A VSD and also considers the task of
+speech recognition, i.e., transcribing the speech into its verbatimtext. The same evaluation set is adopted as Track 1. Participants
+need to submit the RTTM ﬁle, and transcription ﬁles. In eachsession, participants should chronologically merge all utterancesfrom one speaker and provide a transcription ﬁle. Transcriptionﬁles contain two columns: the utterance ID (1st column), andthe utterance (2nd column). The format of the utterance ID is<speaker ID >
+<session ID >.
+With reference to the concatenated minimum-permutation
+word error rate (cpWER) in [23], we use concatenated minimum-permutation character error rate (cpCER) as the evaluation metric inTrack 2. The calculation of cpCER is divided into three steps. First,
+recognition results and reference transcriptions belonging to the
+same speaker are concatenated on the timeline in a session. Second,
+character error rate (CER) of permutations of speakers is calculated
+as follows:
+CER =S+D+I
+N(2)
+where S, D, I are the character number of the substitution error, dele-
+tion error, and insertion error. N is the total number of characters.Finally, select the lowest CER as the cpCER.
+In Track 2, we restrict the rules of additional data usage. Exter-
+nal audio data and video data are allowed to be used. Signiﬁcantly,participants can utilize timestamps, speaker tags, and other infor-mation except for text contents. Participants should also inform the
+organizers in advance about such data sources.
+3. BASELINE A VDR SYSTEM
+Fig. 1 shows the baseline A VDR system, which consists of an A VSD
+module followed by an A VSR module. The A VSD module alsoserves as the baseline system for Track 1. In this section, we elab-orate the architecture and training process of the A VSD and A VSRmodules, and provide the details about joining the A VSD and A VSR
+modules for decoding.
+3.1. Architecture and Training of the A VSD Module
+We follow our previous work [24] as our baseline. The difference is
+that the preceding work used the data from the mid-ﬁeld audio andvideo, while the current challenge focuses on the far-ﬁeld audio and
+video.
+As shown in the A VSD module in Fig. 1, our system has three
+encoder modules. In the visual encoder module, lip ROIs are used as
+Authorized licensed use limited to: TU Delft Library. Downloaded on August 24,2023 at 10:38:09 UTC from IEEE Xplore.  Restrictions apply. 
+Table 1 .Speaker diarization results on Dev set (in %)
+System FA MISS SPKERR DER
+ASD 0.01 19.88 11.36 31.25
+VSD 6.64 8.17 3.89 18.69
+A VSD 4.01 5.86 3.22 13.09
+input of the network which consists of lipreading model [25], con-
+former blocks [26], and a BLSTM layer. The whole network can be
+regarded as a visual voice activity detection (V-V AD) model to gen-erate visual embeddings and an initial diarization result. Next, weuse the audio dereverberated by NARA-WPE [27] and the diariza-tion result from the V-V AD model to compute i-vectors as speaker
+embeddings. Besides, through an FBank feature extractor and sev-
+eral 2D CNN layers, audio embeddings can also be extracted. In the
+decoder block, three types of embeddings are combined ﬁrst and sev-
+eral BLSTM with projection (BLSTMP) layers are utilized to furtherextract features and get speech or non-speech probabilities for eachspeaker. In the post-processing stage, we ﬁrst perform thresholdingwith the probabilities to produce a preliminary result and adopt thesame approaches as in [28]. Furthermore, DOVER-Lap [29] is used
+to fuse the results of 6-channels audio.
+The training process is as follows: ﬁrst, we use the parameters
+of the pre-trained lipreading and train the V-V AD model. Then, wefreeze the visual network parameters and train the audio network anddecoder block. Finally, we unfreeze the visual network parameters,and train the whole network jointly.
+3.2. Architecture and Training of A VSR Module
+The A VSR model adopts a DNN-HMM hybrid system [18]. Firstly
+we apply the NARA-WPE [27] and BeamformIt [30] to the far-
+ﬁeld 6-channel speech. Then, the FBank features extracted from
+the audio and the Lip ROIs cropped from the video were seg-mented on the basis of the speaker diarization results. The front-endmodule composed of 3D convolution and ResNet-18 is used to ex-tract lip-movement information for the video modality and outputsembedding
+V. Meanwhile, the front-end module composed of 1D
+convolution and ResNet-18 is used to extract audio features and
+obtain embedding A. The audio-visual features, embedding AV, are
+extracted by the multi-stage temporal convolutional network (MS-TCN) [31] modules. Next, the posterior probabilities are obtainedby the other MS-TCN modules. Finally, text is decoded from the
+posterior probabilities by using GMM-HMM, 3-gram model and
+DaCiDian.
+During the training stage, oracle speaker diarization results are
+used. Kaldi [32] is applied to train a GMM-HMM system on allfar-ﬁeld audio data. The training of the DNN-based acoustic modeluses Cross Entropy loss and Adam optimizer for 100 epochs withinitial learning rate of 0.0003 and cosine scheduler. More details ofthe experiment can be found in [18].
+3.3. Joint Decoding
+During inference, the RTTM ﬁle as the output of the A VSD mod-
+ule contains the information of the Session ,SPK ,T
+start, and Tdur.
+This information can be used for calculating DER in Track 1 andpreprocessing far-ﬁeld video and far-ﬁeld 6-channel audio in Track2. For Session
+k, a set of utterance identiﬁer (SPK i,Tstart
+j,Tdur
+j)
+are available, where Session kandSPK idenote k-th session and i-
+th speaker in this session, Tstart
+j andTdur
+j denote the start time and
+the duration of the j-th utterance for SPK i. For the far-ﬁeld video
+inSession k, we ﬁrst segment the whole video according to Tstart
+jTable 2 .Diarization and recognition results on Dev set (in %)
+System SD I cpCER
+ASR(OS) 40.84 27.33 0.51 68.68
+A VSR(OS) 35.78 27.82 0.36 63.96
+ASD+ASR 31.83 44.34 4.27 80.44
+VSD+ASR 39.25 31.22 0.66 71.13
+VSD+A VSR 35.17 31.01 0.61 66.79
+A VSD+A VSR 35.94 29.45 0.68 66.07
+andTdur
+j and crop the lip region of SPK iin every frame as the vi-
+sual input of the A VSR module. For the far-ﬁeld 6-channel audioinSession
+k, we ﬁrst perform WPE and BeamformIt for the raw 6-
+channel audio and segment the whole beamformed audio accordingtoT
+start
+j andTdur
+j as audio input of the A VSR module. Finally, we
+concatenate the decoded text of each utterance belonging to SPK iin
+Session kaccording to time order.
+During the evaluation, due to the problem of permutation invari-
+ant training (PIT) and annotated segment text correspondence, weadopt cpCER as the ﬁnal evaluation index.
+4. RESULTS AND ANALYSIS
+In this section, we ﬁrst introduce the experimental results of the base-
+line systems. Next, we point out the difﬁculties of the MISP2022challenge by providing examples, and analyze the good performanceof A VDR system. Challenge participants can use this information toparticularly focus on solving these issues in order to improve perfor-
+mance above the baseline.
+4.1. Baseline Results
+Table 1 shows the false alarm (FA) rate, missed detection (MISS)
+rate, speaker error (SPKERR) rate, and the DER for the audio-onlyspeaker diarization systems (ASD), the visual-only speaker diariza-tion system (VSD) and the audio-visual speaker diarization system
+(A VSD), where the latter is the baseline system of the A VSD track.
+For the ASD system, we use the VBx method [33]. For the VSD sys-tem, we use the result from the visual encoder module as described inSection 3.1. The ASD system has poor results, most likely due to theloud TV background noises and high speaker overlap ratios, result-
+ing in high MISS and SPKERR rates. Because the visual modality
+is not disturbed by the acoustic environment, the VSD system out-
+performs the ASD system in terms of MISS, SPKERR, and DER.However, VSD system has a high FA rate, potentially due to the lipmovement in the silent segments. Combining the audio and visualmodalities in the A VSD system yields the best performance, showingthat both modalities can be combined to overcome their individualweaknesses.
+As shown in Table 2, we design 6 experiments for diarization
+and recognition system. The ﬁrst two experiments are the speech
+recognition modules with the oracle speaker (OS) diarization re-sults. The other experiments are the combinations of speaker di-arization module and speech recognition module, e.g., ASD+ASR,VSD+ASR, VSD+A VSR, and A VSD+A VSR, where the latter is the
+baseline system of the A VDR track. For the ASD+ASR system, the
+high MISS and SPKERR rate results in a large number of deletion
+errors of target speakers. In addition, the high SPKERR rate leads toinsertion errors of interfering speakers. Comparing the ASD+ASRsystem and the VSD+ASR system indicates that visual modality ofspeaker diarization module dominates the performance of the wholediarization and recognition system. In contrast to the VSD+ASR
+Authorized licensed use limited to: TU Delft Library. Downloaded on August 24,2023 at 10:38:09 UTC from IEEE Xplore.  Restrictions apply. 
+0102030405060
+200 ~ 300 300 ~ 400 400 ~ 500 500 ~ 600DER(%)
+Average number of Lip ROIs pixelsVSD AVSD
+Fig. 2 . The DER comparison between the VSD and A VSD systems
+for different pixel values of Lip ROIS in the conversations
+SPK 1
+SPK 2
+Overlap
+SilenceFar-field Audio
+GT
+ASD
+VSD
+AVSDLip ROI-SPK 1 
+T=0.16 T=2.47 T=3.39 T=4.18 T=5.22 T=6.43Lip ROI-SPK 2 
+T=1.23 T=5.73
+GT ᴁᶍᴊ◜ᶕ ⌉侦ⴃ徤ᴫ ⌉侦ⴃ㿮䷀├ ㄒ⬲ᴿㆦᷗ ㄒ⪟⌎ᴿㆦ
+ASD+AVSR ᴁᶍᴊ◜ᶕ ⌉侦ⴃ徤ᴫ ⌉侦ⴃ⋰䛦彔 *  *  *  *  *  ㄒⴍ㘜 *  * 
+VSD+AVSRᴁᶍᴊ◜ᶕ
+(⫺)⌉侦ⴃ *  *
+(⌉侦ⴃ徤ᴫ )⌉侦ⴃ⋰䛦彔
+(⫺)*  *  *  *  * ㄒⴍ㘜 *  *
+(ㅌ㘻⌨ ) 
+AVSD+AVSR ᴁᶍᴊ◜ᶕ ⌉侦ⴃ徤ᴫ ⌉侦ⴃ⋰䛦彔 *  *  *  *  * ㄒⴍ㘜 *  *  T=4.67
+Fig. 3 . An example in a session with the comparison of results from
+different systems
+system, the visual modality in speech recognition module of the
+VSD+A VSR system provides distinguishable information that re-duces substitution errors, which improves the whole system perfor-mance. In all experiments, it is the combination of the audio and vi-sual modalities in both modules that yields the best system: A VDR.
+4.2. Analyses of difﬁculties
+In order to let challenge participants solve problems better, we point
+out the potential difﬁculties in this challenge. Meanwhile, we discussthe performance of different module combinations to further explore
+the impact of audio and visual modalities.
+4.2.1. Far-ﬁeld Video Quality
+Due to the long distance between cameras and speakers, far-ﬁeld
+video will result in a greatly reduced proportion of each speaker’s lipROI in the total image, especially in the scenes with more speakers.At the same time, lamplight, position, angle, occlusion, and otherenvironmental factors may lead to the reduction of video quality. Weexplore how the number of lip ROIs pixels affects the performanceof the VSD and A VSD systems, as shown in Fig. 2. It is found thatas the average number of pixels decreases, the DER rises sharply.This will also affect the subsequent speech recognition task.
+According to the example in Fig. 3, it can be seen that dim-light
+and far distance lead to low quality of the far-ﬁeld lip ROIs, makinglip movements detection wrong or missing. There are lots of over-lapping segment false detections and speaker confusion in the VSD
+results. In fact, according to the ground truth (GT), only one speaker
+(SPK 1) is talking all the time. For the module of A VSR using VSDresults, the existence of overlapping segments leads to more insertionerrors for SPK 2, and the speaker confusion leads to deletion errors
+SPK 1
+SPK 2
+Overlap
+SilenceT=0.18 T=0.92 T=1.38 T=1.64 T=2.28 T=2.52 T=2.88
+Far-field Audio
+GT
+ASD
+VSD
+AVSDLip ROI-SPK 1
+Lip ROI-SPK 2
+T=0.36 T=1.98
+GT ㄒᷭℇ㑱 ℛᴌ㙦ᵠᴎ䛦彔 㘊㮢㘊徤ᴫ 徤䌇䣒⍣
+AVSD+ASR ㄒᷭ⹔㓷 * ⡾ῐ *  *  *  * *  * ⶕ嫦䖅 徤ṡ⋰⍣
+AVSD+AVSR ㄒᷭ⹔㓷 * ᴌ㙦ᵠᴎ䛦彔 *  *  * 徤ᴫ 徤ṡ⋰⍣
+Fig. 4 . Another example in a session with the comparison of results
+from different systems
+for SPK 1. Because A VSD incorporates audio modality informa-
+tion to modify video modality, the results are signiﬁcantly improvedcompared with VSD, and A VDR system results are also improved.
+4.2.2. TV Background Noise
+Since the TV is closer to the far-ﬁeld microphone array, loud TV
+noise may cover the voice of the target speakers in the far-ﬁeld au-dio. At the same time, due to the diversity of TV broadcast content,the audio may contain the voice of irrelevant speakers, which mayinterfere with the speaker diarization, and speech recognition. As
+shown in Fig. 3, in the fourth segment utterance, because actors on
+TV are talking loudly, noise received by the microphone completelycovers the voice of the target speaker, making the A VDR system un-able to recognize the speech content. Besides, in the last segment,due to the inﬂuence of TV background noise, ASD system wronglyassigns the segment of SPK1 to SPK2. Although the effect of A VDRsystem is better than that of single mode system, the TV backgroundnoise is also a big challenge in MISP2022.
+4.2.3. Indistinguishable Speakers
+Due to the diversity of speakers, it is possible that speakers with
+similar timbre appear in the same session. As shown in Fig. 4, thesimilar timbre leads to speaker confusion in ASD result. In addi-tion, peristalsis of lips, namely lip-movement without utterance, oc-
+casionally occurs in video recordings. It is difﬁcult for the model to
+distinguish whether a speaker is talking or just moving his lip. In theVSD process, due to peristalsis, speaker confusion also arises which
+causes the target speaker to have more deletion errors and the inter-
+fering speaker to have more insertion errors. However, in the A VSDprocess, through the information complementation between audio-
+visual modalities, we get the diarization result consistent with the
+ground truth, which corrects the speech recognition errors caused bythe wrong diarization result.
+5. CONCLUSIONS
+This paper describes the MISP2022 challenge, which is the ﬁrst to
+propose the audio-visual diarization and recognition (A VDR) task.We provide the analysis of this challenge, including the baseline re-sults, the relationship between the diarization and the speech recog-
+nition modules, and the difﬁculties of the challenge. We believe that
+the research on audio-visual diarization and recognition can be betterpromoted through the MISP dataset and the MISP2022 challenge.
+6. ACKNOWLEDGEMENTS
+This work was supported by the National Natural Science Founda-
+tion of China under Grant No. 62171427.
+Authorized licensed use limited to: TU Delft Library. Downloaded on August 24,2023 at 10:38:09 UTC from IEEE Xplore.  Restrictions apply. 
+7. REFERENCES
+[1] Lawrence D Rosenblum, “Speech perception as a multimodal
+phenomenon,” Current directions in psychological science ,
+vol. 17, no. 6, pp. 405–409, 2008.
+[2] Triantafyllos Afouras, Joon Son Chung, Andrew Senior, et al.,
+“Deep audio-visual speech recognition,” IEEE transactions on
+pattern analysis and machine intelligence , 2018.
+[3] Joon Son Chung, Andrew Senior, Oriol Vinyals, et al., “Lip
+reading sentences in the wild,” in Proceedings of the IEEE
+conference on computer vision and pattern recognition , 2017,
+pp. 6447–6456.
+[4] Hang Chen, Hengshun Zhou, Jun Du, et al., “The ﬁrst multi-
+modal information based speech processing (misp) challenge:
+Data, tasks, baselines and results,” in Proc. ICASSP . IEEE,
+2022, pp. 9266–9270.
+[5] Gaopeng Xu, Song Yang, Wei Li, et al., “Channel-wise av-
+fusion attention for multi-channel audio-visual speech recog-nition,” in Proc. ICASSP . IEEE, 2022, pp. 9251–9255.
+[6] Wei Wang, Xun Gong, Yifei Wu, et al., “The sjtu system
+for multimodal information based speech processing challenge
+2021,” in Proc. ICASSP . IEEE, 2022, pp. 9261–9265.
+[7] Ashish Arora, Desh Raj, Aswin Shanmugam Subramanian,
+et al., “The JHU Multi-Microphone Multi-Speaker ASR Sys-tem for the CHiME-6 Challenge,” in Proc. 6th International
+Workshop on Speech Processing in Everyday Environments ,
+2020, pp. 48–54.
+[8] David Snyder, Daniel Garcia-Romero, Gregory Sell, et al., “X-
+vectors: Robust dnn embeddings for speaker recognition,” inProc. ICASSP . IEEE, 2018, pp. 5329–5333.
+[9] Ivan Medennikov, Maxim Korenevsky, Tatiana Prisyach, et al.,
+“The STC System for the CHiME-6 Challenge,” in Proc. 6th
+International Workshop on Speech Processing in Everyday En-
+vironments , 2020, pp. 36–41.
+[10] Neville Ryant, Kenneth Church, Christopher Cieri, et al.,
+“Third dihard challenge evaluation plan,” arXiv preprint
+arXiv:2006.05815 , 2020.
+[11] Hani Yehia, Philip Rubin, and Eric V atikiotis-Bateson, “Quan-
+titative association of vocal-tract and facial behavior,” Speech
+Communication , vol. 26, no. 1-2, pp. 23–43, 1998.
+[12] Athanasios Noulas, Gwenn Englebienne, and Ben JA Krose,
+“Multimodal speaker diarization,” IEEE Transactions on pat-
+tern analysis and machine intelligence , vol. 34, no. 1, pp. 79–
+93, 2011.
+[13] Israel D Gebru, Sileye Ba, Xiaofei Li, et al., “Audio-visual
+speaker diarization based on spatiotemporal bayesian fusion,”
+IEEE transactions on pattern analysis and machine intelli-
+gence , vol. 40, no. 5, pp. 1086–1099, 2017.
+[14] Rehan Ahmad, Syed Zubair, Hani Alquhayz, et al., “Multi-
+modal speaker diarization using a pre-trained audio-visual syn-chronization model,” Sensors , vol. 19, no. 23, pp. 5163, 2019.
+[15] Yifan Ding, Y ong Xu, Shi-Xiong Zhang, et al., “Self-
+supervised learning for audio-visual speaker diarization,” in
+Proc. ICASSP . IEEE, 2020, pp. 4367–4371.
+[16] Pingchuan Ma, Stavros Petridis, and Maja Pantic, “End-to-end
+audio-visual speech recognition with conformers,” in Proc.
+ICASSP . IEEE, 2021, pp. 7613–7617.[17] Fei Tao and Carlos Busso, “Gating neural network for large vo-
+cabulary audiovisual speech recognition,” IEEE/ACM Trans-
+actions on Audio, Speech, and Language Processing , vol. 26,
+no. 7, pp. 1290–1302, 2018.
+[18] Hang Chen, Jun Du, Y usheng Dai, et al., “Audio-visual speech
+recognition in misp2021 challenge: Dataset release and deepanalysis,” in Proc. Interspeech , 2022.
+[19] Jonathan G Fiscus, Jerome Ajot, Martial Michel, et al., “The
+rich transcription 2006 spring meeting recognition evaluation,”inProc. MLMI . Springer, 2006, pp. 309–322.
+[20] Arsha Nagrani, Joon Son Chung, and Andrew Zisserman,
+“V oxCeleb: A Large-Scale Speaker Identiﬁcation Dataset,” inProc. Interspeech , 2017, pp. 2616–2620.
+[21] Joon Son Chung, Arsha Nagrani, and Andrew Zisserman,
+“V oxCeleb2: Deep Speaker Recognition,” in Proc. Inter-
+speech , 2018, pp. 1086–1090.
+[22] Y ue Fan, JW Kang, LT Li, et al., “Cn-celeb: a challenging
+chinese speaker recognition dataset,” in Proc. ICASSP . IEEE,
+2020, pp. 7604–7608.
+[23] Shinji Watanabe, Michael Mandel, Jon Barker, et al., “CHiME-
+6 Challenge: Tackling Multispeaker Speech Recognition forUnsegmented Recordings,” in Proc. 6th International Work-
+shop on Speech Processing in Everyday Environments , 2020,
+pp. 1–7.
+[24] Maokui He, Jun Du, and Chin-Hui Lee, “End-to-end audio-
+visual neural speaker diarization,” in Proc. Interspeech , 2022,
+pp. 1461–1465.
+[25] Brais Martinez, Pingchuan Ma, Stavros Petridis, et al.,
+“Lipreading using temporal convolutional networks,” in Proc.
+ICASSP . IEEE, 2020, pp. 6319–6323.
+[26] Anmol Gulati, James Qin, Chung-Cheng Chiu, et al., “Con-
+former: Convolution-augmented Transformer for Speech
+Recognition,” in Proc. Interspeech , 2020, pp. 5036–5040.
+[27] Lukas Drude, Jahn Heymann, Christoph Boeddeker, et al.,
+“Nara-wpe: A python package for weighted prediction errordereverberation in numpy and tensorﬂow for online and ofﬂineprocessing,” in Speech Communication; 13th ITG-Symposium .
+VDE, 2018, pp. 1–5.
+[28] Maokui He, Xiang Lv, Weilin Zhou, et al., “The ustc-ximalaya
+system for the icassp 2022 multi-channel multi-party meet-ing transcription (m2met) challenge,” in Proc. ICASSP . IEEE,
+2022, pp. 9166–9170.
+[29] Desh Raj, Leibny Paola Garcia-Perera, Zili Huang, et al.,
+“Dover-lap: A method for combining overlap-aware diariza-tion outputs,” in Proc. SLT . IEEE, 2021, pp. 881–888.
+[30] Xavier Anguera, Chuck Wooters, and Javier Hernando,
+“Acoustic beamforming for speaker diarization of meetings,”IEEE Transactions on Audio, Speech, and Language Process-ing, vol. 15, no. 7, pp. 2011–2022, 2007.
+[31] Yazan Abu Farha and Jurgen Gall, “Ms-tcn: Multi-stage tem-
+poral convolutional network for action segmentation,” in Pro-
+ceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition , 2019, pp. 3575–3584.
+[32] Daniel P ovey, Arnab Ghoshal, Gilles Boulianne, et al., “The
+kaldi speech recognition toolkit,” in Proc. ASRU . IEEE, 2011.
+[33] Federico Landini, J ´an Profant, Mireia Diez, et al., “Bayesian
+hmm clustering of x-vector sequences (vbx) in speaker diariza-tion: theory, implementation and analysis on standard tasks,”Computer Speech & Language , vol. 71, pp. 101254, 2022.
+Authorized licensed use limited to: TU Delft Library. Downloaded on August 24,2023 at 10:38:09 UTC from IEEE Xplore.  Restrictions apply. 

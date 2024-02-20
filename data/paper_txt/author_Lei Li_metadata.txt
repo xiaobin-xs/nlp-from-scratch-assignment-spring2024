@@ -1,0 +1,102 @@
+{
+    "authorId": "143900005",
+    "url": "https://www.semanticscholar.org/author/143900005",
+    "name": "Lei Li"
+}
+
+{
+    "paperId": "145c90515c04f40c4e88a177adeb4fcd6c1009b0",
+    "url": "https://www.semanticscholar.org/paper/145c90515c04f40c4e88a177adeb4fcd6c1009b0",
+    "title": "Co-benefits of carbon neutrality in enhancing and stabilizing solar and wind energy",
+    "year": 2023
+}
+{
+    "paperId": "16f822139069582cad1de7b6e9cd13a22bc24252",
+    "url": "https://www.semanticscholar.org/paper/16f822139069582cad1de7b6e9cd13a22bc24252",
+    "title": "Decomposition of meteorological and anthropogenic contributions to near-surface ozone trends in Northeast China (2013\u20132021)",
+    "year": 2023
+}
+{
+    "paperId": "17b16a2b31797a8fd4bcd5fd952294357db39b25",
+    "url": "https://www.semanticscholar.org/paper/17b16a2b31797a8fd4bcd5fd952294357db39b25",
+    "title": "A Reverse-Biased Voltage Controlling Method for Mitigating Arm Overcurrent and Submodule Overvoltage in Hybrid MMCs During DC Faults",
+    "year": 2023
+}
+{
+    "paperId": "2c331e93a1648ab6492787bb81287b9c8100d9f3",
+    "url": "https://www.semanticscholar.org/paper/2c331e93a1648ab6492787bb81287b9c8100d9f3",
+    "title": "Impacts of Aerosol Chemical Composition on Cloud Condensation Nuclei (CCN) Activity during Wintertime in Beijing, China",
+    "year": 2023
+}
+{
+    "paperId": "362971ab4a430ef5ca95efc68b8189c3934c6188",
+    "url": "https://www.semanticscholar.org/paper/362971ab4a430ef5ca95efc68b8189c3934c6188",
+    "title": "Novel, Practical, and Scalable Approach for the Synthesis of Eldecalcitol",
+    "year": 2023
+}
+{
+    "paperId": "4080643c7d04675da37e90b5bf169964de0023cf",
+    "url": "https://www.semanticscholar.org/paper/4080643c7d04675da37e90b5bf169964de0023cf",
+    "title": "Seasonal evolution of aerosol loading and its vertical distribution in northeastern China from long-term satellite observations and model reanalysis",
+    "year": 2023
+}
+{
+    "paperId": "6e359604140ad21714dba7839da2992772b85053",
+    "url": "https://www.semanticscholar.org/paper/6e359604140ad21714dba7839da2992772b85053",
+    "title": "New Reliability-Driven Bounds for Architecture-Based Multi-Objective Testing Resource Allocation",
+    "year": 2023
+}
+{
+    "paperId": "71f6931c4a5f7dda0382090a2c01bd5bff27d31e",
+    "url": "https://www.semanticscholar.org/paper/71f6931c4a5f7dda0382090a2c01bd5bff27d31e",
+    "title": "Quantitative Analysis of Natural Gas Diffusion Characteristics in Tight Oil Reservoirs Based on Experimental and Numerical Simulation Methods",
+    "year": 2023
+}
+{
+    "paperId": "856f652f19a2365e5befd9a2a87bd0796c9127e6",
+    "url": "https://www.semanticscholar.org/paper/856f652f19a2365e5befd9a2a87bd0796c9127e6",
+    "title": "Seasonal and Diurnal Variations in XCO2 Characteristics in China as Observed by OCO\u20102/3 Satellites: Effects of Land Cover and Local Meteorology",
+    "year": 2023
+}
+{
+    "paperId": "97d0ca83939cba07e3a179120d92d8436bd2e4af",
+    "url": "https://www.semanticscholar.org/paper/97d0ca83939cba07e3a179120d92d8436bd2e4af",
+    "title": "Quantifying the contribution of local drivers to observed weakening of spring dust storm frequency over northern China (1982-2017).",
+    "year": 2023
+}
+{
+    "paperId": "a84e98cb2d0a3624523f15eaa10c6321704526ab",
+    "url": "https://www.semanticscholar.org/paper/a84e98cb2d0a3624523f15eaa10c6321704526ab",
+    "title": "Quantitative Evaluation of Dust and Black Carbon Column Concentration in the MERRA-2 Reanalysis Dataset Using Satellite-Based Component Retrievals",
+    "year": 2023
+}
+{
+    "paperId": "bdbf385090f6c988c419c9db1673a2c03c94b7a1",
+    "url": "https://www.semanticscholar.org/paper/bdbf385090f6c988c419c9db1673a2c03c94b7a1",
+    "title": "Seasonal and Diurnal Characteristics of the Vertical Profile of Aerosol Optical Properties in Urban Beijing, 2017-2021",
+    "year": 2023
+}
+{
+    "paperId": "c8b27d092e0f9e286bb354bb892984a30126c702",
+    "url": "https://www.semanticscholar.org/paper/c8b27d092e0f9e286bb354bb892984a30126c702",
+    "title": "PlayGround Low Resource Machine Translation System for the 2023 AmericasNLP Shared Task",
+    "year": 2023
+}
+{
+    "paperId": "cc31a8ba19a435efbb9f420e179c5d86ae7b89ca",
+    "url": "https://www.semanticscholar.org/paper/cc31a8ba19a435efbb9f420e179c5d86ae7b89ca",
+    "title": "Optimization of Urban Emergency Medical Supplies Distribution Under Major Epidemic Situation",
+    "year": 2023
+}
+{
+    "paperId": "dfd8944d39b378489b878d6e105d040fa0e524db",
+    "url": "https://www.semanticscholar.org/paper/dfd8944d39b378489b878d6e105d040fa0e524db",
+    "title": "Multilingual Machine Translation with Large Language Models: Empirical Results and Analysis",
+    "year": 2023
+}
+{
+    "paperId": "e7f40f25fe42986e3a66cd9e3ef250d0343ff3d0",
+    "url": "https://www.semanticscholar.org/paper/e7f40f25fe42986e3a66cd9e3ef250d0343ff3d0",
+    "title": "Joint Allocation on 3C Resources for Three-Tier Cooperation Mobile Computing Networks",
+    "year": 2023
+}

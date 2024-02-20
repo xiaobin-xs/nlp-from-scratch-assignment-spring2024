@@ -1,0 +1,54 @@
+{
+    "authorId": "7975935",
+    "url": "https://www.semanticscholar.org/author/7975935",
+    "name": "Daphne Ippolito"
+}
+
+{
+    "paperId": "03fb535de5cfcf435705a079334ac60f501226ab",
+    "url": "https://www.semanticscholar.org/paper/03fb535de5cfcf435705a079334ac60f501226ab",
+    "title": "Reverse-Engineering Decoding Strategies Given Blackbox Access to a Language Generation System",
+    "year": 2023
+}
+{
+    "paperId": "1567bcac0ab09269c9d0ff33c9a406132417fab9",
+    "url": "https://www.semanticscholar.org/paper/1567bcac0ab09269c9d0ff33c9a406132417fab9",
+    "title": "A Pretrainer's Guide to Training Data: Measuring the Effects of Data Age, Domain Coverage, Quality, & Toxicity",
+    "year": 2023
+}
+{
+    "paperId": "17ccbcc8e3696352ad0410df9d5e4797345819b3",
+    "url": "https://www.semanticscholar.org/paper/17ccbcc8e3696352ad0410df9d5e4797345819b3",
+    "title": "This paper is included in the Proceedings of the 32nd USENIX Security",
+    "year": 2023
+}
+{
+    "paperId": "2e965b5d97c2d6fb4af284307735be39283792ba",
+    "url": "https://www.semanticscholar.org/paper/2e965b5d97c2d6fb4af284307735be39283792ba",
+    "title": "Extracting Training Data from Diffusion Models",
+    "year": 2023
+}
+{
+    "paperId": "5698d1f43d2ee9fafbfab839706fd51585dd0fed",
+    "url": "https://www.semanticscholar.org/paper/5698d1f43d2ee9fafbfab839706fd51585dd0fed",
+    "title": "Report of the 1st Workshop on Generative AI and Law",
+    "year": 2023
+}
+{
+    "paperId": "8724579d3f126e753a0451d98ff57b165f722e72",
+    "url": "https://www.semanticscholar.org/paper/8724579d3f126e753a0451d98ff57b165f722e72",
+    "title": "Are aligned neural networks adversarially aligned?",
+    "year": 2023
+}
+{
+    "paperId": "f330f502bf1e92fabf7f246597fa9320d956c0c8",
+    "url": "https://www.semanticscholar.org/paper/f330f502bf1e92fabf7f246597fa9320d956c0c8",
+    "title": "Prompts Should not be Seen as Secrets: Systematically Measuring Prompt Extraction Attack Success",
+    "year": 2023
+}
+{
+    "paperId": "fc7ee1828030a818f52518022a39f6a3ada60222",
+    "url": "https://www.semanticscholar.org/paper/fc7ee1828030a818f52518022a39f6a3ada60222",
+    "title": "Scalable Extraction of Training Data from (Production) Language Models",
+    "year": 2023
+}

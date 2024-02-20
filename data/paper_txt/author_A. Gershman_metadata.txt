@@ -1,0 +1,12 @@
+{
+    "authorId": "145001267",
+    "url": "https://www.semanticscholar.org/author/145001267",
+    "name": "A. Gershman"
+}
+
+{
+    "paperId": "ca2837930cc6f3cbcb58f511503e6b799d11ea6b",
+    "url": "https://www.semanticscholar.org/paper/ca2837930cc6f3cbcb58f511503e6b799d11ea6b",
+    "title": "The DARPA Wikidata Overlay: Wikidata as an ontology for natural language processing",
+    "year": 2023
+}

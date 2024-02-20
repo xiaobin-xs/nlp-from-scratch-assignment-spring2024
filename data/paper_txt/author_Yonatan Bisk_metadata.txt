@@ -1,0 +1,108 @@
+{
+    "authorId": "3312309",
+    "url": "https://www.semanticscholar.org/author/3312309",
+    "name": "Yonatan Bisk"
+}
+
+{
+    "paperId": "376f494126d1ea4f571ea0263c43ac2b6331800a",
+    "url": "https://www.semanticscholar.org/paper/376f494126d1ea4f571ea0263c43ac2b6331800a",
+    "title": "SPAE: Semantic Pyramid AutoEncoder for Multimodal Generation with Frozen LLMs",
+    "year": 2023
+}
+{
+    "paperId": "3b0c02955e88f5862e61b560c7f70ba8cf235b1d",
+    "url": "https://www.semanticscholar.org/paper/3b0c02955e88f5862e61b560c7f70ba8cf235b1d",
+    "title": "HomeRobot: Open-Vocabulary Mobile Manipulation",
+    "year": 2023
+}
+{
+    "paperId": "4c711000915f8f45c54fdcb70c9db7880e3373ea",
+    "url": "https://www.semanticscholar.org/paper/4c711000915f8f45c54fdcb70c9db7880e3373ea",
+    "title": "EXCALIBUR: Encouraging and Evaluating Embodied Exploration",
+    "year": 2023
+}
+{
+    "paperId": "5ce2f1dff23a5620f77f9b11f1e534422ab8ff3f",
+    "url": "https://www.semanticscholar.org/paper/5ce2f1dff23a5620f77f9b11f1e534422ab8ff3f",
+    "title": "Plan, Eliminate, and Track - Language Models are Good Teachers for Embodied Agents",
+    "year": 2023
+}
+{
+    "paperId": "5fc3830322f7eae2934c912c391ee5edded86a15",
+    "url": "https://www.semanticscholar.org/paper/5fc3830322f7eae2934c912c391ee5edded86a15",
+    "title": "Open X-Embodiment: Robotic Learning Datasets and RT-X Models",
+    "year": 2023
+}
+{
+    "paperId": "6140211405f9917ded519da50f00eee989eabd7f",
+    "url": "https://www.semanticscholar.org/paper/6140211405f9917ded519da50f00eee989eabd7f",
+    "title": "Toward General-Purpose Robots via Foundation Models: A Survey and Meta-Analysis",
+    "year": 2023
+}
+{
+    "paperId": "62d205aa2c2ebab9d5b6a537eaafea86027f2e2b",
+    "url": "https://www.semanticscholar.org/paper/62d205aa2c2ebab9d5b6a537eaafea86027f2e2b",
+    "title": "Open X-Embodiment: Robotic Learning Datasets and RT-X Models",
+    "year": 2023
+}
+{
+    "paperId": "69b8cd15966c4c9c3e44e71769e557f1c87fb3f9",
+    "url": "https://www.semanticscholar.org/paper/69b8cd15966c4c9c3e44e71769e557f1c87fb3f9",
+    "title": "MOSAIC: Learning Unified Multi-Sensory Object Property Representations for Robot Perception",
+    "year": 2023
+}
+{
+    "paperId": "8035a247980cb18abf2bb7b9d96e7d4c63622ef2",
+    "url": "https://www.semanticscholar.org/paper/8035a247980cb18abf2bb7b9d96e7d4c63622ef2",
+    "title": "Reasoning about the Unseen for Efficient Outdoor Object Navigation",
+    "year": 2023
+}
+{
+    "paperId": "94efe34c62855b5115c0e0c38a487f62bd7a8016",
+    "url": "https://www.semanticscholar.org/paper/94efe34c62855b5115c0e0c38a487f62bd7a8016",
+    "title": "Open X-Embodiment: Robotic Learning Datasets and RT-X Models",
+    "year": 2023
+}
+{
+    "paperId": "9500f1f9cee4a84cc1f9f07cd1038435545d9c44",
+    "url": "https://www.semanticscholar.org/paper/9500f1f9cee4a84cc1f9f07cd1038435545d9c44",
+    "title": "Spatial-Language Attention Policies for Efficient Robot Learning",
+    "year": 2023
+}
+{
+    "paperId": "b777aa86b5a1d49ce8eababc5c2ee56d3562801e",
+    "url": "https://www.semanticscholar.org/paper/b777aa86b5a1d49ce8eababc5c2ee56d3562801e",
+    "title": "The Framework Tax: Disparities Between Inference Efficiency in Research and Deployment",
+    "year": 2023
+}
+{
+    "paperId": "c55bfbc179020f7db239ee8698d4ac59d9c1aed8",
+    "url": "https://www.semanticscholar.org/paper/c55bfbc179020f7db239ee8698d4ac59d9c1aed8",
+    "title": "SPRING: Studying the Paper and Reasoning to Play Games",
+    "year": 2023
+}
+{
+    "paperId": "e41482f4ee984f17382f6cdd900df094d928be06",
+    "url": "https://www.semanticscholar.org/paper/e41482f4ee984f17382f6cdd900df094d928be06",
+    "title": "WebArena: A Realistic Web Environment for Building Autonomous Agents",
+    "year": 2023
+}
+{
+    "paperId": "e7b3b692b0816821aafc0d354749bc3802cbf6ac",
+    "url": "https://www.semanticscholar.org/paper/e7b3b692b0816821aafc0d354749bc3802cbf6ac",
+    "title": "Computational Language Acquisition with Theory of Mind",
+    "year": 2023
+}
+{
+    "paperId": "ef7d31137ef06c5be8c2824ecc5af6ce3358cc8f",
+    "url": "https://www.semanticscholar.org/paper/ef7d31137ef06c5be8c2824ecc5af6ce3358cc8f",
+    "title": "Open X-Embodiment: Robotic Learning Datasets and RT-X Models",
+    "year": 2023
+}
+{
+    "paperId": "f6e893b3e2ee7a62c2fe8a3b0e33920c3e596969",
+    "url": "https://www.semanticscholar.org/paper/f6e893b3e2ee7a62c2fe8a3b0e33920c3e596969",
+    "title": "SOTOPIA: Interactive Evaluation for Social Intelligence in Language Agents",
+    "year": 2023
+}

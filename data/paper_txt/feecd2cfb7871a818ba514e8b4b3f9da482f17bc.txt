@@ -1,0 +1,295 @@
+arXiv:2302.09719v2  [eess.AS]  24 Feb 2023SYNERGY BETWEEN HUMAN AND MACHINE APPROACHES TO SOUND/SCEN E
+RECOGNITION AND PROCESSING: AN OVERVIEW OF ICASSP SPECIAL S ESSION
+Laurie M. Heller1∗, Benjamin Elizalde2∗, Bhiksha Raj3,4∗, Soham Deshmukh2
+∗Special session co-organizers
+1Department of Psychology, Carnegie Mellon University
+2Microsoft
+3Languaged Technologies Institute, Carnegie Mellon Univer sity
+4Mohammed bin Zayed University of AI
+laurieheller@cmu.edu, bhikshar@andrew.cmu.edu, {benjaminm,sdeshmukh }@microsoft.com
+ABSTRACT
+Machine Listening, as usually formalized, attempts to per-
+form a task that is, from our perspective, fundamentally
+human-performable, and performed by humans. Current au-
+tomated models of Machine Listening vary from purely data-
+driven approaches to approaches imitating human systems. I n
+recent years, the most promising approaches have been hybri d
+in that they have used data-driven approaches informed by
+models of the perceptual, cognitive, and semantic processe s
+of the human system. Not only does the guidance provided
+by models of human perception and domain knowledge en-
+able better, and more generalizable Machine Listening, in
+the converse, the lessons learned from these models may be
+used to verify or improve our models of human perception
+themselves. This paper summarizes advances in the devel-
+opment of such hybrid approaches, ranging from Machine
+Listening models that are informed by models of peripheral
+(human) auditory processes, to those that employ or derive
+semantic information encoded in relations between sounds.
+The research described herein was presented in a special ses -
+sion on “Synergy between human and machine approaches to
+sound/scene recognition and processing” (ICASSP 2023).
+1. INTRODUCTION
+Human auditory knowledge has been used to improve many
+areas of machine listening and signal processing (Virtanen
+et al [1], Lyon [2], Blauert [3], Bowen [4]), such as: sound
+event classiﬁcation, sound synthesis, speech recognition , and
+binaural and spatial sound processing. These synergies hav e
+impacts in human-oriented applications such as alerting pe o-
+ple to important sounds, perceptual and cognitive assessme nt,
+hearing aids, and spatializing sounds in virtual reality. W hile
+the objective of machine listening system is to eventually
+achieve superhuman performance, the benchmark remains
+human performance. Human performance is the emergent
+outcome of many biological and cognitive processes, from th e
+early-stage processing of the auditory signal, to the late- stagesemantic processes that drive our interpretations. Automa ted
+models of machine listening system may take one of three
+routes:
+• A purely data-driven approach that has no explicit ref-
+erence to the intermediate perceptual and cognitive pro-
+cesses employed by the human;
+• An imitation approach that attempts to model and
+mimic the human process in detail; or
+• A hybrid approach that uses models of the perceptual,
+cognitive, and semantic processes of the human system
+to inform a data-driven approach.
+Of these, the hybrid approach remains the most promis-
+ing, particularly when combined with the power of recent
+deep-learning models (cf. Turian et al [5], Elizalde et al [6 ].,
+Pranay et al [7], Anderson et al [8], Tashev et al [9], Anan-
+thabhotla [10], Wang et al [11], Zeghidour et al [12]). We
+deﬁne hybrid approaches as approaches that learn from data-
+driven methods and use knowledge about human perception
+and cognition to constrain the optimization problem and mak e
+end-to-end learning easier. These methods are usually fast er
+to converge and provide better metrics on the tasks they are
+solving. This special session on “Synergy between human
+and machine approaches to sound/scene recognition and pro-
+cessing” brought together researchers who have worked on a
+variety of aspects of this hybrid approach, ranging from Ma-
+chine Listening models that are informed by, or inform mod-
+els of peripheral (human) auditory processes, to those that em-
+ploy or derive semantic information encoded in relations be -
+tween, and response to sounds. By bringing this group of re-
+searchers together, we identiﬁed synergies between the dat a-
+driven and perception/cognition-based approaches that co n-
+tribute signiﬁcantly to advances in both Machine Listening
+and our knowledge of human auditory perception and cogni-
+tion.
+2. HYBRID DATA-DRIVEN APPROACHES FOR
+HUMAN COGNITION
+The hybrid data-driven approaches explored in the special
+session can be grouped into two types: (1) models that en-
+hance our capabilities through the use of semantics and per-
+ceptual analysis, (2) studies that enhance our understandi ng
+of the potential and pitfalls of using data-driven models to as-
+sess human listening.
+2.1. Usage of semantics and perceptual analysis for sound
+understanding, discrimination, and synthesis
+Cognitive neuroscience research has shown that humans ex-
+ploit higher-level semantic information about sound sourc es
+to understand sound events and infer their context. The ap-
+proaches learn the semantic information from modality com-
+plementary to audio, for example, textual descriptions [13 ,
+14] or from available ontology [15]. In this section, we sum-
+marize the ﬁndings of research that probes the semantics of
+audio understanding.
+Esposito et al., in their work entitled “Semantically-
+informed deep neural networks for sound recognition” pro-
+pose SemDNN, a neural network architecture that learns
+semantic relations from text embeddings (word2vec) while
+learning sound recognition. They show that SemDNN em-
+beddings approximate human dissimilarity ratings of natur al
+sounds better than those of a traditional (one-hot encod-
+ing) sound categorization network (CatDNN). First, they us e
+two evaluation metrics: ranking score and average maxi-
+mum cosine similarity score (AMCSS). This evaluation was
+performed for 1 internal dataset and 4 public sound event
+classiﬁcation datasets. Second, they compare all the netwo rk
+architectures with human behavioral data using represen-
+tational similarity analysis (RSA). Overall, they conclud e
+that training with continuous semantic embeddings provide s
+more accurate semantic labelling of sounds and they suggest
+extending this approach to use different aspects of sound
+cognition.
+Ontologies deﬁne concepts and the relation between con-
+cepts in a structured form which has semantic meaning. In
+“An approach to ontological learning from weak labels,”
+Shah et al. explore using ontological information for learn ing
+sound event classiﬁers. The authors use a graph convolu-
+tional neural network (GCN) with an ontological layer for
+learning the hierarchical structure between sound events. The
+authors conclude that although GCN as part of the ontology
+layer captures the ontology knowledge, the model does not
+perform better by incorporating this ontology information in
+the weak and multi-labeled sound event classiﬁcation task.
+Thoidis et al., in “Perceptual analysis of speaker embed-
+dings for voice discrimination between machine and human
+listening,” investigate the relationship between machine lis-
+tening models and human listeners in a speaker veriﬁcationtask. A Convolutional Neural Network (CNN) is trained to
+conduct one-shot speaker veriﬁcation. The CNN is trained
+using a joint loss function which incorporates the cosine
+distance between the latent features and their correspondi ng
+class centers in the penalty of the loss function. The pro-
+posed loss function improves one-shot speaker veriﬁcation
+performance and makes the network more robust to noise
+over state-of-the-art approaches. The authors also conduc t
+tests which conclude that a substantial overlap exists betw een
+machine and human listening in a voice discrimination task.
+The aim of sound-matching algorithms is to ﬁnd a set
+of sound synthesis parameters that minimize the perceptual
+distance between a synthesized sound and its target audio.
+The current literature uses multiple loss functions rangin g
+from mean square error (known as P-loss) to mean square er-
+ror in the spectro-temporal domain (known as spectral loss) .
+Han et al., in “Perceptual neural physical sound matching,”
+devise a Perceptual-Neural-Physical loss (PNP), which is a
+perceptually-motivated metric that is an approximation of
+spectral loss which maintains the same training time as spec -
+tral loss. Their perceptual similarity metric is an idealiz ed
+model of spectro-temporal responses in the primary auditor y
+cortex and reﬂects human judgements. Their PNP loss guides
+the synthesis of drum sounds using wavelets.
+2.2. Potential and pitfalls of using data-driven models to
+assess human listening
+Khalil et al., in “Using machine learning to understand the
+relationships between audiometric data, speech perceptio n,
+temporal processing, and cognition,” develop a data-drive n
+analysis of perceptual and physiological factors affectin g hu-
+man speech comprehension. The approach uses an ensemble
+of machine learning models to ﬁnd the best-performing mod-
+els that predict the outcomes of three different speech per-
+ception tests. The models take 147 features derived from au-
+diometric measurements as inputs. The features also contai n
+new composite variables that represent properties of the en -
+tire hearing range. The researchers reported the explanato ry
+power of the different features on the listeners’ performan ce
+in the three tasks. The prediction models suggest that the mi d-
+frequency range from 1 to 4 kHz is crucial for speech per-
+ception since the corresponding features explain most of th e
+variance in the data. In contrast, cognition-related featu res
+contribute little to the predictions. Hence the machine lea rn-
+ing results serve to remind researchers to sufﬁciently acco unt
+for mid-frequency hearing loss when investigating extende d
+high-frequency threshold and cognitive effects on speech p er-
+ception.
+In “Classifying non-individual head-related transfer fun c-
+tions with a computational auditory model: calibration and
+metrics,” Daugintis et al. use a multi-feature Bayesian sph er-
+ical auditory sound localization model to assess the goodne ss
+of non-individual head-related transfer functions (HRTFs ) for
+a human listener. Their template comparison-based model re -
+turns a directional probability distribution that is combi ned
+with a prior belief. The model is calibrated to individuals,
+based on their sound localization performance. This paper
+provides a theoretical framework for a model-based metric
+that accounts both for acoustic and psychoacoustic similar -
+ities in HRTFs. Once perceptually validated, this method
+could be used as a metric in combination with other methods
+to enable consistent selection of a well-matched high-qual ity
+HRTF. The ultimate goal is to improve the experience of bin-
+aural spatial audio technologies.
+3. DISCUSSION
+In this paper, we presented two classes of hybrid approaches .
+The ﬁrst approach consisted of four models that enhance our
+understanding through the use of semantics and perceptual
+analysis. Two different studies trained deep neural networ ks
+with semantic information in the hopes of predicting hu-
+man data: while the SemDNN showed beneﬁts of using text
+embeddings for predicting dissimilarity ratings, the onto log-
+ical learning GCN did not beneﬁt from incorporating sound
+ontologies for weak multi-labeled sound events. Further-
+more, two studies used perceptual analysis to help compare
+sounds: while speaker embeddings in a CNN improved one-
+shot speaker veriﬁcation and agreed with human judgements
+of voice similarity, a sound-matching algorithm improved a
+synthesizer of percussive sounds by comparing the target an d
+synthesized sound in terms of a perceptual similarity met-
+ric. These four studies demonstrated the potential beneﬁts of
+using domain knowledge generated by humans to improve
+machine listening.
+The second hybrid approach consisted of two studies that
+enhance our understanding of the potential and pitfalls of u s-
+ing data-driven models to assess human listening. First, ma -
+chine learning models were moderately predictive of the out -
+comes of speech perception tests and clearly identiﬁed the
+most important variables among those analyzed. Second, a
+computational model of human sound localization was ap-
+plied to HRTF evaluation to provide a perceptual foundation
+for automated HRTF personalization techniques.
+4. CONCLUSION
+In conclusion, we demonstrated beneﬁts of a hybrid data-
+driven approach to machine listening that is informed by mod -
+els of the perceptual, cognitive, and semantic processes of
+the human system. Challenges encountered by some of these
+studies, for example in automatic assessments of human lis-
+tening, may lead to future improvements. Taken as a whole,
+these studies demonstrated the potential beneﬁts of using a u-
+ditory models and domain knowledge generated by humans
+to improve Machine Listening.5. REFERENCES
+[1] Tuomas Virtanen, Mark D Plumbley, and Dan Ellis,
+Computational analysis of sound scenes and events ,
+Springer, 2018.
+[2] Richard F Lyon, Human and machine hearing: extract-
+ing meaning from sound , Cambridge University Press,
+2017.
+[3] Jens Blauert, Spatial hearing: the psychophysics of hu-
+man sound localization , MIT press, 1997.
+[4] Bowen Zhi, Dmitry N. Zotkin, and Ramani Duraiswami,
+“Towards fast and convenient end-to-end hrtf personal-
+ization,” in ICASSP 2022 - 2022 IEEE International
+Conference on Acoustics, Speech and Signal Processing
+(ICASSP) , 2022, pp. 441–445.
+[5] Joseph Turian, Jordie Shier, Humair Raj Khan, Bhik-
+sha Raj, Bj¨ orn W. Schuller, Christian J. Steinmetz,
+Colin Malloy, George Tzanetakis, Gissel Velarde, Kirk
+McNally, Max Henry, Nicolas Pinto, Camille Nouﬁ,
+Christian Clough, Dorien Herremans, Eduardo Fonseca,
+Jesse Engel, Justin Salamon, Philippe Esling, Pranay
+Manocha, Shinji Watanabe, Zeyu Jin, and Yonatan Bisk,
+“HEAR: Holistic Evaluation of Audio Representations,”
+inProceedings of the NeurIPS 2021 Competitions and
+Demonstrations Track , Douwe Kiela, Marco Ciccone,
+and Barbara Caputo, Eds. 06–14 Dec 2022, vol. 176 of
+Proceedings of Machine Learning Research , pp. 125–
+145, PMLR.
+[6] Benjamin Elizalde, Radu Revutchi, Samarjit Das, Bhik-
+sha Raj, Ian Lane, and Laurie M. Heller, “Identifying
+actions for sound event classiﬁcation,” in 2021 IEEE
+Workshop on Applications of Signal Processing to Au-
+dio and Acoustics (WASPAA) , 2021, pp. 26–30.
+[7] Pranay Manocha, Adam Finkelstein, Richard Zhang,
+Nicholas J. Bryan, Gautham J. Mysore, and Zeyu Jin,
+“A Differentiable Perceptual Audio Metric Learned
+from Just Noticeable Differences,” in Proc. Interspeech
+2020 , 2020, pp. 2852–2856.
+[8] Anderson R. Avila, Hannes Gamper, Chandan Reddy,
+Ross Cutler, Ivan Tashev, and Johannes Gehrke, “Non-
+intrusive speech quality assessment using neural net-
+works,” in ICASSP 2019 - 2019 IEEE International
+Conference on Acoustics, Speech and Signal Processing
+(ICASSP) , 2019, pp. 631–635.
+[9] Jinkyu Lee and Ivan Tashev, “High-level feature rep-
+resentation using recurrent neural network for speech
+emotion recognition,” in Interspeech 2015 , 2015.
+[10] Ishwarya Ananthabhotla, Cognitive Audio: Enabling
+Auditory Interfaces with an Understanding of How We
+Hear , Ph.D. thesis, Massachusetts Institute of Technol-
+ogy, 2022.
+[11] Shuai Wang, Yanmin Qian, and Kai Yu, “What does the
+speaker embedding encode?,” in Interspeech , 2017, pp.
+1497–1501.
+[12] Neil Zeghidour, Olivier Teboul, F´ elix de Chau-
+mont Quitry, and Marco Tagliasacchi, “Leaf: A learn-
+able frontend for audio classiﬁcation,” ICLR , 2021.
+[13] Benjamin Elizalde, Soham Deshmukh, Mahmoud Al Is-
+mail, and Huaming Wang, “Clap: Learning audio con-
+cepts from natural language supervision,” arXiv preprint
+arXiv:2206.04769 , 2022.
+[14] Soham Deshmukh, Benjamin Elizalde, and Huaming
+Wang, “Audio retrieval with wavtext5k and clap train-
+ing,” arXiv preprint arXiv:2209.14275 , 2022.
+[15] Abelino Jimenez, Benjamin Elizalde, and Bhiksha Raj,
+“Sound event classiﬁcation using ontology-based neural
+networks,” in Proceedings of the Annual Conference on
+Neural Information Processing Systems , 2018, vol. 9.

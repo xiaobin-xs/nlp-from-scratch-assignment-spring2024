@@ -1,0 +1,186 @@
+{
+    "authorId": "49933077",
+    "url": "https://www.semanticscholar.org/author/49933077",
+    "name": "Louis-Philippe Morency"
+}
+
+{
+    "paperId": "0126f8d40bd682b1c4659f3f7d2a64fb6a515354",
+    "url": "https://www.semanticscholar.org/paper/0126f8d40bd682b1c4659f3f7d2a64fb6a515354",
+    "title": "Quantifying&Modeling Multimodal Interactions: An Information Decomposition Framework",
+    "year": 2023
+}
+{
+    "paperId": "0a425c0d87c674b142104a07e17c5084b3ad28ca",
+    "url": "https://www.semanticscholar.org/paper/0a425c0d87c674b142104a07e17c5084b3ad28ca",
+    "title": "Quantifying & Modeling Feature Interactions: An Information Decomposition Framework",
+    "year": 2023
+}
+{
+    "paperId": "0aa150619e07fa41492517368beaaf8ae56fe061",
+    "url": "https://www.semanticscholar.org/paper/0aa150619e07fa41492517368beaaf8ae56fe061",
+    "title": "Think Twice: Perspective-Taking Improves Large Language Models' Theory-of-Mind Capabilities",
+    "year": 2023
+}
+{
+    "paperId": "114eafdb14145f002d503f259d768d67dae87479",
+    "url": "https://www.semanticscholar.org/paper/114eafdb14145f002d503f259d768d67dae87479",
+    "title": "Reconstructing the neurodynamics of face perception during real world vision in humans using intracranial EEG recordings",
+    "year": 2023
+}
+{
+    "paperId": "2da41da2eb312ada8cd7c054ffc143375a7701ed",
+    "url": "https://www.semanticscholar.org/paper/2da41da2eb312ada8cd7c054ffc143375a7701ed",
+    "title": "Tutorial on Multimodal Machine Learning: Principles, Challenges, and Open Questions",
+    "year": 2023
+}
+{
+    "paperId": "3bfdc1c8a6ede8c5146e54cf3aff641cda7c6138",
+    "url": "https://www.semanticscholar.org/paper/3bfdc1c8a6ede8c5146e54cf3aff641cda7c6138",
+    "title": "Continual Learning for Personalized Co-Speech Gesture Generation",
+    "year": 2023
+}
+{
+    "paperId": "40fb36ee67fdde99b196b4d1772de114aa821698",
+    "url": "https://www.semanticscholar.org/paper/40fb36ee67fdde99b196b4d1772de114aa821698",
+    "title": "MultiZoo & MultiBench: A Standardized Toolkit for Multimodal Deep Learning",
+    "year": 2023
+}
+{
+    "paperId": "41c3f641f5f287ea0546f1d7e6b844588ddb009f",
+    "url": "https://www.semanticscholar.org/paper/41c3f641f5f287ea0546f1d7e6b844588ddb009f",
+    "title": "MMOE: Mixture of Multimodal Interaction Experts",
+    "year": 2023
+}
+{
+    "paperId": "47a4ac301820c3ea7da4efb8e2466cc6468ad631",
+    "url": "https://www.semanticscholar.org/paper/47a4ac301820c3ea7da4efb8e2466cc6468ad631",
+    "title": "SenteCon: Leveraging Lexicons to Learn Human-Interpretable Language Representations",
+    "year": 2023
+}
+{
+    "paperId": "47d2c3e172d855ac93d5a2fa45430298d00acab4",
+    "url": "https://www.semanticscholar.org/paper/47d2c3e172d855ac93d5a2fa45430298d00acab4",
+    "title": "Randomized trial of brief interpersonal psychotherapy and cognitive behavioral therapy for depression delivered both in-person and by telehealth.",
+    "year": 2023
+}
+{
+    "paperId": "5db0fda6a758d97876e2f420525d51d8a457f9eb",
+    "url": "https://www.semanticscholar.org/paper/5db0fda6a758d97876e2f420525d51d8a457f9eb",
+    "title": "MultiIoT: Towards Large-scale Multisensory Learning for the Internet of Things",
+    "year": 2023
+}
+{
+    "paperId": "64703e760f662b1c0f647931bb63fe57e5ba91e4",
+    "url": "https://www.semanticscholar.org/paper/64703e760f662b1c0f647931bb63fe57e5ba91e4",
+    "title": "Neural Mixed Effects for Nonlinear Personalized Predictions",
+    "year": 2023
+}
+{
+    "paperId": "65dcb263e6ec7b3ecd22523ef3159ad19f9afbb6",
+    "url": "https://www.semanticscholar.org/paper/65dcb263e6ec7b3ecd22523ef3159ad19f9afbb6",
+    "title": "MultiZoo and MultiBench: A Standardized Toolkit for Multimodal Deep Learning",
+    "year": 2023
+}
+{
+    "paperId": "6838c43e702a3f995967ba2e3edd5f65ff5f5511",
+    "url": "https://www.semanticscholar.org/paper/6838c43e702a3f995967ba2e3edd5f65ff5f5511",
+    "title": "SHAP-based Prediction of Mother's History of Depression to Understand the Influence on Child Behavior",
+    "year": 2023
+}
+{
+    "paperId": "778e5ed31bfff51a372a93b08f0a4b1191561661",
+    "url": "https://www.semanticscholar.org/paper/778e5ed31bfff51a372a93b08f0a4b1191561661",
+    "title": "Text-Transport: Toward Learning Causal Effects of Natural Language",
+    "year": 2023
+}
+{
+    "paperId": "779e60c3333456d4d8a0ee873516b3ac9fc75c35",
+    "url": "https://www.semanticscholar.org/paper/779e60c3333456d4d8a0ee873516b3ac9fc75c35",
+    "title": "Lecture Presentations Multimodal Dataset: Towards Understanding Multimodality in Educational Videos",
+    "year": 2023
+}
+{
+    "paperId": "7dab13685363176edc5cc7882d0890811d2cb584",
+    "url": "https://www.semanticscholar.org/paper/7dab13685363176edc5cc7882d0890811d2cb584",
+    "title": "Counterfactual Augmentation for Multimodal Learning Under Presentation Bias",
+    "year": 2023
+}
+{
+    "paperId": "89a448e914ad5e1a64f262660df971c8fc0a691e",
+    "url": "https://www.semanticscholar.org/paper/89a448e914ad5e1a64f262660df971c8fc0a691e",
+    "title": "Multimodal Feature Selection for Detecting Mothers' Depression in Dyadic Interactions with their Adolescent Offspring",
+    "year": 2023
+}
+{
+    "paperId": "8d0c37eee7162f33178979b4183f0211e2dcae0d",
+    "url": "https://www.semanticscholar.org/paper/8d0c37eee7162f33178979b4183f0211e2dcae0d",
+    "title": "Difference-Masking: Choosing What to Mask in Continued Pretraining",
+    "year": 2023
+}
+{
+    "paperId": "8d53c510928ad1164aebea4d9477812ed1893be2",
+    "url": "https://www.semanticscholar.org/paper/8d53c510928ad1164aebea4d9477812ed1893be2",
+    "title": "Expanding the Role of Affective Phenomena in Multimodal Interaction Research",
+    "year": 2023
+}
+{
+    "paperId": "90b09bdb1bd78875ee8d8d324a568a36955e4765",
+    "url": "https://www.semanticscholar.org/paper/90b09bdb1bd78875ee8d8d324a568a36955e4765",
+    "title": "Multimodal Fusion Interactions: A Study of Human and Automatic Quantification",
+    "year": 2023
+}
+{
+    "paperId": "96cc4a8f42b415c5c285f417cd052d85c77aea9e",
+    "url": "https://www.semanticscholar.org/paper/96cc4a8f42b415c5c285f417cd052d85c77aea9e",
+    "title": "Intensive Longitudinal Assessment of Adolescents to Predict Suicidal Thoughts and Behaviors.",
+    "year": 2023
+}
+{
+    "paperId": "a988c09b7e76e86a93edcbf3f284dd028b0fb406",
+    "url": "https://www.semanticscholar.org/paper/a988c09b7e76e86a93edcbf3f284dd028b0fb406",
+    "title": "Multimodal Learning Without Labeled Multimodal Data: Guarantees and Applications",
+    "year": 2023
+}
+{
+    "paperId": "bd94ea913fcf8698f2257f87a17755b46a420458",
+    "url": "https://www.semanticscholar.org/paper/bd94ea913fcf8698f2257f87a17755b46a420458",
+    "title": "Representation Learning for Interpersonal and Multimodal Behavior Dynamics: A Multiview Extension of Latent Change Score Models",
+    "year": 2023
+}
+{
+    "paperId": "cb23064700957a37aaf00f73b16f6c6930ca8c77",
+    "url": "https://www.semanticscholar.org/paper/cb23064700957a37aaf00f73b16f6c6930ca8c77",
+    "title": "Comparative Knowledge Distillation",
+    "year": 2023
+}
+{
+    "paperId": "d01cc51c0d06583b809833a5f7ce71101d278528",
+    "url": "https://www.semanticscholar.org/paper/d01cc51c0d06583b809833a5f7ce71101d278528",
+    "title": "MultiViz: Towards User-Centric Visualizations and Interpretations of Multimodal Models",
+    "year": 2023
+}
+{
+    "paperId": "dcb4f2b9b0e6da0d629878d1ad0469aee3df2020",
+    "url": "https://www.semanticscholar.org/paper/dcb4f2b9b0e6da0d629878d1ad0469aee3df2020",
+    "title": "Understanding Masked Autoencoders via Hierarchical Latent Variable Models",
+    "year": 2023
+}
+{
+    "paperId": "e1b2a35a000ca296c32284b323c7e36a28fe0693",
+    "url": "https://www.semanticscholar.org/paper/e1b2a35a000ca296c32284b323c7e36a28fe0693",
+    "title": "Factorized Contrastive Learning: Going Beyond Multi-view Redundancy",
+    "year": 2023
+}
+{
+    "paperId": "f6e893b3e2ee7a62c2fe8a3b0e33920c3e596969",
+    "url": "https://www.semanticscholar.org/paper/f6e893b3e2ee7a62c2fe8a3b0e33920c3e596969",
+    "title": "SOTOPIA: Interactive Evaluation for Social Intelligence in Language Agents",
+    "year": 2023
+}
+{
+    "paperId": "f891e9eeedbf20cdc54429ffcc0402a10f48494e",
+    "url": "https://www.semanticscholar.org/paper/f891e9eeedbf20cdc54429ffcc0402a10f48494e",
+    "title": "Language Models Get a Gender Makeover: Mitigating Gender Bias with Few-Shot Data Interventions",
+    "year": 2023
+}

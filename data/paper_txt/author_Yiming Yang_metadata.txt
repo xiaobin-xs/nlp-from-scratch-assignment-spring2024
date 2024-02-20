@@ -1,0 +1,150 @@
+{
+    "authorId": "35729970",
+    "url": "https://www.semanticscholar.org/author/35729970",
+    "name": "Yiming Yang"
+}
+
+{
+    "paperId": "032e04b6491354141b7d9cdf7411823b2ccd913f",
+    "url": "https://www.semanticscholar.org/paper/032e04b6491354141b7d9cdf7411823b2ccd913f",
+    "title": "Accurate detection of reactive oxygen species by tuning an elastic motif (GPGGA)4 in nanopores.",
+    "year": 2023
+}
+{
+    "paperId": "08a23cb1ae7b0748407146520c0630d7f2b51c4c",
+    "url": "https://www.semanticscholar.org/paper/08a23cb1ae7b0748407146520c0630d7f2b51c4c",
+    "title": "Accelerating Diffusion-based Combinatorial Optimization Solvers by Progressive Distillation",
+    "year": 2023
+}
+{
+    "paperId": "0a187bee2436f4a2e98dd94d3c2f18b83281efdb",
+    "url": "https://www.semanticscholar.org/paper/0a187bee2436f4a2e98dd94d3c2f18b83281efdb",
+    "title": "Automatic synchrotron tomographic alignment schemes based on genetic algorithms and human-in-the-loop software",
+    "year": 2023
+}
+{
+    "paperId": "16db1c1c00ac219984c28480cb60fd09b1897bf6",
+    "url": "https://www.semanticscholar.org/paper/16db1c1c00ac219984c28480cb60fd09b1897bf6",
+    "title": "High CD8+tumor-infiltrating lymphocytes indicate severe exhaustion and poor prognosis in angioimmunoblastic T-cell lymphoma",
+    "year": 2023
+}
+{
+    "paperId": "269b9d5141c9130738a8c1d122a53307fd34c29a",
+    "url": "https://www.semanticscholar.org/paper/269b9d5141c9130738a8c1d122a53307fd34c29a",
+    "title": "Robust Cross-Domain Pseudo-Labeling and Contrastive Learning for Unsupervised Domain Adaptation NIR-VIS Face Recognition",
+    "year": 2023
+}
+{
+    "paperId": "2bfa8ac40c1ff8e45c298115fcadae062526310e",
+    "url": "https://www.semanticscholar.org/paper/2bfa8ac40c1ff8e45c298115fcadae062526310e",
+    "title": "Numerical Investigation of Fatigue Crack Propagation Behaviour of 550E High-Performance Steel",
+    "year": 2023
+}
+{
+    "paperId": "3d86b88b364b95af87bb78f1ee63aeaa06ed0575",
+    "url": "https://www.semanticscholar.org/paper/3d86b88b364b95af87bb78f1ee63aeaa06ed0575",
+    "title": "Phase Behaviors of Charged Macromolecules in Aqueous Solutions",
+    "year": 2023
+}
+{
+    "paperId": "48bd660e0841ca990178cfafec01163ba2bb07ee",
+    "url": "https://www.semanticscholar.org/paper/48bd660e0841ca990178cfafec01163ba2bb07ee",
+    "title": "Association between albumin-to-globulin ratio and the risk of overall survival in advanced non-small cell lung cancer patients with anlotinib treatment: a retrospective cohort study",
+    "year": 2023
+}
+{
+    "paperId": "5191bb4b7b60212335508219ca9b8b9beb29c6fd",
+    "url": "https://www.semanticscholar.org/paper/5191bb4b7b60212335508219ca9b8b9beb29c6fd",
+    "title": "Modification Effect of Pt on the Active Sites of Sulfated CeO2 Nanorods for the Selective Catalytic Reduction of NO",
+    "year": 2023
+}
+{
+    "paperId": "535047a5e5845b3a05fb566d9733091448410d75",
+    "url": "https://www.semanticscholar.org/paper/535047a5e5845b3a05fb566d9733091448410d75",
+    "title": "Analysis of Volatile Components in Dried Fruits and Branch Exudates of Schisandra chinensis with Different Fruit Colors Using GC-IMS Technology",
+    "year": 2023
+}
+{
+    "paperId": "5921cc9349dfc43acfefbddc4c9b81a4b6a0b1f9",
+    "url": "https://www.semanticscholar.org/paper/5921cc9349dfc43acfefbddc4c9b81a4b6a0b1f9",
+    "title": "Secreted endogenous macrosomes reduce A\u03b2 burden and ameliorate Alzheimer\u2019s disease",
+    "year": 2023
+}
+{
+    "paperId": "5cf242f223bd00aa6e3613e36bf5a64c0095ed44",
+    "url": "https://www.semanticscholar.org/paper/5cf242f223bd00aa6e3613e36bf5a64c0095ed44",
+    "title": "Neutral Face Learning and Progressive Fusion Synthesis Network for NIR-VIS Face Recognition",
+    "year": 2023
+}
+{
+    "paperId": "5f90d43e6ece5c6ee6e8186e4b57d46c85377713",
+    "url": "https://www.semanticscholar.org/paper/5f90d43e6ece5c6ee6e8186e4b57d46c85377713",
+    "title": "DIFUSCO: Graph-based Diffusion Solvers for Combinatorial Optimization",
+    "year": 2023
+}
+{
+    "paperId": "60ac6a6e26614c22e6069d6d91761ed634a50609",
+    "url": "https://www.semanticscholar.org/paper/60ac6a6e26614c22e6069d6d91761ed634a50609",
+    "title": "Effects of S Content on Inclusion Formation in the Al and Ti\u2013Mg Complex Deoxidized Steel",
+    "year": 2023
+}
+{
+    "paperId": "6a42f6362afa3a1a0936f7a6a8927d04a2285cc5",
+    "url": "https://www.semanticscholar.org/paper/6a42f6362afa3a1a0936f7a6a8927d04a2285cc5",
+    "title": "Balancing Exploration and Exploitation in Hierarchical Reinforcement Learning via Latent Landmark Graphs",
+    "year": 2023
+}
+{
+    "paperId": "7e8538739f8c39c7c64485e591dbcee6f8d3e9a1",
+    "url": "https://www.semanticscholar.org/paper/7e8538739f8c39c7c64485e591dbcee6f8d3e9a1",
+    "title": "Comprehensive evaluation of nine grape varieties based on fundamental physical and chemical indicators, color and volatile compounds",
+    "year": 2023
+}
+{
+    "paperId": "844bb298d49ef4a07b5d4929dfdfd170f6a1d5f5",
+    "url": "https://www.semanticscholar.org/paper/844bb298d49ef4a07b5d4929dfdfd170f6a1d5f5",
+    "title": "Aligning Large Multimodal Models with Factually Augmented RLHF",
+    "year": 2023
+}
+{
+    "paperId": "9c552531e9ebdf4367466a1eeef4b64a9814621c",
+    "url": "https://www.semanticscholar.org/paper/9c552531e9ebdf4367466a1eeef4b64a9814621c",
+    "title": "Experimental and numerical research on the static behavior of locally corroded OSBD",
+    "year": 2023
+}
+{
+    "paperId": "acad2fd188ebc0ce6ef2456ca6f000b8ad8c7a1e",
+    "url": "https://www.semanticscholar.org/paper/acad2fd188ebc0ce6ef2456ca6f000b8ad8c7a1e",
+    "title": "Syncretic Space Learning Network for NIR-VIS Face Recognition",
+    "year": 2023
+}
+{
+    "paperId": "b946ca9514be9920e5d1eff11f597facb8f7c6b7",
+    "url": "https://www.semanticscholar.org/paper/b946ca9514be9920e5d1eff11f597facb8f7c6b7",
+    "title": "An Experimental Study on Secondary Transfer Performances of Prestress after Anchoring Failure of Steel Wire Strands",
+    "year": 2023
+}
+{
+    "paperId": "c074c98799efdd14f100b1fed4db466894d9deed",
+    "url": "https://www.semanticscholar.org/paper/c074c98799efdd14f100b1fed4db466894d9deed",
+    "title": "Core loss analysis of soft magnetic composite under non-sinusoidal excitation based on finite element models",
+    "year": 2023
+}
+{
+    "paperId": "ccd2f28429be9d86bffef27b497b001cc5a28617",
+    "url": "https://www.semanticscholar.org/paper/ccd2f28429be9d86bffef27b497b001cc5a28617",
+    "title": "Distributed cooperative dual closed loop velocity-attitude consensus controller for rendezvous of the underactuated AUV swarm in 3-dimensional space",
+    "year": 2023
+}
+{
+    "paperId": "f1a75a847c99ab399454c911235f0d5f7854c5a4",
+    "url": "https://www.semanticscholar.org/paper/f1a75a847c99ab399454c911235f0d5f7854c5a4",
+    "title": "MRI Features for Predicting Microvascular Invasion and Postoperative Recurrence in Hepatocellular Carcinoma Without Peritumoral Hypointensity",
+    "year": 2023
+}
+{
+    "paperId": "ff4bd0966db6a5f30fe41c8479765e9d9702a8c0",
+    "url": "https://www.semanticscholar.org/paper/ff4bd0966db6a5f30fe41c8479765e9d9702a8c0",
+    "title": "Impact of local governments\u2019 construction land allocation strategies on innovation-driven development of China",
+    "year": 2023
+}

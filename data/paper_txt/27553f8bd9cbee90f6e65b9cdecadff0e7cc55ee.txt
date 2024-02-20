@@ -1,0 +1,1042 @@
+Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics
+Volume 3: System Demonstrations , pages 377–388
+July 10-12, 2023 ©2023 Association for Computational Linguistics
+RIVETER
+Measuring Power and Social Dynamics Between Entities
+Maria Antoniak♣Anjalie Field†Jimin Mun♡Melanie Walsh♢
+Lauren F. Klein♠Maarten Sap♡♣
+♣Allen Institute for AI†Johns Hopkins University♡Carnegie Mellon University
+♢University of Washington♠Emory University
+http://github.com/maartensap/riveter-nlp
+Abstract
+RIVETER provides a complete easy-to-use
+pipeline for analyzing verb connotations asso-
+ciated with entities in text corpora. We pre-
+populate the package with connotation frames
+of sentiment, power, and agency, which have
+demonstrated usefulness for capturing social
+phenomena, such as gender bias, in a broad
+range of corpora. For decades, lexical frame-
+works have been foundational tools in compu-
+tational social science, digital humanities, and
+natural language processing, facilitating multi-
+faceted analysis of text corpora. But working
+with verb-centric lexica specifically requires
+natural language processing skills, reducing
+their accessibility to other researchers. By orga-
+nizing the language processing pipeline, provid-
+ing complete lexicon scores and visualizations
+for all entities in a corpus, and providing func-
+tionality for users to target specific research
+questions, RIVETER greatly improves the ac-
+cessibility of verb lexica and can facilitate a
+broad range of future research.
+1 Introduction
+Language is a powerful medium that intricately
+encodes social dynamics between people, such as
+perspectives, biases, and power differentials (Fiske,
+1993). When writing, authors choose how to por-
+tray orframe each person in a text, highlighting
+certain features (Entman, 1993) to form larger argu-
+ments (Fairhurst, 2005). For example, in the screen-
+play for the 2009 film Sherlock Holmes , the authors
+dramatize a sudden reversal of power by playing on
+gender stereotypes. First, they describe how “the
+man with the roses beckons Irene forward” (Fig-
+ure 1), which portrays the character Irene Adler as
+being lured by the man. After she is trapped, “she
+slices upward with a razor-sharp knife,” reversing
+the power dynamic. Here, specific word choices
+shape and then challenge the viewers’ expectations
+about how the interaction is presumed to unfold.
+The man with the roses beckons Irene forward. agency 
+Another man steps in behind her, trapping her...
+She slices upwards with a razor-sharp knife...
+The move ends with Irene's finger over her own mouth...
+He obeys, eyes bulging.agency
+agency
+agency  power
++power
++
++power
+—powerFigure 1: Figure from Sap et al. (2017) illustrating
+power and agency connotation frames extracted on an
+excerpt from the Sherlock Holmes (2009) film screen-
+play. Each connotation frame pertains to a verb predi-
+cate and its agent andtheme.
+More broadly, an author’s word choices can not
+only communicate important details about a char-
+acter or narrative but can also reveal larger social
+attitudes and biases (Blackstone, 2003; Cikara and
+Fiske, 2009), shape readers’ opinions and beliefs
+about social groups (Behm-Morawitz and Mastro,
+2008), as well as act as powerful mechanisms to
+persuade or to induce empathy (Smith and Petty,
+1996; Keller et al., 2003). Studying these word
+choices across large datasets can illuminate domain-
+specific patterns of interest to scholars in the hu-
+manities and social sciences.
+Examining verbs— whodoes what towhom ?—is
+one established approach for measuring the textual
+portrayal of people and groups of people. Each
+verb carries connotations that can indicate the so-
+cial dynamics at play between the subject and ob-
+ject of the verb. Connotation frames (Rashkin et al.,
+2016; Sap et al., 2017) capture these dynamics by
+coding verbs with directional scores. For exam-
+ple, these frames might label verbs with who holds
+power and who lacks power, or who is portrayed
+with positive or negative sentiment. In the Sherlock
+Holmes scene description, “Another man steps in377
+behind her, trapping her ,” the verb to trap implies
+that “the man” has more power over “her” (Figure
+1; Sap et al., 2017). These verb lexica have been
+used successfully to study portrayals in many di-
+verse contexts including films (Sap et al., 2017),
+online forums (Antoniak et al., 2019), text books
+(Lucy et al., 2020), Wikipedia (Park et al., 2021),
+and news articles (Field et al., 2019).
+Lexica in general are extremely popular among
+social science and digital humanities scholars.
+They are interpretable and intuitive (Grimmer and
+Stewart, 2013), especially when compared with
+black-box classification models, and continue to
+be a go-to resource (e.g., LIWC; Pennebaker et al.,
+2015). However, verb-based lexica pose specific
+technical hurdles for those less experienced in soft-
+ware engineering and natural language processing
+(NLP). These lexica require core NLP skills such
+as traversing parse trees, identifying named entities
+and references, and lemmatizing verbs to identify
+matches. At the same time, the larger research ques-
+tions motivating their usage require deep domain
+expertise from the social sciences and humanities.
+To meet this need, we introduce RIVETER
+ ,1
+which includes tools to use, evaluate, and visual-
+ize verb lexica, enabling researchers to measure
+power and other social dynamics between entities
+in text. This package includes a pipeline system
+for importing a lexicon, parsing a dataset, iden-
+tifying people or entities, resolving coreferences,
+and measuring patterns across those entities. It
+also includes evaluation and visualization methods
+to promote grounded analyses within a targeted
+dataset. We release RIVETER as a Python package,
+along with Jupyter notebook demonstrations and
+extensive documentation aimed at social science
+and humanities researchers.
+To showcase the usefulness of this package,
+we describe two case studies: (1) power differen-
+tials and biases in GPT-3 generated stories and (2)
+gender-based patterns in the novel Pride and Prej-
+udice . The first study provides a proof-of-concept;
+dyads with predetermined power differentials are
+used to generate stories, and we are able to detect
+these distribution shifts using RIVETER . The sec-
+ond study zooms in on a particular author, text,
+1The name Riveter is inspired by “Rosie the Riveter,” the
+allegorical figure who came to represent American women
+working in factories and at other industrial jobs during World
+War II. Rosie the Riveter has become an iconic symbol of
+power and shifting gender roles—subjects that the Riveter
+package aims to help users measure and explore by combining
+(orriveting ) components into a pipeline.
+Rashkin et al. 
+(2016)Sap et al. 
+(2017)
+Agent Theme
+Effect (A) Effect (T)State (A) State (T)Value (A) Value (T)VerbAgency (A)
+Persp (A↔T)Power (A↔T)
+WrtPersp (A)
+WrtPersp (T)
+RdrPersp (A)
+RdrPersp (T)Figure 2: A verb predicate can connote various senti-
+ment, power, and agency levels for its agent and theme;
+connotation frames distill these into six relation types
+(§2.3; each type is colored in a different hue).
+and social setting, examining how a 19th century
+novelist both portrayed and subverted gender roles.
+These case studies highlight the diverse contexts
+and research questions for which this package can
+be used across human and machine-generated text,
+and across the social sciences and the humanities.
+2 Background: Verb Lexica &
+Connotation Frames
+2.1 Verb Predicates & Frame Semantics
+Understanding the events and states described in
+sentences, i.e., who does what towhom , has been
+a central question of linguistics since first concep-
+tualized by Indian grammarian P ¯an.ini between the
+4th and 6th century BCE. Today, verb predicates
+and their relation to other words in a sentence are
+still a key focus of linguistic analyses, e.g., depen-
+dency parsing (Tesnière, 2015; Nivre, 2010) and
+semantic role labeling (Gildea and Jurafsky, 2000).
+To model how one understands and interprets the
+events in a sentence, Fillmore (1976) introduced
+frame semantics , arguing that understanding a sen-
+tence involves knowledge that is evoked by the
+concepts in the sentence. This theory inspired the
+task of semantic role labeling (Gildea and Jurafsky,
+2000), which categorizes how words in a sentence
+relate to the main verb predicate via frame seman-
+tics. This task defines thematic roles with respect
+to an EVENT (i.e., the verb predicate): the AGENT
+that causes the EVENT (loosely, the subject of the
+verb), and the THEME that is most directly affected
+by the E VENT (loosely, the object of the verb).378
+Work Usage
+Rashkin et al. (2016) Analyzing political leaning and bias in news articles.
+Sap et al. (2017) Analyzing gender bias in portrayal of characters in movie scripts.
+Rashkin et al. (2017) Analyzing public sentiment (and multilingual extension of Rashkin et al. (2016))
+V olkova and Jang (2018) Improving the detection of fake news & propaganda.
+Ding and Riloff (2018) Detecting affective events in personal stories.
+Field et al. (2019) Analyzing power dynamics of news portrayals in #MeToo stories.
+Antoniak et al. (2019) Analyzing the power dynamics in birthing stories online.
+Lucy et al. (2020) Analyzing the portrayal of minority groups in textbooks.
+Mendelsohn et al. (2020) Analyzing the portrayal of LGBTQ people in the New York Times.
+Ma et al. (2020) Text rewriting for mitigating agency gender bias in movies.
+Park et al. (2021) Comparing affect in multilingual Wikipedia pages about LGBT people
+Lucy and Bamman (2021) Analyzing gender biases in GPT3-generated stories.
+Gong et al. (2022) Quantifying gender biases and power differentials in Japanese light novels
+Saxena et al. (2022) Examining latent power structures in child welfare case notes
+Borchers et al. (2022) Measuring biases in job advertisements and mitigating them with GPT-3
+Stahl et al. (2022) Joint power-and-agency rewriting to debias sentences.
+Wiegand et al. (2022) Identifying implied prejudice and social biases about minority groups
+Giorgi et al. (2023) Examining the portrayal of narrators in moral and social dilemmas
+Table 1: Examples of usages of connotation frames in NLP and CSS literature.
+2.2 Connotation Frames of Sentiment, Power,
+and Agency
+While frame semantics was originally meant to
+capture broad meaning that arises from interpret-
+ing words in the context of what is known (Fill-
+more, 1976), many linguistic theories have focused
+solely on denotational meaning (Baker et al., 1998;
+Palmer et al., 2005), i.e., examining only what is
+present in the sentence. In contrast, the implied
+or connoted meaning has received less attention,
+despite being crucial to interpreting sentences.
+Connotation frames , introduced by Rashkin et al.
+(2016), were the first to model the connotations
+of verb predicates with respect to an AGENT and
+THEME ’s value, sentiment, and effects (henceforth,
+sentiment connotation frames). Shortly thereafter,
+Sap et al. (2017) introduced the power and agency
+connotation frames (Figure 2), which model the
+power differential between the AGENT and the
+THEME , as well as the general agency that is at-
+tributed to the A GENT of the verb predicate.2
+For both sets of connotation frames, the authors
+released a lexicon of verbs with their scores. Verbs
+were selected based on their high usage in corpora
+of choice: frequently occurring verbs from a cor-
+pus of New York Times articles (Sandhaus, 2008)
+for sentiment connotation frames, and frequently
+occurring verbs in a movie script corpus (Gorin-
+ski and Lapata, 2015) for the power and agency
+frames. Each verb was annotated for each dimen-
+2While the value, sentiment, effects, and power relations
+require a verb to be transitive, the agency dimension is present
+with intransitive verbs as well.sion by crowdworkers with AGENT andTHEME
+placeholders (“ X implored Y ”).
+Since their release, connotation frames have
+been of increasing interest to researchers work-
+ing in disciplines like cultural analytics and digital
+humanities communities. They have given these re-
+searchers a flexible and interpretable way to exam-
+ine the framing of interpersonal dynamics across
+a wide range of datasets and research questions
+(Table 1). Additionally, the frames have been in-
+corporated into the 2023 edition of the textbook
+Speech and Language Processing (Jurafsky and
+Martin, 2023).
+2.3 Connotation Frame Dimensions
+Given a predicate verb vdescribing an EVENT and
+itsAGENT aandTHEME t, connotation frames
+capture several implied relations along sentiment,
+power, and agency dimensions. Each of these rela-
+tions has either a positive ⃝+, neutral ⃝=, or negative
+⃝ −polarity. We describe here a set of six example
+relations included in RIVETER ; for a fuller discus-
+sion of each of these relations and their definitions,
+see Rashkin et al. (2016) and Sap et al. (2017).
+Effect denotes whether the event described by
+vhas a positive or negative effect on the agent a
+or the theme t. For example, in Figure 1, another
+man “trapping” Irene has a negative effect on her
+(Effect (t) =⃝ −).
+Value indicates whether the agent or theme are
+presupposed to be of value by the predicate v.
+For example, when someone “guards” an object,379
+this presupposes that the object has high value
+(Value (t) =⃝+).
+State captures whether the likely mental state of
+theAGENT orTHEME as a result of the EVENT .
+For example, someone “suffering” likely indicates
+a negative mental state ( State (a) =⃝ −).
+Perspective is a set of relations that describe
+the sentiment of the AGENT towards the THEME
+and vice versa ( Persp (a↔t)). It also describes
+how the writer perceives the AGENT andTHEME
+(WrtPersp (a),WrtPersp (t)), as well as how the
+reader likely feels towards them ( RdrPersp (a),Rdr-
+Persp (t)).
+Power distills the power differential between the
+AGENT andTHEME of the EVENT (denoted as
+Power (a↔t)for shorthand). For example, when
+a man “traps” Irene, he has power over Irene
+(Power (a) =⃝+andPower (t) =⃝ −). In the im-
+plementation of RIVETER , we convert the positive
+⃝+, neutral ⃝=, or negative ⃝ −polarities into cate-
+gorical scores ( {−1,0,+1}), as described in §3.2,
+to facilitate aggregation over entities.
+Agency denotes whether the AGENT of the
+EVENT has agency, i.e., is decisive and can act
+upon their environment. For example, Irene
+“slicing” connotes high agency ( Agency (a) =⃝+),
+whereas the man “obeying” connotes low agency
+(Agency (a) =⃝ −). We convert these categories to
+numbers as described for Power above.
+3 R IVETER
+ Design & Implementation
+3.1 Challenges Addressed
+Unlike lexica that require only string matching,
+verb lexica indicating relations between the AGENT
+andTHEME also require parsing, lemmatization,
+named entity recognition, and coreference resolu-
+tion. These are standard pieces of NLP pipelines,
+but each piece requires background knowledge in
+linguistics, NLP, and algorithms that inform library
+choices and merging of outputs; this can pose a
+challenge for researchers without extensive NLP
+knowledge or training. RIVETER substantially low-
+ers the implementation burden and text-processing
+knowledge required for using verb lexica by ad-
+dressing the following three challenges.
+Familiarity with Using NLP Tools The increas-
+ing availability of NLP packages has resulted in
+numerous existing packages for core NLP pipelines.We reviewed the performance (considering ac-
+curacy, speed, and ease of installation) of avail-
+able tools and pre-selected optimal text processing
+pipelines for RIVETER , eliminating the need for
+users to be familiar with and decide between avail-
+able text processing tools. We also provide docu-
+mentation on incorporated packages and extensive
+demonstrations.
+Interfacing between NLP Tools Even if one is
+familiar with individual tools, like parsers or entity
+recognizers, connecting outputs from one tool to
+another tool requires an additional engineering skill
+set. Traversing a parse tree to find semantic triples
+and then matching these triples to clusters from a
+coreference resolution engine is not a straightfor-
+ward process for a researcher with less expertise in
+programming and software engineering. To address
+this challenge, we (a) provide a system that con-
+nects these pipeline pieces for the user while also
+(b) providing functionality to explore the outputs
+of each individual system.
+Interpreting Results Lexical methods can offer
+flexibility and interpretability not found in other
+NLP methods, but even so, validating and explor-
+ing lexical results can be challenging. Proper val-
+idation is not consistent even in NLP research us-
+ing lexicon-based methods (Antoniak and Mimno,
+2021). To address this challenge, we provide meth-
+ods to explore the results numerically and visually,
+enabling users to quickly produce plots, calculate
+aggregate scores, identify contributing verbs and
+documents, and measure their results’ stability.
+3.2 System Description
+Illustrated in Figure 3, RIVETER takes in a set of
+documents as input, and returns a set of scores for
+each entity appearing as an AGENT orTHEME in
+the target dataset. Under the hood, RIVETER parses
+the documents, resolves coreference clusters, finds
+entity mentions, extracts AGENT -EVENT -THEME
+triples, and computes lexicon scores. We verify
+our implementation through hand-constructed unit
+tests and testing of large and small corpora. We
+describe each of these components below.
+Named Entity Recognition and Coreference Res-
+olution Our package first parses a given docu-
+ment to find clusters of mentions that relate to
+entities. We extract general coreference clusters,
+which we cross-reference with mentions of entities
+labeled by a named entity recognition (NER) sys-380
+Riveter
+Document 
+parsingPeople & entity 
+clustering
+(NER, coreference resolution)
+Agent -Verb -Theme 
+triple extraction
+(dependency parsing)Lexicon 
+matching
+Text 
+documents
+(sampling & curation)Connotation frames 
+lexicon
+(Sentiment, power, agency)
+scores = {" doctor":
+{"agency": 0.5},
+"patient":
+{"agency": -0.3}}Outputs & 
+visualization
+Figure 3: A visualization of the R IVETER pipeline components and their connections.
+tem, as well as a list of general people referents
+(containing pronouns, professions, etc). Corefer-
+ence cluster mentions that overlap with a mention
+of an entity are then passed to the verb and relation
+identification module.
+In our implementation, we currently use spaCy
+for NER, and the spaCy add-on neuralcoref3li-
+brary for coreference resolution. These libraries
+are well-supported, have fast run-times relative to
+similar systems, and do not require GPU access,
+which are not accessible to many researchers, espe-
+cially outside of computing disciplines.
+Lexicon Loading We include two lexica by de-
+fault: connotation frames from Rashkin et al.
+(2016) and frames of power and agency from Sap
+et al. (2017). These lexica come included in the
+package, and the user can select between the lexica
+and their dimensions (see §2.3 for dimension de-
+scriptions), as well as use their own custom lexica.
+For the verb lexicon from Rashkin et al. (2016)
+and for custom lexicons, each verb has a numerical
+score (ranging from −1to1) for each of AGENT
+and THEME . If a lexicon only has scores for
+AGENT orTHEME , the other scores are set to 0.
+For the verb lexicon from Sap et al. (2017), we
+convert the categorical labels to numerical scores,
+so that each verb has a score of +1,0, or−1for
+each of the A GENT and T HEME .
+For example, in the verb lexicon from Sap et al.
+(2017), the verb “amuse” is labeled as having pos-
+itive agency ( Agency (a) =⃝+) and power for the
+THEME (Power (a) =⃝ −,Power (t) =⃝+). In this
+lexicon, agency was coded only for the AGENT , so
+we convert the categorical label to a score of +1for
+theAGENT and 0for the THEME . For power, we
+convert the categorical label to −1for the AGENT
+and+1for the T HEME .
+RIVETER also allows the use of custom lexica.
+We include a loading function for any verb lexi-
+3https://github.com/huggingface/neuralcorefcon formatted in the style of Rashkin et al. (2016).
+This requires a file listing verbs and their agent and
+theme scores, which should be positive and nega-
+tive numbers. This functionality is especially im-
+portant when using previous lexica on new datasets,
+as this allows users to customize those lexica for
+new contexts, simply by updating or adding to the
+included lexicon files.
+Verb Identification and Entity Relation We ex-
+tract the lemmas of all verbs and match these to the
+lexicon verbs. After identifying semantic triples
+(theAGENT or subject ( nsubj ) and THEME or di-
+rect object ( dobj) of each verb) using the spaCy
+dependency parser, we search for matches to the
+NER spans identified in §3.2. We track the fre-
+quencies of these for the canonical entity, using the
+converted scores.
+Exploration and Visualization We provide func-
+tionality for users to easily view lexicon scores for
+entities in their input text. To maximize utility, we
+focus on facilitating analyses established in prior
+work (e.g., Table 1). This functionality includes:
+•retrieving the overall verb lexicon scores for
+all entities identified in the entire input cor-
+pora ( get_score_totals ),
+•retrieving the overall verb lexicon scores for
+all entities identified in a specific document
+(get_scores_for_doc ),
+•generating bar plots of scores for entities in
+the dataset (e.g., filtering for the top-scored
+entities) ( plot_scores ) or in a specific docu-
+ment ( plot_scores_for_doc ).
+We additionally provide functionality to reduce
+the opacity of lexicon scores and allow users to
+examine specific findings in more depth or conduct
+error checking. These functions include:381
+Figure 4: Number of roles with corresponding power
+scores color coded by assignment of higher and lower
+power roles over 85 short stories sampled from GPT-3.5.
+•generating heat map plots for the verbs most
+frequently used with a user-specified entity
+(plot_verbs_for_persona ),
+•retrieving all mentions associated with a
+specified entity, after co-reference resolution
+(get_persona_cluster ),
+•retrieving various additional counts, including
+number of lexicon verbs in a document, all
+entity-verb pairs in a document, number of
+identified entities, etc.
+•retrieving all documents that matched an en-
+tity or verb ( get_documents_for_verb ),
+•bootstrapping the dataset to examine stability
+across samples ( plot_verbs_for_persona ).
+4 Case Studies Across Cultural Settings
+4.1 Machine Stories with Power Dyads
+As our first case study, we examine lexicon-based
+power differentials in machine-generated stories
+about two characters with a predetermined power
+asymmetry, as in [“doctor”, “patient”], [“teacher”,
+“student”], and [“boss”, “employee”]. By generat-
+ing stories about entities with predetermined power
+asymmetries, this serves as a proof-of-concept for
+RIVETER ; we expect to measure power scores in
+the predetermined directions.
+Given a set of 32 pairs of roles, we obtain 85
+short stories from GPT-3.5 (Ouyang et al., 2022)
+(see Appendix A for details). We then scored
+each of the characters with assigned roles using
+RIVETER and aggregated the scores for higher
+power roles and lower power roles using their
+names given by GPT-3.5.
+Figure 5: Number of stories with correspond-
+ing power score differences calculated by taking
+Power (e+)−Power (e−)in each generated story where
+e+ande−are pairs of entities predetermined to have
+high and low power roles (e.g., [“doctor” −“patient”]).
+Results As seen in Figure 4, higher power roles
+have a distribution shifted toward greater power
+scores than lower power roles. The mean score
+of the higher power roles was 0.265and that of
+lower power roles was 0.0364 . A t-test also shows
+statistical significance ( p < 0.05). From these re-
+sults we can conclude that the stories generated by
+GPT-3.5 reflect the power dynamics in the relations
+given in the prompt, and our framework captures
+this expected phenomena.
+The differences in power scores show similar
+results in Figure 5. These differences were calcu-
+lated only for the stories where both higher and
+lower power figures had been scored. The mean
+and median were both positive, 0.26and0.24.
+Analyzing the stories with both positive and
+negative score differences (see Table 3 in the Ap-
+pendix) further confirms the results of our frame-
+work. For example, the third story of the table
+shows negative score difference between higher
+powered agent and lower powered agent. However,
+looking at it more closely we can see that despite
+the assigned role as an interviewee, Emily shows
+greater power. In the sentence “Paul thanked Emily
+for her time and wished her luck,” both thank and
+wish from our lexicon give Emily greater power
+than Paul. Thus we can analyze the power dynam-
+ics between characters more accurately, taking into
+account more context than just assigned roles.
+4.2 Gender Differences in Pride and Prejudice
+Jane Austen’s 1813 novel Pride and Prejudice is
+famous for its depiction of gender and class rela-
+tions in 19th century England. Using the entity382
+miss lucasmr. gardinermrs. hurstmrs. collinsmrs. long
+miss bingleyhis friendmy brother your sistersir
+persona0.000.250.50score
+Personas by Score
+elizabethmr. bingley
+the housekeepermrs. bennetmary
+her mother
+colonel forsterbingley my aunt her eyes
+persona1.0
+0.5
+0.0score
+Personas by ScoreFigure 6: Means and standard deviations of power
+scores across 20 bootstrapped samples of Pride and
+Prejudice , using RIVETER ’s sampling and visualization
+functions. Results are shown for three custom pronoun
+groups captured using RIVETER ’s entity discovery and
+coreference resolution capabilities.
+recognition and coreference resolution capabilties
+ofRIVETER , we can identify which characters are
+framed as having or lacking power, and by exam-
+ining the power relations between classes of third
+person pronouns, we can trace how gender hierar-
+chies are enacted and subverted by Austen, through
+the actions of her characters.
+Results Figure 6 shows the entities identified by
+RIVETER that have the highest and lowest power
+scores, using the lexicon from Sap et al. (2017).
+Characters like Miss Lucas have higher power
+scores, while characters like Elizabeth have lower
+power scores. By using RIVETER ’s functionality to
+pull out the documents contributing to an entity’s
+score, we find that a mistaken entity, “her eyes,”
+indeed often occurs in low power roles, as in “Miss
+Bingley fixed her eyes on face,” providing an intu-
+itive validation of the results. This plot also shows
+the standard deviation across bootstrapped samples
+of the novel, indicating the overlapping instability
+of many of the power scores for this single novel.
+Figure 7 shows the lexicon verbs contributing
+most frequently to each pronoun group’s power
+score. For example, we see that feminine pronouns
+are frequently used as subjects of the verb “hear”—
+emphasizing women’s low-power role of waiting
+to hear news. We also observe that while feminine
+pronouns are often placed in high-power positions
+at rates similar to masculine pronouns, they have
+know_nsubj
+do_nsubj
+add_nsubj
+turn_nsubj
+give_nsubj
+ask_dobj
+expect_nsubj
+make_nsubj
+walk_nsubj
+read_nsubj
+leave_dobj
+listen_nsubj
+mention_nsubj
+answer_nsubj
+like_nsubj
+believe_nsubj
+receive_nsubj
+wish_nsubj
+assure_dobj
+hear_nsubj33
+24
+23
+15
+13
+12
+11
+10
+9
+9
+-9
+-9
+-9
+-11
+-12
+-13
+-14
+-14
+-15
+-24feminine
+do_nsubj
+know_nsubj
+make_nsubj
+leave_nsubj
+choose_nsubj
+add_nsubj
+like_dobj
+return_nsubj
+give_nsubj
+ask_dobj
+want_nsubj
+believe_nsubj
+listen_nsubj
+recommend_dobj
+ask_nsubj
+assure_dobj
+hear_nsubj
+know_dobj
+like_nsubj
+wish_nsubj35
+20
+15
+13
+12
+11
+10
+9
+9
+9
+-6
+-7
+-7
+-7
+-8
+-8
+-8
+-8
+-8
+-9masculine
+enter_nsubj
+walk_nsubj
+join_dobj
+receive_dobj
+part_nsubj
+know_nsubj
+pass_nsubj
+leave_nsubj
+do_nsubj
+visit_dobj
+join_nsubj
+recommend_dobj
+send_dobj
+bring_dobj
+invite_dobj
+wait_nsubj
+reach_nsubj
+wish_nsubj
+inform_dobj
+leave_dobj13
+12
+11
+10
+10
+8
+7
+6
+6
+5
+-3
+-3
+-3
+-4
+-4
+-4
+-5
+-5
+-6
+-8third pluralFigure 7: Verb counts for pronoun groups in Pride
+and Prejudice , using RIVETER ’s visualization functions.
+Green cells indicate verbs where the pronoun group has
+power, while pink cells indicate verbs where the pro-
+noun group lacks power. Labels include both the verb
+and the position ( nsubj ordobj) of the pronoun group,
+and the pronoun groups were captured via RIVETER ’s
+customizable entity discovery function.
+higher frequencies for low-power positions. In
+other words, in Austen’s world, masculine and fem-
+inine entities both engage in high-power actions,
+but feminine entities engage in more low-power
+actions. Arguably, though, some of the low-power
+positions are used by the feminine entities to obtain
+power, e.g., by “hearing” news or eavesdropping on
+others, the feminine entities can learn information
+that informs their future decisions and strategies.
+5 Ethics and Broader Impact
+RIVETER comes with some risks and limitations.
+This package is targeted only at English-language
+texts; we have not included non-English lexica in
+the tool nor do we expect the parsing, named entity
+recognition, and coreference resolution to directly
+translate to other languages. While related lexica
+exist for non-English languages (e.g., Klenner et al.
+(2017) (German), Rashkin et al. (2017) (extension
+to 10 European languages)), the generalizability of
+RIVETER is limited to English-language settings.
+The results of RIVETER are only as reliable as
+the corpora and lexica used as input (and their re-
+lationships to one another). We have emphasized
+interpretability in designing this package, encourag-383
+ing users to examine their results at different levels
+of granularity. However, there are still dangers of
+biases “baked-in” to the data, via its sampling and
+curation, or to the lexica, in the choice of terms
+and their annotations by human workers. Lexica
+that are useful in one setting are not always useful
+in other settings, and we encourage researchers to
+validate their lexica on their target corpora.
+Drawing from a framework describing the roles
+for computational tools in social change (Abebe
+et al., 2020), we believe that RIVETER can fill mul-
+tiple important roles. First, it can act as a diagnos-
+tic, measuring social biases and hierarchies across
+large corpora, as in Mendelsohn et al. (2020) where
+dehumanization of LGBTQ+ people was measured
+across news datasets and time. RIVETER can also
+act as a formalizer , allowing researchers to exam-
+ine the specific words used by authors, adding con-
+crete and fine-grained evidence to the constructions
+of broader patterns, as in Antoniak et al. (2019)
+where the supporting words were used to charac-
+terize healthcare roles during childbirth. Finally,
+RIVETER can act as a synecdoche by bringing new
+attention and perspectives to long-recognized prob-
+lems, as in Sap et al. (2017) where renewed atten-
+tion was given to gender biases in film.
+6 Acknowledgements
+We thank Hannah Rashkin for the invaluable feed-
+back on the paper and for creating the original
+connotation frames. We also thank our anonymous
+reviewers whose comments helped us improve both
+this paper and R IVETER .
+References
+Rediet Abebe, Solon Barocas, Jon Kleinberg, Karen
+Levy, Manish Raghavan, and David G. Robinson.
+2020. Roles for computing in social change. In
+Proceedings of the 2020 Conference on Fairness,
+Accountability, and Transparency , FAT* ’20, page
+252–260, New York, NY , USA. Association for Com-
+puting Machinery.
+Maria Antoniak and David Mimno. 2021. Bad seeds:
+Evaluating lexical methods for bias measurement.
+InProceedings of the 59th Annual Meeting of the
+Association for Computational Linguistics and the
+11th International Joint Conference on Natural Lan-
+guage Processing (Volume 1: Long Papers) , pages
+1889–1904, Online. Association for Computational
+Linguistics.
+Maria Antoniak, David Mimno, and Karen Levy. 2019.
+Narrative paths and negotiation of power in birth sto-
+ries. Proc. ACM Hum.-Comput. Interact. , 3(CSCW).Collin F. Baker, Charles J. Fillmore, and John B. Lowe.
+1998. The Berkeley FrameNet project. In 36th An-
+nual Meeting of the Association for Computational
+Linguistics and 17th International Conference on
+Computational Linguistics, Volume 1 , pages 86–90,
+Montreal, Quebec, Canada. Association for Compu-
+tational Linguistics.
+Elizabeth Behm-Morawitz and Dana E Mastro. 2008.
+Mean girls? The influence of gender portrayals in
+teen movies on emerging adults’ gender-based atti-
+tudes and beliefs. Journalism & Mass Communica-
+tion Quarterly , 85(1):131–146.
+Amy M Blackstone. 2003. Gender Roles and Society.
+Conrad Borchers, Dalia Gala, Benjamin Gilburt, Eduard
+Oravkin, Wilfried Bounsi, Yuki M Asano, and Han-
+nah Kirk. 2022. Looking for a handsome carpenter!
+Debiasing GPT-3 job advertisements. In Proceed-
+ings of the 4th Workshop on Gender Bias in Natu-
+ral Language Processing (GeBNLP) , pages 212–224,
+Seattle, Washington. Association for Computational
+Linguistics.
+Mina Cikara and Susan T Fiske. 2009. Warmth, compe-
+tence, and ambivalent sexism: Vertical assault and
+collateral damage , volume 21. American Psycholog-
+ical Association, xvii, Washington, DC, US.
+Haibo Ding and Ellen Riloff. 2018. Weakly supervised
+induction of affective events by optimizing semantic
+consistency. In Proceedings of the AAAI Conference
+on Artificial Intelligence , volume 32.
+Robert M Entman. 1993. Framing: Toward clarification
+of a fractured paradigm. Journal of Communication ,
+43(4):51–58.
+Gail T. Fairhurst. 2005. Reframing the art of framing:
+Problems and prospects for leadership. Leadership ,
+1:165 – 185.
+Anjalie Field, Gayatri Bhat, and Yulia Tsvetkov. 2019.
+Contextual affective analysis: A case study of people
+portrayals in online metoo stories. Proceedings of the
+International AAAI Conference on Web and Social
+Media , 13(01):158–169.
+Charles J. Fillmore. 1976. Frame semantics and the na-
+ture of language*. Annals of the New York Academy
+of Sciences , 280(1):20–32.
+Susan T Fiske. 1993. Controlling other people: The
+impact of power on stereotyping. American Psychol-
+ogist , 48(6):621–628.
+Daniel Gildea and Daniel Jurafsky. 2000. Automatic
+labeling of semantic roles. In Proceedings of the 38th
+Annual Meeting of the Association for Computational
+Linguistics , pages 512–520, Hong Kong. Association
+for Computational Linguistics.
+Salvatore Giorgi, Ke Zhao, Alexander H Feng, and
+Lara J Martin. 2023. Author as character and nar-
+rator: Deconstructing personal narratives from the
+r/amitheasshole reddit community. In ICWSM 2023 .384
+Xiaoyun Gong, Yuxi Lin, Ye Ding, and Lauren Klein.
+2022. Gender and power in Japanese light novels.
+Proceedings of Computational Humanities Research
+Conference .
+Philip John Gorinski and Mirella Lapata. 2015. Movie
+script summarization as graph-based scene extraction.
+InProceedings of the 2015 Conference of the North
+American Chapter of the Association for Computa-
+tional Linguistics: Human Language Technologies ,
+pages 1066–1076, Denver, Colorado. Association for
+Computational Linguistics.
+Justin Grimmer and Brandon M Stewart. 2013. Text
+as data: The promise and pitfalls of automatic con-
+tent analysis methods for political texts. Political
+Analysis , 21(3):267–297.
+Daniel Jurafsky and James Martin. 2023. Speech and
+Language Processing, 3rd Edition . Prentice Hall.
+Punam Anand Keller, Isaac M Lipkus, and Barbara K
+Rimer. 2003. Affect, framing, and persuasion. J.
+Mark. Res. , 40(1):54–64.
+Manfred Klenner, Don Tuggener, and Simon Clematide.
+2017. Stance detection in Facebook posts of a Ger-
+man right-wing party. In Proceedings of the 2nd
+Workshop on Linking Models of Lexical, Sentential
+and Discourse-level Semantics , pages 31–40, Valen-
+cia, Spain. Association for Computational Linguis-
+tics.
+Li Lucy and David Bamman. 2021. Gender and rep-
+resentation bias in GPT-3 generated stories. In Pro-
+ceedings of the Third Workshop on Narrative Un-
+derstanding , pages 48–55, Virtual. Association for
+Computational Linguistics.
+Li Lucy, Dorottya Demszky, Patricia Bromley, and Dan
+Jurafsky. 2020. Content analysis of textbooks via nat-
+ural language processing: Findings on gender, race,
+and ethnicity in texas us history textbooks. AERA
+Open , 6(3):2332858420940312.
+Xinyao Ma, Maarten Sap, Hannah Rashkin, and Yejin
+Choi. 2020. PowerTransformer: Unsupervised con-
+trollable revision for biased language correction. In
+Proceedings of the 2020 Conference on Empirical
+Methods in Natural Language Processing (EMNLP) ,
+pages 7426–7441, Online. Association for Computa-
+tional Linguistics.
+Julia Mendelsohn, Yulia Tsvetkov, and Dan Jurafsky.
+2020. A framework for the computational linguistic
+analysis of dehumanization. Frontiers in Artificial
+Intelligence , 3:55.
+Joakim Nivre. 2010. Dependency parsing. Language
+and Linguistics Compass , 4(3):138–152.
+Long Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida,
+Carroll Wainwright, Pamela Mishkin, Chong Zhang,
+Sandhini Agarwal, Katarina Slama, Alex Ray, John
+Schulman, Jacob Hilton, Fraser Kelton, Luke Miller,
+Maddie Simens, Amanda Askell, Peter Welinder,Paul F Christiano, Jan Leike, and Ryan Lowe. 2022.
+Training language models to follow instructions with
+human feedback. In Advances in Neural Information
+Processing Systems , volume 35, pages 27730–27744.
+Curran Associates, Inc.
+Martha Palmer, Daniel Gildea, and Paul Kingsbury.
+2005. The Proposition Bank: An annotated corpus of
+semantic roles. Computational Linguistics , 31(1):71–
+106.
+Chan Young Park, Xinru Yan, Anjalie Field, and Yulia
+Tsvetkov. 2021. Multilingual contextual affective
+analysis of lgbt people portrayals in wikipedia. Pro-
+ceedings of the International AAAI Conference on
+Web and Social Media , 15(1):479–490.
+James W. Pennebaker, Roger J. Booth, Ryan L. Boyd,
+and Martha E. Francis. 2015. Linguistic inquiry and
+word count: LIWC 2015.
+Hannah Rashkin, Eric Bell, Yejin Choi, and Svitlana
+V olkova. 2017. Multilingual connotation frames: A
+case study on social media for targeted sentiment
+analysis and forecast. In Proceedings of the 55th
+Annual Meeting of the Association for Computational
+Linguistics (Volume 2: Short Papers) , pages 459–464,
+Vancouver, Canada. Association for Computational
+Linguistics.
+Hannah Rashkin, Sameer Singh, and Yejin Choi. 2016.
+Connotation frames: A data-driven investigation. In
+Proceedings of the 54th Annual Meeting of the As-
+sociation for Computational Linguistics (Volume 1:
+Long Papers) , pages 311–321, Berlin, Germany. As-
+sociation for Computational Linguistics.
+Evan Sandhaus. 2008. The New York Times annotated
+corpus. Linguistic Data Consortium, Philadelphia ,
+6(12):e26752.
+Maarten Sap, Marcella Cindy Prasettio, Ari Holtzman,
+Hannah Rashkin, and Yejin Choi. 2017. Connota-
+tion frames of power and agency in modern films.
+InProceedings of the 2017 Conference on Empiri-
+cal Methods in Natural Language Processing , pages
+2329–2334, Copenhagen, Denmark. Association for
+Computational Linguistics.
+Devansh Saxena, Seh Young Moon, Dahlia Shehata, and
+Shion Guha. 2022. Unpacking invisible work prac-
+tices, constraints, and latent power relationships in
+child welfare through casenote analysis. In Proceed-
+ings of the 2022 CHI Conference on Human Factors
+in Computing Systems , pages 1–22.
+Stephen M Smith and Richard E Petty. 1996. Message
+framing and persuasion: A message processing anal-
+ysis. Pers. Soc. Psychol. Bull. , 22(3):257–268.
+Maja Stahl, Maximilian Spliethöver, and Henning
+Wachsmuth. 2022. To prefer or to choose? gen-
+erating agency and power counterfactuals jointly for
+gender bias mitigation. In Proceedings of the Fifth
+Workshop on Natural Language Processing and Com-
+putational Social Science (NLP+CSS) , pages 39–51,385
+Abu Dhabi, UAE. Association for Computational
+Linguistics.
+Lucien Tesnière. 2015. Elements of structural syntax .
+John Benjamins Publishing Company.
+Svitlana V olkova and Jin Yea Jang. 2018. Misleading
+or falsification: Inferring deceptive strategies and
+types in online news and social media. In Companion
+Proceedings of the The Web Conference 2018 , WWW
+’18, page 575–583, Republic and Canton of Geneva,
+CHE. International World Wide Web Conferences
+Steering Committee.
+Michael Wiegand, Elisabeth Eder, and Josef Ruppen-
+hofer. 2022. Identifying implicitly abusive remarks
+about identity groups using a linguistically informed
+approach. In Proceedings of the 2022 Conference of
+the North American Chapter of the Association for
+Computational Linguistics: Human Language Tech-
+nologies , pages 5600–5612, Seattle, United States.
+Association for Computational Linguistics.386
+A Appendix: GPT-3.5 Generation Setup
+Here we further detail our steps to evaluate our
+framework as discussed in Section 4.1. To gener-
+ate characters with clear roles, names, and power
+differences, we used 32 dyadic relation pairs with
+explicit power asymmetry in our prompt. The full
+list of relations are shown in Table 2. The follow-
+ing is an example of the prompt used to generate
+such stories:
+Tell me a short story about a doctor and
+a patient, and give them names.
+doctor’s name:
+Using text-davinci-003 model, we generated 3 sto-
+ries per pair with temperature set to 0.7 and max
+tokens set to 256. After cleaning ill-formatted re-
+sults, we analyzed a total of 85 stories. A few
+examples of the generated stories along with the
+power scores of the characters are shown in Table 3.
+(doctor, patient) (teacher, student)
+(interviewer, interviewee) (parent, child)
+(employer, employee) (boss, subordinate)
+(manager, worker) (landlord, tenant)
+(judge, defendant) (supervisor, intern)
+(therapist, client) (owner, customer)
+(mentor, mentee) (politician, voter)
+(rich, poor) (elder, younger)
+(artist, critic) (host, guest)
+(preacher, parishioner) (expert, novice)
+(counselor, advisee) (coach, athlete)
+(lender, borrower) (king, subject)
+(seller, buyer) (umpire, player)
+(printer, writer) (sponsor, sponsored)
+(producer, actor) (legislator, citizen)
+(commander, soldier) (executor, beneficiary)
+Table 2: Full list of dyadic roles387
+GPT3.5 Generated Story
+Dyadic Roles Power Scores Power Score Difference
+Alan was a successful CEO of a large company. He had a sharp eye for detail and was known
+for his strict yet fair leadership style. One day, Alan noticed that one of his subordinates,
+Zara, was not performing up to the standards he expected. He called her into his office and
+asked her why her work wasn’t up to par. Zara admitted that she was feeling overwhelmed
+with her workload and was having trouble keeping up. She asked Alan if he could help her
+prioritize her tasks and provide her with additional resources to help her complete her work.
+Alan was impressed by Zara’s initiative and agreed to help her. He rearranged her tasks and
+assigned her additional help from other staff members. He also gave her some helpful tips
+on how to manage her workload more effectively. Zara was grateful for Alan’s help and
+was able to complete her work on time and to a high standard. Alan was pleased with her
+performance and decided to reward her with a promotion. From then on, Zara and Alan had
+an excellent working relationship. Zara’s hard work and resilience was an example to her
+colleagues, and Alan’s willingness to help her out was a
+(boss, subordinate) Alan: 0.4, Zara: -0.07 0.47
+Mr. Jones was a landlord who owned an apartment building in a small town. He had been
+a landlord for many years, and he was known for his strict rules and no-nonsense attitude.
+Ms. Lopez was a single mother who had recently moved into the building. She was looking
+for a safe place to raise her young daughter, and Mr. Jones’ building seemed to fit the bill.
+She was a bit intimidated by his strict rules, but she was willing to abide by them if it meant
+living in a safe and secure place. At first, things went smoothly between Mr. Jones and Ms.
+Lopez. He made sure the building was well maintained, and she was a model tenant, paying
+her rent on time every month. However, one day Ms. Lopez noticed that her hot water heater
+had stopped working. She immediately contacted Mr. Jones to let him know, but he refused
+to repair it. She was frustrated and angry, but she didn’t want to risk getting evicted, so she
+kept quiet. After a few weeks, the hot water heater finally broke down completely and Ms.
+Lopez had no choice but to contact Mr. Jones again.
+(landlord, tenant) Mr. Jones: 0.42, Ms. Lopez: 0.09 0.33
+Paul was an experienced interviewer, but Emily was his most challenging interviewee yet.
+He had seen her resume online and was impressed with her qualifications. He had high hopes
+for her. When Emily arrived for the interview, Paul immediately noticed her confidence.
+She was wearing a suit and had a bright smile on her face. She was clearly prepared and
+ready for the interview. Paul asked Emily several questions about her past experience and
+qualifications. She answered each one with poise and detail. She was articulate and could
+back up her answers with examples. Paul was very impressed with Emily’s performance. He
+could tell she was a strong candidate and he was confident she would do well in the job. At
+the end of the interview, Paul thanked Emily for her time and wished her luck. He was sure
+she would be a great addition to the company. Emily left the interview feeling pleased with
+how it went. She was confident she had done her best and was sure she had impressed Paul.
+The next day, Paul gave Emily an offer for the job. She happily accepted and started a few
+weeks later. Paul and Emily had a successful working
+(interviewer, interviewee) Paul: 0.07, Emily: 0.25 -0.17
+Table 3: Examples of GPT3.5 generated stories and the power scores of the characters388

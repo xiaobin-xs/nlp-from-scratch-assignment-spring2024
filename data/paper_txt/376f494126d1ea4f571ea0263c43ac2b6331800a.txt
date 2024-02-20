@@ -1,0 +1,1012 @@
+SPAE: Semantic Pyramid AutoEncoder
+for Multimodal Generation with Frozen LLMs
+Lijun Yu‡†∗Yong Cheng†Zhiruo Wang‡Vivek Kumar†Wolfgang Macherey†
+Yanping Huang†David A. Ross†Irfan Essa†Yonatan Bisk‡Ming-Hsuan Yang†
+Kevin Murphy†Alexander G. Hauptmann‡Lu Jiang†‡
+†Google,‡Carnegie Mellon University
+Abstract
+In this work, we introduce Semantic Pyramid AutoEncoder (SPAE) for enabling
+frozen LLMs to perform both understanding and generation tasks involving non-
+linguistic modalities such as images or videos. SPAE converts between raw pixels
+and interpretable lexical tokens (or words) extracted from the LLM’s vocabulary.
+The resulting tokens capture both the semantic meaning and the fine-grained
+details needed for visual reconstruction, effectively translating the visual content
+into a language comprehensible to the LLM, and empowering it to perform a
+wide array of multimodal tasks. Our approach is validated through in-context
+learning experiments with frozen PaLM 2 and GPT 3.5 on a diverse set of image
+understanding and generation tasks. Our method marks the first successful attempt
+to enable a frozen LLM to generate image content while surpassing state-of-the-art
+performance in image understanding tasks, under the same setting, by over 25%.
+1 Introduction
+Large language models (LLMs) empowered by Transformers [ 38] have achieved remarkable progress
+in addressing a broad spectrum of Natural Language Processing (NLP) tasks [ 4,8,28,2]. With the
+continuous increases in model size and training data, LLMs are gradually becoming more versatile
+and agnostic to specific tasks, unlocking new capabilities in solving complex AI tasks [ 42], like
+question answering, code generation, reasoning, mathematics problem-solving, and understanding
+humor, among various other applications [2, 28].
+LLMs capture rich conceptual knowledge about the world in their lexical embeddings. This raises a
+question: if provided with the appropriate visual representations as input, are frozen LLMs capable of
+solving tasks in visual modalities? Very recently, there have been notable advancements in extending
+the capabilities of frozen LLMs to tackle image understanding and retrieval tasks [ 21,27]. However,
+generating a different modality using a frozen LLM that has not been explicitly trained on that
+modality has proven to be challenging and has had little success.
+To facilitate LLMs for such cross-modal tasks, we propose to learn a vector quantizer to map an
+image, or some other non-linguistic (“foreign”) modality, to the token space of a frozen LLM. This
+effectively translates the image into a language that the LLM can comprehend, enabling us to leverage
+the generative abilities of the LLM to perform image understanding and generation tasks without
+having to train on image-text pairs. Specifically, our new approach is that, given an image prompt,
+convert it to a token space with our learned encoder, use the LLM to generate suitable lexical tokens,
+and convert back to pixel space with our learned decoder.
+∗Work partially done during a research internship at Google Research.
+37th Conference on Neural Information Processing Systems (NeurIPS 2023).arXiv:2306.17842v3  [cs.CV]  28 Oct 2023
+branch, nest, eagle, …, bird, veld, climb, …
+CLIP
+Layer 4
+Layer 3Layer 2Layer 1Layer 5Layer 6
+EncoderSeman&c lossTop 4 layers (85 tokens)branch, nest, eagle, …
+Top 5 layers (341 tokens)Top 6 layers (597 tokens)branch, nest, eagle, …, bird, veld, climb, …,wings, 观, يدو … ,
+Decoder
+❄LLM codebook
+❄
+4 layers5 layers6 layersReconstructed imageFigure 1. Framework of the proposed SPAE model. An image is encoded into a pyramid of lexical tokens
+capturing semantic concepts and appearance details necessary for reconstruction.
+We introduce a novel Semantic Pyramid AutoEncoder (SPAE) that produces a lexical word sequence
+that (1) carries rich semantics, and (2) retains fine details for signal reconstruction. In contrast to the
+majority of VQ-V AE approaches [ 37], our encoder maps to an interpretable discrete latent space, i.e.,
+words. As depicted in Fig. 1, SPAE tokens have a multi-scale representation arranged in a pyramid
+structure. The upper layers of the pyramid comprise semantic-central concepts, while the lower layers
+prioritize appearance representations that captures the fine details for image reconstruction. This
+design enables us to dynamically adjust the token length to accommodate various tasks, such as using
+fewer tokens for understanding tasks and more tokens for generation tasks.
+We verify the plausibility of our approach in an extreme setting of in-context learning [ 4], without
+any parameter updates to the LLM. Our SPAE model is trained standalone, without backpropagating
+through any language model. We evaluate our approach on image understanding tasks including
+image classification, image captioning, and visual question answering. We showcase a promising
+direction to image generation with LLMs by utilizing in-context denoising techniques. Our method is
+LLM-agnostic and has been tested with PaLM 2 [ 2] and GPT-3.5 [ 28], suggesting compatibility with
+arbitrary LLMs.
+The main contributions of this work are summarized as follows:
+•This is the first successful method, to the best of our knowledge, that uses a frozen language model,
+trained solely on language tokens, to directly generate image content through in-context learning.
+•We introduce a new SPAE tokenizer producing interpretable representations of semantic concepts
+and fine-grained details in the form of multilingual linguistic tokens with adjustable lengths.
+•We evaluate our method on visual understanding and generation tasks, and notably, our approach
+outperforms the best-published few-shot image classification accuracy [ 27] by an absolute 25%
+under the same in-context setting.
+2 Related Work
+Multimodal generation with LLMs. Advances have been made to expand the capabilities of
+LLMs beyond language. For example, Visual ChatGPT [ 43] uses ChatGPT to generate prompts and
+executes multimodal tasks through another model, e.g., generating image from text prompts by Stable
+Diffusion [ 32]. FROMAGe [ 21] feeds CLIP [ 30] embeddings to OPT [ 49] for image understanding
+and retrieval. However, it requires backpropagation through the LLM and does not support image
+synthesis. This work enables a standalone frozen LLM to understand and generate other modalities
+which are unseen in training.
+Tokenization via vector quantization. VQ-V AE [ 37] compresses data into a discrete latent space
+defined by a codebook via vector quantization. VQGAN [ 14] enhances the reconstruction quality
+with adversarial and perceptual objectives. These discrete latent quantities, often referred to as
+tokens , are widely used to learn generative transformer models for image [ 32,7], video [ 45,15,39],
+image-video [ 46], and audio [ 3,9]. Our SPAE model is built upon the VQGAN framework and
+applicable to different modalities.
+2
+Tokenization into lexical representations. The codebooks in typical VQGANs are learned jointly
+with the encoder and decoder stacks, which are not directly interpretable via natural languages.
+LQAE [ 27] replaces the learned codebook with frozen word embeddings from BERT [ 12] to connect
+with an English vocabulary. However, the LQAE tokens seldom contain semantic concepts in an
+image, and the reconstruction quality is worse than that with a learned codebook. Our SPAE quantizes
+an input sample into semantically related tokens in a multilingual vocabulary while preserving the
+high reconstruction quality of a VQGAN for generative tasks. In addition, SPAE tokens are organized
+in a multi-layer coarse-to-fine pyramid for flexible usage in different tasks.
+Few-shot learning with LLMs. In-context learning [ 4,8,2] facilitates LLMs for few-shot learning
+via the text interface without parameter updates. This approach is commonly employed to assess the
+performance of LLMs on numerous NLP benchmarks, e.g., classification and question answering [ 41],
+mathematical reasoning [ 24], and code generation [ 44], which yields competitive results to their
+fine-tuned counterparts. However, existing few-shot vision-language understanding and generation
+frameworks [ 1,21] still require LLM parameter updates. In contrast, our work inherits the in-context
+learning ability from frozen LLMs.
+3 Method
+Our goal is to model an image, or some other non-linguistic modality ( e.g., video or audio), as a
+language sequence that LLMs can comprehend. Semantic Pyramid AutoEncoder (SPAE) generates a
+lexical word sequence with dynamically adjustable length that carries rich semantics and retains fine
+details for signal reconstruction. To work with a frozen LLM via in-context learning, we introduce a
+progressive in-context denoising method to facilitate image generation. We use the image modality
+in this section to introduce our SPAE model in 2D, and later showcase the results of a 3D variant
+with the video modality in our experiments.
+3.1 Semantic Pyramid AutoEncoder
+Our SPAE model extends the VQ-V AE [ 37] framework, which comprises an encoder, a quantizer,
+and a decoder. The CNN encoder maps an image I∈RH×W×3into continuous embeddings
+Z∈Rh×w×c. Each element z∈Zis then passed through the quantizer, which assigns it to the closest
+entry in a codebook, resulting in the quantized embedding. Let ˆZrepresent the quantized embeddings
+for the entire image. The CNN decoder receives ˆZas input and generates the reconstructed image ˆI.
+Below we highlight the design differences in SPAE.
+As illustrated in Fig. 1, SPAE generates lexical tokens arranged in a pyramid structure, which contains
+semantic concepts in the upper layers and appearance with progressively refined details in the lower
+layers. We introduce a semantic loss to encourage the usage of conceptually relevant tokens.
+Frozen language codebook. To generate lexical tokens, we utilize a pretrained LLM codebook
+C={(k,e(k))|k∈T}and freeze it during training, where Tis a subset of the LLM vocabulary.
+Here, e(·)produces the text embedding for a sub-word kwhich may be obtained from any layer of
+the LLM. Since the codebook is aligned with the language vocabulary, we use the terms “token” and
+“word” interchangeably.
+Token pyramid. The SPAE quantizer produces Dlayers of tokens where the tokens at layer l
+are denoted as kl∈Thl×wl. Prior works use Residual Quantization (RQ) to generate multi-layer
+tokens [ 22,47]. In these methods, tokens from all layers have uniform shapes and do not carry
+specific semantic meanings. In contrast, we propose a pyramid token structure by enforcing the
+constraint hl≤hl+1∧wl≤wl+1. The pyramid structure is purposefully designed to concentrate
+semantics within the within the upper layers of the pyramid. This design allows for representing
+semantic concepts with notably fewer tokens, e.g., as few as five tokens for understanding tasks. The
+high token efficiency stems from the pyramid structure, as a conventional layer without pyramid
+structures needs a minimum of hwtokens ( e.g., 256) to represent the image. Token efficiency is
+crucial for in-context learning as it enables the accommodation of more examples within the context.
+A dilation subsampler P(l)is used, which selects the positions for quantization at layer las
+P(l) ={(h′i−⌈h′
+2⌉
++ 1, w′j−⌈w′
+2⌉
++ 1)|(i, j)∈([1, hl]×[1, wl])∩Z2}, (1)
+where h′=hD
+hl, and w′=wD
+wlare the downsample ratios.
+For each embedding zat position (x, y), we obtain its discrete tokens sequentially from layer 1to
+D. At layer l, if(x, y)∈P(l), the quantizer assigns discrete token kl= arg mink∈T∥zl−e(k)∥2
+2,
+3
+where zlis the current layer embedding, calculated from
+zl=z+∑l−1
+i=11(x,y)∈P(i)(z−e(ki)). (2)
+The quantized embedding reconstructed with the first llayers is given by the average of the existing
+token embeddings as
+ˆz≤l=∑l
+i=11(x,y)∈P(i)e(ki)
+∑l
+i=11(x,y)∈P(i). (3)
+Using the input of ˆZ≤lfrom tokens up to layer l, the decoder can progressively reconstruct the image
+with dynamic token lengths, resulting in gradually improved quality with refined appearance details.
+We term this approach as Streaming Average Quantization (SAQ) due to its resemblance to computing
+the average on streaming data, where ˆz≤l+1=ˆz≤l+1
+ˆl+1e(kl+1),ˆl=∑l
+i=11(x,y)∈P(i).
+RQ [ 22,47] is applicable but yields worse results in this context, as revealed by our ablation studies.
+This can be attributed to (1) varying scales of embeddings in residual layers, potentially dividing the
+codebook into multiple parts, and (2) misalignment in the summation of word embeddings, which
+undermines learning semantically meaningful tokens in later layers.
+Semantic loss. We encourage the semantic similarity between the image Iand each lexical token k
+denoted by s(I, k). During training, we build per-layer candidate token pools as
+Cl(I) ={k∈T|s(I, k)≥ρl}, (4)
+where ρlis a threshold. We set ρl≥ρl+1to allow deeper layers to have a larger pool of candidate
+tokens while sacrificing some semantics.
+To define the similarity score, this paper employs a pretrained CLIP model [ 29]. In more details, let
+fIandfTbe a pair of image and text CLIP embedding functions. We precompute the text feature
+for each token k∈Tas
+f′
+T(k) =1
+|p|∑|p|
+i=1fT(pi(k)), (5)
+where pis a list of prompt templates, such as "a photo of ..." . During training, we extract
+the image feature fI(I)and compute the dot-product similarity as s′(I, k) =fI(I)·f′
+T(k). The
+similarity score is then normalized to account for the varying scales across different images.
+s(I, k) =s′(I, k)−minjs′(I, j)
+max js′(I, j)−minjs′(I, j). (6)
+We define the semantic loss for the encoder parameters θeas
+Lsemantic (θe;I) = E
+l∈[1,D′]E
+zlE
+c∈Cl(I)−logexp(−∥(zl−e(c)∥2
+2)∑
+k∈Texp(−∥zl−e(k)∥2
+2), (7)
+where we randomly sample semantically similar target codes cfor each layer embedding in the first
+D′layers.
+Appearance loss. Using an improved objective from [45], the appearance loss is calculated as:
+Lappearance (θe, θd;I)=∥I−ˆI∥2
+2+β∑D
+l=1∥Z−sg(ˆZ≤l)∥2
+2+λLGAN+ηLPerceptual +ϕLLeCAM ,(8)
+where LGAN ,LPerceptual , andLLeCAM are the VQGAN [ 15], perceptual [ 19], and LeCAM [ 34]
+losses. In addition, sg(x)is the stop-gradient operation. The appearance loss is applied to both the
+encoder θeand decoder parameters θd, excluding the frozen codebook embedding.
+To stabilize the training and balance between appearance and semantics, we add a dynamic weight
+for the semantic guidance loss as w=sg(
+Lappearance (I)
+Lsemantic (I))
+. The total training loss excluding the GAN
+discriminator is
+LSPAE (θe, θq) =E
+I[
+Lappearance (θe, θq;I) +αwLsemantic (θe;I)]
+. (9)
+4
+Context:  corruption  50% 20%InputOutputQueryOriginalFigure 2. An example of the conditional image denoising task for high resolution synthesis. The context
+comprises images randomly corrupted in the token space.
+3.2 Progressive In-Context Decoding
+While our method is more effective when backpropagating through LLMs by prompt [ 23] or adapter
+tuning [ 17,18], this work focuses on verifying the plausibility in an extreme setting of in-context
+learning [ 4]. We demonstrate that LLMs are capable of performing new tasks in foreign modalities
+without any parameter updates. Specifically, a set of Kexamples {(ui,vi)}K
+i=1are fed to the LLM
+to learn a new task and answer a query ˆuwith
+ˆv∼PLLM(· |ˆu;{(ui,vi)}K
+i=1). (10)
+Sampling ˆvby a single-pass autoregressive decoding is suboptimal due to the distributional shift in
+the representation and the presence of exceptionally long sequences, e.g., an image is quantized into
+over 500 tokens. To this end, we use a progressive decoding method.
+We generalize Eq. (10) into a multi-pass process, where the LLM learns to generate one segment of
+the target sequence at a time. The segment generated from the t-th pass is
+ˆvt∼PLLM(· |[ˆu,ˆv<t′];{([ui,vi
+<t′],vi
+t)}K
+i=1), (11)
+where [·,·]indicates concatenation. t′controls the length of previous segments to condition on, with
+two common cases: (1) a progressive autoregressive (PAR) process with t′=t, where each decoded
+segment conditions on all previously decoded ones; (2) a progressive non-autoregressive (PNAR)
+process with t′= 0 to sample each segment independently, which greatly reduces the sequence
+length requirement for the LLM. In practice, we use PAR to generate the first few token layers given
+task-specific conditions, followed by PNAR to generate the remaining token layers conditioned on
+the previous layers in an unconditional latent refinement process.
+The learning capacity of an in-context setup is far from sufficient for a modality that has not been
+seen during training. So far, there have been no successful attempts in the literature demonstrating
+that a frozen LLM can generate image content. For low-resolution images, LLMs can produce
+images directly using in-context learning, as will be demonstrated with 32 ×32 MNIST images [ 11].
+For higher resolutions, the context length restricts the number of examples. For instance, a context
+window of 8k tokens can only hold less than a dozen 128 ×128 images. Therefore, we operate in
+a denoising subspace to synthesis beyond 32 ×32 resolution. Fig. 2 illustrates one example, with
+detailed definitions in the Appendix.
+4 Experimental Results
+4.1 Experimental Settings
+To verify the compatibility with different LLMs, we train two variants of SPAE, namely SPAE PaLM
+and SPAE GPT. The SPAE PaLM codebook is taken from the input embedding layer of a PaLM 2-S
+checkpoint with a 65k vocabulary of the most frequent sentence pieces. The PaLM 2-L API [ 2] is
+used for in-context learning with SPAE PaLM. SPAE GPTuses a byte-pair encoding vocabulary with
+99k UTF-8 tokens ( https://github.com/openai/tiktoken ), where we obtain the contextual
+token embeddings from OpenAI text-embedding-ada-002 (https://platform.openai.com/
+docs/models/embeddings ). For a fair comparison with prior works [ 27], we use SPAE GPTwith the
+GPT 3.5 text-davinci-003 API ( https://platform.openai.com/docs/models/gpt-3-5 ).
+We configure SPAE to encode a 128 ×128 image into a token pyramid of 6 layers where each layer
+has2k×2ktokens and k= [0,1,2,3,4,4]. Additionally, we train a video-based SPAE model on
+the Kinetics-600 dataset [ 5], and further details can be found in the Appendix. We apply semantic
+guidance loss to the first five layers, with thresholds of 0.98, 0.95, 0.9, 0.85, and 0.8. The CLIP with
+a ViT-L/14 [ 13] vision backbone is used. We use 80 prompt templates from the zero-shot ImageNet
+5
+Table 1. Few-shot classification accuracy on the mini-ImageNet benchmarks. SPAE GPTand SPAE PaLM are
+trained using different vocabularies and embedding sources, with different prompt templates for in-context
+learning. They show the broad compatibility of SPAE but are not for a comparison between the LLMs. The best
+performance with GPT is in italics while the overall best is in bold.
+Task Induction ✓ ✓ ✓ ✓ ✓ ✓
+Avg Method # Layers Inner Shots 1 1 3 5 1 1 1
+: # Tokens Repeats 0 0 0 0 1 3 5
+2-Way Classification
+Frozen [35] - 1.7 33.7 66 66 63 65 63.7 51.3
+LQAE [27] 1: 256 GPT 3.5 1.5 35.2 68.2 69.8 68.5 68.7 65.9 53.97
+SPAE GPT(ours) 2: 5 GPT 3.5 5.3 77.2 84.4 86.0 79.4 77.2 77.1 69.51
+SPAE PaLM (ours) 2: 5 PaLM 2 32.2 84.0 88.5 88.4 85.1 83.6 82.4 77.74
+SPAE PaLM (ours) 3: 21 PaLM 2 27.9 84.8 92.5 92.6 84.8 85.2 85.4 79.03
+5-Way Classification
+Frozen [35] - 0.9 14.5 34.7 33.8 33.8 33.3 32.8 26.26
+LQAE [27] 1: 256 GPT 3.5 1.0 15.7 35.9 36.5 31.9 36.4 45.9 29.04
+SPAE GPT(ours) 2: 5 GPT 3.5 4.3 63.0 63.4 60.6 61.9 62.1 62.1 53.91
+SPAE PaLM (ours) 2: 5 PaLM 2 23.6 64.2 68.0 69.9 63.4 62.0 60.2 58.76
+SPAE PaLM (ours) 3: 21 PaLM 2 20.2 65.1 73.7 74.3 66.4 67.0 66.3 61.86
+classification setup to precompute the CLIP text embeddings for the vocabulary. In addition, we use
+the Adam [ 20] optimizer with loss weights α= 1, β= 0.33, λ= 0.1, η= 0.1, ϕ= 10−4and a
+learning rate of 10−4following a linear warmup/cooldown and root square decay schedule. Following
+the prior work [ 27], SPAE is trained on the ImageNet ILSVRC2012 [ 10] dataset. We train with a
+batch size of 256 for 450k steps. Further details can be found in the Appendix.
+4.2 Main Evaluation
+Few-shot image classification. We evaluate the in-context image understanding capability with
+a frozen LLM on the mini-ImageNet [ 40] few-shot classification benchmark. A set of tokenized
+images and class labels are fed to the language model as context for classification of a new image.
+Following [ 35,27], we evaluate 14 settings controlled by four factors regarding the content of each
+test case: (1) task induction: whether including a preamble to specify the output space; (2) number of
+ways: the number of categories; (3) number of inner shots: the number of unique examples for each
+category; (4) number of repeats: the number of times that each unique example is repeated.
+# Layers: # Tokens0255075100
+1: 1 2: 5 3: 21 4: 85 5: 3412-way 1-shot
+2-way 3-shot
+2-way 5-shot
+5-way 1-shot
+5-way 3-shot
+5-way 5-shot
+Average
+Figure 3. Few-shot classification accuracy on mini-
+ImageNet using different SPAE PaLM layers.We compare SPAE with the state-of-the-art
+methods Frozen [ 35] and LQAE [ 27]. As shown
+in Tab. 1, SPAE GPTconsistently outperforms
+LQAE, both using the same GPT 3.5 model
+and in-context format, while using only 2% of
+its tokens. Fig. 3 shows the performance trend
+when using different number of SPAE PaLM lay-
+ers across six settings with task induction and
+0 repeats. SPAE PaLM with 3 layers achieves the
+best performance which balances between suf-
+ficient semantics and an image sequence length
+that is optimal for LLM in-context learning. Overall, SPAE PaLM yields +25% and+32% average
+accuracy improvement over the state-of-the-art on the 2-way and 5-way benchmarks in Tab. 1.
+Reconstruction quality. We compare the image and video reconstruction quality using the tokens
+produced by SPAE and the VQGAN baseline used in state-of-the-art image [ 7,25,6] and video
+generation [ 45]. We use FID [ 16], Inception Score (IS) [ 33], and LPIPS [ 48] to compare with the
+image VQGAN from MaskGIT [ 7] on the ImageNet validation set, and FVD [ 36] to compare the
+3D-VQGAN from MAGVIT [ 45] on the Kinetics-600 validation set. The results are presented in
+Tab. 2. While SPAE may have more lossy reconstruction compared to VQGAN when using a similar
+number of tokens, this is compensated by going into deeper layers. At the bottom of Tab. 2, we
+showcase the scalability of our model by training on the ImageNet-21k dataset with 13M images and
+list the comparable variant from LDM [32] as a reference.
+Token pyramid visualization. We visualize the tokens produced by SPAE in Fig. 4, where we
+show the raw pyramid or histogram of tokens with top frequencies for the first four layers, with
+reconstructed images from layer 5 and 6. We have the following findings.
+6
+Original
+OriginalLayer 1-4Layer 6Layer 5Layer 6Layer 5
+Layers 1-4OriginalLayers 1-4Layer 6Layer 5Figure 4. Examples of pyramid image tokenization and reconstruction by a 6-layer SPAE. We show the raw
+pyramid or histogram of most frequent tokens for the first four layers, and reconstructed images from layer 5
+and 6. In the pyramid, we use darker cells to show tokens with higher CLIP similarity to the original image.
+For non-English sub-word tokens, we show automatic translation for reference in italic fonts below the original
+token. Circled tokens are mentioned in Section 4.2. See full pyramid visualizations in the Appendix.
+Table 2. Comparison of reconstruction quality between SPAE and VQGAN baselines used in state-of-the-art
+image [7, 25, 6] and video [45] generation models.
+Resolution MethodImage Video
+# Layers (ImageNet ILSVRC2012 [10]) (Kinetics-600 [5])
+: # Tokens FID ↓ IS↑ LPIPS↓ FVD↓
+128×128VQGAN 1: 256 5.48 119.69 0.13 6.79
+SPAE (ours)5: 341 9.49 109.46 0.17 52.28
+6: 597 4.41 133.03 0.12 6.35
+256×256VQGAN 1: 256 4.04 163.95 0.21 -
+SPAE (ours) 6: 597 3.60 168.50 0.19 -
+VQGAN (LDM [32], OpenImages ) 1: 256 5.15 144.55 - -
+SPAE (ours, ImageNet-21k ) 6: 597 3.08 173.79 0.19 -
+First, the SPAE tokens are organized in a pyramid structure, with every layer comprising semantically
+related tokens to the image. The few tokens in the top layers seem to capture the primary theme of
+the image. For instance, in Fig. 4, the token presso (highlighted in orange) represents the espresso
+machine and other tokens like blender refer to related regions. Layer 3 and Layer 4 reveal additional
+details about localized objects. For example, the token Thermo refers to the thermometer in the
+top-left region, while stove appears in the bottom-right area. In addition to nouns, related verbs also
+show up, including pouring, refill, spill , and brew .
+Second, it is worth noting that the CLIP model has an English-only vocabulary. However, thanks
+to the multilingual vocabularies and embeddings from the LLM, SPAE’s semantic guidance is able
+to map to similar concepts in other languages, such as koffie in Dutch and kaffe in Danish as
+corresponding terms to the concept of coffee.
+Third, similar to RQ tokens [22], SPAE tokens can reconstruct the image with progressively refined
+details when more layers, and thus tokens, are utilized. Fig. 4 shows Layer 5 begins to produce a
+reasonable reconstruction while Layer 6 further enhances the level of detail and smoothness.
+Table 3. Few-shot VQA performance on
+Real-Fast-VQA.
+Inner Shots 1 3 5
+Frozen [35] 7.8 10.1 10.5
+SPAE PaLM (ours) 14.3 15.9 15.1Visual question answering. Tab. 3 provides quantitative
+results on the visual question answering (VQA) task. We
+compare with the baseline Frozen [ 35] method on the Real-
+Fast-VQA [ 35] benchmark for few-shot learning. As shown,
+SPAE consistently outperforms Frozen. Unlike Frozen, SPAE
+training does not require backpropagation through the LLM.
+4.3 Qualitative Studies
+This section explores the capability of a frozen PaLM 2, trained solely on language tokens, in
+performing multimodal tasks using in-context learning. We adopt a two-stage decoding process
+for image generation. In stage one, we use AR decoding to produce the first 5 SPAE layers with
+task-specific conditions. Stage two is a task-agnostic NAR decoding process for layer 6 conditioned
+on the first 5 layers.
+Image to text and VQA. We examine two tasks involving visual-text reasoning (1) image caption-
+ing on COCO [ 26] captions; and (2) visual question answering (VQA) on COCO-QA [ 31]. For both
+7
+Baseline:  A man in a suit standing in front of a white wall.SPAE L1:  A man in a red jacket and black pants standing on a snowy mountain.SPAE L2:  A man in a red jacket skiing down a snowy mountain.SPAE L3:  A man skiing down a snowy mountain.SPAE L4:  A person skiing down a snowy mountain.SPAE L5:  A person skiing down a mountain.SPAE L6:  A person skiing down a mountain.Baseline:  A group of people are standing in a field.SPAE L1:  A group of people are standing in a room.SPAE L2:  A kitchen with a stove, sink, and refrigerator.SPAE L3:  A kitchen with a stove, sink, and refrigerator.SPAE L4:  A kitchen with a stove, sink, and refrigerator.SPAE L5:  A kitchen with a stove, sink, and cabinets.SPAE L6:  A kitchen with a sink, stove, and refrigerator.
+Baseline: A man is standing on a rock in the middle of a river.SPAE L1:  A man is standing on a rock in the middle of a river.SPAE L2:  A man is wearing a coat and a hat.SPAE L3:  A man is holding a small dog.SPAE L4:  A teddy bear is sitting on a bed.SPAE L5:  A teddy bear is sitting on a bed.SPAE L6:  A teddy bear is sitting on a bed.
+Baseline: A man and a woman are sitting on a bench in a park.SPAE L1:  A man is holding a baby in his arms.SPAE L2:  A group of people are standing in a line.SPAE L3:  A group of people in costumes at a Halloween party.SPAE L4:  A group of people are dressed up in costumes for Halloween.SPAE L5:  a group of people dressed in costumes at a partySPAE L6:  a table with a bowl of fruit and a vase of flowers
+SPAE: A pizza with pepperoni and cheese on a white plate.SPAE: A man in a suit and tie standing next to a woman in a wedding dress.
+SPAE: A train is stopped at a station.
+Q: what is the young boy riding in the empty parking lotA: Baseline: bikeSPAE: skateboardQ: how many different wines are lined up in glasses on an outdoor tableA: SPAE: 5Q: what bear walking through tall grass A: Baseline: siberianSPAE: grizzlyQ: how many computer screens are displayed with one imageA: SPAE: 3Figure 5. Qualitative samples of image-to-text generation : image captioning and VQA. We compare between
+different layers of SPAE (L1-L6) and a baseline model without semantic guidance or pyramid SAQ.
+Query
+an image of the last digit of 5*7
+an image of the square root of 4
+an image of the number of continents in the world
+an image of {}Genera)onan image of 1+7Context
+❄ LLM
+Figure 6. Examples of text-to-image generation on MNIST using SPAE with a frozen PaLM 2 model. We use
+SPAE to tokenize 50 handwritten images as the context and ask PaLM 2, an LLM trained solely on text tokens,
+to answer complex queries that require generating digit images through SPAE as the output.
+tasks, we provide 10 unique training examples as prompts. In the case of VQA, 10 different answers
+are presented to form a 10-way 1-shot setup.
+We compare SPAE to a baseline model trained with the same frozen language codebook but without
+the proposed semantic guidance or pyramid SAQ. As shown in Fig. 5, when fed with baseline tokens,
+the LLM randomly hallucinates a caption or guesses an answer simply based on the question. Similar
+hallucination can happen if we only use the first two layers of SPAE or five words to represent an
+image, as it provides insufficient context for captioning. Reasonable captions start to appear with 4
+layers or 85 words, while complex scenes may still need the full 6 layers of 597 words.
+LLM generating MNIST images. Fig. 6 shows a few image generation examples on MNIST [ 11].
+The frozen LLM learns about handwritten digit images through 50 context samples tokenized by
+SPAE trained on MNIST. Each sample consists of a preamble "an image of k"and the lexical
+tokens representing an image of digit k. Then we can ask the LLM to answer questions with digit
+images. Specifically, with a query of "an image of 1+7" , we can use progressive AR decoding
+with the LLM to produce a token sequence that can be decoded into an image of 8by SPAE. We
+test with complex questions requiring mathematical reasoning or common sense knowledge, and the
+LLM is able to respond correctly. In addition, the generated digit images appear different from all
+context samples. This demonstrates the cross-modal reasoning capability enabled by SPAE and a
+frozen LLM, with images generated over the text-only interface.
+Conditional image denoising. To the best of our knowledge, there have been no successful attempts
+that demonstrate generic image generation capability using a frozen LLM. To this end, we define a
+simpler denoising setup to explore the capability of LLMs. Fig. 7 demonstrates the conditional image
+denoising tasks, e.g., image outpainting, deblur, inpainting, location translation, rotation, etc. Note
+that, in order to generate images for each task, we utilize 10 pairs of noisy examples with corruption
+rates ranging from 50% to 20%, as discussed in Section 3.2. The full context, which is omitted in
+Fig. 7, can be found in the Appendix.
+8
+Stride∞2561286432168421Stage 1: PAROutpain1ng=>Layer 1-5
+Stage 2: PNARTask-agnos1c=>Layer 6
+Figure 7. Examples of conditional image denoising . We compare different decoding strides for both stages.
+Yellow and blue boxes indicate the selected results. The LLM is provided with ten pairs of noisy examples like
+Fig. 2, which are deferred to the Appendix.
+Original
+Baseline VQ+ frozen codebook+ frozen codebook+ seman7c guidance+ frozen codebook+ semantic guidance+ 2-layer RQ+ frozen codebook+ semantic guidance+ 2-layer SAQ+ frozen codebook+ semantic guidance+ 6-layer pyramid SAQ
+Figure 8. Ablation examples with reconstructed image and semantic tokens for models listed in Tab. 4. For
+non-pyramid tokens, we show a 4 ×4 crop from the first layer corresponding to the region indicated by the black
+box. For pyramid tokens, we use the third layer which consists of 4 ×4 tokens.
+SPAELQAE
+VQGAN
+Input
+Figure 9. Comparison on conditional
+image denoising with different tokeniz-
+ers. All models use the same decoding
+setup with the same ten pairs of prompt
+images available in the Appendix.The top rows of Fig. 7 compare the generation from differ-
+ent decoding strides with the same set of context examples.
+Single-step decoding with infinity stride fails to produce a
+reasonable image, which validates the proposed progressive
+generation approach.
+In Fig. 9, we qualitatively compare SPAE with baseline meth-
+ods VQGAN and LQAE using the same in-context denoising
+procedure. As shown, VQGAN fails to produce reasonable
+images, in part because many words in the LLM output are
+out of its vocabulary. LQAE only produces vague object con-
+tours but cannot recover any visual details. On the contrary,
+SPAE can generate reasonable images.
+Conditional video denoising and other tasks. Due to
+space constraints, we show the examples in the Appendix.
+4.4 Ablation Studies
+The results in Tab. 4 and Fig. 8 verify the effectiveness of
+the proposed designs in SPAE, as evaluated by reconstruction
+quality (FID, IS, LPIPS) and semantic relevance (CLIP score,
+few-shot classification accuracy). We have the following findings. First, simply using a frozen
+codebook negatively affects the reconstruction results, but with semantic guidance it performs
+comparably with the original VQGAN while producing meaningful lexical words. Second, RQ
+hurts reconstruction quality with a frozen codebook. This is different from RQ’s standard setup [ 22]
+where the codebook is learned. Third, SAQ improves both quality and semantic similarity, where
+the pyramid enables representation with much fewer tokens. This allows for accommodating more
+examples within the fixed and constrained in-context length. Finally, per-layer semantic thresholds
+benefit understanding and the dynamic semantic loss weight helps reconstruction. The perceptual loss
+leverages a trained network with access to classification labels, but removing it results in a surprising
+improvement in classification accuracy while greatly hurting the reconstruction.
+9
+Table 4. Ablation studies on codebook, training objective, quantization method, and token structure. Classifica-
+tion accuracy is evaluated under the mini-ImageNet 5-way 1-shot setup.
+Method# LayersFID↓ IS↑ LPIPS↓ CLIP↑Classification
+: # Tokens Accuracy ↑
+Baseline VQ 1: 256 5.48 119.69 0.13 n/a 19.6
++ frozen codebook 1: 256 7.44 101.39 0.17 0.1464 19.5
++ semantic loss 1: 256 5.17 124.41 0.13 0.1518 46.2
++ 2-layer RQ [22]1: 256 11.94 89.01 0.22 0.1595 56.2
+2: 512 6.05 113.93 0.15 0.1547 -
++ 2-layer SAQ1: 256 12.30 93.33 0.21 0.1613 56.6
+2: 512 5.08 125.27 0.14 0.1595 -
++ 6-layer pyramid SAQ
+(SPAE )1: 1 - - - 0.1879 52.0
+2: 5 - - - 0.1868 64.2
+3: 21 - - - 0.1815 65.1
+4: 85 - - - 0.1711 58.5
+5: 341 9.49 109.46 0.17 0.1604 46.3
+6: 597 4.41 133.03 0.12 0.1577 -
+no per-layer thresholds 6: 597 4.33 122.25 0.11 0.1650 59.4 (layer 3)
+no dynamic semantic weight 6: 597 9.00 85.14 0.19 0.1847 65.1 (layer 3)
+no perceptual loss 6: 597 40.47 33.41 0.20 0.1994 69.5 (layer 3)
+5 Conclusion
+Our work unveils the untapped potential of frozen Large Language Models (LLMs) in tackling
+multimodal understanding and generation tasks involving images and videos, without requiring
+explicit training on these modalities. This is achieved by a new method, SPAE, which converts
+between visual content and lexical tokens of variable length, imbued with rich semantic meaning.
+Our findings show the great potential of harnessing the vast knowledge and reasoning capabilities of
+LLMs in the field of computer vision, transcending the limitations of language-only tasks.
+Limitations. More tokens are required to achieve the same level of reconstruction when using
+the frozen language codebook, compared to the existing VQGAN models with learned codebooks.
+The capability of in-context learning is significantly constrained by the acceptable sequence length.
+Although our results suggest the plausibility of image generation, the resolution, quality, and diversity
+is far from the recent text-to-image models trained on large image and text data.
+Broader impact. Our paper showcases the untapped potential of frozen LLMs in multimodal
+understanding and generation tasks involving images and videos, without requiring explicit training on
+these modalities. As an initial research proof-of-concept, we focus on in-context learning, which has
+limitations in learning context and constrained capabilities. Consequently, there is still a substantial
+gap to the recent specialized models for text-to-image ( e.g., Stable Diffusion) or image-to-text that
+have been specifically trained using billions of text-image pairs.
+The potential impact of our research lies in its influence on future studies, specifically in the area
+of integrating vision modalities into the LLMs. For instance, our work can be extended to explore
+finetuning or adapter tuning of LLMs on large-scale text-image datasets. Future research in these
+directions may implicate ethical issues around fairness and transparency. We have found that the
+generated tokens occasionally include slang terms or words that create inappropriate connotations
+related to the subject depicted in the image or video. Such concerns must be thoroughly considered
+and effectively addressed prior to deploying this method in real-world applications.
+Acknowledgments and disclosure of funding. The authors would like to thank anonymous
+reviewers and area chairs their insightful comments, and to Siamak Shakeri, Sergey Ioffe, Jay Yagnik,
+and Boqing Gong for their valuable feedback and constructive discussions. This project is funded in
+part by Carnegie Mellon University’s Mobility21 National University Transportation Center, which is
+sponsored by the US Department of Transportation.
+10
+References
+[1]Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc,
+Arthur Mensch, Katherine Millican, Malcolm Reynolds, et al. Flamingo: a visual language model for
+few-shot learning. In NeurIPS , 2022. 3
+[2]Rohan Anil, Andrew M Dai, Orhan Firat, Melvin Johnson, Dmitry Lepikhin, Alexandre Passos, Siamak
+Shakeri, Emanuel Taropa, Paige Bailey, Zhifeng Chen, et al. PaLM 2 technical report. arXiv:2305.10403 ,
+2023. 1, 2, 3, 5
+[3]Zalán Borsos, Raphaël Marinier, Damien Vincent, Eugene Kharitonov, Olivier Pietquin, Matt Sharifi,
+Dominik Roblek, Olivier Teboul, David Grangier, Marco Tagliasacchi, et al. AudioLM: a language
+modeling approach to audio generation. IEEE/ACM Transactions on Audio, Speech, and Language
+Processing , 2023. 2
+[4]Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared D Kaplan, Prafulla Dhariwal, Arvind
+Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et al. Language models are few-shot learners.
+InNeurIPS , 2020. 1, 2, 3, 5
+[5]Joao Carreira, Eric Noland, Andras Banki-Horvath, Chloe Hillier, and Andrew Zisserman. A short note
+about Kinetics-600. arXiv:1808.01340 , 2018. 5, 7
+[6]Huiwen Chang, Han Zhang, Jarred Barber, AJ Maschinot, Jose Lezama, Lu Jiang, Ming-Hsuan Yang,
+Kevin Murphy, William T Freeman, Michael Rubinstein, et al. Muse: Text-to-image generation via masked
+generative transformers. In ICML , 2023. 6, 7
+[7]Huiwen Chang, Han Zhang, Lu Jiang, Ce Liu, and William T Freeman. MaskGIT: Masked generative
+image transformer. In CVPR , 2022. 2, 6, 7
+[8]Aakanksha Chowdhery, Sharan Narang, Jacob Devlin, Maarten Bosma, Gaurav Mishra, Adam Roberts,
+Paul Barham, Hyung Won Chung, Charles Sutton, Sebastian Gehrmann, et al. PaLM: Scaling language
+modeling with pathways. arXiv:2204.02311 , 2022. 1, 3
+[9]Alexandre Défossez, Jade Copet, Gabriel Synnaeve, and Yossi Adi. High fidelity neural audio compression.
+arXiv:2210.13438 , 2022. 2
+[10] Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. ImageNet: A large-scale hierarchical
+image database. In CVPR , 2009. 6, 7
+[11] Li Deng. The mnist database of handwritten digit images for machine learning research [best of the web].
+IEEE Signal Processing Magazine , 29(6):141–142, 2012. 5, 8
+[12] Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. BERT: Pre-training of deep
+bidirectional transformers for language understanding. In NAACL , 2019. 3
+[13] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas
+Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, et al. An image is worth
+16x16 words: Transformers for image recognition at scale. In ICLR , 2020. 5
+[14] Patrick Esser, Robin Rombach, and Bjorn Ommer. Taming transformers for high-resolution image synthesis.
+InCVPR , 2021. 2
+[15] Songwei Ge, Thomas Hayes, Harry Yang, Xi Yin, Guan Pang, David Jacobs, Jia-Bin Huang, and Devi
+Parikh. Long video generation with time-agnostic VQGAN and time-sensitive transformer. In ECCV ,
+2022. 2, 4
+[16] Martin Heusel, Hubert Ramsauer, Thomas Unterthiner, Bernhard Nessler, and Sepp Hochreiter. Gans
+trained by a two time-scale update rule converge to a local nash equilibrium. In NeurIPS , 2017. 6
+[17] Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin De Laroussilhe, Andrea
+Gesmundo, Mona Attariyan, and Sylvain Gelly. Parameter-efficient transfer learning for nlp. In ICLR ,
+2019. 5
+[18] Edward J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and
+Weizhu Chen. Lora: Low-rank adaptation of large language models. In ICLR , 2021. 5
+[19] Justin Johnson, Alexandre Alahi, and Li Fei-Fei. Perceptual losses for real-time style transfer and
+super-resolution. In ECCV , 2016. 4
+[20] Diederik P Kingma and Jimmy Ba. Adam: A method for stochastic optimization. arXiv:1412.6980 , 2014.
+6
+[21] Jing Yu Koh, Ruslan Salakhutdinov, and Daniel Fried. Grounding language models to images for multi-
+modal generation. In ICML , 2023. 1, 2, 3
+[22] Doyup Lee, Chiheon Kim, Saehoon Kim, Minsu Cho, and Wook-Shin Han. Autoregressive image
+generation using residual quantization. In CVPR , 2022. 3, 4, 7, 9, 10
+11
+[23] Brian Lester, Rami Al-Rfou, and Noah Constant. The power of scale for parameter-efficient prompt tuning.
+InEMNLP , 2021. 5
+[24] Aitor Lewkowycz, Anders Andreassen, David Dohan, Ethan Dyer, Henryk Michalewski, Vinay Ramasesh,
+Ambrose Slone, Cem Anil, Imanol Schlag, Theo Gutman-Solo, et al. Solving quantitative reasoning
+problems with language models. In NeurIPS , 2022. 3
+[25] Jose Lezama, Tim Salimans, Lu Jiang, Huiwen Chang, Jonathan Ho, and Irfan Essa. Discrete predictor-
+corrector diffusion models for image synthesis. In ICLR , 2023. 6, 7
+[26] Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Dollár,
+and C Lawrence Zitnick. Microsoft coco: Common objects in context. In ECCV , 2014. 7
+[27] Hao Liu, Wilson Yan, and Pieter Abbeel. Language quantized autoencoders: Towards unsupervised
+text-image alignment. arXiv:2302.00902 , 2023. 1, 2, 3, 5, 6
+[28] OpenAI. GPT-4 technical report. arXiv:2303.08774 , 2023. 1, 2
+[29] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish
+Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et al. Learning transferable visual models from
+natural language supervision. In ICML , 2021. 4
+[30] Aditya Ramesh, Mikhail Pavlov, Gabriel Goh, Scott Gray, Chelsea V oss, Alec Radford, Mark Chen, and
+Ilya Sutskever. Zero-shot text-to-image generation. In ICML , 2021. 2
+[31] Mengye Ren, Ryan Kiros, and Richard Zemel. Exploring models and data for image question answering.
+InNeurIPS , 2015. 7
+[32] Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Björn Ommer. High-resolution
+image synthesis with latent diffusion models. In CVPR , 2022. 2, 6, 7
+[33] Tim Salimans, Ian Goodfellow, Wojciech Zaremba, Vicki Cheung, Alec Radford, and Xi Chen. Improved
+techniques for training gans. In NeurIPS , 2016. 6
+[34] Hung-Yu Tseng, Lu Jiang, Ce Liu, Ming-Hsuan Yang, and Weilong Yang. Regularizing generative
+adversarial networks under limited data. In CVPR , 2021. 4
+[35] Maria Tsimpoukelli, Jacob L Menick, Serkan Cabi, SM Eslami, Oriol Vinyals, and Felix Hill. Multimodal
+few-shot learning with frozen language models. In NeurIPS , 2021. 6, 7
+[36] Thomas Unterthiner, Sjoerd van Steenkiste, Karol Kurach, Raphael Marinier, Marcin Michalski, and
+Sylvain Gelly. Towards accurate generative models of video: A new metric & challenges. arXiv:1812.01717 ,
+2018. 6
+[37] Aaron Van Den Oord, Oriol Vinyals, et al. Neural discrete representation learning. In NeurIPS , 2017. 2, 3
+[38] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz
+Kaiser, and Illia Polosukhin. Attention is all you need. In NeurIPS , 2017. 1
+[39] Ruben Villegas, Mohammad Babaeizadeh, Pieter-Jan Kindermans, Hernan Moraldo, Han Zhang, Moham-
+mad Taghi Saffar, Santiago Castro, Julius Kunze, and Dumitru Erhan. Phenaki: Variable length video
+generation from open domain textual description. arXiv:2210.02399 , 2022. 2
+[40] Oriol Vinyals, Charles Blundell, Timothy Lillicrap, Daan Wierstra, et al. Matching networks for one shot
+learning. In NeurIPS , 2016. 6
+[41] Alex Wang, Yada Pruksachatkun, Nikita Nangia, Amanpreet Singh, Julian Michael, Felix Hill, Omer Levy,
+and Samuel Bowman. SuperGLUE: A stickier benchmark for general-purpose language understanding
+systems. In NeurIPS , 2019. 3
+[42] Jason Wei, Yi Tay, Rishi Bommasani, Colin Raffel, Barret Zoph, Sebastian Borgeaud, Dani Yogatama,
+Maarten Bosma, Denny Zhou, Donald Metzler, et al. Emergent abilities of large language models. TMLR ,
+2022. 1
+[43] Chenfei Wu, Shengming Yin, Weizhen Qi, Xiaodong Wang, Zecheng Tang, and Nan Duan. Visual
+ChatGPT: Talking, drawing and editing with visual foundation models. arXiv:2303.04671 , 2023. 2
+[44] Pengcheng Yin, Wen-Ding Li, Kefan Xiao, Abhishek Rao, Yeming Wen, Kensen Shi, Joshua Howland,
+Paige Bailey, Michele Catasta, Henryk Michalewski, et al. Natural language to code generation in
+interactive data science notebooks. arXiv:2212.09248 , 2022. 3
+[45] Lijun Yu, Yong Cheng, Kihyuk Sohn, José Lezama, Han Zhang, Huiwen Chang, Alexander G Hauptmann,
+Ming-Hsuan Yang, Yuan Hao, Irfan Essa, et al. MAGVIT: Masked generative video transformer. In CVPR ,
+2023. 2, 4, 6, 7
+[46] Lijun Yu, José Lezama, Nitesh B Gundavarapu, Luca Versari, Kihyuk Sohn, David Minnen, Yong Cheng,
+Agrim Gupta, Xiuye Gu, Alexander G Hauptmann, et al. Language model beats diffusion–tokenizer is key
+to visual generation. arXiv:2310.05737 , 2023. 2
+12
+[47] Neil Zeghidour, Alejandro Luebs, Ahmed Omran, Jan Skoglund, and Marco Tagliasacchi. Soundstream:
+An end-to-end neural audio codec. IEEE/ACM Trans. on Audio, Speech, and Language Processing ,
+30:495–507, 2021. 3, 4
+[48] Richard Zhang, Phillip Isola, Alexei A Efros, Eli Shechtman, and Oliver Wang. The unreasonable
+effectiveness of deep features as a perceptual metric. In CVPR , 2018. 6
+[49] Susan Zhang, Stephen Roller, Naman Goyal, Mikel Artetxe, Moya Chen, Shuohui Chen, Christopher
+Dewan, Mona Diab, Xian Li, Xi Victoria Lin, et al. OPT: Open pre-trained transformer language models.
+arXiv:2205.01068 , 2022. 2
+13
+SPAE: Semantic Pyramid AutoEncoder
+for Multimodal Generation with Frozen LLMs
+Supplementary Materials
+Appendix Overview
+This supplementary document provides additional details to support our main manuscript, organized
+as follows:
+• Appendix A presents more details on the method, including SPAE architecture designs.
+• Appendix B provides additional implementation details, including a video SPAE variant.
+• Appendix C includes more quantitative evaluation results.
+• Appendix D shows more qualitative examples of model generations.
+A Method Details
+𝑙:  ℎ!×𝑤!1:  1×12:  2×23:  4×44:  8×8
+Figure 10. Dilation subsampler visualization .We present additional details about the SPAE
+model in this section.
+Token pyramid. Fig. 10 shows an example
+of the dilation subsampler defined by Eq.
+(1). We select evenly distributed positions
+in each layer to form the token pyramid
+with monotonically increasing layer sizes.
+𝒛𝒆𝑘!𝒛−𝒆𝑘!𝑧̂=𝒆𝑘!+𝒆(𝑘")𝒆𝑘"𝒆𝑘"2𝒛−𝒆𝑘!𝒆𝑘"𝒛𝒆𝑘!
+RQSAQ𝑧̂=12𝒆𝑘!+𝒆𝑘"SAQ[skipped]𝒛𝒛Layer 1Layer 2
+Figure 11. Comparison between RQ and SAQ. We
+show a 2-layer quantization process in a 2-dimensional
+space as an example. At layer l, we use blue for the
+current remainder embeddings zl, green for current post-
+quantization embeddings e(kl), and orange for the re-
+constructed embeddings up to layer lasˆz≤l.Streaming average quantization. Fig. 11
+compares our proposed Streaming Average
+Quantization (SAQ) with Residual Quantization
+(RQ) [ 7,11]. At layer 2, the SAQ remainder
+embedding z2= 2z−e(k1)is at a more sim-
+ilar scale to z, compared to the RQ remainder
+z−e(k1). We find that the scale consistency pro-
+motes better utilization of the frozen language
+codebook despite a large number of layers being
+used. Due to the pyramid structure, quantization
+in the first few layers may be skipped for those
+positions not selected by the dilation subsam-
+pler. Considering the scale consistency across
+quantization layers, the use of SAQ is more ap-
+propriate in this case.
+In-context denoising. Take the image-to-image task in Fig. 2 as an example. The provided context
+are images randomly corrupted in the token space by ϵ(·;r), where the corruption ratio rfollows a
+cosine schedule [2].
+(ui,vi)∼(
+ϵ(
+T(mask(I));ri)
+, ϵ(
+T(I);ri))
+,I∈ M (12)
+whereT(·)represents the SPAE tokenizer and Mis a small set of raw images. mask(·)zeros out
+pixels of the real image to create the condition image, such as masking out the bottom half for
+37th Conference on Neural Information Processing Systems (NeurIPS 2023).arXiv:2306.17842v3  [cs.CV]  28 Oct 2023
+out-painting. The query ˆuis always sampled from Mwithout noise ϵ. To ensure the generation is
+not simply copying the context, we enforce a minimal corruption rate of 20% such that no identical
+image from the context matches the real target image.
+B Implementation Details
+B.1 SPAE Training
+Image SPAE. An image SPAE encodes a 128 ×128 image into 16 ×16 embeddings. Following the
+VQGAN [5] architecture, we use 128 base filters with channel multipliers [1, 2, 2, 4] and 2 residual
+blocks at each scale, which results in 59M parameters in total.
+Image SPAE-8. In addition to the primary SPAE model with six pyramid layers studied in the main
+paper, we also train an SPAE-8 model with eight layers to conduct a more in-depth analysis of the
+coarse-to-fine reconstruction process. The two extra layers each contain 16 ×16 tokens. The semantic
+loss is still applied on the first 5 layers as in the primary model.
+MNIST SPAE. We train another SPAE on the MNIST [ 4] dataset with the same architecture setup.
+We pad the handwritten digit images from 28 ×28 to 32 ×32 pixels, which are then encoded into 4 ×4
+embeddings. Each image is represented by 37 tokens organized in four layers, with sizes of 1 ×1,
+2×2, 4×4, and 4 ×4. We replace the CLIP image embedding with the CLIP text embedding of the
+label for the semantic loss. The model is trained for 10k steps with a batch size of 256. For in-context
+generation, AR decoding with a stride of 4 is used to produce all 37 tokens.
+Video SPAE. We initialize a video SPAE by VQGAN inflation [ 10] from a pretrained image SPAE,
+which encodes 16 frames at 128 ×128 resolution into 4 ×16×16 embeddings. A video SPAE consists
+of 176M parameters. The pyramid layers contain 1 ×1×1, 1×2×2, 1×4×4, 2×8×8, 4×16×16, and
+4×16×16 tokens. The video embedding is obtained as the average CLIP embedding for all frames.
+The model is trained on the Kinetics-600 [ 1] dataset which contains 384k videos. We train with a
+batch size of 512 for 130k steps, which takes 5.8k TPUv4-hours.
+B.2 LLM Prompting
+To generate prompts, we utilize SPAE to quantize an image, or another non-linguistic modality, into a
+pyramid of lexical tokens. Subsequently, we flatten the tokens by concatenating them layer-by-layer,
+following a raster scan, and resulting in a 1-D string. This string, representing the image, is referred
+to as the SPAE string in the following prompts.
+We use task-specific prompt templates to facilitate answer generation with LLMs. The LLM output is
+always parsed by removing leading and trailing whitespace or newline characters.
+Image classification with GPT 3.5. We use the same prompt template as LQAE [ 8] to interact
+with GPT 3.5. For a 2-way 1-shot classification between class lionandvase, the prompt is
+For each of the following input output pairs, output is one of [‘lion’, ‘vase’]
+###
+Input: <SPAE string from a lion image>
+Output: lion
+###
+Input: <SPAE string from a vase image>
+Output: vase
+###
+Input: <SPAE string from the query image>
+Output:
+We use greedy decoding to get a maximum of 7 tokens from GPT 3.5.
+Image classification with PaLM 2. We use the original miniImageNet [ 9] format with PaLM 2.
+The prompt looks like
+15
+Answer with "lion" or "vase".
+<SPAE string from a lion image>
+This is a lion
+<SPAE string from a vase image>
+This is a vase
+<SPAE string from the query image>
+What is this? # Only used in 5-way 3/5-shot setups
+This is a
+We use greedy decoding to get a maximum of 4 tokens from PaLM 2.
+Image captioning. We use greedy decoding to get a maximum of 20 tokens before the first newline
+character with the following prompt:
+Generate a caption sentence based on words describing an image.
+Q: <SPAE string from image 1>
+A: <Caption for image 1>
+Q: <SPAE string from image 2>
+A: <Caption for image 2>
+Q: <SPAE string from the query image>
+A:
+Visual question answering. We use greedy decoding to get a maximum of 4 tokens before the first
+newline character with the prompt template as
+Answer with a single word.
+C: <SPAE string from image 1>
+Q: <Question for image 1>
+A: <Answer for image 1>
+C: <SPAE string from image 2>
+Q: <Question for image 2>
+A: <Answer for image 2>
+C: <SPAE string from the query image>
+Q: <Question for the query image>
+A:
+Image/video generation with PAR decoding. For image or video generation tasks, the condition
+can be a text string or an SPAE string of a condition image. Suppose we use PAR decoding with a
+stride of 4 tokens. At the 4th step, the prompt looks like
+Learn a new language and predict the 4 tokens following the examples.
+C:<condition for image 1>
+Q:<SPAE string (token 1-12) for image 1>
+A:<SPAE string (token 13-16) for image 1>
+C:<condition for image 2>
+Q:<SPAE string (token 1-12) for image 2>
+A:<SPAE string (token 13-16) for image 2>
+16
+C:<condition for the query>
+Q:<SPAE string (token 1-12) for the generated image from previous steps>
+A:
+We use PaLM 2 to generate 8 predicted sequences for the next 4 tokens, starting with a temperature
+T0= 0. We use the sentence piece [ 6] tokenizer to tokenize the output string. If all predictions are
+shorter than 4 tokens, we retry the LLM prediction with a higher temperature. At the i-th retry, the
+temperature is given by
+Ti=ψi∑
+j=12j(13)
+where ψ= 0.01is used.
+Image/video generation with PNAR decoding. We use PNAR decoding to generate SPAE layer 6
+conditioned on layer 1-5. With a stride of 16, the prompt at the 3rd step looks like
+Predict the outputs following the examples.
+Q:<SPAE string from layer 1-5 for image 1>
+A:<SPAE string from layer 6 (token 33-48) for image 1>
+Q:<SPAE string from layer 1-5 for image 2>
+A:<SPAE string from layer 6 (token 33-48) for image 2>
+Q:<SPAE string from layer 1-5 for the generated image from AR decoding>
+A:
+We use PaLM 2 to generate 8 predicted sequences for the next 16 tokens. If the sentence piece parsing
+fails, we retry with the same temperature schedule as in PAR decoding.
+B.3 Corruption Functions
+Pixel-space transformation. We use pixel-space transformation in the conditional image interpola-
+tion tasks with the following setups:
+• Brightness: [±0.8,±0.6,±0.4,±0.2].
+• Contrast: [±0.8,±0.6,±0.4,±0.2].
+• Saturation: [±0.4,±0.3,±0.2,±0.1].
+• Color (RGB): [(0.6,1.4,1),(0.7,1.3,1),(0.8,1.2,1),(0.9,1.1,1),
+(1.1,0.9,1),(1.2,0.8,1),(1.3,0.7,1),(1.4,0.6,1)]
+Overflow pixels are clipped to [0,255].
+Token-space permutation noise. Random permutation is used in the in-context denoising setup for
+conditional image denoising tasks. Specifically, we replace a fraction of tokens each with a random
+token sampled from the entire 65k vocabulary to satisfy a given corruption rate. The corruption rates
+for the 10 examples are [0.5,0.47,0.44,0.41,0.38,0.35,0.32,0.29,0.26,0.23]. The permutation
+noise presents a context distribution with expectation at the real image, but does not contain the
+ground truth tokens to prevent information leakage.
+C Additional Quantitative Results
+Few-shot image classification with different SPAE layers. Tab. 5 present the few-shot mini-
+ImageNet classification performance with each SPAE PaLM layer. These detailed quantitative numbers
+accompany the findings from Fig. 3. As shown, Layer 3 achieves the best overall performance as
+well as in most of the setups, which balances between the level of details and the burden of the LLM.
+17
+Table 5. Few-shot classification accuracy on the mini-ImageNet benchmarks. - means value unavailable due to
+an infeasible sequence length.
+Task Induction ✓ ✓ ✓ ✓ ✓ ✓
+Avg Method # Layers Inner Shots 1 1 3 5 1 1 1
+: # Tokens Repeats 0 0 0 0 1 3 5
+2-Way Classification
+SPAE PaLM 1: 1 PaLM 2 34.8 77.2 81.2 80.3 74.0 73.2 71.5 70.31
+SPAE PaLM 2: 5 PaLM 2 32.2 84.0 88.5 88.4 85.1 83.6 82.4 77.74
+SPAE PaLM 3: 21 PaLM 2 27.9 84.8 92.5 92.6 84.8 85.2 85.4 79.03
+SPAE PaLM 4: 85 PaLM 2 22.8 81.1 91.4 90.4 82.6 84.3 84.7 76.76
+SPAE PaLM 5: 341 PaLM 2 21.2 77.4 88.0 79.1 84.8 74.0 76.1 71.51
+SPAE PaLM 6: 597 PaLM 2 21.8 73.8 70.8 62.4 64.8 62.1 58.6 59.19
+SPAEdisjoint
+PaLM 2: 5 PaLM 2 24.8 79.8 84.5 83.7 80.8 78.5 78.4 72.93
+SPAEdisjoint
+PaLM 3: 21 PaLM 2 21.4 81.4 89.2 87.9 82.6 81.7 80.6 74.98
+5-Way Classification
+SPAE PaLM 1: 1 PaLM 2 26.8 52.0 50.9 49.9 51.9 48.4 47.9 46.83
+SPAE PaLM 2: 5 PaLM 2 23.6 64.2 68.0 69.9 63.4 62.0 60.2 58.76
+SPAE PaLM 3: 21 PaLM 2 20.2 65.1 73.7 74.3 66.4 67.0 66.3 61.86
+SPAE PaLM 4: 85 PaLM 2 16.1 58.5 67.2 69.1 64.0 66.4 67.4 58.39
+SPAE PaLM 5: 341 PaLM 2 12.1 46.3 55.9 67.2 43.3 46.3 - -
+SPAE PaLM 6: 597 PaLM 2 12.1 35.7 - - - - - -
+Table 6. Reconstruction quality and semantic relevance of SPAE-8 tokens.
+Model# LayersFID↓ IS↑ LPIPS↓CLIP↑Relative
+: # Tokens CLIP ↑
+SPAE-81: 1 - - - 0.2051 0.8018
+2: 5 - - - 0.2046 0.7994
+3: 21 - - - 0.2012 0.7834
+4: 85 - - - 0.1896 0.7289
+5: 341 43.42 49.78 0.32 0.1709 0.6412
+6: 597 8.93 116.12 0.18 0.1667 0.6213
+7: 853 4.78 135.01 0.13 0.1647 0.6119
+8: 1109 3.89 140.55 0.11 0.1634 0.6058
+Few-shot image classification with SPAEdisjoint.Following the previous work of LQAE [ 8], we
+train our SPAE on the ImageNet training split [ 3] and present the comparative results in the main
+paper. There is a possibility of overlap between the training split of ImageNet and the mini-ImageNet
+dataset used in the few-shot classification task [ 9]. Since few studies have investigated this before,
+we present the results of training SPAE on the ImageNet training split after excluding the 20 classes
+used in the few-shot mini-ImageNet classification task. This creates a even more challenging setting
+as the visual classes have never been seen during the training of the tokenizer or the LLMs.
+As demonstrated in Tab. 5, we present the results of training our tokenizer on the disjointed data,
+referred to as SPAEdisjoint. As expected, we observe a slight decrease in performance, since both
+SPAE and LLMs need to generalize to the test classes that are outside the training data distribution.
+Despite the fact that the baseline is trained on unlabeled images sampled from the mini-ImageNet
+test classes, SPAEdisjoint
+PaLM still demonstrates a significant improvement over the state-of-the-art baseline
+on the 2-way benchmarks.
+Token quality with more SPAE layers. Tab. 6 shows the per-layer reconstruction quality and
+semantic relevance of tokens from the SPAE-8 model in comparison to the default model. With more
+token layers, the model gains larger capacity for both semantic and appearance, where the appearance
+gets pushed into deeper layers. At layer 1 to 6, SPAE-8 yields consistently higher CLIP scores than
+SPAE. At the last three layers, SPAE-8 also has better reconstruction quality than the last two layers
+18
+Figure 12. Training curves of SPAE in comparison to VQGAN. Metrics are presented regarding reconstruction
+quality (FID, IS, LPIPS) and semantic relevance (CLIP).
+of SPAE. These results suggest the potential of better reconstruction quality and semantic relevance
+from using more token layers.
+Training efficiency. All models used in the ablation study in Tab. 3, including VQGAN [ 5] and
+RQ-V AE [ 7] variants, are trained using the same setup for fair comparisons. Fig. 12 compares the
+training curves of FID, IS, LPIPS, and CLIP score of SPAE and VQGAN. As shown, within 40% of
+the training steps, SPAE shows better FID than the final VQGAN checkpoint. The CLIP score keeps
+improving as the training proceeds, while the LPIPS saturates quite early.
+D Additional Qualitative Examples
+Token pyramid visualization. Fig. 13 shows tokenization and reconstruction samples by a 6-layer
+SPAE from ImageNet validation set. Key concepts are captured in the first few layers, whereas the
+later layers focus on the visual appearance. In the coffee machine example, many keywords are
+present to describe various aspects from the stove to the thermometer. In the parrot case, a single
+unified concept is repeatedly highlighted.
+Coarse-to-fine reconstruction. Fig. 14 shows reconstruction samples by SPAE-8 from ImageNet
+validation set. We compare the reconstructed images from layer 5 to layer 8 to demonstrate the
+coarse-to-fine progress.
+Conditional image interpolation. To the best of our knowledge, there have been no successful
+attempts that demonstrate generic image generation capability using a frozen LLM. To this end, we
+define a very simple setup to explore the interpolation capability of LLM, where the conditions are
+19
+integers from 1 to 9. The target images are created with different pixel-space transformations detailed
+in . As shown in Fig. 15, images 1-4 and 6-9 are fed as context to produce image 5, where the model
+interpolates the variable property. Fig. 16 shows generated samples at 256 ×256 resolution under the
+same setup.
+Conditional image denoising. We use PAR decoding to produce the first 5 token layers with task-
+specific conditions, followed by task-agnostic PNAR decoding to fill in layer 6. Fig. 17 visualizes
+the input pairs for the image-to-image generation examples in Figs. 7 and 9, with more examples in
+Fig. 18. Under the in-context denoising setup, the LLM generates novel images based on the provided
+context, where multiple different generations can be obtained.
+Multimodal outputs. Fig. 19 shows a task requiring a single LLM to output both image and text,
+where it first inpaints the center region of an image using in-context denoising and then creates
+multiple captions for the output image.
+Image-to-video denoising. Fig. 20 shows an image-to-video example with the frame prediction
+task using progressive in-context denoising. The input is one frame tokenized by the image SPAE,
+while the output is a 16-frame clip tokenized by the video SPAE. We follow the same two-stage
+procedure as image-to-image generation, with more steps in each stage to account for the longer
+sequence. Due to the sequence length limit, only four samples can be fit into the context, which limits
+LLM’s performance for this task.
+20
+Original(a) Many keywords are present to describe various aspects from the stove to the thermometer.
+Original
+(b) A single unified concept is repeatedly highlighted.
+Figure 13. Examples of multi-layer image tokenization and reconstruction by a 6-layer SPAE. For visualiza-
+tion purposes only, we use darker cells to show tokens with higher CLIP scores regarding the original image.
+For non-English sub-word tokens, we show automatic translation for reference in italic fonts below the original
+token. We show tokens in all six layers, along with reconstructed images from the last two layers.
+21
+OriginalLayer 5Layer 6Layer 7Layer 8Figure 14. Examples of coarse-to-fine image reconstruction by SPAE-8. The top 5 layers reconstruct a noisy
+image. The appearance details gradually get refined as more token layers are aggregated by the streaming
+average quantization process.
+BrightnessContrastSaturation
+Color
+152346789Condition:ContextContextGeneration
+Figure 15. Examples of conditional image interpolation of different image transformations.
+22
+Genera&on
+…
+…
+………………ContextContext
+Figure 16. Examples of conditional image interpolation at 256x256 resolution. The LLM is provided with
+eight condition images for the interpolation following the setup in Fig. 15.
+23
+Stage 1: ARLayer 1-5Task-speciﬁcStage 2: NARLayer 6Task-agnos<cContextCondi)on
+Genera)onsCorrup&on:   50%20%Outpainting
+(a) Outpainting the bottom half. Two generated images are shown.
+Stage 1: ARLayer 1-5Task-speciﬁcStage 2: NARLayer 6Task-agnosticContextCondi)on
+Genera)onCorruption:   50%20%
+(b) Deblur from a gaussian filter.
+Stage 1: ARLayer 1-5Task-speciﬁcStage 2: NARLayer 6Task-agnos<cContextCondi)on
+GenerationCorruption:   50%20%
+(c) Inpainting the center region.
+Stage 1: ARLayer 1-5Task-speciﬁcStage 2: NARLayer 6Task-agnos<cContextCondition
+Genera,onCorruption:   50%20%
+(d) Spatial translation to the right.
+Stage 1: ARLayer 1-5Task-specificStage 2: NARLayer 6Task-agnos<cContextCondi)on
+GenerationCorrup&on:   50%20%
+(e) Clockwise rotation by 90 degrees.
+Figure 17. Examples of conditional image denoising . All input samples for the in-context learning are
+presented for the examples in Figs. 7 and 9. The LLM generates novel images based on the provided context.
+Multiple different generations can be obtained from the same set of context samples.
+24
+Stage 1: ARLayer 1-5Task-specificStage 2: NARLayer 6Task-agnos<cContextCondition
+Genera,onCorruption:   50%20%(a) Inpainting the center region.
+Stage 1: ARLayer 1-5Task-specificStage 2: NARLayer 6Task-agnos<cContextCondition
+GenerationCorrup&on:   50%20%
+(b) Outpainting the bottom half.
+Figure 18. More examples of conditional image denoising . The LLM generates novel images based on the
+provided context image pairs.
+Stage 1: ARLayer 1-5Task-specificStage 2: NARLayer 6Task-agnosticContextCondition
+GenerationCorruption:   50%20%A dog with a long, curly coat of fur.A small dog with a big smile.A small dog with long hair looks up at the camera.Caption
+Figure 19. Examples of multimodal outputs from the LLM. The LLM generates a novel image with multiple
+captions based on the provided context.
+25
+Condi&onContextCorrup&on35%
+11%Stage 1: AR; Layer 1-5; Task-speciﬁcStage 2: NAR; Layer 6; Task-agnos=cGenera&onFigure 20. Examples of image-to-video denoising : frame prediction. We follow the same two-stage generation
+procedure as in image-to-image tasks. Due to the sequence length limit, only four samples can be fit into the
+context. The generated video clip appear visually different from the context samples, especially around the
+reflections of the bowl.
+26
+References
+[1]Joao Carreira, Eric Noland, Andras Banki-Horvath, Chloe Hillier, and Andrew Zisserman. A short note
+about Kinetics-600. arXiv:1808.01340 , 2018. 15
+[2]Huiwen Chang, Han Zhang, Lu Jiang, Ce Liu, and William T Freeman. MaskGIT: Masked generative
+image transformer. In CVPR , 2022. 14
+[3]Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. ImageNet: A large-scale hierarchical
+image database. In CVPR , 2009. 18
+[4]Li Deng. The mnist database of handwritten digit images for machine learning research [best of the web].
+IEEE Signal Processing Magazine , 29(6):141–142, 2012. 15
+[5]Patrick Esser, Robin Rombach, and Bjorn Ommer. Taming transformers for high-resolution image synthesis.
+InCVPR , 2021. 15, 19
+[6] Taku Kudo and John Richardson. Sentencepiece: A simple and language independent subword tokenizer
+and detokenizer for neural text processing. In EMNLP , 2018. 17
+[7]Doyup Lee, Chiheon Kim, Saehoon Kim, Minsu Cho, and Wook-Shin Han. Autoregressive image
+generation using residual quantization. In CVPR , 2022. 14, 19
+[8]Hao Liu, Wilson Yan, and Pieter Abbeel. Language quantized autoencoders: Towards unsupervised
+text-image alignment. arXiv:2302.00902 , 2023. 15, 18
+[9]Oriol Vinyals, Charles Blundell, Timothy Lillicrap, Daan Wierstra, et al. Matching networks for one shot
+learning. In NeurIPS , 2016. 15, 18
+[10] Lijun Yu, Yong Cheng, Kihyuk Sohn, José Lezama, Han Zhang, Huiwen Chang, Alexander G Hauptmann,
+Ming-Hsuan Yang, Yuan Hao, Irfan Essa, et al. MAGVIT: Masked generative video transformer. In CVPR ,
+2023. 15
+[11] Neil Zeghidour, Alejandro Luebs, Ahmed Omran, Jan Skoglund, and Marco Tagliasacchi. Soundstream:
+An end-to-end neural audio codec. IEEE/ACM Trans. on Audio, Speech, and Language Processing ,
+30:495–507, 2021. 14
+27

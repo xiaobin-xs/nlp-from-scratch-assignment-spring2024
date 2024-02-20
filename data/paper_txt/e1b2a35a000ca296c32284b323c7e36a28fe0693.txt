@@ -1,0 +1,1773 @@
+FACTORIZED CONTRASTIVE LEARNING :
+Going Beyond Multi-view Redundancy
+Paul Pu Liang1∗, Zihao Deng2∗, Martin Q. Ma1∗
+James Zou3, Louis-Philippe Morency1, Ruslan Salakhutdinov1
+1Carnegie Mellon University,2University of Pennsylvania,3Stanford University
+pliang@cs.cmu.edu,zihaoden@cs.cmu.edu,qianlim@cs.cmu.edu
+Abstract
+In a wide range of multimodal tasks, contrastive learning has become a particularly
+appealing approach since it can successfully learn representations from abundant
+unlabeled data with only pairing information (e.g., image-caption or video-audio
+pairs). Underpinning these approaches is the assumption of multi-view redundancy
+- that shared information between modalities is necessary and sufficient for down-
+stream tasks. However, in many real-world settings, task-relevant information is
+also contained in modality-unique regions: information that is only present in one
+modality but still relevant to the task. How can we learn self-supervised multimodal
+representations to capture both shared and unique information relevant to down-
+stream tasks? This paper proposes FACTOR CL, a new multimodal representation
+learning method to go beyond multi-view redundancy. FACTOR CLis built from
+three new contributions: (1) factorizing task-relevant information into shared and
+unique representations, (2) capturing task-relevant information via maximizing MI
+lower bounds and removing task-irrelevant information via minimizing MI upper
+bounds, and (3) multimodal data augmentations to approximate task relevance with-
+out labels. On large-scale real-world datasets, FACTOR CLcaptures both shared
+and unique information and achieves state-of-the-art results on six benchmarks.
+1 Introduction
+Learning representations from different modalities is a central paradigm in machine learning [ 47].
+Today, a popular learning method is to first pre-train general representations on unlabeled multimodal
+data before fine-tuning on task-specific labels [ 10,39,46,47,49]. These current multimodal pre-
+training approaches have largely been inherited from prior work in multi-view learning [ 13,57]
+that exploit a critical assumption of multi-view redundancy : the property that shared information
+between modalities is almost exactly what is relevant for downstream tasks [ 69,72,75]. When this
+assumption holds, approaches based on contrastive pre-training to capture shared information [ 13,40,
+60, 71], followed by fine-tuning to keep task-relevant shared information [75], have seen successful
+applications in learning from images and captions [ 60], video and audio [ 3], speech and transcribed
+text [ 57], and instructions and actions [ 21]. However, our paper studies two fundamental limitations
+in the application of contrastive learning (CL) to broader real-world multimodal settings (see Figure 1
+for a visual depiction and experimental results showing the performance drop of CL):
+1.Low shared information relevant to tasks: There exists a wide range of multimodal tasks
+involving small amounts of shared information, such as between cartoon images and figurative
+captions (i.e., not literal but metaphoric or idiomatic descriptions of the images [ 51,87]). In these
+situations, standard multimodal CL will only receive a small percentage of information from the
+learned representations and struggle to learn the desired task-relevant information.
+2.High unique information relevant to tasks: Many real-world modalities can provide unique
+information not present in other modalities. Examples include healthcare with medical sensors or
+robotics with force sensors [ 44,48]. Standard CL will discard task-relevant unique information,
+leading to poor downstream performance.
+∗First three authors contributed equally.
+37th Conference on Neural Information Processing Systems (NeurIPS 2023).arXiv:2306.05268v2  [cs.LG]  30 Oct 2023
+Figure 1: Left: We define S=I(X1;X2;Y)as task-relevant shared information and U1=I(X1;Y∣X2),
+U2=I(X2;Y∣X1)as task-relevant unique information. Right : On controllable datasets with varying ratios
+ofS,U1, and U2, standard CL captures Sbut struggles when there is more U1andU2. Our FACTOR CL
+approach maintains best performance, whereas SimCLR [ 13] and SupCon [ 40] see performance drops as unique
+information increases, and Cross+Self [ 33,35,43,88] recovers in fully unique settings but suffers at other ratios.
+In light of these limitations, how can we design suitable multimodal learning objectives that work
+beyond multi-view redundancy? In this paper, starting from the first principles in information
+theory, we provide formal definitions of shared and unique information via conditional mutual
+information and propose an approach, FACTORIZED CONTRASTIVE LEARNING (FACTOR CLfor
+short), to learn these multimodal representations beyond multi-view redundancy using three key
+ideas. The first idea is to explicitly factorize shared and unique representations. The second idea is to
+capture task-relevant information via maximizing lower bounds on MI and remove task-irrelevant
+information via minimizing upper bounds on MI, resulting in representations with sufficient and
+necessary information content. Finally, a notion of task relevance without explicit labels in the self-
+supervised setting is achieved by leveraging multimodal augmentations . Experimentally, we evaluate
+the effectiveness of FACTOR CLon a suite of synthetic datasets and large-scale real-world multimodal
+benchmarks involving images and figurative language [ 87], prediction of human sentiment [ 90],
+emotions [ 92], humor [ 27], and sarcasm [ 12], as well as patient disease and mortality prediction from
+health indicators and sensor readings [ 37], achieving new state-of-the-art performance on six datasets.
+Overall, we summarize our key technical contributions here:
+1.A new analysis of contrastive learning performance showing that standard multimodal CL fails to
+capture task-relevant unique information under low shared or high unique information cases.
+2. A new contrastive learning algorithm called F ACTOR CL:
+(a)FACTOR CLfactorizes task-relevant information into shared and unique information, expand-
+ing contrastive learning to better handle low shared or high unique information.
+(b)FACTOR CLoptimizes shared and unique information separately, by removing task-irrelevant
+information via MI upper bounds and capturing task-relevant information via lower bounds,
+yielding optimal task-relevant representations.
+(c)FACTOR CLleverages multimodal augmentations to approximate task-relevant information,
+enabling self-supervised learning from our proposed F ACTOR CL.
+2 Analysis of Multi-view Contrastive Learning
+We begin by formalizing definitions of four types of information: shared, unique, task-relevant, and
+task-irrelevant information in multimodal data. To formalize the learning setting, we assume there
+exist two modalities expressed as random variables X1andX2with outcomes x1andx2, and a task
+with the random variable Yand outcome y. We denote X−ias the other modality where appropriate.
+Shared and unique information : We formalize shared and unique information by decomposing the
+total multimodal information I(X1, X2;Y)into three conditional mutual information (MI) terms:
+I(X1, X2;Y)=I(X1;X2;Y)
+⌟⟨⟨⟪rl⟫l⟩⟩⟪⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟨⟨⟪rl⟫m⟩⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟨⟨⟪rl⟫r⟩⟩⟩⟪
+S=shared+I(X1;Y∣X2)
+⌟⟨⟨⟪rl⟫l⟩⟩⟪⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟨⟨⟪rl⟫m⟩⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟨⟨⟪rl⟫r⟩⟩⟩⟪
+U1=uniqueness in X1+I(X2;Y∣X1)
+⌟⟨⟨⟪rl⟫l⟩⟩⟪⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟨⟨⟪rl⟫m⟩⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟪⟨⟨⟪rl⟫mo⟨⌟⟨⟨⟪rl⟫r⟩⟩⟩⟪
+U2=uniqueness in X2, (1)
+where I(X1, X2;Y)=∫p(x1, x2, y)logp(x1,x2,y)
+p(x1,x2)p(y)dx1dx2dyis the total MI between the
+joint random variable X1, X2and the task Y,S=I(X1;X2;Y)=I(X1;X2)−
+I(X1;X2∣Y)=∫p(x1, x2)logp(x1,x2)
+p(x1)p(x2)dx1dx2−I(X1;X2∣Y)is the task-relevant shared in-
+2
+formation, I(X1;X2∣Y)=∫p(x1, x2∣y)logp(x1,x2∣y)
+p(x1∣y)p(x2∣y)dx1dx2dyis the task-irrelevant shared
+information, and U1=I(X1;Y∣X2),U2=I(X2;Y∣X1)denote unique task-relevant information.
+Limitations of CL : Current approaches for CL maximize mutual information I(X1;X2)(and
+subsequently task-relevant shared information I(X1;X2;Y)during supervised fine-tuning), without
+modeling unique information. These methods generally learn a pair of representations [72, 75],
+Z1=arg max
+Z1∶=fθ(X1)I(Z1;X2), Z 2=arg max
+Z2∶=fθ(X2)I(X1;Z2). (2)
+For example, Z1could encode images X1andZ2encodes text X2via maximizing a lower bound on
+I(X1;X2)using the NCE objective [ 57]. The NCE objective falls into a broader class of contrastive
+learning methods [ 13,15,28,40,60] that model the ratio between joint densities p(x1, x2)and
+product of marginal densities p(x1)p(x2)using positive and negative samples [ 56,58,59,78,83] or
+probabilistic classifiers [ 54,76]. It has been shown that contrastive learning works well under the
+assumption of multi-view redundancy [4, 31, 69, 70, 75]:
+Definition 1. (Multi-view redundancy) ∃ϵ>0such that I(X1;Y∣X2)≤ϵandI(X2;Y∣X1)≤ϵ.
+In other words, the task-relevant information in data is mostly shared across both views and the
+unique information is at most a small ϵ. From a representation perspective, Tian et al. [71] further
+introduces the assumption that the optimal representation is minimal and sufficient, where all learned
+task-relevant information is shared information: I(Z1;Y∣X2)=I(Z2;Y∣X1)=0. While the multi-
+view redundancy is certainly true for particular types of multimodal distributions, it crucially ignores
+settings that display multi-view non-redundancy and unique information can be important, such as
+when health indicators, medical sensors, and robotic visual or force sensors each provide unique
+information not present in other modalities [44, 48].
+Definition 2. (Multi-view non-redundancy) ∃ϵ>0such that I(X1;Y∣X2)>ϵorI(X2;Y∣X1)>ϵ.
+Under multi-view non-redundancy, we show that standard CL only receives a weak training signal
+since it can only maximize a lower bound on shared information I(X1;X2), and struggles to learn
+task-relevant unique information. We formalize this intuition with the following statement:
+Theorem 1. (Suboptimality of standard CL) When there is multi-view non-redundancy as in Definition
+2, given optimal representations {Z1, Z2}that satisfy Eq.(2 and I(Z1;Y∣X2)=I(Z2;Y∣X1)=
+0[71], we have that
+I(Z1,Z2;Y)=I(X1,X2;Y)−I(X1;Y∣X2)−I(X2;Y∣X1)=I(X1;X2)−I(X1;X2∣Y)<I(X1,X2;Y).
+(3)
+Correspondingly, the Bayes error rate Pe(Z1, Z2)∶=1−Ep(z1,z2)[max y∈YP(ˆY=y∣z1, z2)]of
+contrastive representations {Z1, Z2}for a downstream task Yis given by:
+Pe≤1−exp[I(X1, X2;Y)−I(X1;Y∣X2)−I(X2;Y∣X1)−H(Y)] (4)
+=1−exp[I(X1;X2;Y)−H(Y)] (5)
+We include proofs and a detailed discussion of the assumptions in Appendix B. Based on
+Eq.(3), I(Z1, Z2;Y)decreases with higher task-relevant unique information I(X1;Y∣X2)and
+I(X2;Y∣X1); we call this the difference I(X1, X2;Y)−I(Z1, Z2;Y)theuniqueness gap . The
+uniqueness gap measures the loss in task-relevant information between the input and encoded rep-
+resentation: as task-relevant unique information grows, the uniqueness gap increases. In addition,
+I(Z1, Z2;Y)also drops with lower I(X1;X2)(i.e., two modalities sharing little information to
+begin with), or with higher I(X1;X2∣Y)(i.e., when the shared information is mostly task-irrelevant).
+Similarly, in Eq.(5), the Bayes error rate of using {Z1, Z2}for prediction is directly related to the
+task-relevant information in {Z1, Z2}: error on the downstream task increases with higher unique
+information and lower shared information.
+3 F ACTORIZED CONTRASTIVE LEARNING
+We now present a suite of new CL objectives that alleviate the challenges above and work at all ranges
+of shared and unique information. At a high level, we aim to learn a set of factorized representations
+ZS1, ZS2, ZU1, ZU2representing task-relevant information in X1shared with X2, inX2shared with
+X1, unique to X1, and unique to X2respectively. As common in practice [ 60,71], we define
+3
+Figure 2: FACTOR CL: We propose a self-supervised CL method to learn factorized representations ZS1,ZS2,
+ZU1, andZU2to capture task-relevant information shared in both X1andX2, unique to X1, and unique to X2.
+By starting with information-theoretic first principles of shared and unique information, we design contrastive
+estimators to both capture task-relevant andremove task-irrelevant information, where a notion of task-relevance
+without explicit labels is afforded by a new definition of multimodal augmentations X′
+1,X′
+2. Lower bounds are
+in green and upper bounds are in red.
+neural networks fθwith trainable parameters θto extract representations from inputs X1andX2.
+Learning these parameters requires optimizing differentiable and scalable training objectives to
+capture task-relevant shared and unique information (see overview in Figure 2):
+ZS1=arg max
+Z1=fθ(X1)I(Z1;X2;Y), Z S2=arg max
+Z2=fθ(X2)I(Z2;X1;Y), (6)
+ZU1=arg max
+Z1=fθ(X1)I(Z1;Y∣X2), Z U2=arg max
+Z2=fθ(X2)I(Z2;Y∣X1). (7)
+where I(Z1;X2;Y)=I(Z1;X2)−I(Z1;X2∣Y)is the shared information and I(Z2;X1;Y)=
+I(Z2;X2)−I(Z2;X1∣Y)is the unique information. One important characteristic of our framework
+is that when unique information is zero: I(X1;Y∣X2)=0andI(X2;Y∣X1)=0, or all shared
+information is task-relevant: I(X1;X2;Y)=I(X1;X2), our framework recovers standard CL as in
+Eq.(2). However, as we have previously indicated and will show empirically, these assumptions can
+easily be violated, and our framework enlarges Eq.(2) to cases where unique information is present.
+The learned Zs can then be used as input to a linear classifier and fine-tuned to predict the label for
+multimodal classification or retrieval tasks. However, the shared and unique MI terms above are
+often intractable in practice. In the next section, we will build up our method step by step, eventually
+showing that each term in Eqs.(6- 7) can be approximated as follows:
+S=I(X1;X2;Y)≥INCE(X1;X2)−INCE-CLUB (X1;X2∣X′
+1, X′
+2) (8)
+Ui=I(Xi;Y∣X−i)≥INCE(Xi;X′
+i)−INCE-CLUB (X1;X2)+INCE(X1;X2∣X′
+1, X′
+2) (9)
+where INCEandINCE-CLUB are scalable contrastive estimators (Section 3.1) and X′
+1, X′
+2are suitable
+data augmentations (Section 3.2) on each modality. Overall, these equations can be interpreted as
+both positive and negative signals to learn representations for SandU. For shared information
+S, the estimator maximizes task-relevant shared information via INCE(X1;X2)while removing
+task-irrelevant shared information via a novel upper bound −INCE-CLUB (X1;X2∣X′
+1, X′
+2). For unique
+information Ui, we capture task-relevant uniqueness via +INCE(Xi;X′
+i)while non-unique informa-
+tion is removed via −(INCE-CLUB (X1;X2)−INCE(X1;X2∣X′
+1, X′
+2)). In the following sections, we
+derive this final objective step-by-step: (1) approximating the MI objectives in SandUwith CL
+estimators, (2) relaxing the dependence on labels Ywith self-supervised data augmentations, finally
+(3) discussing overall training and implementation details of end-to-end self-supervised learning.
+3.1 Supervised F ACTOR CL with shared and unique information
+To capture shared and unique information via an objective function, we will need to maximize lower
+bounds for all terms with a positive sign in Eq.(8) and (9) (I(X1;X2), I(Xi;Y), I(X1;X2∣Y))
+and minimize upper bounds for all terms with a negative sign (I(X1;X2), I(X1;X2∣Y)). Our first
+theorem derives general lower and upper bounds for MI terms as variants of contrastive estimation:
+4
+0246810121416Mutual InformationGaussian, dim=20
+True MI
+NCE
+CLUB
+NCECLUB
+Gaussian, dim=50 Gaussian, dim=100 Gaussian, dim=200Figure 3: Estimated INCElower bound [ 57] and our proposed upper bound INCE-CLUB on sample distributions
+with changing mutual information: our upper bound is tighter, more accurate, and more stable than ICLUB upper
+bound [ 16], and also comes for ‘free’ via jointly estimating both lower and upper bounds simultaneously. We
+find that as dimension increases, the ICLUB estimator collapses to zero and no longer tracks true MI.
+Theorem 2. (Contrastive estimators for I(X1;X2)) Defining the NCE and NCE-CLUB estimators,
+INCE(X1;X2)=Ex1,x+
+2∼p(x1,x2)
+x−
+2∼p(x2)[logexpf(x1, x+
+2)
+∑kexpf(x1, x−
+2)] (10)
+INCE-CLUB (X1;X2)=Ex1,x+
+2∼p(x1,x2)[f∗(x1, x+
+2)]−Ex1∼p(x1)
+x−
+2∼p(x2)[f∗(x1, x−
+2)] (11)
+where f∗(x1, x2)is the optimal critic from INCEplugged into the ICLUB objective [ 16]. We call the
+proposed plug-in objective Eq.(11) INCE-CLUB , and obtain lower and upper bounds on I(X1;X2):
+INCE(X1;X2)≤I(X1;X2)≤INCE-CLUB (X1;X2). (12)
+Proof. The lower bound INCE(X1;X2)≤I(X1;X2)follows from Oord et al. [57]: optimizing the
+objective leads to an optimal critic [ 59]f∗=logp(x1∣x2)+c(x1), with a deterministic function
+c(⋅). Plugging optimal critic f∗intoINCE-CLUB (X1;X2)cancels out the c(x1)term and yields
+INCE-CLUB (X1;X2)andI(X1;X2)≤INCE-CLUB . We include a detailed proof in Appendix C.1.
+INCE-CLUB (X1;X2)gives a desired upper bound of I(X1;X2)“for free” while avoiding separately
+optimizing lower bound and upper bounds. In Figure 3, we show these two bounds in practice across
+two Gaussian distributions X1andX2with varying amounts of MI I(X1;X2). We use the second
+formulation of ICLUB [16], which assumes p(x1∣x2)to be unknown. Our upper bound is empirically
+tighter (see Figure 3) and comes for “free” via jointly maximizing the lower bound INCE. These
+lower and upper bounds can be seen as new contrastive objectives over positive and negative (x1, x2)
+pairs, enabling a close integration with existing pre-training paradigms. Finally, we can similarly
+obtain bounds for the conditional MI INCE(X1;X2∣Y)≤I(X1;X2∣Y)≤INCE-CLUB (X1;X2∣Y):
+INCE(X1;X2∣Y)=Ep(y)⎡⎢⎢⎢⎢⎣Ex1,x+
+2∼p(x1,x2∣y)
+x−
+2∼p(x2∣y)[logexpf(x1,x+
+2,y)
+∑kexpf(x1,x−
+2,y)]⎤⎥⎥⎥⎥⎦(13)
+INCE-CLUB (X1;X2∣Y)=Ep(y)⎡⎢⎢⎢⎢⎣Ex1,x+
+2∼p(x1,x2∣y)[f∗(x1,x+
+2,y)]−Ex1∼p(x1∣y)
+x−
+2∼p(x2∣y)[f∗(x1,x−
+2,y)]⎤⎥⎥⎥⎥⎦(14)
+These two bounds result in conditional CL objectives [ 50,73,77] - they differ critically from standard
+CL methods since they capture task-irrelevant shared information that remains between X1and
+X2after observing Y. This task-irrelevant shared information is removed by minimizing its upper
+bound. Note that f(x1, x2, y)here denotes a different function from f(x1, x2)in Eq.(10), as the
+general forms are different (taking in x1, x2versus x1, x2, y).f(x1, x2, y)can be implemented in
+different ways, e.g., g([x1, y])Th(x2)where g(), h()are trainable encoders and [x1, y]denotes
+concatenation [68].
+3.2 Self-supervised F ACTOR CL via multimodal augmentations
+The derivations above bring about supervised CL objectives with access to Y[40]. For unsupervised
+CL [57,71], we derive similar objectives without access to Yby leveraging semantic augmentations
+on each modality. Denote X′as some augmentation of X(e.g., rotating, shifting, or cropping). Under
+5
+theoptimal augmentation assumption from Tian et al. [71] (restated below), replacing YwithX′in
+our formulations enables learning of task-relevant information without access to labels:
+Definition 3. (Optimal unimodal augmentation) [ 71]X′
+1is an optimal unimodal augmentation for
+X1when I(X;X′)=I(X;Y), which implies that the only information shared between XandX′is
+task-relevant with no irrelevant noise.
+This assumption is satisfied when all information shared between XandX′is task-relevant, which
+implies that the augmentation keeps task-relevant information constant while changing task-irrelevant
+information. In the case of image classification, task-relevant information is the object in the
+picture, while task-irrelevant information is the background. By performing two separate unimodal
+augmentations giving X′
+1andX′
+2, we can substitute contrastive estimators in Eqs.(13) and (14), by
+replacing I(Xi;Y)terms with I(Xi;X′
+i)and replacing I(X1;X2∣Y)terms with I(X1;X2∣X′
+1, X′
+2):
+INCE(X1;X2∣X′
+1,X′
+2)=Ep(x′
+1,x′
+2)⎡⎢⎢⎢⎢⎣Ex1,x+
+2∼p(x1,x2∣x′
+1,x′
+2)
+x−
+2∼p(x2∣x′
+1,x′
+2)[logexpf(x1,x+
+2,x′
+1,x′
+2)
+∑kexpf(x1,x−
+2,x′
+1,x′
+2)]⎤⎥⎥⎥⎥⎦(15)
+INCE-CLUB (X1;X2∣X′
+1,X′
+2)=Ep(x′
+1,x′
+2)[Ex1,x+
+2∼p(x1,x2∣x′
+1,x′
+2)[f∗(x1,x+
+2,x′
+1,x′
+2)]
+−Ex1∼p(x1∣x′
+1,x′
+2)
+x−
+2∼p(x2∣x′
+1,x′
+2)[f∗(x1,x−
+2,x′
+1,x′
+2)]] (16)
+The objectives can be seen as conditional contrastive learning on augmentations (X′
+1, X′
+2). Here
+again f(x1, x2, x′
+1, x′
+2)is different from the critics in Eqs.(13 because of the different general forms.
+We implement f()here as g([x1, x′
+1])Th([x2, x′
+2])where g(), h()are trainable encoders specific
+for each modality and [x1, x′
+1]denotes concatenation. This concatenation is justified by the CMI
+estimators in Sordoni et al. [68], who show that concatenating the conditioning variable with the
+input in the critic f(x1, x2, x′
+1, x′
+2)yields a Conditional InfoNCE estimator (Eq.(15)) that is a lower
+bound for CMI. However, the exact Conditional InfoNCE estimator learns a different conditional
+distribution p(x1, x2∣x′
+1, x′
+2)for each augmented pair x′
+1, x′
+2, which can be prohibitively expensive.
+We could approximate this by creating multiple augmentations of a single paired x1, x2. Our code
+uses one augmented pair x′
+1, x′
+2for each x1, x2but could be extended to multiple pairs, and we find
+this simple approach yields consistent CMI lower and upper bounds that are empirically comparable
+to existing CMI estimators [ 54,68]. We include full comparisons and implementation details in
+Appendix D.1, and in Appendix C.2 we discuss an alternative interpretation based on viewing CL as
+kernel learning which permits using conditional kernel estimation for our objectives.
+Although we find this method to work well in practice, a more careful analysis reveals that 2separate
+unimodal augmentations X′
+1andX′
+2each satisfying I(Xi;X′
+i)=I(Xi;Y)do not together satisfy
+I(X1;X2∣Y)=I(X1;X2∣X′
+1, X′
+2)needed for the substitution in Eqs.(15) and (16) to hold with
+equality. To satisfy this property exactly, we define optimal multimodal augmentations:
+Definition 4. (Optimal multimodal augmentation) X′
+1andX′
+2are optimal multimodal augmentation
+forX1andX2when I(X1, X2;X′
+1, X′
+2)=I(X1, X2;Y), which implies that the only information
+shared between X1, X2andX′
+1, X′
+2is task-relevant with no irrelevant noise.
+We satisfy I(X1, X2;X′
+1, X′
+2)=I(X1, X2;Y)using two steps:
+Unimodal aug: X′
+1s.t.I(X1;X′
+1)=I(X1;Y), (17)
+Unique aug: X′
+2s.t.I(X2;X′
+2∣X1)=I(X2;Y∣X1). (18)
+We call the second step unique augmentation : after observing X1, we create augmented X′
+2from
+X2to keep task-relevant information not already in X1. To empirically satisfy optimal multimodal
+augmentations, we avoid augmentations in one modality that will remove or strongly destroy infor-
+mation shared with the other modality. For example, in image captioning, we should avoid image
+augmentations such as cropping that destroy information from the caption (e.g., cropping object parts
+referred to by the caption), and instead, only augment images via flipping or color jittering which
+retains all caption information. Figure 4 shows an example of unique augmentation that satisfies these
+conditions. In our experiments, we will show that our augmentations consistently perform better than
+standard augmentations (Table 3), suggesting that approximately satisfying Eqs.(17) and (18) can be
+empirically sufficient, which is simple and straightforward to implement on real-world datasets.
+3.3 Overall method and implementation
+6
+Algorithm 1 Standard multimodal CL.
+Require: Multimodal dataset {X1,X2}.
+Initialize networks f(⋅).
+while not converged do
+forsampled batch {x1,x2}do
+Estimate INCE(X1;X2)from Eq. 10
+L=−INCE(X1;X2)
+Update f(⋅)to minimize L
+end for
+end while
+return f(⋅)Algorithm 2 F ACTOR CL.
+Require: Multimodal dataset {X1,X2}.
+Initialize networks f(⋅).
+while not converged do
+forsampled batch {x1,x2}do
+x′
+1←Augment (x1)
+x′
+2←Unique-Augment (x2∣x1)
+Plugx′
+1andx′
+2into Eq. 15 and 16
+Estimate S,U1,U2from Eq. 8 and 9
+L=−(S+U1+U2)
+Update f(⋅)to minimize L
+end for
+end while
+return f(⋅)
+Figure 4: Standard vs. unique augmentations for
+the figurative language [ 87] dataset. After aug-
+menting text modality X1independently (same for
+both augmentation types), we illustrate their differ-
+ences for image augmentation: unique augmenta-
+tion on images should avoid removing information
+referred to by X1(the text). The text mentions that
+the car is fast so unique augmentation for images
+should notremove the highway pixels of the image
+which can suggest the car is fast.The final algorithm sketch is in Algorithm 2, which
+we compare against standard CL in Algorithm 1. It
+can be shown that FACTOR CLlearns all the task-
+relevant information from both modalities:
+Theorem 3. (Optimality of FACTOR CL)
+If ZS1, ZS2, ZU1, ZU2 perfectly maximize
+Eqs.(6-7) and the estimations in Eqs.(8)
+and (9) are tight, we obtain I(X1, X2;Y)=
+I(ZS1;ZS2;Y)+I(ZU1;Y∣ZS2)+I(ZU2;Y∣ZS1),
+suggesting that FACTOR CLlearns both shared and
+unique task-relevant information.
+We include the full proof in Appendix C.3. In prac-
+tice, while we do not expect perfect estimation of MI
+quantities and maximization with respect to MI ob-
+jectives, we include implementation details regarding
+architectures and contrastive objectives that improve
+empirical performance in Appendix D.1.
+Complexity : Compared to heuristic combinations of
+cross-modal and single-modality CL [ 33,35,43,63,
+80,84,88], our approach does not significantly in-
+crease complexity: (1) upper bounds on MI can be es-
+timated “for free” by directly plugging in the optimal
+critic from INCE, (2) removal of task-irrelevant infor-
+mation via I(X1;X2∣X′
+1, X′
+2)shares encoders with
+INCE, and (3) separate unimodal augmentations per-
+form empirically well. We describe some extensions
+of other self-supervised methods in Appendix C.4.
+4 Experiments
+We run comprehensive experiments on a suite of synthetic and large-scale real-world datasets with
+varying requirements of shared and unique task-relevant information, comparing our FACTOR CL
+method to key baselines:
+1. SimCLR [13]: the straightforward method of cross-modal (X1, X2)contrastive learning.
+2.Cross+Self [ 33,35,43,63,84,88]: captures a range of methods combining cross-modal (X1, X2)
+CL with additional unimodal (Xi, X′
+i)CL objectives. This category also includes other ways of
+preserving unique information, such as through (variational) autoencoder reconstructions [80].
+3.Cross+Self+Fact [ 85,88]: A factorized extension of Cross+Self, which is approximately done in
+prior work that adds separate (typically pre-trained) unimodal encoders for each modality.
+4. SupCon [40], which learns I(X1;X2∣Y)using CL conditioned on Yfrom labeled data.
+We also carefully ablate each component of our method and investigate factors, including training
+data size and choice of augmentations. The intermediate ablations that emerge include:
+1. F ACTOR CL-SUP: The supervised CL version which uses labels Yin Eqs.(13) and (14).
+7
+Table 1: We probe whether contrastive representations learned by classic CL methods and FACTOR CLcontain
+shared wsor unique w1,w2information. F ACTOR CL captures the most unique information.
+Model SimCLR Cross+self SupCon F ACTOR CL
+Representations Z1 Z2 Z1 Z2Z1Z2ZU1ZU2ZS1ZS2
+I(Z;w1) 4.45 0.16 4.39 0.14 5.17 0.19 7.83 0.03 6.25 0.04
+I(Z;w2) 0.17 3.92 0.13 4.26 0.23 5.17 0.06 7.17 0.05 5.79
+I(Z;ws) 12.61 12.06 11.30 11.47 7.48 7.17 9.47 9.89 10.13 9.40
+2.FACTOR CL-SSL: The fully self-supervised version of our approach replacing Ywith multimodal
+augmentations X′
+1andX′
+2to approximate the task.
+3.OurCL-SUP: FACTOR CL-SUP but removing the factorization so only two features Z1is optimized
+for both I(X1;X2;Y)andI(X1;Y∣X2),Z2optimized for both I(X1;X2;Y)andI(X2;Y∣X1).
+4. OurCL-SSL: F ACTOR CL-SSL but also removing the factorization in the self-supervised setting.
+The formulation of each ablation and implementation can be found in Appendix D.1.
+4.1 Controlled experiments on synthetic datasets
+Synthetic data generation : We begin by generating data with controllable ratios of task-relevant
+shared and unique information. Starting with a set of latent vectors w1, w2, ws∼N(0d,Σ2
+d), d=50
+representing information unique to X1, X2and common to both respectively, the concatenated vector
+[w1, ws]is transformed into high-dimensional x1using a fixed transformation T1and likewise
+[w2, ws]tox2viaT2. The label yis generated as a function (with nonlinearity and noise) of varying
+ratios of ws,w1, and w2to represent shared and unique task-relevant information.
+Results : In Figure 1, we show our main result on synthetic data comparing FACTOR CLwith existing
+CL baselines. FACTOR CLconsistently maintains the best performance, whereas SimCLR [ 13] and
+SupCon [ 40] see performance drops as unique information increases. Cross+Self [ 33,35,43,88]
+recovers in fully unique settings (x-axis =1.0) but suffers at other ratios.
+Representation probing information : We run a probing experiment to compute how well different
+contrastive representations capture shared and unique information. In Table 1, for the Zi’s learned by
+each method, we approximately compute I(Zi;w1),I(Zi;w2), andI(Zi;ws)with respect to ground
+truth generative variables ws,w1, and w2. As expected, existing methods such as SimCLR capture
+smaller amounts of unique information (roughly 4bits in I(Zi;w1)andI(Zi;w2)), focusing instead
+on learning I(Zi;ws)(12 bits). Cross+self captures slightly larger I(Zi;w2)=4.26, and SupCon
+with labeled data captures up to 5bits of unique information. Our FACTOR CLapproach captures
+7bits of unique information and maintains 10bits of shared information, with total information
+captured higher than the other approaches. Furthermore, {ZS1, ZS2}capture more information about
+ws,ZU1about w1, and ZU2about w2, indicating that factorization in our approach is successful.
+4.2 Self-supervised multimodal learning with low redundancy and high uniqueness
+Multimodal fusion datasets : We use a large collection of real-world datasets provided in Multi-
+Bench [ 44], where we expect varying ratios of shared and unique information important for the task,
+to compare F ACTOR CL with other CL baselines:
+1.MIMIC [37]: mortality and disease prediction from 36,212medical records (tabular patient data
+and medical time-series sensors from ICU).
+2. MOSEI [92]: multimodal sentiment and emotion benchmark with 23,000monologue videos.
+3. MOSI [90]: multimodal sentiment analysis from 2,199YouTube videos.
+4. UR-FUNNY [27]: a dataset of humor detection from more than 16,000TED talk videos.
+5. MU STARD [12]: a corpus of 690videos for research in sarcasm detection from TV shows.
+6. IRFL [87]: 6,697matching images and figurative captions (rather than literal captions).
+Together, these datasets cover seven different modalities from the healthcare, affective computing,
+and multimedia research areas and total more than 84,000data points. For MIMIC with tabular and
+medical sensor inputs, we train self-supervised CL models on top of raw modality inputs. For IRFL
+with image and caption inputs, we start with a pretrained CLIP model [ 60] and perform continued
+pre-training to update CLIP weights with our FACTOR CLobjectives, before linear classifier testing.
+For the remaining four video datasets, we train self-supervised CL models starting from standard
+pre-extracted text, video, and audio features [ 44]. Please refer to Appendix D.2 for experimental
+details. We release our code and models at https://github.com/pliang279/FactorCL .
+8
+Table 2: Results on MultiBench [ 44] datasets with varying shared and unique information: FACTOR CLachieves
+strong results vs self-supervised (top 5rows) and supervised (bottom 3rows) baselines that do not have unique
+representations, factorization, upper-bounds to remove irrelevant information, and multimodal augmentations.
+Model (X1;X2) (Xi;X′
+i) (X1;X2∣Y) (X′′
+2)Fact MIMIC MOSEI MOSI UR-FUNNY MUS TARD
+SimCLR [13] ✓ ✗ ✗ ✗ ✗ 66.67% 71.03% 46.21% 50.09% 53.48%
+Cross+Self [80] ✓ ✓ ✗ ✗ ✗ 65.20% 71.04% 46.92% 56.52% 53.91%
+Cross+Self+Fact [88] ✓ ✓ ✗ ✗ ✓ 65.49% 71.07% 52.37% 59.91% 53.91%
+OurCL-SSL ✓ ✓ ✓ ✓ ✗ 65.22% 71.16% 48.98% 58.79% 53.98%
+FACTOR CL-SSL ✓ ✓ ✓ ✓ ✓ 67.34 %74.88% 52.91% 60.50% 55.80 %
+SupCon [40] ✗ ✗ ✓ ✗ ✗ 67.37% 72.71% 47.23% 50.98% 52.75%
+OurCL-SUP ✓ ✓ ✓ ✗ ✗ 68.16% 71.15% 65.32% 58.32% 65.05%
+FACTOR CL-SUP ✓ ✓ ✓ ✗ ✓ 76.79% 77.34% 70.69% 63.52% 69.86 %
+Multimodal fusion results : From Table 2, F ACTOR CL significantly outperforms the baselines that
+do not capture both shared and unique information in both supervised and self-supervised settings,
+particularly on MUSTARD (where unique information expresses sarcasm, such as sardonic facial
+expressions or ironic tone of voice), and on MIMIC (with unique health indicators and sensor
+readings). In Table 3, we also show that FACTOR CLsubstantially improves the state-of-the-art in
+classifying images and figurative captions which are not literally descriptive of the image on IRFL ,
+outperforming zero-shot and fine-tuned CLIP [ 60] as well as continued pre-training baselines on top
+of CLIP.
+Modeling ablations : In Table 2, we also carefully ablate each component in our method and indicate
+either existing baselines or newly-run ablation models.
+1.Factorized representations : In comparing FACTOR CL-SSL with OurCL-SSL, and also FAC-
+TORCL-SUP with OurCL-SUP, we find that factorization is critical: without it, performance drops
+on average 6.1%, with performance drop as high as 8.6%for MIMIC.
+2.Information removal via upper bound : By comparing F ACTOR CL with SimCLR, Cross+Self,
+and Cross+Self+Fact, and SupCon that only seek to capture task-relevant information via con-
+trastive lower bounds on MI, we find that separately modeling the task-relevant information
+(to be captured) and task-irrelevant information (to be removed) is helpful. Without removing
+task-irrelevant information via the upper-bound objective, performance drops on average 13.6%,
+with performance drops as high as 23.5%for the MOSI dataset. We also found that training
+was more difficult without this objective, which is expected due to overwhelming superfluous
+information from the dataset [92].
+3.Multimodal augmentations : Finally, we investigate the differences between separate uni-
+modal augmentations ( FACTOR CL-IndAug in Table 3) versus a joint multimodal augmentation
+(FACTOR CL-SSL) on the IRFL dataset. We choose this dataset since its images and captions are
+the easiest to visualize (see Figure 4 for augmentations from both strategies). In the self-supervised
+setting, we find that multimodal augmentations achieve 95% performance, higher than the 92%
+for separate unimodal augmentations, and both outperform baselines SimCLR and Cross+Self.
+Table 3: Continued pre-training on CLIP
+with our FACTOR CLobjectives on clas-
+sifying images and figurative language.
+Task IRFL
+Zero-shot CLIP [60] 89.15%
+SimCLR [13] 91.57%
+Cross+Self [80, 88] 95.18%
+FACTOR CL-IndAug 92.77%
+FACTOR CL-SSL 95.18 %
+Fine-tuned CLIP [60] 96.39%
+SupCon [40] 89.16%
+FACTOR CL-SUP 98.80 %Ablations on S, U 1andU2: In Table 4, we also test FAC-
+TORCLwhen training linear classifiers on top of only shared
+{ZS1, ZS2}and unique ZU1,ZU2separately. We call these
+models FACTOR CL-S,FACTOR CL-U1, and FACTOR CL-U2.
+Immediately, we observe that performance drops as compared
+to the full FACTOR CLmodel, indicating that both shared and
+unique information are critical in real-world multimodal tasks.
+As expected, the best-performing submodel is the one that
+captures the region with the largest amount of task-relevant
+information: MOSEI andMOSI are known to include a lot
+of redundancy and unique information since language is very
+important for detecting sentiment [ 92], so FACTOR CL-Sand
+FACTOR CL-U2perform best. For sarcasm detection on MUS-
+TARD , video information is most important with FACTOR CL-
+U1performing best ( 59.4%), and ablation models are also the furthest away from full multimodal
+performance ( 69.9%). This is aligned with intuition where sarcasm is expressed through tone of voice
+and visual gestures (high U1), as well as from contradictions between language and video (higher
+multimodal performance).
+9
+Table 4: We ablate using only shared representations {ZS1,ZS2}, unique representation ZU1, andZU2separately
+for prediction. Both shared and unique information are critical in real-world multimodal tasks.
+Model MIMIC MOSEI MOSI UR-FUNNY MUS TARD
+FACTOR CL-S 63.77% 77.17% 70.12% 63.42% 57.25%
+FACTOR CL-U1 55.90% 77.06% 70.11% 62.00% 59.42%
+FACTOR CL-U2 69.08% 71.01% 52.33% 54.35% 53.62%
+FACTOR CL-SUP 76.79% 77.34% 70.69% 63.52% 69.86%
+Additional results : In Appendix D.3, we also verify FACTOR CLin settings with abundant shared
+information, where we expect to recover the same performance as standard CL [13, 57, 71].
+5 Related Work
+Contrastive learning is a successful self-supervised learning paradigm for computer vision [ 11,13,
+14,25,28,57], natural language [ 24,53,55], speech [ 5,57,62], and multimodal tasks [ 1,36,60]. Its
+foundational underpinnings are inspired by work in multiview information theory [ 23,40,69,71,75]
+studying the shared information between two views and whether they are necessary or sufficient in
+predicting the label. Recently, Wang et al. [80] and Kahana and Hoshen [38] discuss the limitations
+of assuming multiview redundancy and propose autoencoder reconstruction or unimodal contrastive
+learning to retain unique information, which resembles the Cross+self baselines in our experiments.
+We refer the reader to Shwartz-Ziv and LeCun [66] for a comprehensive review on multiview and
+contrastive learning. Our work also relates to conditional contrastive learning [ 17,50,77,86], where
+positive or negative pairs are supposed to sample from conditional distributions.
+Multimodal contrastive learning aims to align related data from different modalities, typically
+provided as positive pairs. This could be done via optimizing a contrastive objective for inter-
+modality pairs [ 1,2,36,60], or both intra- and inter-modality data pairs [ 33,35,41,43,88]. Our
+work also relates to factorized representation learning, which primarily studies how to capture
+modality-specific information primarily in each modality and multimodal information redundant in
+both modalities [ 32,74]. Prior work has used disentangled latent variable models [ 8,30,32,74],
+mixture-of-experts [65], or product-of-experts [82] layer to explain factors in multimodal data.
+Information theory [18,64] has been used to study several phenomena in multimodal learning,
+including co-learning [ 61,91] and multi-view learning [ 34,75]. Due to its theoretical importance,
+several lower and upper bounds have been proposed for practical estimation [ 57–59,83]. One
+particular upper bound is given by Cheng et al. [16], which we build on to create a more accurate
+and stable bound. Our characterizations of shared and unique information are also related to partial
+information decomposition [81], co-information [7, 79], and interaction information [52] research.
+6 Conclusion
+This paper studied how standard CL methods suffer when task-relevant information lies in regions
+unique to each modality, which is extremely common in real-world applications such as sensor
+placement, medical testing, and multimodal interaction. In response, we proposed FACTOR CL,
+a new method expanding CL techniques through the use of factorized representations, removing
+task-irrelevant information via upper bounds on MI, and multimodal data augmentations suitable for
+approximating the unobserved task. Based on FACTOR CL’s strong performance, there are several
+exciting directions in extending these ideas for masked and non-contrastive pre-training; we further
+discuss broader impacts and limitations of this line of work in Appendix A.
+Acknowledgements
+This material is based upon work partially supported by Meta, National Science Foundation awards
+1722822 and 1750439, and National Institutes of Health awards R01MH125740, R01MH132225,
+R01MH096951 and R21MH130767. PPL is supported in part by a Siebel Scholarship and a Waibel
+Presidential Fellowship. RS is supported in part by ONR grant N000142312368 and DARPA
+FA87502321015. One of the aims of this project is to understand the comfort zone of people for
+better privacy and integrity. Any opinions, findings, conclusions, or recommendations expressed in
+this material are those of the author(s) and do not necessarily reflect the views of the sponsors, and no
+official endorsement should be inferred. Finally, we would also like to acknowledge feedback from
+anonymous reviewers who significantly improved the paper and NVIDIA’s GPU support.
+10
+References
+[1]Hassan Akbari, Liangzhe Yuan, Rui Qian, Wei-Hong Chuang, Shih-Fu Chang, Yin Cui, and Boqing Gong.
+Vatt: Transformers for multimodal self-supervised learning from raw video, audio and text. Advances in
+Neural Information Processing Systems , 34:24206–24221, 2021.
+[2]Jean-Baptiste Alayrac, Adria Recasens, Rosalia Schneider, Relja Arandjelovi ´c, Jason Ramapuram, Jeffrey
+De Fauw, Lucas Smaira, Sander Dieleman, and Andrew Zisserman. Self-supervised multimodal versatile
+networks. Advances in Neural Information Processing Systems , 33:25–37, 2020.
+[3]Relja Arandjelovic and Andrew Zisserman. Look, listen and learn. In Proceedings of the IEEE international
+conference on computer vision , pages 609–617, 2017.
+[4]Philip Bachman, R Devon Hjelm, and William Buchwalter. Learning representations by maximizing
+mutual information across views. Advances in neural information processing systems , 32, 2019.
+[5]Alexei Baevski, Yuhao Zhou, Abdelrahman Mohamed, and Michael Auli. wav2vec 2.0: A framework for
+self-supervised learning of speech representations. Advances in neural information processing systems , 33:
+12449–12460, 2020.
+[6]Adrien Bardes, Jean Ponce, and Yann LeCun. Vicreg: Variance-invariance-covariance regularization for
+self-supervised learning. In International Conference on Learning Representations , 2021.
+[7]Anthony J Bell. The co-information lattice. In Proceedings of the fifth international workshop on
+independent component analysis and blind signal separation: ICA , volume 2003, 2003.
+[8]Yoshua Bengio, Aaron Courville, and Pascal Vincent. Representation learning: A review and new
+perspectives. TPAMI , 35(8), August 2013.
+[9]Tolga Bolukbasi, Kai-Wei Chang, James Y Zou, Venkatesh Saligrama, and Adam T Kalai. Man is to
+computer programmer as woman is to homemaker? debiasing word embeddings. Advances in neural
+information processing systems , 29, 2016.
+[10] Emanuele Bugliarello, Ryan Cotterell, Naoaki Okazaki, and Desmond Elliott. Multimodal pretraining
+unmasked: A meta-analysis and a unified framework of vision-and-language berts. Transactions of the
+Association for Computational Linguistics , 9:978–994, 2021.
+[11] Mathilde Caron, Ishan Misra, Julien Mairal, Priya Goyal, Piotr Bojanowski, and Armand Joulin. Unsu-
+pervised learning of visual features by contrasting cluster assignments. Advances in neural information
+processing systems , 33:9912–9924, 2020.
+[12] Santiago Castro, Devamanyu Hazarika, Verónica Pérez-Rosas, Roger Zimmermann, Rada Mihalcea, and
+Soujanya Poria. Towards multimodal sarcasm detection (an _obviously_ perfect paper). arXiv preprint
+arXiv:1906.01815 , 2019.
+[13] Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton. A simple framework for
+contrastive learning of visual representations. In International conference on machine learning , pages
+1597–1607. PMLR, 2020.
+[14] Xinlei Chen and Kaiming He. Exploring simple siamese representation learning. In Proceedings of the
+IEEE/CVF conference on computer vision and pattern recognition , pages 15750–15758, 2021.
+[15] Xinlei Chen, Saining Xie, and Kaiming He. An empirical study of training self-supervised vision
+transformers. In Proceedings of the IEEE/CVF International Conference on Computer Vision , pages
+9640–9649, 2021.
+[16] Pengyu Cheng, Weituo Hao, Shuyang Dai, Jiachang Liu, Zhe Gan, and Lawrence Carin. Club: A
+contrastive log-ratio upper bound of mutual information. In International conference on machine learning ,
+pages 1779–1788. PMLR, 2020.
+[17] Jianfeng Chi, William Shand, Yaodong Yu, Kai-Wei Chang, Han Zhao, and Yuan Tian. Conditional
+supervised contrastive learning for fair text classification. arXiv preprint arXiv:2205.11485 , 2022.
+[18] Thomas M Cover and Joy A Thomas. Information theory and statistics. Elements of information theory , 1
+(1):279–335, 1991.
+[19] Li Deng. The mnist database of handwritten digit images for machine learning research. IEEE Signal
+Processing Magazine , 29(6):141–142, 2012.
+11
+[20] Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. Bert: Pre-training of deep bidirec-
+tional transformers for language understanding. arXiv preprint arXiv:1810.04805 , 2018.
+[21] Benjamin Eysenbach, Tianjun Zhang, Sergey Levine, and Russ R Salakhutdinov. Contrastive learning
+as goal-conditioned reinforcement learning. Advances in Neural Information Processing Systems , 35:
+35603–35620, 2022.
+[22] Meir Feder and Neri Merhav. Relations between entropy and error probability. IEEE Transactions on
+Information theory , 40(1):259–266, 1994.
+[23] Marco Federici, Anjan Dutta, Patrick Forré, Nate Kushman, and Zeynep Akata. Learning robust represen-
+tations via multi-view information bottleneck. arXiv preprint arXiv:2002.07017 , 2020.
+[24] Tianyu Gao, Xingcheng Yao, and Danqi Chen. Simcse: Simple contrastive learning of sentence embeddings.
+arXiv preprint arXiv:2104.08821 , 2021.
+[25] Jean-Bastien Grill, Florian Strub, Florent Altché, Corentin Tallec, Pierre Richemond, Elena Buchatskaya,
+Carl Doersch, Bernardo Avila Pires, Zhaohan Guo, Mohammad Gheshlaghi Azar, et al. Bootstrap your
+own latent-a new approach to self-supervised learning. Advances in neural information processing systems ,
+33:21271–21284, 2020.
+[26] Qing Guo, Junya Chen, Dong Wang, Yuewei Yang, Xinwei Deng, Jing Huang, Larry Carin, Fan Li,
+and Chenyang Tao. Tight mutual information estimation with contrastive fenchel-legendre optimization.
+Advances in Neural Information Processing Systems , 35:28319–28334, 2022.
+[27] Md Kamrul Hasan, Wasifur Rahman, AmirAli Bagher Zadeh, Jianyuan Zhong, Md Iftekhar Tanveer,
+Louis-Philippe Morency, and Mohammed Ehsan Hoque. Ur-funny: A multimodal language dataset for
+understanding humor. In Proceedings of the 2019 Conference on Empirical Methods in Natural Language
+Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP) ,
+pages 2046–2056, 2019.
+[28] Kaiming He, Haoqi Fan, Yuxin Wu, Saining Xie, and Ross Girshick. Momentum contrast for unsupervised
+visual representation learning. In Proceedings of the IEEE/CVF conference on computer vision and pattern
+recognition , pages 9729–9738, 2020.
+[29] Kaiming He, Xinlei Chen, Saining Xie, Yanghao Li, Piotr Dollár, and Ross Girshick. Masked autoencoders
+are scalable vision learners. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition , pages 16000–16009, 2022.
+[30] Irina Higgins, Loic Matthey, Arka Pal, Christopher Burgess, Xavier Glorot, Matthew Botvinick, Shakir
+Mohamed, and Alexander Lerchner. beta-vae: Learning basic visual concepts with a constrained variational
+framework. 2016.
+[31] R Devon Hjelm, Alex Fedorov, Samuel Lavoie-Marchildon, Karan Grewal, Phil Bachman, Adam Trischler,
+and Yoshua Bengio. Learning deep representations by mutual information estimation and maximization.
+InInternational Conference on Learning Representations , 2018.
+[32] Wei-Ning Hsu and James Glass. Disentangling by partitioning: A representation learning framework for
+multimodal sensory data. arXiv preprint arXiv:1805.11264 , 2018.
+[33] Po-Yao Huang, Mandela Patrick, Junjie Hu, Graham Neubig, Florian Metze, and Alexander Hauptmann.
+Multilingual multimodal pre-training for zero-shot cross-lingual transfer of vision-language models. arXiv
+preprint arXiv:2103.08849 , 2021.
+[34] Yu Huang, Chenzhuang Du, Zihui Xue, Xuanyao Chen, Hang Zhao, and Longbo Huang. What makes
+multi-modal learning better than single (provably). Advances in Neural Information Processing Systems ,
+34:10944–10956, 2021.
+[35] Aashi Jain, Mandy Guo, Krishna Srinivasan, Ting Chen, Sneha Kudugunta, Chao Jia, Yinfei Yang, and
+Jason Baldridge. Mural: multimodal, multitask retrieval across languages. arXiv preprint arXiv:2109.05125 ,
+2021.
+[36] Chao Jia, Yinfei Yang, Ye Xia, Yi-Ting Chen, Zarana Parekh, Hieu Pham, Quoc Le, Yun-Hsuan Sung,
+Zhen Li, and Tom Duerig. Scaling up visual and vision-language representation learning with noisy text
+supervision. In International Conference on Machine Learning , pages 4904–4916. PMLR, 2021.
+[37] Alistair EW Johnson, Tom J Pollard, Lu Shen, Li-wei H Lehman, Mengling Feng, Mohammad Ghassemi,
+Benjamin Moody, Peter Szolovits, Leo Anthony Celi, and Roger G Mark. Mimic-iii, a freely accessible
+critical care database. Scientific data , 3(1):1–9, 2016.
+12
+[38] Jonathan Kahana and Yedid Hoshen. A contrastive objective for learning disentangled representations.
+InComputer Vision–ECCV 2022: 17th European Conference, Tel Aviv, Israel, October 23–27, 2022,
+Proceedings, Part XXVI , pages 579–595. Springer, 2022.
+[39] Jacob Devlin Ming-Wei Chang Kenton and Lee Kristina Toutanova. Bert: Pre-training of deep bidirectional
+transformers for language understanding. In Proceedings of NAACL-HLT , pages 4171–4186, 2019.
+[40] Prannay Khosla, Piotr Teterwak, Chen Wang, Aaron Sarna, Yonglong Tian, Phillip Isola, Aaron Maschinot,
+Ce Liu, and Dilip Krishnan. Supervised contrastive learning. Advances in neural information processing
+systems , 33:18661–18673, 2020.
+[41] Byoungjip Kim, Sungik Choi, Dasol Hwang, Moontae Lee, and Honglak Lee. Transferring pre-trained
+multimodal representations with cross-modal similarity matching. Advances in Neural Information
+Processing Systems , 35:30826–30839, 2022.
+[42] Alex Krizhevsky, Vinod Nair, and Geoffrey Hinton. Cifar-10 (canadian institute for advanced research).
+URLhttp://www.cs.toronto.edu/~kriz/cifar.html .
+[43] Sangho Lee, Youngjae Yu, Gunhee Kim, Thomas Breuel, Jan Kautz, and Yale Song. Parameter efficient
+multimodal transformers for video representation learning. arXiv preprint arXiv:2012.04124 , 2020.
+[44] Paul Pu Liang, Yiwei Lyu, Xiang Fan, Zetian Wu, Yun Cheng, Jason Wu, Leslie Chen, Peter Wu, Michelle A
+Lee, Yuke Zhu, Ruslan Salakhutdinov, and Louis-Philippe Morency. Multibench: Multiscale benchmarks
+for multimodal representation learning. NeurIPS Datasets and Benchmarks Track , 2021.
+[45] Paul Pu Liang, Chiyu Wu, Louis-Philippe Morency, and Ruslan Salakhutdinov. Towards understanding
+and mitigating social biases in language models. In International Conference on Machine Learning , pages
+6565–6576. PMLR, 2021.
+[46] Paul Pu Liang, Yiwei Lyu, Xiang Fan, Shengtong Mo, Dani Yogatama, et al. Highmmt: Towards modality
+and task generalization for high-modality representation learning. arXiv preprint arXiv:2203.01311 , 2022.
+[47] Paul Pu Liang, Amir Zadeh, and Louis-Philippe Morency. Foundations and recent trends in multimodal
+machine learning: Principles, challenges, and open questions. arXiv preprint arXiv:2209.03430 , 2022.
+[48] Paul Pu Liang, Yun Cheng, Xiang Fan, Chun Kai Ling, Suzanne Nie, Richard Chen, Zihao Deng,
+Faisal Mahmood, Ruslan Salakhutdinov, and Louis-Philippe Morency. Quantifying & modeling feature
+interactions: An information decomposition framework. arXiv preprint arXiv:2302.12247 , 2023.
+[49] Jiasen Lu, Dhruv Batra, Devi Parikh, and Stefan Lee. Vilbert: pretraining task-agnostic visiolinguistic
+representations for vision-and-language tasks. In Proceedings of the 33rd International Conference on
+Neural Information Processing Systems , pages 13–23, 2019.
+[50] Martin Q Ma, Yao-Hung Hubert Tsai, Paul Pu Liang, Han Zhao, Kun Zhang, Ruslan Salakhutdinov,
+and Louis-Philippe Morency. Conditional contrastive learning for improving fairness in self-supervised
+learning. arXiv preprint arXiv:2106.02866 , 2021.
+[51] Emily E Marsh and Marilyn Domas White. A taxonomy of relationships between images and text. Journal
+of documentation , 2003.
+[52] William McGill. Multivariate information transmission. Transactions of the IRE Professional Group on
+Information Theory , 4(4):93–111, 1954.
+[53] Yu Meng, Chenyan Xiong, Payal Bajaj, Paul Bennett, Jiawei Han, Xia Song, et al. Coco-lm: Correcting
+and contrasting text sequences for language model pretraining. Advances in Neural Information Processing
+Systems , 34:23102–23114, 2021.
+[54] Sudipto Mukherjee, Himanshu Asnani, and Sreeram Kannan. Ccmi: Classifier based conditional mutual
+information estimation. In Uncertainty in artificial intelligence , pages 1083–1093. PMLR, 2020.
+[55] Arvind Neelakantan, Tao Xu, Raul Puri, Alec Radford, Jesse Michael Han, Jerry Tworek, Qiming Yuan,
+Nikolas Tezak, Jong Wook Kim, Chris Hallacy, et al. Text and code embeddings by contrastive pre-training.
+arXiv preprint arXiv:2201.10005 , 2022.
+[56] XuanLong Nguyen, Martin J Wainwright, and Michael I Jordan. Estimating divergence functionals and
+the likelihood ratio by convex risk minimization. IEEE Transactions on Information Theory , 56(11):
+5847–5861, 2010.
+13
+[57] Aaron van den Oord, Yazhe Li, and Oriol Vinyals. Representation learning with contrastive predictive
+coding. arXiv preprint arXiv:1807.03748 , 2018.
+[58] Sherjil Ozair, Corey Lynch, Yoshua Bengio, Aaron Van den Oord, Sergey Levine, and Pierre Sermanet.
+Wasserstein dependency measure for representation learning. Advances in Neural Information Processing
+Systems , 32, 2019.
+[59] Ben Poole, Sherjil Ozair, Aaron Van Den Oord, Alex Alemi, and George Tucker. On variational bounds of
+mutual information. In International Conference on Machine Learning , pages 5171–5180. PMLR, 2019.
+[60] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish
+Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et al. Learning transferable visual models from
+natural language supervision. In International Conference on Machine Learning , pages 8748–8763. PMLR,
+2021.
+[61] Anil Rahate, Rahee Walambe, Sheela Ramanna, and Ketan Kotecha. Multimodal co-learning: challenges,
+applications with datasets, recent advances and future directions. Information Fusion , 81:203–239, 2022.
+[62] Steffen Schneider, Alexei Baevski, Ronan Collobert, and Michael Auli. wav2vec: Unsupervised pre-
+training for speech recognition. arXiv preprint arXiv:1904.05862 , 2019.
+[63] Bin Shan, Weichong Yin, Yu Sun, Hao Tian, Hua Wu, and Haifeng Wang. Ernie-vil 2.0: Multi-view
+contrastive learning for image-text pre-training, 2022.
+[64] Claude Elwood Shannon. A mathematical theory of communication. The Bell system technical journal , 27
+(3):379–423, 1948.
+[65] Yuge Shi, Brooks Paige, Philip Torr, et al. Variational mixture-of-experts autoencoders for multi-modal
+deep generative models. Advances in Neural Information Processing Systems , 32, 2019.
+[66] Ravid Shwartz-Ziv and Yann LeCun. To compress or not to compress–self-supervised learning and
+information theory: A review. arXiv preprint arXiv:2304.09355 , 2023.
+[67] Jiaming Song and Stefano Ermon. Understanding the limitations of variational mutual information
+estimators. CoRR , abs/1910.06222, 2019. URL http://arxiv.org/abs/1910.06222 .
+[68] Alessandro Sordoni, Nouha Dziri, Hannes Schulz, Geoff Gordon, Philip Bachman, and Remi Tachet
+Des Combes. Decomposed mutual information estimation for contrastive representation learning. In
+International Conference on Machine Learning , pages 9859–9869. PMLR, 2021.
+[69] Karthik Sridharan and Sham M Kakade. An information theoretic framework for multi-view learning. In
+Conference on Learning Theory , 2008.
+[70] Yonglong Tian, Dilip Krishnan, and Phillip Isola. Contrastive multiview coding. ECCV , 2020.
+[71] Yonglong Tian, Chen Sun, Ben Poole, Dilip Krishnan, Cordelia Schmid, and Phillip Isola. What makes for
+good views for contrastive learning? Advances in Neural Information Processing Systems , 33:6827–6839,
+2020.
+[72] Christopher Tosh, Akshay Krishnamurthy, and Daniel Hsu. Contrastive learning, multi-view redundancy,
+and linear models. In Algorithmic Learning Theory , pages 1179–1206. PMLR, 2021.
+[73] Yao-Hung Hubert Tsai, Tianqin Li, Weixin Liu, Peiyuan Liao, Ruslan Salakhutdinov, and Louis-Philippe
+Morency. Learning weakly-supervised contrastive representations. In International Conference on Learning
+Representations .
+[74] Yao-Hung Hubert Tsai, Paul Pu Liang, Amir Zadeh, Louis-Philippe Morency, and Ruslan Salakhutdinov.
+Learning factorized multimodal representations. ICLR , 2019.
+[75] Yao-Hung Hubert Tsai, Yue Wu, Ruslan Salakhutdinov, and Louis-Philippe Morency. Self-supervised
+learning from a multi-view perspective. In International Conference on Learning Representations , 2020.
+[76] Yao-Hung Hubert Tsai, Han Zhao, Makoto Yamada, Louis-Philippe Morency, and Russ R Salakhutdinov.
+Neural methods for point-wise dependency estimation. Advances in Neural Information Processing
+Systems , 33:62–72, 2020.
+[77] Yao-Hung Hubert Tsai, Tianqin Li, Martin Q Ma, Han Zhao, Kun Zhang, Louis-Philippe Morency, and
+Ruslan Salakhutdinov. Conditional contrastive learning with kernel. arXiv preprint arXiv:2202.05458 ,
+2022.
+14
+[78] Michael Tschannen, Josip Djolonga, Paul K Rubenstein, Sylvain Gelly, and Mario Lucic. On mutual infor-
+mation maximization for representation learning. In International Conference on Learning Representations ,
+2019.
+[79] Jorge R Vergara and Pablo A Estévez. A review of feature selection methods based on mutual information.
+Neural computing and applications , 24:175–186, 2014.
+[80] Haoqing Wang, Xun Guo, Zhi-Hong Deng, and Yan Lu. Rethinking minimal sufficient representation
+in contrastive learning. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+Recognition , pages 16041–16050, 2022.
+[81] Paul L Williams and Randall D Beer. Nonnegative decomposition of multivariate information. arXiv
+preprint arXiv:1004.2515 , 2010.
+[82] Mike Wu and Noah Goodman. Multimodal generative models for scalable weakly-supervised learning.
+Advances in Neural Information Processing Systems , 31, 2018.
+[83] Mike Wu, Chengxu Zhuang, Milan Mosse, Daniel Yamins, and Noah Goodman. On mutual information in
+contrastive learning for visual representations. arXiv preprint arXiv:2005.13149 , 2020.
+[84] Jianwei Yang, Chunyuan Li, Pengchuan Zhang, Bin Xiao, Ce Liu, Lu Yuan, and Jianfeng Gao. Unified
+contrastive learning in image-text-label space, 2022.
+[85] Jinyu Yang, Jiali Duan, Son Tran, Yi Xu, Sampath Chanda, Liqun Chen, Belinda Zeng, Trishul Chilimbi,
+and Junzhou Huang. Vision-language pre-training with triple contrastive learning, 2022.
+[86] Zesheng Ye and Lina Yao. Contrastive conditional neural processes. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition , pages 9687–9696, 2022.
+[87] Ron Yosef, Yonatan Bitton, and Dafna Shahaf. Irfl: Image recognition of figurative language. arXiv
+preprint arXiv:2303.15445 , 2023.
+[88] Xin Yuan, Zhe Lin, Jason Kuen, Jianming Zhang, Yilin Wang, Michael Maire, Ajinkya Kale, and Baldo
+Faieta. Multimodal contrastive training for visual representation learning. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition , pages 6995–7004, 2021.
+[89] Sangdoo Yun, Dongyoon Han, Seong Joon Oh, Sanghyuk Chun, Junsuk Choe, and Youngjoon Yoo.
+Cutmix: Regularization strategy to train strong classifiers with localizable features. In Proceedings of the
+IEEE/CVF international conference on computer vision , pages 6023–6032, 2019.
+[90] Amir Zadeh, Rowan Zellers, Eli Pincus, and Louis-Philippe Morency. Mosi: multimodal corpus of
+sentiment intensity and subjectivity analysis in online opinion videos. arXiv preprint arXiv:1606.06259 ,
+2016.
+[91] Amir Zadeh, Paul Pu Liang, and Louis-Philippe Morency. Foundations of multimodal co-learning.
+Information Fusion , 64:188–193, 2020.
+[92] AmirAli Bagher Zadeh, Paul Pu Liang, Soujanya Poria, Erik Cambria, and Louis-Philippe Morency.
+Multimodal language analysis in the wild: Cmu-mosei dataset and interpretable dynamic fusion graph. In
+Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long
+Papers) , pages 2236–2246, 2018.
+[93] Jure Zbontar, Li Jing, Ishan Misra, Yann LeCun, and Stéphane Deny. Barlow twins: Self-supervised
+learning via redundancy reduction. In International Conference on Machine Learning , pages 12310–12320.
+PMLR, 2021.
+15
+Appendix
+A Broader Impact
+Multimodal data and self-supervised models are ubiquitous in a range of real-world applications.
+This paper is our attempt at broadening the applicability of self-supervised contrastive methods to a
+wider range of multimodal tasks beyond those that exhibit multi-view redundancy. We believe that
+special care must be taken to ensure that these models are safely deployed for real-world benefit:
+Time and space complexity : Modern multimodal models are large and take up a significant amount
+of carbon footprint during training and testing. As compared to heuristic combinations of cross-modal
+and single-modality CL [ 33,35,43,63,80,84,88], we believe that FACTOR CLdoes not significantly
+increase complexity: (1) upper bounds on MI can be estimated “for free” by directly plugging in
+the optimal critic from INCE, and (2) removal of task-irrelevant information via I(X1;X2∣X′
+1, X′
+2)
+shares encoders with INCE, and (3) separate unimodal augmentations perform well enough in practice.
+We also release our code and models so that they can be evaluated quickly on new tasks, which can
+amortize complexity costs.
+Privacy and security : There may be privacy risks associated with making predictions from multi-
+modal data of recorded human behaviors and medical data (i.e., the datasets used in our experiments
+for analysis of sentiment, emotions, personality, sarcasm, and humor, as well as disease prediction
+from medical data). We have followed best practices in maintaining the privacy and safety of these
+datasets: (1) the creators of these video datasets have taken the appropriate steps to only access
+public data that participants or content creators have consented for public release (creative commons
+license and following fair use guidelines of YouTube) [ 12,27,92], (2) MIMIC has been rigorously
+de-identified in accordance with Health Insurance Portability and Accountability Act (HIPAA) such
+that all possible personal information has been removed from the dataset [ 37], (3) all video data
+was also anonymized and stripped of all personal (e.g., personally identifiable information) and
+protected attributes (e.g., race, gender), (4) all models trained on affect recognition datasets use only
+pre-extracted non-invertible features that rely on general visual or audio features such as the presence
+of a smile or magnitude of voice which cannot be used to identify the speaker [ 90,92], and (5) we
+studied the videos collected in these affective computing datasets and found no offensive words used
+or personal attacks recorded in the video. Finally, we only use these datasets for research purposes
+and emphasize that any multimodal models trained to perform prediction should only be used for
+scientific study and should not in any way be used for real-world harm.
+Social biases : We acknowledge risks of social bias due to imbalanced datasets, resulting in potential
+biases surrounding gender, race, and ethnicity, among others [ 9,45]. We note that our FACTOR CL
+approach has a close link with conditional CL [ 50], which can also be adapted to condition on
+sensitive attributes and therefore reduce bias. Studying these research questions is an important
+direction for future work.
+Future work : We discuss more limitations and potential future work in this direction. Firstly,
+optimizing our objectives using better MI lower and upper bounds such as in Guo et al. [26] and
+Sordoni et al. [68], could improve the performance for inputs of higher dimension and complex
+modality. Next, the current data augmentation method requires one to pick augmentations to approxi-
+mately satisfy Definition 4; future work could extend InfoMin [ 71] to automatically generate data
+augmentations to satisfy Definition 4, or leverage future progress in multimodal generative models
+for data augmentation. Lastly, future work could quantify whether shared or unique information is
+more important for different tasks and reweight the terms in the FACTOR CLobjective to suit the
+tasks.
+B Analysis of Multi-view Contrastive Learning
+Multi-view shared information describes the extent and dimensions in which information can be
+shared across different views. The presence of shared information is often in contrast to unique
+information that exists solely in a single modality, and can be formalized via information theory:
+Definition 5. (Shared information) Given X1andX2,I(X1;X2)=∫p(x1, x2)logp(x1,x2)
+p(x1)p(x2)
+measures the degree of information-theoretic shared information between X1andX2.
+Definition 6. (Task-relevant shared information) Given X1,X2, and a target Y,I(X1;X2;Y)=
+I(X1;X2)−I(X1;X2∣Y)=∫p(x1, x2)logp(x1,x2)
+p(x1)p(x2)−∫p(x1, x2∣y)logp(x1,x2∣y)
+p(x1∣y)p(x2∣y)measures
+16
+the amount of task-relevant shared information between X1andX2for predicting Y.I(X1;X2∣Y)
+represents the task-irrelevant shared information.
+Learning shared information via contrastive learning : Current approaches for multi-view con-
+trastive learning model shared information I(X1;X2)(and subsequently task-relevant shared infor-
+mation I(X1;X2;Y)during downstream task fine-tuning), without modeling unique information.
+Z1=arg max
+Z1∶=fθ(X1)I(Z1;X2), Z2=arg max
+Z2∶=fθ(X2)I(X1;Z2). (19)
+Optimizing for I(X1;X2)is performed via a surrogate loss during self-supervised pre-training
+(where we do not have access to the label Y) by maximizing the InfoNCE objective:
+INFONCE=sup
+fEx1,x+
+2∼p(x1,x2)
+x−
+2∼p(x2)[logexpf(x1, x+
+2)
+∑kexpf(x1, x−
+2)], (20)
+Oord et al. [57] show that I(X1;X2)≥logk−LNCE(X1;X2)whereLNCE(X1;X2)is negative
+ofINFONCE and is the loss to minimize (rather than maximize) in training. NCE falls into a
+broader class of contrastive learning methods [ 13,15,28,40,60] that model the ratio between
+joint densities p(x1, x2)and product of marginal densities p(x1)p(x2)using positive and negative
+samples [ 56,58,59,78,83] or probabilistic classifiers [ 54,76], all of which can also be used to
+capture shared information.
+Tian et al. [70] argues that the optimal view of contrastive learning is also minimal: the minimal
+representations only extract relevant information of the contrastive task (maximizing the shared part)
+and throw away other information. Therefore, from this minimal assumption, we have I(Z1;Y∣X2)=
+0andI(Z2;Y∣X1)=0as minimal Z1andZ2only captures task-relevant information from the shared
+part. By conditioning on X1orX2, the shared part is removed, and Z1andY(orZ2andY) do not
+share information.
+Lastly, we restate the multi-view non-redundancy from Definition 2:
+Definition 7. (Multi-view non-redundancy) ∃ϵ>0such that I(X1;Y∣X2)>ϵorI(X2;Y∣X1)>ϵ.
+We would like to compare and clarify the differences between the multiview redundancy assumption
+in Eq.(1) and the multi-view nonredundancy in Def. 7. The multiview redundancy assumption in
+Eq.(1) states that the task-relevant information from the unique part is minimal ( ≤ϵ). The multiview
+non-redundancy states the opposite: the task-relevant information from the unique part is nonzero
+and nonminimal, as it is not bounded by ϵ. Next we briefly clarify the relationship between these
+two assumptions and the InfoMin assumption: I(Z1;Y∣X2)=I(Z2;Y∣X1)=0. InfoMin is about
+representation Zwhile the redundancy assumptions are only about data X. InfoMin states that the
+optimal (sufficient and minimal) representation learns task-relevant information only from the shared
+part, as we discussed in the paragraph above. We empirically checked the two assumptions: Tables 1
+and 4 in the main text show that the multiview non-redundancy assumption holds empirically, and
+Table 11 shows that the InfoMin assumption holds empirically.
+We now show the limitations of CL methods, first restating the Theorem here:
+Theorem 4. (Suboptimality of standard CL) When there is multi-view non-redundancy as in Definition
+7, given optimal representations {Z1, Z2}that satisfy Eq.(19 and I(Z1;Y∣X2)=I(Z2;Y∣X1)=
+0[71], we have that
+I(Z1,Z2;Y)=I(X1,X2;Y)−I(X1;Y∣X2)−I(X2;Y∣X1)=I(X1;X2)−I(X1;X2∣Y)<I(X1,X2;Y).
+(21)
+Proof. Since Z1andZ2maximize I(X1;X2)we have that I(Z1;X2)=I(X1;Z2)=I(X1;X2)so
+I(Z1;X2;Y)=I(X1;Z2;Y)=I(X1;X2;Y)andI(Z1;X2∣Y)=I(X1;Z2∣Y)=I(X1;X2∣Y).
+We now show the relationship between I(X1, X2;Y), which is the total information X1, X2con-
+tributes towards predicting Yin classic supervised learning, with I(Z1, Z2;Y), which is the infor-
+mation that our learned self-supervised representations can contribute towards Yduring supervised
+fine-tuning. We first derive the relationship between I(Z1;Y)andI(X1;Y):
+I(Z1;Y)=I(Z1;X2;Y)+I(Z1;Y∣X2) (22)
+=I(X1;X2;Y)+I(Z1;Y∣X2) (23)
+=I(X1;Y)−I(X1;Y∣X2)+I(Z1;Y∣X2) (24)
+=I(X1;Y)−I(X1;Y∣X2) (25)
+17
+Given X1, we further derive a relationship between I(Z2;Y∣Z1)andI(X2;Y∣X1):
+I(Z2;Y∣Z1)=I(Z2;X1;Y∣Z1)+I(Z2;Y∣Z1, X1) (26)
+=I(X1;X2;Y∣Z1)+I(Z2;Y∣Z1, X1) (27)
+=I(X1;X2;Y∣Z1)+I(Z2;Y∣X1) (28)
+=I(X2;Y∣Z1)−I(X2;Y∣X1, Z1)+I(Z2;Y∣X1) (29)
+=I(X2;Y∣Z1)−I(X2;Y∣X1)+I(Z2;Y∣X1) (30)
+=I(X2;Y)−I(Z1;X2;Y)−I(X2;Y∣X1)+I(Z2;Y∣X1) (31)
+=I(X2;Y)−I(X1;X2;Y)−I(X2;Y∣X1)+I(Z2;Y∣X1) (32)
+=I(X2;Y∣X1)−I(X2;Y∣X1)+I(Z2;Y∣X1)=0 (33)
+In Eqs.(28) and (30), we use the fact that conditioning on Z1andX1jointly reduces to conditioning
+onX1since Z1is deterministically obtained from X1, and in Eq.(32) we use the definition of learning
+Zsto maximize I(X1;X2)soI(Z1;X2;Y)=I(X1;Z2;Y). Finally, adding both terms up,
+I(Z1, Z2;Y)=I(Z1;Y)+I(Z2;Y∣Z1) (34)
+=I(X1;Y)−I(X1;Y∣X2) (35)
+=I(X1;X2;Y) (36)
+=I(X1, X2;Y)−I(X1;Y∣X2)−I(X2;Y∣X1) (37)
+=I(X1;X2)−I(X1;X2∣Y) (38)
+gives the desired result.
+Bayes error rate. The Bayes error rate Pe(Z1, Z2)∶=1−EPZ1,Z2[max y∈YP(ˆY=y∣z1, z2)]of
+contrastive representations {Z1, Z2}is given by:
+Pe≤1−exp[I(X1, X2;Y)−I(X1;Y∣X2)−I(X2;Y∣X1)−H(Y)] (39)
+=1−exp[I(X1;X2;Y)−H(Y)] (40)
+Proof. We use the inequality between PeandH(Y∣Z)[22, 75, 80]:
+−ln(1−Pe)≤H(Y∣Z),or equivalently, Pe≤1−exp[−H(Y∣Z)] (41)
+If we regard Zas the joint of Z1andZ2, then we have
+Pe≤1−exp[−H(Y∣Z1, Z2)] (42)
+We further expand H(Y∣Z1, Z2)by definition of mutual information, I(X;Y)=H(X)−H(X∣Y),
+Theorem 4, and the I(X1;X2;Y)=I(X1;X2)−I(X1;X2∣Y):
+H(Y∣Z1, Z2)=H(Y)−I(Z1, Z2;Y) (43)
+=H(Y)−I(X1, X2;Y)+I(X1;Y∣X2)+I(X2;Y∣X1) (44)
+=H(Y)−I(X1;X2)+I(X1;X2∣Y) (45)
+=H(Y)−I(X1;X2;Y) (46)
+Plugging in Eq.(42), we have
+Pe≤1−exp[−H(Y∣Z1, Z2)] (47)
+=1−exp[−(H(Y)−I(X1, X2;Y)+I(X1;Y∣X2)+I(X2;Y∣X1))] (48)
+=1−exp[−H(Y)+I(X1, X2;Y)−I(X1;Y∣X2)−I(X2;Y∣X1)] (49)
+and
+Pe≤1−exp[−H(Y∣Z1, Z2)] (50)
+=1−exp[−(H(Y)−I(X1;X2;Y))] (51)
+=1−exp[−H(Y)+I(X1;X2;Y)] (52)
+resulting in the Bayes error rate as desired.
+18
+C F ACTORIZED CONTRASTIVE LEARNING
+C.1 Contrastive estimators
+Theorem 5. (Contrastive estimators for I(X1;X2)) Defining the NCE estimator and NCE-CLUB
+estimator as follows,
+INCE(X1;X2)=Ex1,x+
+2∼p(x1,x2)
+x−
+2∼p(x2)[logexpf(x1, x+
+2)
+∑kexpf(x1, x−
+2)] (53)
+INCE-CLUB (X1;X2)=Ex1,x+
+2∼p(x1,x2)[f∗(x1, x+
+2)]−Ex1∼p(x1)
+x−
+2∼p(x2)[f∗(x1, x−
+2)] (54)
+where f∗(x1, x2)is the optimal critic from INCEplugged into the ICLUB objective [ 16]. We call the
+proposed plug-in objective Eq.(11) INCE-CLUB , and obtain lower and upper bounds on I(X1;X2):
+INCE(X1;X2)≤I(X1;X2)≤INCE-CLUB (X1;X2). (55)
+Proof. The lower bound INCE(X1;X2)≤I(X1;X2)follows from Oord et al. [57]: optimizing the
+objective leads to an optimal critic f∗=logp(x2∣x1)+c(x2)[59] or without loss of generality
+f∗=logp(x1∣x2)+c(x1), where c(⋅)is an arbitrary deterministic function. Plugging the optimal
+critic into the INCE(X1;X2)gives the result: INCE(X1;X2)+logN≤I(X1;X2)[57, 59].
+Next, the original ICLUB(X1;X2)[16] is defined as:
+ICLUB(X1;X2)∶=Ep(x1,x2)[logp(x2∣x1)]−Ep(x1)p(x2)[logp(x2∣x1)]. (56)
+As mutual information is symmetric w.r.t x1andx2:I(X1;X2)=I(X2;X1), without loss of
+generality, we have:
+ICLUB(X1;X2)=ICLUB(X2;X1)=Ep(x1,x2)[logp(x1∣x2)]−Ep(x1)p(x2)[logp(x1∣x2)](57)
+The formulation above assumes p(x1∣x2)is known, which is satisfied when we use the optimal critic
+f∗=logp(x1∣x2)+c(x1)fromINCE(X1;X2). Plugging the optimal critic f∗intoICLUB(X1;X2),
+we obtain a desired upper bound INCE-CLUB (X1;X2)ofI(X1;X2):
+INCE-CLUB (X1;X2)=Ep(x1,x2)[logp(x1∣x2)+c(x1)]−Ep(x1)p(x2)[logp(x1∣x2)+c(x1)](58)
+=Ep(x1,x2)[logp(x1∣x2)]+Ep(x1,x2)[c(x1)]−Ep(x1)p(x2)[logp(x1∣x2)]−Ep(x1)p(x2)[c(x1)]
+(59)
+=Ep(x1,x2)[logp(x1∣x2)]−Ep(x1)p(x2)[logp(x1∣x2)] (60)
+≥I(X1;X2). (61)
+Eq.(59) is from the linearity of expectation, Eq.(60) is from the fact that c(x1)is not a function of x2
+and therefore Ep(x1,x2)[c(x1)]=Ep(x1)p(x2)[c(x1)]=Ep(x1)[c(x1)], and Eq.(61) is directly from
+the original ICLUB(X1;X2)paper [16].
+C.2 Unimodal and multimodal augmentations
+We first restate the definitions of optimal single-view and multi-view augmentation:
+Definition 8. (Optimal unimodal augmentation) X′
+1is an optimal unimodal augmentation for X1
+when I(X;X′)=I(X;Y), which implies that the only information shared between XandX′is
+task-relevant with no irrelevant noise.
+Definition 9. (Optimal multimodal augmentation) X′
+1andX′
+2are optimal multimodal augmentation
+forX1andX2when I(X1, X2;X′
+1, X′
+2)=I(X1, X2;Y), which implies that the only information
+shared between X1, X2andX′
+1, X′
+2is task-relevant with no irrelevant noise.
+When are these assumptions satisfied? I(X;X′)=I(X;Y)holds when all information shared be-
+tween XandX′is task-relevant, which implies that the augmentation keeps task-relevant information
+constant while changing task-irrelevant information. In the case of image classification, task-relevant
+information is the object in the picture, while task-irrelevant information is the background. To satisfy
+I(X1, X2;X′
+1, X′
+2)=I(X1, X2;Y), by the chain rule of MI, we augment in two steps:
+Unimodal aug: X′
+1s.t.I(X1;X′
+1)=I(X1;Y), (62)
+Unique aug: X′
+2s.t.I(X2;X′
+2∣X1)=I(X2;Y∣X1). (63)
+19
+Table 5: More examples of optimal single-view and multi-view augmentations.
+Standard Aug Unique Aug
+Dataset X1 X2 X′
+1X′
+2X′′
+2
+Cartoon Caption Image Word Masking Crop + Flip + Resize Flip + Resize
+MIMIC Signals Tables Time Warping CutMix [89] on All Features CutMix on Nonclinical Features
+MOSEI Transcripts Video+Audio Word Masking Noise Injection on Any Frames Noise Injection on Silent Frames
+UR-FUNNY Transcripts Video+Audio Word Masking Noise Injection on Any Frames Noise Injection on Silent Frames
+MUsTARD Transcripts Video+Audio Word Masking Noise Injection on Any Frames Noise Injection on Silent Frames
+the second step is the unique augmentation : after observing X1, we create augmented X′
+2from X2
+to keep the task-relevant information but meanwhile do not affect any information from X1. In Table
+5, we include some more examples of how unique augmentations could be designed across different
+datasets.
+Final objectives : If Definitions 8 and 9 are both satisfied, we can substitute contrastive estimators in
+the following equations:
+INCE(X1;X2∣Y)=Ep(y)⎡⎢⎢⎢⎢⎣Ex1,x+
+2∼p(x1,x2∣y)
+x−
+2∼p(x2∣y)[logexpf(x1,x+
+2,y)
+∑kexpf(x1,x−
+2,y)]⎤⎥⎥⎥⎥⎦(64)
+INCE-CLUB (X1;X2∣Y)=Ep(y)⎡⎢⎢⎢⎢⎣Ex1,x+
+2∼p(x1,x2∣y)[f∗(x1,x+
+2,y)]−Ex1∼p(x1∣y)
+x−
+2∼p(x2∣y)[f∗(x1,x−
+2,y)]⎤⎥⎥⎥⎥⎦(65)
+by replacing I(Xi;Y)terms with I(Xi;X′
+i)and replacing I(X1;X2∣Y)terms with
+I(X1;X2∣X′
+1, X′
+2):
+INCE(X1;X2∣X′
+1,X′
+2)=Ep(x′
+1,x′
+2)⎡⎢⎢⎢⎢⎣Ex1,x+
+2∼p(x1,x2∣x′
+1,x′
+2)
+x−
+2∼p(x2∣x′
+1,x′
+2)[logexpf(x1,x+
+2,x′
+1,x′
+2)
+∑kexpf(x1,x−
+2,x′
+1,x′
+2)]⎤⎥⎥⎥⎥⎦(66)
+INCE-CLUB (X1;X2∣X′
+1,X′
+2)=Ep(x′
+1,x′
+2)[Ex1,x+
+2∼p(x1,x2∣x′
+1,x′
+2)[f∗(x1,x+
+2,x′
+1,x′
+2)]
+−Ex1∼p(x1∣x′
+1,x′
+2)
+x−
+2∼p(x2∣x′
+1,x′
+2)[f∗(x1,x−
+2,x′
+1,x′
+2)]] (67)
+C.2.1 Implementing conditional CL via kernel
+We restate our objectives below:
+INCE(X1;X2∣X′
+1,X′
+2)=Ep(x′
+1,x′
+2)⎡⎢⎢⎢⎢⎣Ex1,x+
+2∼p(x1,x2∣x′
+1,x′
+2)
+x−
+2∼p(x2∣x′
+1,x′
+2)[logexpf(x1,x+
+2,x′
+1,x′
+2)
+∑kexpf(x1,x−
+2,x′
+1,x′
+2)]⎤⎥⎥⎥⎥⎦(68)
+INCE-CLUB (X1;X2∣X′
+1,X′
+2)=Ep(x′
+1,x′
+2)[Ex1,x+
+2∼p(x1,x2∣x′
+1,x′
+2)[f∗(x1,x+
+2,x′
+1,x′
+2)]
+−Ex1∼p(x1∣x′
+1,x′
+2)
+x−
+2∼p(x2∣x′
+1,x′
+2)[f∗(x1,x−
+2,x′
+1,x′
+2)]] (69)
+However, sampling from p(⋅∣x′
+1, x′
+2)is hard. Since X′
+1, X′
+2are continuous variables, directly sam-
+pling from the conditional distributions p(⋅∣x′
+1, x′
+2)may be difficult; training a generative model
+pθ(x1, x2∣x′
+1, x′
+2)from augmented data x′
+1, x′
+2to original data x1, x2can be expensive and nontrivial
+in a multimodal setup. In this work, we implement the conditioning in p(x1, x2∣x′
+1, x′
+2)through con-
+catenation and the details are in Appendix D.1. Here we discuss an alternative solution to this problem
+introduced by Tsai et al. [77]. It leverages kernel methods for conditional sampling in contrastive
+learning by assigning weights to each sampled data given the kernel similarity between conditioned
+variables, avoiding directly sampling from the conditional distributions or training generative models.
+In our formulation, given multimodal input (x1, x2)with their augmentation (x′
+1, x′
+2), we can sim-
+ply use the technique from [ 77] to estimate INCE(X1;X2∣X′
+1, X′
+2)andINCE-CLUB (X1;X2∣X′
+1, X′
+2),
+where the kernel measures the similarity between different pairs (x′
+1, x′
+2)of the conditional variable
+20
+X1, X2. Specifically,
+INCE(X1;X2∣X′
+1, X′
+2)=Ep(x1,x2,x′
+1,x′
+2)⎡⎢⎢⎢⎢⎣logexpf(x1, x+
+2)
+expf(x1, x2)+n∗[KX1⊥ ⊥X2∣X′
+1,X′
+2]ii⎤⎥⎥⎥⎥⎦(70)
+INCE-CLUB (X1;X2∣X′
+1, X′
+2)=Ep(x1,x2,x′
+1,x′
+2)[f∗(x1, x2)−log[KX1⊥ ⊥X2∣X′
+1,X′
+2]ii] (71)
+where KX1⊥ ⊥X2∣X′
+1,X′
+2=KX1X2(KX′
+1X′
+2+λI)−1KX′
+1X′
+2and[KX1⊥ ⊥X2∣X′
+1,X′
+2]iiis the ith row and
+ith column of KX1⊥ ⊥X2∣X′
+1,X′
+2.KX1X2is a kernel similarity matrix between X1andX2, andKX′
+1X′
+2
+is a separate kernel similarity matrix between X′
+1andX′
+2.f∗is the optimal solution of Eq.(70).
+By leveraging the similarity KX′
+1X′
+2between conditional variables X′
+1andX′
+2,KX1⊥ ⊥X2∣X′
+1,X′
+2transforms the similarity scores between X1andX2under unconditional distributions into similarity
+scores under conditional distributions. Note that the expectations in Eqs.(70) and (71) are taken
+over the joint distribution p(x1, x2, x′
+1, x′
+2), which comes naturally after augmenting both modalities
+X1andX2. This method could effectively alleviate the problem of sampling from conditional
+distributions in our formulation. We refer the reader to Tsai et al. [77] for more details.
+C.3 Final estimators in F ACTOR CL
+Theorem 6. (Contrastive estimators for shared and unique information). Under assumptions on
+single-view augmentations I(X1;Y)=I(X1, X′
+1)(Definition 8) and optimal multi-view augmen-
+tation X′
+2such that I(X1, X2;X′
+1, X′
+2)=I(X1, X2;Y)(Definition 9), we can define contrastive
+objectives for task-relevant shared and unique information with:
+S=I(X1;X2;Y)≥INCE(X1;X2)−INCE-CLUB (X1;X2∣X′
+1, X′
+2) (72)
+Ui=I(Xi;Y∣X−i)≥INCE(Xi;X′
+i)−INCE-CLUB (X1;X2)+INCE(X1;X2∣X′
+1, X′
+2) (73)
+Proof. The objectives follow from the fact that INCE(X1;X2)andINCE(X1;X2∣X′
+1, X′
+2)
+are lower bounds of I(X1;X2)andI(X1;X2∣Y)respectively, and INCE-CLUB (X1;X2)and
+INCE-CLUB (X1;X2∣X′
+1, X′
+2)are upper bounds of I(X1;X2)andI(X1;X2∣Y)respectively:
+S=I(X1;X2;Y)=I(X1;X2)−I(X1;X2∣Y) (74)
+≥INCE(X1;X2)−INCE-CLUB (X1;X2∣X′
+1, X′
+2) (75)
+Ui=I(Xi;Y∣X−i)=I(Xi;Y)−(I(X1;X2)−I(X1;X2∣Y)) (76)
+≥INCE(Xi;X′
+i)−(INCE-CLUB (X1;X2)−INCE(X1;X2∣X′
+1, X′
+2)) (77)
+and symmetrically for U2.
+Now we show that FACTOR CLlearns both shared and unique task-relevant information. First, we
+restate the definition of the factorized representations:
+ZS1=arg max
+Z1=fθ(X1)I(Z1;X2;Y), Z S2=arg max
+Z2=fθ(X2)I(Z2;X1;Y), (78)
+ZU1=arg max
+Z1=fθ(X1)I(Z1;Y∣X2), Z U2=arg max
+Z2=fθ(X2)I(Z2;Y∣X1). (79)
+where I(Z1;X2;Y)=I(Z1;X2)−I(Z1;X2∣Y)is the shared information and I(Z2;X1;Y)=
+I(Z2;X2)−I(Z2;X1∣Y)is the unique information.
+Theorem 7. (Optimality of FACTOR CL) IfZS1, ZS2, ZU1, ZU2perfectly maximize Eqs.(78-79)
+and the estimations in Eqs.(13-67) are tight, we obtain I(X1, X2;Y)=I(ZS1;ZS2;Y)+
+I(ZU1;Y∣ZS2)+I(ZU2;Y∣ZS1), suggesting that FACTOR CLlearns both shared and unique task-
+relevant information.
+Proof. Because I(X1, X2;Y)=I(X1;X2;Y)+I(X1;Y∣X2)+I(X2;Y∣X1), it is sufficient to
+show that I(X1;X2;Y)=I(ZS1;ZS2;Y), I(X1;Y∣X2)=I(ZU1;Y∣ZS2)andI(X2;Y∣X1)=
+I(ZU2;Y∣ZS1).
+21
+First we show I(X1;X2;Y)=I(ZS1;ZS2;Y). Crucially, by definition of how ZS1andZS2are
+optimized to maximize I(X1;X2;Y), we have that:
+I(X1;X2;Y)=I(ZS1;X2;Y)=I(ZS2;X1;Y). (80)
+We can then obtain
+I(X1;X2;Y)=I(X1;ZS2;Y) (81)
+=I(X1;ZS2;Y∣ZS1)+I(ZS1;ZS2;X1;Y) (82)
+=I(ZS2;Y∣ZS1)−I(ZS2;Y∣ZS1, X1)+I(ZS1;ZS2;X1;Y) (83)
+=I(ZS2;Y∣ZS1)−I(ZS2;Y∣X1)+I(ZS1;ZS2;X1;Y) (84)
+=I(ZS2;Y∣ZS1)−I(ZS2;Y∣X1)+I(ZS1;ZS2;Y) (85)
+=I(ZS2;Y∣ZS1)+I(ZS1;ZS2;Y) (86)
+=I(ZS1;ZS2;Y) (87)
+where Eq.(84) is because ZS1are deterministically obtained from S1and Eq.(85) is because ZS1
+maximizes the shared information. Finally, we go to Eq.(87) I(ZS2;Y∣ZS1)=0as shown in
+Eqs.(26-33) using the fact that ZS1is learned to maximize I(X1;X2;Y)andI(ZS1;X2;Y)=
+I(X1;ZS2;Y).
+Next, we show I(X1;Y∣X2)=I(ZU1;Y∣ZS2):
+I(ZU1;Y∣ZS2)=I(ZU1;Y∣ZS2, ZU2)+I(ZU1;Y;ZU2∣ZS2), (88)
+which is by the chain rule of conditional mutual information. Then we show I(ZU1;Y;ZU2∣ZS2)=0:
+I(ZU1;Y;ZU2∣ZS2)=I(ZU1;ZU2∣ZS2)−I(ZU1;ZU2∣Y;ZS2)=0−0=0 (89)
+This is because Eq.(79) leads to I(ZU1;Y∣X2)=I(X1;Y∣X2)andI(ZU2;Y∣X1)=I(X2;Y∣X1).
+If the estimations in Eqs.(13-67) are tight, by conditioning and by the previously stated
+I(ZU1;Y∣X2)=I(X1;Y∣X2),ZU1tightly captures information from only X1and not in X2.
+The same applies to ZU2. We have I(ZU1;X2)=I(ZU2;X1)=I(ZU1;ZU2)=I(ZU1;ZU2∣T)=0
+withTbeing an arbitrary random variable because no shared information exists between ZU1and
+ZU2. Then we obtain:
+I(ZU1;Y∣ZS2, ZU2)=I(ZU1;Y∣ZS2, ZU2, X2)+I(ZU1;Y;X2∣ZS2, ZU2) (90)
+=I(ZU1;Y∣X2) (91)
+We use the fact that conditioning on ZS2, ZU2andX2jointly reduces to conditioning on X2since
+ZS2andZU2are deterministically obtained from X2. Lastly, since Eqs.(78-79) are satisfied, ZU1=
+arg maxZ1=fθ(X1)I(Z1;Y∣X2)therefore I(ZU1;Y∣X2)=I(X1;Y∣X2). We have:
+I(ZU1;Y∣ZS2)=I(ZU1;Y∣X2)=I(X1;Y∣X2). (92)
+The proof for I(X2;Y∣X1)=I(ZU2;Y∣ZS1)is similar. We now have shown that I(X1;X2;Y)=
+I(ZS1;ZS2;Y),I(X1;Y∣X2)=I(ZU1;Y∣ZS2)andI(X2;Y∣X1)=I(ZU2;Y∣ZS1), adding up all
+LHS and RHS we have the theorem.
+C.4 Extensions to masking and non-contrastive learning
+We now show how similar ideas can be extended to other popular self-supervised learning objectives,
+such as non-contrastive learning [ 6,93] and masked pre-training [ 20,29]. Importantly, this paper pro-
+vides a new principle for multimodel self-supervised learning: (1) learning task-relevant information
+and (2) removing task-irrelevant information from both shared and unique parts across modalities.
+Our paper focuses on realizing this principle via multi-view information theory and contrastive
+learning. Below we provide two potential alternatives to realize this principle on non-contrastive and
+masking methods, respectively:
+Non-contrastive learning: Methods such as Barlow Twins [ 93] and VICReg [ 6] use invariance and
+covariance regularizations to maximally preserve shared information in the embeddings across two
+modalities. However, the embeddings learned may contain only contain task-relevant information
+from the shared part and not unique parts. To use the principle in this paper to capture more task-
+relevant information from unique parts, one should perform VIC-regularization on X1features, on
+22
+X2features, and on X1, X2cross-modal features. When performing VICReg on unimodal features,
+one should condition on the other modality when performing augmentation. Specifically, similar to
+the idea of multimodal augmentation in this paper, the augmentation of the second modality should
+not interfere with the shared part (i.e., do not augment regions referred to by the first modality),
+making the invariance and covariance regularization of the second modality focus on the augmented
+modality-unique features. This makes the model learn unique modality features that are not captured
+by the joint embedding from standard independent augmentations.
+Masking: Conceptually, masking [ 20,29] can be interpreted as leveraging unmasked regions in the
+same modality to predict masked regions or leveraging the other modality to predict the masked
+region. However, the learned representation may not be all task-relevant. To use the principle in this
+paper to exclude task-irrelevant information and capture more task-relevant information from unique
+parts, we can perform conditional masking, where masking is conditioned on augmented views
+(similar to the multimodal augmentation in the paper, where the conditioned views are approximating
+the labels). As a result, only unique regions in the second modality can be masked out, making the
+model capture more unique information from the second modality by masked prediction. Here we
+have only provided high-level intuitions of extensions to these methods, and future work should
+explore these ideas in more detail.
+D Experimental Details
+D.1 Implementation details
+Objective Formulation and Architecture
+In Algorithm 2 in the main text, we see the sketch for doing contrastive learning with our proposed
+objectives. To implement all algorithms used in our ablation experiments, we start with two encoders
+e1(⋅)ande2(⋅), which takes samples x1andx2from the modalities X1andX2, and outputs
+corresponding representations z1andz2. We also have a critic function fθ(⋅,⋅)parametrized by θ
+which takes z1andz2as inputs and returns a scalar. A popular way to perform contrastive learning
+aims to maximize INCE(X1;X2), where
+INCE(X1;X2)=Ex1,x+
+2∼p(x1,x2)
+x−
+2∼p(x2)[logexpfθ(e1(x1), e2(x+
+2))
+∑kexpfθ(e1(x1), e2(x−
+2))]. (93)
+In our algorithms, we follow the derivations in Eqs.(8-9) to maximize each INCEobjective and
+minimize each INCE-CLUB objective. Therefore, for each objective, we add two additional MLP heads
+on top of the two encoders and create a separate critic which takes in the outputs of the MLP heads
+instead of the encoders. In all the experiments, we adopt the concat critic design [ 57,59,67], where
+fθ(x, y)=hθ([x, y])withhθbeing an MLP.
+FACTOR CL-SUP : In the supervised version of CL which uses label Y, the objective we aim to
+maximize is formulated as
+LFACTOR CL−SUP=INCE(X1;X2)−INCE-CLUB (X1;X2∣Y) (94)
++INCE(X1;Y)+INCE(X2;Y) (95)
+−INCE-CLUB (X1;X2)+INCE(X1;X2∣Y). (96)
+Each INCEandINCE-CLUB term in this objective is calculated using its own critic as discussed above.
+The conditional terms involving the label Yare implicitly modeled by directly concatenating Y
+to the outputs of both heads before feeding into the critic. To obtain the learned representations
+ZS1, we concatenate the outputs of the heads on top of the encoder e1that correspond to the terms
+INCE(X1;X2)andINCE-CLUB (X1;X2∣Y). To obtain ZU1, we concatenate e1’s head outputs from
+the terms INCE(X1;Y),INCE-CLUB (X1;X2), and INCE(X1;X2∣Y).ZS2andZU2are obtained in a
+similar fashion, except we use the outputs from e2’s heads instead of e1.
+FACTOR CL-SSL : In the self-supervised version of CL which uses augmentations X′
+1andX′
+2of the
+input modalities, the objective we aim to maximize is formulated as
+LFACTOR CL−SSL=INCE(X1;X2)−INCE-CLUB (X1;X2∣X′
+1, X′
+2) (97)
++INCE(X1;X′
+1)+INCE(X2;X′
+2) (98)
+−INCE-CLUB (X1;X2)+INCE(X1;X2∣X′
+1, X′
+2). (99)
+23
+Figure 5: An illustration of conditioning by concatenation in the implementation of F ACTOR CL. Conditioning
+is done by concatenating Z1, the encoded representation of X1, andZ′
+1, the encoded representation of X′
+1. A
+similar operation is performed for X2andX′
+2. The concatenated vectors are then fed to MI estimators, such as
+INCEandINCE-CLUB (the figure illustrates INCE).
+Here the conditional terms are conditioned on the augmentations X′
+1andX′
+2, and we can similarly
+model it by concatenating the head outputs of X′
+1toX1and the head outputs of X′
+2toX2before
+feeding into the critic. We use Figure 5 to illustrate this. The way to obtain the learned representations
+is the same as described in F ACTOR CL-SUP.
+Estimation of CMI : To estimate the conditional mutual information (CMI) I(X1;X2∣X′
+1, X′
+2), we
+can estimate the lower or upper bounds of true CMI [ 50,54,68]. However, direct sampling from the
+conditional distribution p(x1, x2∣x′
+1, x′
+2)can be expensive because we should consider a different
+conditional distribution p(x1, x2∣x′
+1, x′
+2)for each data pair x′
+1, x′
+2. Sordoni et al. [68] address this by
+concatenating the conditioning variable with the input in the critic: ϕ(x1, x2, c), and showing that
+Conditional InfoNCE (Eq.(15) is a lower bound and estimator of CMI. This estimator can be made
+more exact by further importance sampling [ 68]. However, adding importance sampling [ 68] or using
+more accurate estimators [ 26] comes with a trade-off in complexity. Since we focus on capturing
+unique information to learn a scalable multimodal representation instead of accurately estimating the
+CMI, we leveraged a simpler version of the estimator from Sordoni et al. [68]: generating multiple
+augmented pairs from x1, x2, and concatenating the input x1, x2and each augmented pair x′
+1, x′
+2to
+define samples from the conditional distribution p(x1, x2∣x′
+1, x′
+2). We argue that since augmentations
+do not significantly change the semantics of images, p(x1, x2∣x′
+1, x′
+2)could be approximated by
+p(x′′
+1, x′′
+2∣x′
+1, x′
+2)where x′′
+1, x′′
+2are other augmented pairs in addition to x′
+1, x′
+2. In this submission,
+we use one pair of augmented samples for consistency, but our code easily supports increasing the
+number of augmented pairs that can improve the accuracy of CMI estimation.
+Regardless, our existing one-pair implementation can already show that our estimators are empirically
+comparable to CMI estimators with guarantees such as Mukherjee et al. [54] (Table 9), and our
+estimators empirically satisfy that the lower bound is smaller than the true CMI, and the true CMI
+smaller than the upper bound, i.e., Conditional InfoNCE ≤true CMI≤Conditional InfoNCE-CLUB
+(also in Table 9). We refer the reader to Sordoni et al. [68] for tighter bounds for CMI.
+OurCL-SUP : For this ablation, we remove the factorization and only learn Z1forX1andZ2forX2.
+The objective we use is the same as that of FACTOR CL-SUP. The only difference is that we now take
+e1(x1)ande2(x2)as the learned representations for inputs x1andx2.
+OurCL-SSL : This is a similar ablation for FACTOR CL-SSL where we remove the factorization.
+The objective is the same as that of FACTOR CL-SSL and we use e1(x1)ande2(x2)as the learned
+representations for inputs x1andx2.
+Training Strategy : In regular contrastive learning using INCEas the only objective, we can simply
+perform gradient descent to minimize INCE, updating all parameters in the encoders, MLP heads,
+and critics. However, training any of the four methods above also involves the minimization of
+theINCE-CLUB objectives, which require the optimal critic f∗from INCE, as stated in Eq.(11).
+Therefore, within each iteration during our training, we need to first obtain the optimal critics for the
+INCE-CLUB terms using the INCEobjective. We outline the training strategy using a sampling method
+in Algorithm 3. In this algorithm, LFACTOR CLcan be either LFACTOR CL−SUP orLFACTOR CL−SSL, and
+LNCEis the summation of INCEobjectives for the INCE-CLUB terms. In particular, we have
+LNCE={INCE(X1;X2∣Y)+INCE(X1;X2), ifL=LFACTOR CL−SUP ;
+INCE(X1;X2∣X′
+1, X′
+2)+INCE(X1;X2),ifL=LFACTOR CL−SSL .(100)
+24
+Algorithm 3 CL training with sampling
+Require: Multimodal dataset {X1,X2}.
+θ,ϕ←Initialize network parameters.
+while not converged do
+{x1,x2}←Sampled batch from {X1,X2}
+θ←Update parameters by maximizing LFACTOR CL
+fori=1tokdo
+{x′
+1,x′
+2}←Sampled batch from {X1,X2}
+ϕ←Update parameters by maximizing LNCE
+end for
+end while
+return θ,ϕ
+We define ϕto be the parameters of critics for the INCE-CLUB terms, and θcorresponds to all the rest
+parameters in the network (parameters of encoders, heads, and critics for INCEterms). In the outer
+loop, we update θusing the main learning objective L. In the inner loop, we update ϕusing the LNCE
+objective, which learns the optimal critics f∗needed to compute the INCE-CLUB terms. Ideally in
+the inner loop we would update ϕuntil convergence so we get a good approximation to the optimal
+critic. In practice we found sampling just one batch by setting k=1in Algorithm 3 works pretty
+well. Using only one iteration does not have a big impact on the convergence and still produces
+promising results. More importantly, it significantly reduces the time required for training, and allows
+our algorithms to have comparable running time to existing contrastive learning methods.
+D.2 Datasets
+Gaussian datasets for MI estimation : As shown in Figure 3 in the main text, we first demonstrate
+the quality of our proposed upper bounds INCE-CLUB (X1;X2)on a toy Gaussian dataset. We obtain
+the samples {(xi, yi)}from 4 multivariate Gaussian distribution with dimensions {20, 50, 100, 200}.
+In each dataset, we set the ground truth MI values to be {2, 4, 6, 8, 10}, and so we can compute the
+correlation ρneeded for achieving these MI values using the ground truth MI formula for Multivariate
+Gaussian: I(X, Y)=−d
+2log(1−ρ2). At each true MI value we sample 4000 times using a batch
+size of 64.
+Synthetic dataset with controlled generation : We generate data with controllable ratios of task-
+relevant shared and unique information to analyze the behavior of each contrasive learning objective
+in Figure 1 in the main text. Starting with a set of latent vectors w1, w2, ws∼N(0d,Σ2
+d), d=50
+representing information unique to X1, X2and common to both respectively, the concatenated vector
+[w1, ws]is transformed into high-dimensional x1using a fixed full-rank transformation T1and
+likewise [w2, ws]tox2viaT2. The label yis generated as a function (with nonlinearity and noise)
+of varying ratios of ws,w1, and w2to represent shared and unique task-relevant information. For
+experiments, we used 1-layer MLPs with 512 hidden size as encoders, and the embedding dimensions
+are 128 for both modalities. The heads on top of encoders are also 1-layer MLPs with the same
+hidden and output dimension as the input, and all critics are 1-layer MLPs with 512 hidden size.
+Multimodal fusion datasets : We use a collection of 5 real-world datasets provided in Multi-
+Bench [ 44] and the IRFL dataset to test our method in the context of varying ratios of shared and
+unique information that is important for the task. In all the datasets below, the heads added on top
+of the encoders are 1-Layer MLPs with ReLU activations that map the encoder outputs to the same
+dimensions. All critics are also MLPs with 1 hidden layer of size 512 and ReLU activation.
+1.MIMIC-III [37] (Medical Information Mart for Intensive Care III) is a large-scale dataset for
+healthcare which contains records of over 40,000 ICU patients in both forms of times-series data
+measured by hours and static data (age, gender, ethnicity) in the tabular numerical form. We use
+the preprocessed data provided in MultiBench [ 44], where the time-series data is measured every 1
+hour in a 24-hour period and consists of vectors of size 12, and the tabular data consists of vectors
+of size 5. The task we use in the experiment is a binary classification on whether the patient fits
+any ICD-9 code in group 7 (460-519).
+25
+Table 6: Results on MultiBench [ 44] datasets with varying shared and unique information: FACTOR CLachieves
+strong results vs self-supervised (top 5rows) and supervised (bottom 3rows) baselines that do not have unique
+representations, factorization, upper-bounds to remove irrelevant information, and multimodal augmentations.
+Model MIMIC MOSEI MOSI UR-FUNNY MUS TARD
+SimCLR [13] 66.7 ±0.0% 71.9 ±0.3% 47.8 ±1.8% 50.1 ±1.9 % 53.5 ±2.9%
+Cross+Self [80] 65.2 ±0.0% 71.1 ±0.2% 48.6 ±1.2% 56.5 ±0.7% 53.9 ±4.5%
+Cross+Self+Fact [88] 65.5 ±0.0% 71.9 ±0.2% 49.0 ±1.1% 59.9 ±0.9% 53.9 ±4.0%
+OurCL-SSL 65.2 ±0.0% 71.2 ±0.2% 49.0 ±0.8% 58.8 ±1.3% 54.0 ±2.5%
+FACTOR CL-SSL 67.3±0.0%74.5±0.1% 51.2 ±1.6% 60.5 ±0.8% 55.8 ±0.9%
+SupCon [40] 67.4 ±0.0% 71.0 ±0.1% 47.2 ±1.2% 50.1 ±2.0% 52.7 ±2.2%
+OurCL-SUP 68.2 ±0.0% 71.1 ±0.2% 65.3 ±0.8% 58.3 ±1.1% 65.1 ±1.8%
+FACTOR CL-SUP 76.8±0.0%77.8±0.3% 69.1 ±0.6% 63.5 ±0.8% 69.9 ±1.9%
+Table 7: Continued pre-training on CLIP with our FACTOR CLobjectives on classifying images and figurative
+language. Our approach shows strong results as compared to standard fine-tuning and continued pre-training.
+Task IRFL
+Zero-shot CLIP [60] 89.2 ±0.0%
+SimCLR [13] 91.6 ±0.0%
+Cross+Self [80, 88] 91.1 ±1.2%
+FACTOR CL-IndAug 91.6 ±1.3%
+FACTOR CL-SSL 93.8±1.4%
+Fine-tuned CLIP [60] 96.4 ±0.0%
+SupCon [40] 87.7 ±4.7%
+FACTOR CL-SUP 98.3±1.2%
+In the experiments, we use a 2-layer MLP with 10 hidden layer size for the tabular data modality,
+and map it to a vector of size 10. The time-series modality is encoded using a GRU with hidden
+size 30 and followed by a linear layer which projects the output to embeddings of size 15. We
+train the model for 100 epochs using the Adam optimizer with a 1e-4 learning rate.
+2.CMU-MOSEI [92] is the largest sentence-level multimodal sentiment and emotion benchmark
+with23,000monologue videos. It contains more than 65 hours of annotated video from more
+than 1,000 speakers and 250 topics. Each video is labeled with a sentiment intensity ranging from
+-3 to 3. In our experiments, we cast the intensity values to a binary classification on whether the
+sentiment is positive or negative. MultiBench [ 44] provides access to the extracted features of the
+vision, text, and audio modalities, and in our experiments, we use the vision and text features for
+doing contrastive learning.
+In our experiments, we encode both the vision and text modalities using Transformer encoders
+with 5 heads and 5 layers, and map them to 40-dimensional embeddings. We train the model for
+100 epochs using the Adam optimizer with a 1e-4 learning rate.
+3.CMU-MOSI [90] is a similar dataset for multimodal sentiment analysis created from 2,199
+YouTube videos clips. The data focuses on videos that reflect the real-world distribution of
+speakers expressing their opinions in the form of monologues. The sentiment intensities are
+labeled continuously from -3 to 3. Again we cast the label into a binary classification on whether
+the sentiment is positive or negative, and we used the extracted vision and text features for
+contrastive learning.
+In our experiments we encode both the vision and text modalities using Transformer encoders
+with 5 heads and 5 layers, and map them to 40-dimensional embeddings. We train the model for
+100 epochs using the Adam optimizer with a 1e-4 learning rate.
+4.UR-FUNNY [27] is the first large-scale dataset for humor detection in human speech. The
+dataset consists of samples from more than 16,000TED talk videos with speakers from diverse
+backgrounds sharing their ideas. The laughter markup is used to filter out 8,257 humorous
+punchlines from the transcripts. The context is extracted from the prior sentences to the punchline.
+Using a similar approach, 8,257 negative samples are chosen at random intervals where the last
+sentence is not immediately followed by a laughter marker. The task is to classify whether there is
+humor or not using the vision and text modalities.
+26
+Table 8: Additional experiments on CIFAR10 [ 42] and MNIST [ 19] datasets using our FACTOR CLobjectives
+on image classification.
+Task CIFAR10 MNIST
+SimCLR [13] 87.0% 98.84%
+SupCon [40] 92.7% 99.38%
+FACTOR CL-SUP 91.3% 99.21%
+Table 9: We verify our conditional lower and upper bound estimators on a synthetic dataset with fixed dimension
+of representation dzand varying number of samples n.
+Number of samples ( ×103),dz=20 5 10 20 50
+CCMI (MI-Diff + Classifier) 2.03 2.06 2.15 2.20
+Conditional InfoNCE 2.19 2.20 2.20 2.20
+Conditional InfoNCE-CLUB 3.45 3.53 2.98 2.86
+True CMI 2.32 2.32 2.32 2.32
+In our experiments, we encode both the vision and text modalities using Transformer encoders
+with 5 heads and 5 layers, and map them to 40-dimensional embeddings. We train the model for
+100 epochs using the Adam optimizer with a 1e-4 learning rate.
+5.MUS TARD [12] is a corpus of 690videos for research in sarcasm detection from popular TV
+shows including Friends, The Golden Girls, The Big Bang Theory, and Sarcasmaholics Anony-
+mous. It contains audiovisual utterances together with the textual context. We use the preprocessed
+features of the vision and text modalities for doing contrastive learning and performing sarcasm
+detection.
+In our experiments, we encode both the vision and text modalities using Transformer encoders
+with 5 heads and 5 layers, and map them to 40-dimensional embeddings. We train the model for
+100 epochs using the Adam optimizer with a 1e-4 learning rate.
+6.IRFL [87] is a dataset for understanding multimodal figurative languages. It contains 6,697
+matching images and figurative captions (rather than literal captions) of three types of figurative
+languages: idiom, simile, and metaphor. The original data for the matching task is provided in the
+form of 1 caption, 3 distractor images, and 1 matching image. We convert it into a fusion task by
+only collecting the matching image and text pairs and assigning labels using the type of figurative
+language it belongs to.
+For this dataset, we do not train from scratch. Instead, we performed continued pretraining using
+our proposed objectives on pretrained CLIP [ 60] models. We used the CLIP-VIT-B/32 model
+and its pretrained image and text encoders. We performed training for 10 epochs using the Adam
+optimizer with a 1e-6 learning rate.
+D.3 Additional analysis and results
+Fusion experiments : In Table 6 and 7 we present more detailed results on the Multibench [ 44]
+and IRFL [ 87] datasets computed from 5 independent runs. FACTOR CLsignificantly outperforms
+the baselines that do not capture both shared and unique information in both supervised and self-
+supervised settings, particularly on MUSTARD (where unique information expresses sarcasm, such
+as sardonic facial expressions or ironic tone of voice), and on MIMIC (with unique health indicators
+and sensor readings). There are also big improvements on the two sentiment analysis datasets MOSEI
+and MOSI, with 6.8%and21.9%increases respectively when compared to SupCon [40].
+In Table 7, we also see that FACTOR CLsubstantially improves the state-of-the-art in classifying
+images and figurative captions which are not literally descriptive of the image on IRFL , outperforming
+zero-shot and fine-tuned CLIP [ 60] as well as continued pre-training baselines on top of CLIP. While
+the supervised version gives the best results overall, the self-supervised version with our proposed
+unique augmentations also performs better than independent augmentations, indicating that in the
+case without label information, we should always try to find and use unique augmentations when
+possible. In our experiments, we use word masking for text augmentations. For independent image
+27
+Table 10: We verify our conditional lower and upper bound estimators on a synthetic dataset with varying
+dimensions of representation dzand fixed number of samples n.
+Dimension dz,n=2×1041 10 20 50 100
+CCMI (MI-Diff + Classifier) 2.30 2.18 2.15 1.98 1.67
+Conditional InfoNCE 2.18 2.20 2.20 2.26 2.30
+Conditional InfoNCE-CLUB 3.70 2.95 2.98 2.79 2.86
+True CMI 2.32 2.32 2.32 2.32 2.32
+Table 11: We probe whether the InfoMin assumption from Tian et al., I(Z1;Y∣X2)=0andI(Z2;Y∣X1)=0,
+is reasonable for Theorem 1. Compared to the shared information I(X1;X2),I(Z1;Y∣X2)is much smaller
+and closer to zero, indicating that the InfoMin assumption is reasonable, and Theorem 1 holds in practice.
+I(X1,Y;X2)I(X1;X2)I(Z1;Y∣X2)I(X2,Y;X1)I(X2;X1)I(Z2;Y∣X1)
+12.69 12.29 0.40 11.31 10.92 0.38
+augmentations, we use cropping, flipping, and color jittering. The unique augmentation simply
+removes the cropping operation, as illustrated in Figure 4 in the main text.
+Additional experiments on high shared information and low unique information : In Table 8 we
+include additional results using our method on the CIFAR10 [ 42] and MNIST [ 19] datasets. Our
+method outperforms the self-supervised contrastive learning on both datasets as expected, and roughly
+maintains the same performance as supervised contrastive learning. Therefore, in cases with abundant
+shared information (two modalities with high shared information or two different views generated
+from augmentations), our method recovers the performance of existing methods that do not capture
+unique information.
+Experiments on CMI estimator verification : In Table 9 and Table 10, we include experiment results
+which verify that computing the conditional MI lower and upper bounds via concatenation indeed
+yields reliable estimates. In particular, we aim to verify that the the Conditional InfoNCE objective
+gives a lower bound of the CMI, and the Conditional InfoNCE-CLUB objective gives an upper bound
+of the CMI. We follow the experiment setups in [ 54], presenting the true CMI and results of our
+estimators on synthetic data with fixing dimension of representation Zand varying samples n, and
+fixing samples nand varying dz. The specific implementations used for conditional InfoNCE and
+conditional InfoNCE-CLUB can be found in Equation 13 and Equation 14, respectively. The results
+indicate that our Conditional InfoNCE gives estimations smaller than the true CMI, and Conditional
+InfoNCE-CLUB gives estimations greater than the true CMI. The performances are comparable to
+estimators in [ 54], suggesting that our method yields valid and competitive lower and upper bounds
+for CMI.
+Empirical verification on InfoMin assumption : To verify the InfoMin assumption [ 71]
+(I(Z1;Y∣X2)=I(Z2;Y∣X1)=0), we use the same synthetic dataset as in Table 1 and measure
+I(Z1;Y∣X2). The results are shown in Table 11: we get I(X1;X2)=12.29andI(Z1;Y∣X2)=0.4.
+I(Z1;Y∣X2)is much smaller and closer to zero than I(Z1;Y∣X2), indicating that the InfoMin
+assumption holds in practice.
+Compute resources : All experiments in this paper are run on a single NVIDIA A100 GPU. It takes
+about 10 to 12 GPU hours to train the model on the CIFAR10 [ 42] for 300 epochs, and all the other
+experiments can be finished within 1 GPU hour using our specified hyperparameters.
+28

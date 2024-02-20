@@ -1,0 +1,24 @@
+{
+    "authorId": "1706595",
+    "url": "https://www.semanticscholar.org/author/1706595",
+    "name": "T. Mitamura"
+}
+
+{
+    "paperId": "444737639aeea4e1e616509e368afb0bae8f89d6",
+    "url": "https://www.semanticscholar.org/paper/444737639aeea4e1e616509e368afb0bae8f89d6",
+    "title": "Language-Agnostic Transformers and Assessing ChatGPT-Based Query Rewriting for Multilingual Document-Grounded QA",
+    "year": 2023
+}
+{
+    "paperId": "7fb98b6c5bb07c2b010966c05f29d9db7f783d27",
+    "url": "https://www.semanticscholar.org/paper/7fb98b6c5bb07c2b010966c05f29d9db7f783d27",
+    "title": "ChartReader: A Unified Framework for Chart Derendering and Comprehension without Heuristic Rules",
+    "year": 2023
+}
+{
+    "paperId": "ff77105b2c345f54e1a87f4fbb3a701201f0c1a8",
+    "url": "https://www.semanticscholar.org/paper/ff77105b2c345f54e1a87f4fbb3a701201f0c1a8",
+    "title": "Hierarchical Event Grounding",
+    "year": 2023
+}

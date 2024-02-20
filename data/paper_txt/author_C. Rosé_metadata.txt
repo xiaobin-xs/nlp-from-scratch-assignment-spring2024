@@ -1,0 +1,36 @@
+{
+    "authorId": "35959897",
+    "url": "https://www.semanticscholar.org/author/35959897",
+    "name": "C. Ros\u00e9"
+}
+
+{
+    "paperId": "06dc7b3d8cbc40fb4e39b42de1bc664deaacca74",
+    "url": "https://www.semanticscholar.org/paper/06dc7b3d8cbc40fb4e39b42de1bc664deaacca74",
+    "title": "High school students\u2019 data modeling practices and processes: from modeling unstructured data to evaluating automated decisions",
+    "year": 2023
+}
+{
+    "paperId": "0c0d8ea1c1745e7b56bc3b1513a715ae3df30c44",
+    "url": "https://www.semanticscholar.org/paper/0c0d8ea1c1745e7b56bc3b1513a715ae3df30c44",
+    "title": "Linguistic representations for fewer-shot relation extraction across domains",
+    "year": 2023
+}
+{
+    "paperId": "117e1323677cb5d78ece0fd07b5cfa81618f4866",
+    "url": "https://www.semanticscholar.org/paper/117e1323677cb5d78ece0fd07b5cfa81618f4866",
+    "title": "Using counterfactual contrast to improve compositional generalization for multi-step quantitative reasoning",
+    "year": 2023
+}
+{
+    "paperId": "15d85036b15388bcb0199c83c01ba833e6095a31",
+    "url": "https://www.semanticscholar.org/paper/15d85036b15388bcb0199c83c01ba833e6095a31",
+    "title": "Towards Extracting and Understanding the Implicit Rubrics of Transformer Based Automatic Essay Scoring Models",
+    "year": 2023
+}
+{
+    "paperId": "27ca2d927421035e10b48c96a96db32224f1f8e6",
+    "url": "https://www.semanticscholar.org/paper/27ca2d927421035e10b48c96a96db32224f1f8e6",
+    "title": "Exploring Artificial Intelligence in English Language Arts with StoryQ",
+    "year": 2023
+}

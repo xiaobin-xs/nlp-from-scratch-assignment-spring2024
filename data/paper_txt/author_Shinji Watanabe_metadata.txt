@@ -1,0 +1,366 @@
+{
+    "authorId": "1746678",
+    "url": "https://www.semanticscholar.org/author/1746678",
+    "name": "Shinji Watanabe"
+}
+
+{
+    "paperId": "00542e510058b11d1faf612de9b45fa0d4d3f4e5",
+    "url": "https://www.semanticscholar.org/paper/00542e510058b11d1faf612de9b45fa0d4d3f4e5",
+    "title": "Saturation time of exposure interval for cross-neutralization response to SARS-CoV-2: Implications for vaccine dose interval",
+    "year": 2023
+}
+{
+    "paperId": "01a819f7155bb87c32f1e4c13d9439c080e6aa97",
+    "url": "https://www.semanticscholar.org/paper/01a819f7155bb87c32f1e4c13d9439c080e6aa97",
+    "title": "Joint Prediction and Denoising for Large-Scale Multilingual Self-Supervised Learning",
+    "year": 2023
+}
+{
+    "paperId": "0534fd0ed04acaa60f820b730bf3c4816767fa43",
+    "url": "https://www.semanticscholar.org/paper/0534fd0ed04acaa60f820b730bf3c4816767fa43",
+    "title": "Tensor decomposition for minimization of E2E SLU model toward on-device processing",
+    "year": 2023
+}
+{
+    "paperId": "06353e1b7e7c8dc701ac76dcd4db5061b24468c9",
+    "url": "https://www.semanticscholar.org/paper/06353e1b7e7c8dc701ac76dcd4db5061b24468c9",
+    "title": "Decoder-only Architecture for Speech Recognition with CTC Prompts and Text Data Augmentation",
+    "year": 2023
+}
+{
+    "paperId": "090b284b2f8fc93ac3e7a92fc9f91bf4965ba75c",
+    "url": "https://www.semanticscholar.org/paper/090b284b2f8fc93ac3e7a92fc9f91bf4965ba75c",
+    "title": "ML-SUPERB: Multilingual Speech Universal PERformance Benchmark",
+    "year": 2023
+}
+{
+    "paperId": "1028bf42a4c792acefd3be9da45e58f2b1620fe3",
+    "url": "https://www.semanticscholar.org/paper/1028bf42a4c792acefd3be9da45e58f2b1620fe3",
+    "title": "Structured Pruning of Self-Supervised Pre-Trained Models for Speech Recognition and Understanding",
+    "year": 2023
+}
+{
+    "paperId": "10e8dc07ea256c6a88d7043cf135417402ed38f4",
+    "url": "https://www.semanticscholar.org/paper/10e8dc07ea256c6a88d7043cf135417402ed38f4",
+    "title": "Prompting the Hidden Talent of Web-Scale Speech Models for Zero-Shot Task Generalization",
+    "year": 2023
+}
+{
+    "paperId": "14f5fd91d75bc10d9fff53dfe7ee73484fc4273b",
+    "url": "https://www.semanticscholar.org/paper/14f5fd91d75bc10d9fff53dfe7ee73484fc4273b",
+    "title": "A Comparative Study on E-Branchformer vs Conformer in Speech Recognition, Translation, and Understanding Tasks",
+    "year": 2023
+}
+{
+    "paperId": "16fbcf340648b302ad8d4e6ed34c7ab5ad346db9",
+    "url": "https://www.semanticscholar.org/paper/16fbcf340648b302ad8d4e6ed34c7ab5ad346db9",
+    "title": "Efficient Sequence Transduction by Jointly Predicting Tokens and Durations",
+    "year": 2023
+}
+{
+    "paperId": "2567a34501c1b258c102a07e737b87e556af0809",
+    "url": "https://www.semanticscholar.org/paper/2567a34501c1b258c102a07e737b87e556af0809",
+    "title": "Speech Summarization of Long Spoken Document: Improving Memory Efficiency of Speech/Text Encoders",
+    "year": 2023
+}
+{
+    "paperId": "25c399a231364f4a77d1dc4b59927585e63f5f11",
+    "url": "https://www.semanticscholar.org/paper/25c399a231364f4a77d1dc4b59927585e63f5f11",
+    "title": "UNSSOR: Unsupervised Neural Speech Separation by Leveraging Over-determined Training Mixtures",
+    "year": 2023
+}
+{
+    "paperId": "331af9b7193e563b021e8e6892e7cb3030decd38",
+    "url": "https://www.semanticscholar.org/paper/331af9b7193e563b021e8e6892e7cb3030decd38",
+    "title": "Segment-Level Vectorized Beam Search Based on Partially Autoregressive Inference",
+    "year": 2023
+}
+{
+    "paperId": "3b93dd5f2d2512a4b58f6c776af59f74a90764a5",
+    "url": "https://www.semanticscholar.org/paper/3b93dd5f2d2512a4b58f6c776af59f74a90764a5",
+    "title": "Unsupervised Data Selection for TTS: Using Arabic Broadcast News as a Case Study",
+    "year": 2023
+}
+{
+    "paperId": "3bd320ddb25886417ae90011b00f13f5d558097b",
+    "url": "https://www.semanticscholar.org/paper/3bd320ddb25886417ae90011b00f13f5d558097b",
+    "title": "BASS: Block-wise Adaptation for Speech Summarization",
+    "year": 2023
+}
+{
+    "paperId": "48c6318dbcf9908cabe0023b8817566f34d0b466",
+    "url": "https://www.semanticscholar.org/paper/48c6318dbcf9908cabe0023b8817566f34d0b466",
+    "title": "I3D: Transformer Architectures with Input-Dependent Dynamic Depth for Speech Recognition",
+    "year": 2023
+}
+{
+    "paperId": "4b8d3ede673ddeab9dfb5184da6b748d7a526754",
+    "url": "https://www.semanticscholar.org/paper/4b8d3ede673ddeab9dfb5184da6b748d7a526754",
+    "title": "A Vector Quantized Approach for Text to Speech Synthesis on Real-World Spontaneous Speech",
+    "year": 2023
+}
+{
+    "paperId": "4d35540aaf993c8fa7e1fa5fc6a990f1eb830263",
+    "url": "https://www.semanticscholar.org/paper/4d35540aaf993c8fa7e1fa5fc6a990f1eb830263",
+    "title": "A New Benchmark of Aphasia Speech Recognition and Detection Based on E-Branchformer and Multi-task Learning",
+    "year": 2023
+}
+{
+    "paperId": "52d2c8d36c4ace01d8c440a44e1a7fdea04ec482",
+    "url": "https://www.semanticscholar.org/paper/52d2c8d36c4ace01d8c440a44e1a7fdea04ec482",
+    "title": "Antiviral Susceptibilities of Distinct Lineages of Influenza C and D Viruses",
+    "year": 2023
+}
+{
+    "paperId": "611f9ee6eef0936462cd78f371798d0699951c59",
+    "url": "https://www.semanticscholar.org/paper/611f9ee6eef0936462cd78f371798d0699951c59",
+    "title": "Paaploss: A Phonetic-Aligned Acoustic Parameter Loss for Speech Enhancement",
+    "year": 2023
+}
+{
+    "paperId": "659be1ff350634f50cc066d258ee6a45e697e552",
+    "url": "https://www.semanticscholar.org/paper/659be1ff350634f50cc066d258ee6a45e697e552",
+    "title": "SigMoreFun Submission to the SIGMORPHON Shared Task on Interlinear Glossing",
+    "year": 2023
+}
+{
+    "paperId": "6c33625c7b0ffc37955921a145531d9d4eaee713",
+    "url": "https://www.semanticscholar.org/paper/6c33625c7b0ffc37955921a145531d9d4eaee713",
+    "title": "Exploring the Integration of Speech Separation and Recognition with Self-Supervised Learning Representation",
+    "year": 2023
+}
+{
+    "paperId": "786294f4008732a5dac9895a8507bc4c80450075",
+    "url": "https://www.semanticscholar.org/paper/786294f4008732a5dac9895a8507bc4c80450075",
+    "title": "Dynamic-SUPERB: Towards A Dynamic, Collaborative, and Comprehensive Instruction-Tuning Benchmark for Speech",
+    "year": 2023
+}
+{
+    "paperId": "7d4ad68dedff8c81e0fd9c08ea76b220a7e05d69",
+    "url": "https://www.semanticscholar.org/paper/7d4ad68dedff8c81e0fd9c08ea76b220a7e05d69",
+    "title": "Speaker-Independent Acoustic-to-Articulatory Speech Inversion",
+    "year": 2023
+}
+{
+    "paperId": "7f995454efda9f660d2258f59f6e19a2125e688e",
+    "url": "https://www.semanticscholar.org/paper/7f995454efda9f660d2258f59f6e19a2125e688e",
+    "title": "Towards Practical and Efficient Image-to-Speech Captioning with Vision-Language Pre-training and Multi-modal Tokens",
+    "year": 2023
+}
+{
+    "paperId": "8402d64fde12cafaf8a1daa60de0acd1abedbffb",
+    "url": "https://www.semanticscholar.org/paper/8402d64fde12cafaf8a1daa60de0acd1abedbffb",
+    "title": "Enhancing Speech-To-Speech Translation with Multiple TTS Targets",
+    "year": 2023
+}
+{
+    "paperId": "8bc617c9139648d7a92991d70c671230bac7b2e2",
+    "url": "https://www.semanticscholar.org/paper/8bc617c9139648d7a92991d70c671230bac7b2e2",
+    "title": "AudioGPT: Understanding and Generating Speech, Music, Sound, and Talking Head",
+    "year": 2023
+}
+{
+    "paperId": "8f0a24d1678e4d0e584b0932196cd257d5c53c7d",
+    "url": "https://www.semanticscholar.org/paper/8f0a24d1678e4d0e584b0932196cd257d5c53c7d",
+    "title": "Improving Audio Captioning Models with Fine-grained Audio Features, Text Embedding Supervision, and LLM Mix-up Augmentation",
+    "year": 2023
+}
+{
+    "paperId": "91a06713cbccbfb1b5e1b9f7b62a1fba348616c3",
+    "url": "https://www.semanticscholar.org/paper/91a06713cbccbfb1b5e1b9f7b62a1fba348616c3",
+    "title": "Voxtlm: unified decoder-only models for consolidating speech recognition/synthesis and speech/text continuation tasks",
+    "year": 2023
+}
+{
+    "paperId": "95aac8fe824bd0c83de594af0bf9d259e2416f53",
+    "url": "https://www.semanticscholar.org/paper/95aac8fe824bd0c83de594af0bf9d259e2416f53",
+    "title": "Learning to Speak from Text: Zero-Shot Multilingual Text-to-Speech with Unsupervised Text Pretraining",
+    "year": 2023
+}
+{
+    "paperId": "9cbd933c04218c9b642c15a49f8470d54524d9fb",
+    "url": "https://www.semanticscholar.org/paper/9cbd933c04218c9b642c15a49f8470d54524d9fb",
+    "title": "FNeural Speech Enhancement with Very Low Algorithmic Latency and Complexity via Integrated full- and sub-band Modeling",
+    "year": 2023
+}
+{
+    "paperId": "9dcfb422f6057725b1585caf820e128c91d6dbb3",
+    "url": "https://www.semanticscholar.org/paper/9dcfb422f6057725b1585caf820e128c91d6dbb3",
+    "title": "Improving Massively Multilingual ASR with Auxiliary CTC Objectives",
+    "year": 2023
+}
+{
+    "paperId": "a5ab124e57d1f26436821588aacd7d75b831259c",
+    "url": "https://www.semanticscholar.org/paper/a5ab124e57d1f26436821588aacd7d75b831259c",
+    "title": "Toward Universal Speech Enhancement For Diverse Input Conditions",
+    "year": 2023
+}
+{
+    "paperId": "b4855ff933fb80846638469a1b43c1766df85d78",
+    "url": "https://www.semanticscholar.org/paper/b4855ff933fb80846638469a1b43c1766df85d78",
+    "title": "The Pipeline System of ASR and NLU with MLM-based data Augmentation Toward Stop Low-Resource Challenge",
+    "year": 2023
+}
+{
+    "paperId": "b524ec331cd9708b125fad70d95d36189fa0d7b6",
+    "url": "https://www.semanticscholar.org/paper/b524ec331cd9708b125fad70d95d36189fa0d7b6",
+    "title": "A Study on the Integration of Pipeline and E2E SLU Systems for Spoken Semantic Parsing Toward Stop Quality Challenge",
+    "year": 2023
+}
+{
+    "paperId": "b88a84fb2d35eecb5149caa3d0596942ae0a5a54",
+    "url": "https://www.semanticscholar.org/paper/b88a84fb2d35eecb5149caa3d0596942ae0a5a54",
+    "title": "A community cluster of influenza A(H3N2) virus infection with reduced susceptibility to baloxavir due to a PA E199G substitution in Japan, February to March 2023",
+    "year": 2023
+}
+{
+    "paperId": "bb4c59fc93d5be6b3d85dfde9d08e3dab80db9b7",
+    "url": "https://www.semanticscholar.org/paper/bb4c59fc93d5be6b3d85dfde9d08e3dab80db9b7",
+    "title": "Exploring Speech Recognition, Translation, and Understanding with Discrete Speech Units: A Comparative Study",
+    "year": 2023
+}
+{
+    "paperId": "bc3690edd40cc9946f8162727b357b926d1127bc",
+    "url": "https://www.semanticscholar.org/paper/bc3690edd40cc9946f8162727b357b926d1127bc",
+    "title": "Joint Modelling of Spoken Language Understanding Tasks with Integrated Dialog History",
+    "year": 2023
+}
+{
+    "paperId": "c2745e86ecc9bec372690cced53ccfdf44f407f8",
+    "url": "https://www.semanticscholar.org/paper/c2745e86ecc9bec372690cced53ccfdf44f407f8",
+    "title": "Enhancing End-to-End Conversational Speech Translation Through Target Language Context Utilization",
+    "year": 2023
+}
+{
+    "paperId": "c6f5da5eb57457457a49256f1434bf1db23d1898",
+    "url": "https://www.semanticscholar.org/paper/c6f5da5eb57457457a49256f1434bf1db23d1898",
+    "title": "Challenges of Corporate Alliance CLOMA toward Plastic Litter",
+    "year": 2023
+}
+{
+    "paperId": "c823c04a6488673f936d72906130f170017288d0",
+    "url": "https://www.semanticscholar.org/paper/c823c04a6488673f936d72906130f170017288d0",
+    "title": "The Multimodal Information Based Speech Processing (MISP) 2023 Challenge: Audio-Visual Target Speaker Extraction",
+    "year": 2023
+}
+{
+    "paperId": "d2d4b96c321803cf98f9b698cb8e3eb5b59d5532",
+    "url": "https://www.semanticscholar.org/paper/d2d4b96c321803cf98f9b698cb8e3eb5b59d5532",
+    "title": "Intrusion of Coastal Oyashio water to Funka Bay and Tsugaru Strait occasionally disturbed by Kuroshio-originating warm core ring",
+    "year": 2023
+}
+{
+    "paperId": "d43338451cd8676548811e1ff8f9c92ea987c5bd",
+    "url": "https://www.semanticscholar.org/paper/d43338451cd8676548811e1ff8f9c92ea987c5bd",
+    "title": "Reproducing Whisper-Style Training Using An Open-Source Toolkit And Publicly Available Data",
+    "year": 2023
+}
+{
+    "paperId": "d4677c901e698cc9e75171ab60fbf4e88ce17142",
+    "url": "https://www.semanticscholar.org/paper/d4677c901e698cc9e75171ab60fbf4e88ce17142",
+    "title": "Visual Speech Recognition for Languages with Limited Labeled Data using Automatic Labels from Whisper",
+    "year": 2023
+}
+{
+    "paperId": "d4d5fe4a35e9de845877015075f727415e83d18f",
+    "url": "https://www.semanticscholar.org/paper/d4d5fe4a35e9de845877015075f727415e83d18f",
+    "title": "The CHiME-7 DASR Challenge: Distant Meeting Transcription with Multiple Devices in Diverse Scenarios",
+    "year": 2023
+}
+{
+    "paperId": "d8728d62b238b09630309c1df723036db84bac10",
+    "url": "https://www.semanticscholar.org/paper/d8728d62b238b09630309c1df723036db84bac10",
+    "title": "Cross-Modal Multi-Tasking for Speech-to-Text Translation via Hard Parameter Sharing",
+    "year": 2023
+}
+{
+    "paperId": "dab8e7dc79085774eea58bcb9ea2ed0ee20377eb",
+    "url": "https://www.semanticscholar.org/paper/dab8e7dc79085774eea58bcb9ea2ed0ee20377eb",
+    "title": "ESPnet-ST-v2: Multipurpose Spoken Language Translation Toolkit",
+    "year": 2023
+}
+{
+    "paperId": "dd5d797b837005fac464bb19b9396bddba61c0d8",
+    "url": "https://www.semanticscholar.org/paper/dd5d797b837005fac464bb19b9396bddba61c0d8",
+    "title": "Multi-Channel Target Speaker Extraction with Refinement: The WavLab Submission to the Second Clarity Enhancement Challenge",
+    "year": 2023
+}
+{
+    "paperId": "debb65ab30ceef2faef0e4af560a67f2abd03d14",
+    "url": "https://www.semanticscholar.org/paper/debb65ab30ceef2faef0e4af560a67f2abd03d14",
+    "title": "Fully Unsupervised Topic Clustering of Unlabelled Spoken Audio Using Self-Supervised Representation Learning and Topic Model",
+    "year": 2023
+}
+{
+    "paperId": "e146e5221c124d93f69516c5ae7e1b7b1822848e",
+    "url": "https://www.semanticscholar.org/paper/e146e5221c124d93f69516c5ae7e1b7b1822848e",
+    "title": "TAPLoss: A Temporal Acoustic Parameter Loss for Speech Enhancement",
+    "year": 2023
+}
+{
+    "paperId": "e25f6a60211aa74ecfde8001a5939ff206102de4",
+    "url": "https://www.semanticscholar.org/paper/e25f6a60211aa74ecfde8001a5939ff206102de4",
+    "title": "End-to-End Speech Recognition: A Survey",
+    "year": 2023
+}
+{
+    "paperId": "e2826002978af39afce7529f172ffdc222342651",
+    "url": "https://www.semanticscholar.org/paper/e2826002978af39afce7529f172ffdc222342651",
+    "title": "The Multimodal Information Based Speech Processing (Misp) 2022 Challenge: Audio-Visual Diarization And Recognition",
+    "year": 2023
+}
+{
+    "paperId": "e4f2d75856ce149b994f079ae50fd33ca47245d3",
+    "url": "https://www.semanticscholar.org/paper/e4f2d75856ce149b994f079ae50fd33ca47245d3",
+    "title": "DPHuBERT: Joint Distillation and Pruning of Self-Supervised Speech Models",
+    "year": 2023
+}
+{
+    "paperId": "e64d4b29a4a6ccac3673b4cedbefa1e54e774c20",
+    "url": "https://www.semanticscholar.org/paper/e64d4b29a4a6ccac3673b4cedbefa1e54e774c20",
+    "title": "An external quality assessment feasibility study; cross laboratory comparison of haemagglutination inhibition assay and microneutralization assay performance for seasonal influenza serology testing: A FLUCOP study",
+    "year": 2023
+}
+{
+    "paperId": "ebb75ff5b5e55ba15e4239ed0ffa6ff2ad00b721",
+    "url": "https://www.semanticscholar.org/paper/ebb75ff5b5e55ba15e4239ed0ffa6ff2ad00b721",
+    "title": "Multi-Channel Speaker Extraction with Adversarial Training: The Wavlab Submission to The Clarity ICASSP 2023 Grand Challenge",
+    "year": 2023
+}
+{
+    "paperId": "ef567580e167c3e7c546345df93d644be5d4f66f",
+    "url": "https://www.semanticscholar.org/paper/ef567580e167c3e7c546345df93d644be5d4f66f",
+    "title": "AV-SUPERB: A Multi-Task Evaluation Benchmark for Audio-Visual Representation Models",
+    "year": 2023
+}
+{
+    "paperId": "ef8b095292a8e38e9b8f56c54cbf3c67c3ed425d",
+    "url": "https://www.semanticscholar.org/paper/ef8b095292a8e38e9b8f56c54cbf3c67c3ed425d",
+    "title": "Improving Cascaded Unsupervised Speech Translation with Denoising Back-translation",
+    "year": 2023
+}
+{
+    "paperId": "f53b6f5a85f2d74deb32022795b5dab0aa753cf4",
+    "url": "https://www.semanticscholar.org/paper/f53b6f5a85f2d74deb32022795b5dab0aa753cf4",
+    "title": "Deep Speech Synthesis from MRI-Based Articulatory Representations",
+    "year": 2023
+}
+{
+    "paperId": "f7e995c3cae465963ecaa8c9b4ce8b9b4323a71b",
+    "url": "https://www.semanticscholar.org/paper/f7e995c3cae465963ecaa8c9b4ce8b9b4323a71b",
+    "title": "FINDINGS OF THE IWSLT 2023 EVALUATION CAMPAIGN",
+    "year": 2023
+}
+{
+    "paperId": "fa5ebb425c57f6c4f1c36a7200ef1da867346e8c",
+    "url": "https://www.semanticscholar.org/paper/fa5ebb425c57f6c4f1c36a7200ef1da867346e8c",
+    "title": "Speech collage: code-switched audio generation by collaging monolingual corpora",
+    "year": 2023
+}
+{
+    "paperId": "fa75ef55e04e3b25b8af56435478c2fd17403ce8",
+    "url": "https://www.semanticscholar.org/paper/fa75ef55e04e3b25b8af56435478c2fd17403ce8",
+    "title": "Exploration on HuBERT with Multiple Resolutions",
+    "year": 2023
+}

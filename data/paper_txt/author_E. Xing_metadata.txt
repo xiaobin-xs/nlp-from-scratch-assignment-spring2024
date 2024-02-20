@@ -1,0 +1,30 @@
+{
+    "authorId": "143977260",
+    "url": "https://www.semanticscholar.org/author/143977260",
+    "name": "E. Xing"
+}
+
+{
+    "paperId": "075b751201f549daeba9840f78768f4ceb507e17",
+    "url": "https://www.semanticscholar.org/paper/075b751201f549daeba9840f78768f4ceb507e17",
+    "title": "Identification of Nonlinear Latent Hierarchical Models",
+    "year": 2023
+}
+{
+    "paperId": "8cc1cd002bfc36a8cba8bcbe63d32eacc656097f",
+    "url": "https://www.semanticscholar.org/paper/8cc1cd002bfc36a8cba8bcbe63d32eacc656097f",
+    "title": "StyleRF: Zero-Shot 3D Style Transfer of Neural Radiance Fields",
+    "year": 2023
+}
+{
+    "paperId": "a0a79dad89857a96f8f71b14238e5237cbfc4787",
+    "url": "https://www.semanticscholar.org/paper/a0a79dad89857a96f8f71b14238e5237cbfc4787",
+    "title": "Judging LLM-as-a-judge with MT-Bench and Chatbot Arena",
+    "year": 2023
+}
+{
+    "paperId": "dcb4f2b9b0e6da0d629878d1ad0469aee3df2020",
+    "url": "https://www.semanticscholar.org/paper/dcb4f2b9b0e6da0d629878d1ad0469aee3df2020",
+    "title": "Understanding Masked Autoencoders via Hierarchical Latent Variable Models",
+    "year": 2023
+}

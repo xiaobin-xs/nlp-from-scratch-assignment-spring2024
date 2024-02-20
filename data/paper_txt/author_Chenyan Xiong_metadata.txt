@@ -1,0 +1,24 @@
+{
+    "authorId": "144628574",
+    "url": "https://www.semanticscholar.org/author/144628574",
+    "name": "Chenyan Xiong"
+}
+
+{
+    "paperId": "159100c8323fc558e4073a3a006f3f243aca3a60",
+    "url": "https://www.semanticscholar.org/paper/159100c8323fc558e4073a3a006f3f243aca3a60",
+    "title": "Text Matching Improves Sequential Recommendation by Reducing Popularity Biases",
+    "year": 2023
+}
+{
+    "paperId": "275da3802142fc42f6fab2ce2104223b2e0ef40d",
+    "url": "https://www.semanticscholar.org/paper/275da3802142fc42f6fab2ce2104223b2e0ef40d",
+    "title": "Fusion-in-T5: Unifying Document Ranking Signals for Improved Information Retrieval",
+    "year": 2023
+}
+{
+    "paperId": "cdfd0926ad26c3c95a02db2ae891b7d4a457429c",
+    "url": "https://www.semanticscholar.org/paper/cdfd0926ad26c3c95a02db2ae891b7d4a457429c",
+    "title": "OpenMatch-v2: An All-in-one Multi-Modality PLM-based Information Retrieval Toolkit",
+    "year": 2023
+}

@@ -1,0 +1,900 @@
+Surveying (Dis)Parities and Concerns of Compute Hungry NLP Research
+Ji-Ung Lee1,2, Haritz Puerto1,2, Betty van Aken3, Yuki Arase4,
+Jessica Zosa Forde5, Leon Derczynski6,7, Andreas Rücklé10,‡,
+Iryna Gurevych1,2, Roy Schwartz8, Emma Strubell9,11, Jesse Dodge11
+1Technical University of Darmstadt,2Hessian AI,3Berliner Hochschule für Technik,
+4Osaka University,5Brown University,6University of Washington,7IT University of Copenhagen,
+8The Hebrew University of Jerusalem,9Carnegie Mellon University,10Amazon,11Allen Institute for AI
+Abstract
+Many recent improvements in NLP stem
+from the development and use of large pre-
+trained language models (PLMs) with bil-
+lionsofparameters. Largemodelsizesmakes
+computational cost one of the main limiting
+factors for training and evaluating such mod-
+els; and has raised severe concerns about
+the sustainability, reproducibility, and inclu-
+siveness for researching PLMs. These con-
+cernsareoftenbasedonpersonalexperiences
+and observations. However, there had not
+been any large-scale surveys that investigate
+them. In this work, we provide a first at-
+tempt to quantify these concerns regarding
+threetopics,namely, environmentalimpact ,
+equity, andimpact on peer reviewing . By
+conducting a survey with 312 participants
+from theNLP community, wecapture exist-
+ing(dis)paritiesbetweendifferentandwithin
+groups with respect to seniority, academia,
+andindustry; andtheirimpacton thepeerre-
+viewing process. For each topic, we provide
+ananalysisanddeviserecommendationsto
+mitigate found disparities, some of which al-
+ready successfully implemented. Finally, we
+discussadditionalconcernsraisedbymany
+participants in free-text responses.
+1 Introduction
+Recentadvancesinhardwareandalgorithmshave
+transformed the field of NLP. Whereas NLP practi-
+tionersandresearchersusedtobeabletodevelop
+and use cutting-edge NLP technology on relatively
+affordable hardware such as a laptop or a commod-
+ity server, modern state-of-the-art approaches have
+evolvedtorequiremoresubstantialcomputational
+power,typicallyachievedbyspecializedtensorpro-
+cessinghardwaresuchasaGPUorTPU.Thisshift
+hasraisedatleasttwoconcernsamongmembersof
+theNLPcommunity(Strubelletal.,2019;Schwartz
+‡This work does not relate to AR’s position at Amazon.050100
+0 50 100
+% GPU
+% ParticipantsActual distribution
+Equal distribution
+Figure1: DistributionofavailableGPUsacrossour
+participants (in %). As can be seen, 87.8% of our
+survey participants have access to less than 10% of
+the total number of GPUs.
+et al., 2020; Arase et al., 2021) and the AI commu-
+nity (Patterson et al., 2022; Wu et al., 2022): (1)
+Understanding and mitigating the environmental
+cost of NLP research and use, in terms of green-
+housegas(GHG)emissions,and(2)equityofac-
+cess: the extent to which increasing computational
+requirements restricts who has access to develop
+and use modern NLP.
+Inresponsetotheseconcerns,weformedawork-
+inggroupwithinACLwiththegoalofbetterunder-
+standing the challenges surrounding efficient NLP
+and establishing policies to address them. In order
+to quantify views and impacts in the NLP com-
+munityrelatedtotheseconcerns,weconducteda
+survey of the ACL community in July 2021, the
+resultsofwhichwereporthere. Besidesconcerns
+about the (1) environmental impact and (2) equity,
+we further solicit answers about their (3) impact
+onthewholepeerreviewingprocess,asthisisan
+important matter for inclusiveness. Overall, we
+elicited312responsesfromadistributedrangeof
+junior and senior researchers hailing from industry
+and academia. Some of our key findings include:
+•More than 50% of the survey participants are
+moderately or very concerned about the envi-arXiv:2306.16900v2  [cs.CL]  9 Nov 2023
+ronmentalfootprintofNLPresearch;mostly
+with respect to trainingandmodel selection .
+•Overall, ∼62%ofourrespondentshaveaccess
+to less than eight GPUs and moreover, over
+90%haveaccessto lessthan 10%of thetotal
+GPU power (Fig. 1). As a frame of reference,
+recent work (Izsak et al., 2021) showed that
+a clever set of techniques can be used to train
+BERT in 24 hours on 8 GPUs, and it takes
+about7minutestofine-tuneaRoBERTaLARGE
+modelontheMNLInaturallanguageinference
+dataset(about400ktrainingsentences)onone
+GPU (GTX 2080 Ti) to an accuracy of 85%
+(Zhou et al., 2021).
+•Amajority(76%)ourrespondentsbelievethat
+itwouldbebeneficialtohavesmallerversions
+ofpre-trainedmodelsreleasedtogetherwith
+larger ones. In fact, 33% of our free-text re-
+spondents emphasised the importance of shar-
+ing artifacts (such as code, models, training
+logs, etc.).
+•The group that suffers most from lack of re-
+sources are students, who struggle to repro-
+duce previous results when compared to re-
+searchers from large industry.
+•While we find disparities between different
+groups—especially regarding the job sector—
+ouranalysisshowsthatmostofthemarenot
+statistically significant . Instead, we find out-
+liersacrossallgroupsshowingthatthereexist
+disparities within. We find no evidence in
+our survey responses that “industry” has ac-
+cesstosignificantlymorecomputepowerthan
+“academia”. Instead, this mostly seems to be
+the case for very few extreme outliers (6%).
+Withthissurvey,wehopetoprovideamoresolid
+foundationtoback-uptheongoingdiscussioninthe
+community and for devising concrete actions to
+make research more inclusive.
+2 Survey Description
+The survey was open over a period of 17 days,
+fromMonday,July12,2021toThursday,July29,
+2021. It was conducted via Microsoft Forms and
+distributed across the *CL community by mass
+mailingtoACLmembership,andsharedonTwitter.
+During that time, we collected 312 responses. The
+creation of the survey indicated that, “input willremainanonymousandtheresponseswillalsobe
+summarized in aggregate form”.1Therefore the
+data will be made available on request with a state-
+ment of intended purpose, due to privacy and ethi-
+cal restrictions.
+2.1 Questionnaire
+The questions were divided into four categories.
+First, we collected some general information about
+ourparticipants, liketheircurrentpositionand se-
+niority (§2.2). Second, we asked our participants
+abouttheirconcernsregardingtheenvironmental
+impact of NLP experiments (§3) and their access
+to computational resources (§4). Finally, we asked
+abouttheimpactofcompute-intensiveexperiments
+onthereviewingprocessaswellasaboutspecific
+measurements to alleviate them (§5).
+To keep a low-effort for our participants,
+we crafted most of the ( 𝑄)uestions as simple
+yes/no/unsurequestions. Forsubjectsthatrequire
+a more fine-grained analysis (e.g., environmental
+concerns)weusedfivepointscales(eithernumeric
+ortext-based). Overall,weaskedatotalof19ques-
+tionsfromwhich15weremultiple-choicequestions
+(13 with a single answer possibility and two with
+multiple possible answers). 𝑄4 (available compute
+resources) and 𝑄11 (number of times reviewers
+asked for expensive experiments) required a nu-
+meric answer. Finally, 𝑄9,𝑄18, and𝑄19 allowed
+free text answers. Participants were asked to pro-
+vide answers to 13 questions, while six questions
+(𝑄4,𝑄9,𝑄11,𝑄12,𝑄14,𝑄19)wereoptional. All
+questions are provided in Table 1.
+2.2 Demographic Overview
+In our first three questions, we asked the partic-
+ipants about their seniority, job sector, and geo-
+graphic location (Fig. 2).
+Seniority. We asked our participants about the
+numberofactiveyearsinthe*CLcommunityasan
+author, reviewer, or in a related role ( 𝑄1). Overall,
+a little over half (53.5%) indicated they were junior
+members of the community, while the remainder
+were fairly evenly split across mid- and late-career.
+Job Sector. We further asked our participants
+about the current position they are holding ( 𝑄2).
+Possibleresponseswerestudent,academicpost-doc
+(Aca. PD), researcher from small (s) and large (l)
+1https://www.aclweb.org/portal/
+content/efficient-nlp-survey
+Demographics
+Q1. Yearsactive. HowmanyyearshaveyoubeenactiveintheACLcommunity(asanauthor/reviewer/area
+chair/etc.)? Answer: [1-5], [6-10], [11-15], [16+].
+Q2. Current Role. Answer : Student, Academic Postdoc, Academic PI, Researcher in large industry, Research
+in small industry, other.
+Q3. Geographic Location. Answer : Americas, Europe/Middle East, Africa, Asia/Oceania.
+Equity
+Q4. Availablecomputeresources . PleaseprovidearoughestimateoftheaveragenumberofGPUsorequivalent
+accelerators that are available to you (for students / researchers) or to each researcher in your lab/group (for PIs /
+managers). Ifyoucannotquantifytheamountofcomputeresources,leavethisfieldempty. Answer: Numeric
+response (optional).
+Q5. Unable to run experiments . In the last year, have you been unable to run experiments important for one of
+your projects
+due to lack of computational resources? Answer: Yes, No, Unsure.
+Q6. More resources would make your work more valuable . How often do you feel like your work would have
+been valued more by the community (e.g., accepted instead of rejected to some venue) if you had access to more
+computational resources? Answer: Five point scale.
+Environmental Concern
+Q7. Concernaboutenvironmentalfootprint. Howconcernedareyoubytheenvironmentalfootprintofthe
+field of NLP? Answer: Five point scale.
+Q8. Mostpressingfactor. Whichofthefollowingdoyoufeelisthemostpressingfactorwithrespecttothe
+environmental impact of NLP? Answer: Choose all that apply: Training, Inference, Model selection, None,
+Other).
+Q9. Why? Optionally explain the reasons for your choices above. Answer: Free text (optional).
+Reviewing Process
+Q10. Did reviewers ask for too expensive experiments? In the past 3 years, have you received feedback from
+reviewerswhorequestedexperimentsthatweretooexpensiveforyourbudgetforaparticularpaper? Answer:
+Yes, No, Not sure.
+Q11. If yes, how many times?
+Q12. Was the critique justified? If yes, do you feel the critique was justified? I.e., that the main scientific
+claims in your paper (e.g., that your approach was better than some baseline) were not sufficiently supported by
+the original,
+smaller-budget experiments? Answer: Yes, No, Not sure.
+Q13. Lackofresourcespreventsreproductionofpreviousresults. Howoftendoyoufindyourselfunsuccessful
+inreproducingapreviousresultduetolackofcomputationalresources? Answer: Never,Rarely,Sometimes,
+Often, Always.
+Q14. EfficiencyTrack . Ifyou have work onefficient methodsand/or enhancedreporting, would youconsider
+submitting it to a dedicated track? Answer: Yes, No, N/A.
+Q15. Justifyallocationofbudgetforexperiments . Asareader,wouldyoupreferauthorstoberequestedto
+justifythewaytheyallocatetheirbudgettorunexperimentswhichadequatelysupporttheirscientificclaims?
+Answer: Yes, No, Not sure.
+Q16. Reviewersshouldjustifythepetitionforadditionalexperiments . Asanauthor,wouldyoupreferitif
+reviewers took up space in their review to justify their suggestions for additional experiments in terms of the
+evidence that those additional experiments would provide? I.e., what is currently missing in terms of lack of
+evidencetosupportthemainclaimsofthepaper,andhowtheadditionalexperimentswouldprovideevidencefor
+the paper’s research questions? Answer: Yes, No, Not sure.
+Q17. Releasing small versions of pretrained models . Would your work benefit from smaller versions of
+pretrained models released alongside larger ones? Answer: Yes, No, Not sure.
+Q18. Howtoencouragethereleaseofmodels . Whichofthesesolutionswouldyouendorseforencouraging
+the releaseof trained models? Answer: Choose allthat apply: Bestartifact award, Instructreviewers to reward
+papers who share/promise to share models, Visible branding of the paper in conference proceedings, None of the
+above, Other)
+Q19. Any other thoughts or suggestions? Answer : Free text (optional).
+Table 1: List of questions in the survey. Summaries of the questions in bold. Only full questions were
+shown to the participants.
+industries (Ind.), and academic PI (Aca. PI). The
+largestgroupofparticipantswerestudents(38.5%),
+followed by academic postdocs and PIs (34.3%),
+and industry researchers (24.7%). Eight partici-
+pants (2.5%) responded with “other” from which
+sevenwereaffiliatedwithacademia(e.g.,lecturers)
+and one with industry (consultant). For the fine-
+grainedanalysis,wemergeeachresponseof“other”
+into the most fitting group in the survey (one stu-
+dent,fiveacademicPIs,oneacademicpost-doc,and
+one small industry researcher). For our analysis,
+we do not merge the academic and industry sub-
+groups,asthismayobfuscateexistingdisparities;
+e.g., between small and large industry.
+Geographiclocation. Wefurtheraskedrespon-
+dentstosharetheirgeographiclocation( 𝑄3). Over-
+all, 45.8% of responses came from the Americas
+(AM), 40.4% from Europe (EU) and the Middle
+East(ME),and13.8%fromAsia(AS)andAustralia
+(Aus). Wereceivednoresponsesfromresearchers
+in Africa (AF). The heavily skewed responses in
+terms of geographic location limits the expressive-
+ness ofthis factor andthus, will notbe considered
+for our analysis.
+2.3 Methodology
+In the following sections, we analyse and discuss
+the participants’ responses with respect to the re-
+maining three categories ( environmental concerns ,
+equity,andimpactonthereviewingprocess ). For
+each section, we first provide an overview of the
+distributionintheresponsesandthenprovideafine-
+grained analysis with respect to the seniority and
+job sector . The goal of the fine-grained analysis
+istoinvestigateifwecanobserveanystatistically
+significant differences across different groups.
+Statistical tests. Due to the explorative nature of
+oursurvey,thecollecteddataviolatesthenecessary
+conditionsonhomoscedasticity(Levene,1960)and
+normality (Shaphiro and Wilk, 1965) that are re-
+quiredtoconductananalysisofvariances(ANOVA,
+Fisher1921). Instead,weperformaKruskal-Wallis
+test (Kruskal and Wallis, 1952) as an indicator
+for any statistically significant differences2and if
+so, perform pairwise Welch’s t-tests (Welch, 1951)
+against a Bonferroni corrected 𝛼=0.05
+𝑚where𝑚
+isthenumberofpairwisecomparisons;i.e.,for 𝑛
+2This is the case when 𝐻 > 𝐻𝑛
+0with𝐻𝑛
+0∼𝜒2
+𝑛−1for𝑛
+groups. For 𝛼= 0.05, we get𝐻5
+0= 9.488(job sector) and
+𝐻4
+0= 7.815(seniority) (Abramowitz, 1974).groups,𝑚=𝑛⋅(𝑛−1)
+2(Bonferroni, 1936). This re-
+sults in corrected 𝛼= 0.0083for seniority with
+𝑛= 4and𝛼= 0.005forthejobsectorwith 𝑛= 5
+(notmergingacademiaandindustrysectors). For
+the numerical questions ( 𝑄4 and𝑄11), we further
+analyze if there exist disparities within each group,
+using interquartile ranges with 𝑘= 1.5to detect
+outliers (Tukey, 1977).
+3 Environmental Footprint
+We quantified existing concerns about the environ-
+mental impact of NLP experiments using a five
+pointLikert scale( 𝑄7)and askedourparticipants
+toselectthemostpressingissueinthetypicallife
+cycle of an NLP model ( 𝑄8) between (Train)ing,
+model (Select)tion, and (Infer)ence. Participants
+wereallowedtoselect allapplicableanswersand
+could select (None) or provide (Other) pressing is-
+sues. Theycouldalsoprovideatextualjustification
+of their answer(s) ( 𝑄9).
+3.1 Analysis
+Figure 3a shows that more than 50% of our partici-
+pantsweremoderately(28.2%)orvery(27.9%)con-
+cernedabouttheenvironmentalfootprintofNLP,
+while around 33% of them were slightly (14.7%)
+or somewhat (18.6%) concerned. 10.6% of par-
+ticipants were not concerned at all. Our partic-
+ipants further agreed that training(75.3%) and
+model selection (59.9%) are the most pressing is-
+sues (Fig. 3b).3Inference took third place with
+20.2%,while6.1%ofourparticipantsselected none.
+Thesmallestnumberresponseswasgivenfor other
+withhyperparameter tuning andtravelling (6 men-
+tionseach)beingthemostfrequentones. Alsomen-
+tionedwere storageconsumption ,hardware ,expec-
+tationsaboutlargedataexperiments ,andscale. In-
+terestingly, many respondents considered inference
+less pressing than training and model selection.
+Job Sector. Although wedo not findsignificant
+differences by seniority, we see larger (although
+notstatisticallysignificant)differences whenlook-
+ing at the responses grouped by researchers from
+different job sectors (Fig. 4a). We find that respon-
+dents from the large industry sector were mostly
+somewhat concerned,whilethemedianforallother
+groupsliesat oftenconcerned. Similarly,wealso
+see larger differences in the most pressing issues
+3Notethat39.7%ofourparticipantsselectedexactlythese
+two as the only pressing factors.
+(a)𝑄1: Years at ACL% Participants
+0102030405060
+1–56–1011–1516+
+(b)𝑄2: Job sector% Participants
+010203040
+StudentAca. PDAca. PIInd. (s)Ind. (l)Other
+(c)𝑄3: Located in% Participants
+01020304050
+AMEU/MEAS/AusAF
+Figure2: Demographicstatistics: (a)describestheseniority, (b)thejobsector, and(c) thegeographic
+location of our participants (in %).
+betweendifferentgroups. Forinstance,smalland
+large industries were substantially more concerned
+with respect toinference and muchless concerned
+with respect to model selection than academia.
+3.2 Discussion and Recommendations
+Ananalysisofthe81(26%)free-textresponses( 𝑄9)
+reveals diverse opinions about the environmental
+impact of NLP and the reasons behind the most
+pressingfactors. Forinstance,amongrespondents
+thatstatedtobe notatall concernedaboutNLP’s
+environmental footprint, a majority considered the
+impact of NLP research on climate change to be
+negligible compared to other factors. Factors men-
+tioned as being more relevant to climate change
+include air travel (also mentioned twice in the gen-
+eral responses 𝑄19), cars, and more cost intensive
+computations from other areas (of science). An-
+other argument brought up multiple times in this
+groupofrespondentsisthattheACLisnottheright
+institution to tackle challenges of climate change.
+Some responses alternatively suggested to push for
+regulatorychanges,sincebigtechcompaniesmight
+not be affected by decisions made by the ACL.
+Regardingthemostpressingfactors,oneofthe
+main arguments provided for inference was that in-
+dustry spends most time on inference, hence it is
+themostexpensiveone. However,participantsalso
+arguedthatthereexistvariousmethodsforefficient
+inference(see,e.g.,Trevisoetal.,2023). Prominent
+argumentswithrespecttotrainingandmodelselec-
+tionwerethatthepressuretoachievestate-of-the-
+art performance leads to extensive hyperparameter
+tuning and that a large variety of models are being
+trained during research and development (even if
+just for debugging) without being ever deployed.4 Equity
+The(in)equityoftheavailablecomputeresources
+across groups (e.g., academia and industry) is an
+increasinglybroughtuptopicindiscussions. While
+thegeneralgistseemstobethatmanyresearchers
+feelexcluded bynot havingaccess tosubstantially
+large compute power (e.g., thousands of GPUs),
+it often remains unclear whether this is really the
+case. Oneofthemainobjectivesofthissurveywas
+therefore to quantify such potential disparities.
+4.1 Analysis
+For𝑄4,229participantsresponded(73.4%)with
+the number of GPUs they have access to. Fig. 1
+showsthedistributionofthetotalnumberofGPUs
+across our participants (in %). Overall, we observe
+a high disparity across our participants in terms of
+access to GPUs. For instance, 62% of the partici-
+pants had access to less than eight GPUs(Fig. 6a),
+thenumberusedfortrainingacademicBERT(Izsak
+etal.,2021),and87.8%oftheparticipantshadac-
+cess to only 9.7% of the total number of GPUs.
+15 participants (6.6%) had access to more than 100
+GPUs, up to 3000 GPUs, representing 85.6% of
+thetotalGPU count( ∼11.2k). An outlieranalysis
+shows that 13.1% of the respondents had access
+to a substantially higher number of GPUs (more
+than 22 GPUs) than the rest. We further find that
+57.4% of our participants were unable to run exper-
+iments dueto the lackof computational resources,
+and36.2%hadnolackofresources( 𝑄5). Finally,
+Fig.5showsthat31.4%ofourrespondents never
+orrarelythoughtthatmoreresourcescouldmake
+their work valuable, while 34.3% of respondents
+answered sometimes , and 34.3% answered oftenor
+always(𝑄6).
+(a)𝑄7: How concerning is the env. footprint?% Participants
+010203040
+Not at allSlightly
+SomewhatModeratelyVery
+(b)𝑄8: What are the most pressing issues?% Participants
+020406080
+Train SelectInferOtherNone
+Figure 3: Environmental concerns and pressing issues (in % of participant answers).
+(a)𝑄7: Concerns by job sector
+Not at all12345
+Very
+StudentAca. PDAca. PIInd. (s)Ind. (l)
+(b)𝑄8: Pressing issues by job sector% Participants
+020406080
+TrainSelectInferOther None
+Student
+Aca. PD
+Aca. PI
+Ind. (s)
+Ind. (l)
+Figure 4: Concerns and pressing issues, grouped by positions.
+Q6: Would more resources make work more valuable?% Participants
+010203040
+NeverRarely
+SometimesOftenAlways
+Figure5: Lackofresourcesformorevaluablework.
+JobSector. Asin§3,ouranalysisshowsnosig-
+nificant differences w.r.t. the seniority, and we find
+larger disparities by job sector. As we can observe
+inFig.6c,respondentsinindustry(large)hadaccess
+toahighernumberofGPUsthanindustry(small)
+andacademia. Thisisoneofthefewcaseswhere
+wehavetoresorttopairwisetesting,astheKruskal-WallistestindicatesthattheNullhypothesiscannot
+be rejected with 𝐻5= 16.976> 𝐻5
+0= 9.488.
+Whilewedonotfind significantdifferencesinour
+pairwise comparisons, there are still substantial
+differences between Ind. (l) and Aca. PI (p-value
+= 0.0827),aswellasInd.(s)andInd.(l)(p-value
+= 0.0850). Even though students reported the low-
+estnumberofavailableGPUs,thedifferencesseem
+less substantial compared to researchers at small
+industry (p-value = 0.110). Additionally, we find
+that large industry has the highest percentage of
+outliers and the largest in-group disparity. Interest-
+ingly,researchersfromsmallindustryseemtohave
+the least issues when running experiments; a stark
+contrast considering they are among those who re-
+ported the fewest GPU resources ( 𝑄5). Regard-
+ing𝑄6, researchers from large industry responded
+slightly less often than other groups that their re-
+searchcouldbemorevaluableiftheyhadaccessto
+more compute power.
+(a)𝑄4: #GPUs per participant% Participants01020304050
+0–12–78–31
+32–9991000+
+(b)𝑄4: GPUs by seniority#GPUs
+0100101102103104
+1–56–1011–1516+
+(c)𝑄4: GPUs by job sector#GPUs
+0100101102103104
+StudentAca. PDAca. PIInd. (s)Ind. (l)
+Figure 6: Distribution of GPUs among participants: (a) overall, (b) by seniority, (c) by job sector.
+4.2 Discussion and Recommendations
+While our survey highlights existing disparities,
+particularly between small industry or academic
+researchers and large industry, we also find that
+thereexistsubstantialdisparities withineachgroup.
+Most surprising might be the general disparity
+we find across the field, as 87.8% of our partici-
+pants had access to less than 10% of the total num-
+ber of GPUs, and 62% had access to less then 8
+GPUs. Only a very small faction of researchers
+(2.2% of our respondents) had access to GPU com-
+pute (1000 or more) to train models with several
+hundredsofbillionparametersforseveraldaysor
+weeks. Many researchers, hence, could only fine-
+tune models—which requires far fewer resources
+thanpre-training(Zhouetal.,2021)—whichisonly
+possible when pre-trained model weights are avail-
+able. Unfortunately, many recent models are being
+kept private, which has intensified the discussion
+about equity in the field (Togelius and Yannakakis,
+2023).
+5 Impact on Reviewing
+Finally,wequantifiedhowtheconcernsaboutthe
+environmentalimpactanddifferencesintermsof
+availablecomputeresourcesaffectpeerreviewing
+(𝑄10–𝑄13). Wefurtheraskedourparticipantsfour
+questions(𝑄14–𝑄17)whichrelatetoconcreteideas
+that would change the reviewing process and en-
+courage model release ( 𝑄18).
+5.1 Analysis
+Figure7ashowsthat30.1%oftheparticipantsex-
+perienced being asked (during peer-review) to con-
+ductadditionalexperimentsthatweretooexpensive
+for them (𝑄10) with 77 respondents having experi-encedthismorethanonce( 𝑄11)and19.2%having
+a substantiallyhigher number(five ormore times)
+accordingtoouroutlieranalysis. Mostparticipants
+(65.9%)furtherthoughtthatthiscriticismwasun-
+justified (𝑄12). Figure 7b ( 𝑄13) shows that 34.3%
+oftherespondents oftenoralwayslackedresources
+toreproducepreviousexperimentsand41.4% some-
+times. Only7.7% neveror16.7%rarelyfacedalack
+of resources to reproduce experiments.
+With respect to the concrete reviewing actions,
+Fig.9ashowsthatalargemajority(89.8%)ofour
+participantswouldconsidersubmittingtheirwork
+to a dedicated track on efficient methods ( 𝑄14).
+Followingupontheresultsfromthesurvey,such
+an efficiency track was implemented at EMNLP
+2022. 35.9% of our participants were unsure about
+requestingauthorstojustifytheallocationofbud-
+get for experiments ( 𝑄15), with 41% voting for
+yes. Also, even though 52.6% of the participants
+had not been asked for experiments that were too
+expensiveforthem,aclearmajorityofthepartic-
+ipants (83.7%) would like to require reviewers to
+justifytheirpetitionsformoreexperiments( 𝑄16).
+Lastly,wealsoseealargemajority(75.6%)thatbe-
+lievedthattheirworkcouldbenefitfromtherelease
+of small versions of pretrained models alongside
+large ones (𝑄17). To promote this, a majority of
+our respondents thought that venues should have
+a visible branding of papers to release a model
+(59.3%) and that reviewers should be instructed to
+reward model release (50.6%). 42.6% of respon-
+dents thought that the venues should grant a best
+artifactaward. 11.5% of respondents supported
+noneof the options. A first step towards increasing
+the reproducibility and ensuring the submission of
+experimental code was implemented at NAACL
+(a) Reviewer critique
+Q10: Did reviewers ask for too expensive experiments?
+Q12: Was the critique justified?
+% Participants0 100
+Q10
+Q1230 17 53
+15 19 66
+Possible answers: yes ( ◼), not sure ( ◼), no (◼).
+(b) Reproducing results
+Q13: Lack of resources to reproduce results?% Participants
+01020304050
+NeverRarely
+SometimesOftenAlways
+Figure 7: Analysis on how of a lack of resources can affect research. In (a), we show what percentage of
+participantshadbeenaskedbyreviewersfortooexpensiveexperiments( 𝑄10)andifso,iftheyfeltthe
+critique was justified ( 𝑄12). In (b), we show how often our participants could not reproduce previous
+results due to a lack of computational resources ( 𝑄13).
+2022 by introducing a badge system at the repro-
+ducibility track.4Upon acceptance, the authors
+couldfollowspecificprocedurestoearnthreetypes
+ofbadges: 1)open-sourcecode,2)trainedmodel,
+and 3) reproducible results.
+Seniority. We find no significant differences
+w.r.t. the seniority of our participants regarding
+𝑄10–𝑄18. However,juniorresearchers(1–5years)
+showed a substantially higher tendency towards
+requesting authors to justify their compute bud-
+get (𝑄15) against all other age groups (p-values
+<0.035). WealsoobserveinFigure9cdiverging
+preferences between junior and senior groups in
+terms of ideas to improve the reviewing process
+(𝑄18). Juniorresearchers(1–5years)seemedtobe
+more inclined towards a visual branding as well as
+instructingreviewersthanseniorresearchers(11–
+15yearswithap-valueof 0.089and16+yearswith
+a p-value of 0.085).
+JobSector. Intermsofthejobsector,weagain
+find no significant differences with respect to re-
+viewersaskingfortooexpensiveexperiments( 𝑄10)
+orcritiquebeingjustified( 𝑄12). Interestingly,re-
+spondents from small industry received fewer such
+requests (𝑄11) compared to post-docs (p-value
+= 0.024),PIs(p-value = 0.061),andlargerindustry
+(p-value = 0.087). The most concerning trend can
+beobservedwhencomparingthedifferentgroups
+withrespecttotheirlackofcomputeresourcesto
+4https://2022.naacl.org/blog/
+reproducibility-track/reproduce experiments ( 𝑄13, Fig. 8); where we
+find significant differences and conduct pairwise
+analyses.5In general, students suffered most, with
+a significant difference compared to the large in-
+dustrysector witha p-valueof 0.002<0.005 =𝛼
+(Bonferroni-corrected). We further find substantial
+differencesbetweenstudentsandacademicPIs (p-
+value = 0.026) and between academic post-docs
+and large industry labs (p-value = 0.088).
+Wefindnosubstantialdifferenceswhenitcomes
+to actionable items for the *CL community ( 𝑄14–
+𝑄17),indicatingthatimplementingpopularideas
+would be welcomed by all groups. However, we
+findsomedifferenceswhenitcomestoencourag-
+ing the release of models ( 𝑄18). For instance, Fig-
+ure 9d shows that academic post-docs had a higher
+preferencetowardsreviewersrewardingpapersthat
+promisetoreleasemodelsthanacademicPIs. Also,
+participantsfromsmallindustrywouldprefervisual
+branding over awards in contrast to large industry.
+5.2 Discussion and Recommendations
+Our analysis shows that the two most pressing is-
+sues among our respondents are the lack of re-
+sources to reproduce results and reviewers request-
+ingfortooexpensiveexperimentswithoutproper
+justification. Thisisreflectedinthelargesupport
+for both respective counter measures; namely, ask-
+ingreviewerstoprovidejustificationandtherelease
+ofsmallermodelsthatwouldallowresearcherstoat
+leastreproducesomeexperiments. Consideringthe
+5Kruskal-Wallis test: 𝐻5= 12.486>𝐻5
+0= 9.488.
+Never12345
+Always
+StudentAca. PDAca. PIInd. (s)Ind. (l)
+Figure 8:𝑄13: Lack of resources by job sector.
+successofbadgesatNAACL2022with175code,
+98modeland20reproducibilitybadges,introduc-
+ing an explicit badge for small model release could
+boost inclusiveness and reproducibility.6To im-
+prove peer reviewing, one immediate action could
+betoadapttheARRreviewingguidelinesandin-
+struct reviewers to consider the compute budget
+reported in a paper when asking for more experi-
+ments.7
+Among the 22 additional suggestions for 𝑄18,
+we find a high emphasis (68.2%) towards the re-
+leaseofartifacts—bothbecausethisfacilitatesfu-
+tureresearchandhelpsreproducibility. Moreover,
+22ofthe67generalsuggestion( 𝑄19)alsotouched
+upon issues about model release and reviewing,
+highlighting the importance of both topics. The
+responses mentioned a remarkably wide variety of
+artifacts: code;trainedmodels;systemoutputs(to
+facilitate comparative evaluations without rerun-
+ning the code); training checkpoints (to study the
+trainingdynamics);andproperdocumentationof
+trainingdata(includingcrowdsourcingquestions).
+In addition to simply releasing trained models, sev-
+eral respondents also wished for a sufficiently high
+quality of the released models complemented by
+code and documentation. One particular concern
+washowthereleaseofartifactsshouldbeintegrated
+into the reviewing process. On the one hand, it
+seemsusefultosubmitartifactstogetherwiththe
+paper before reviewing, so that reviewers can ac-
+cessthemandtopreventbreakingpromisesoffu-
+ture code release. On the other hand, this needs
+to happen within the constraints of double-blind
+6https://naacl2022-reproducibility-track.
+github.io/results/
+7https://aclrollingreview.org/
+reviewertutorialreviewing. Finally, 12 of the free-text responses of
+𝑄18and𝑄19suggestedthatartifactreleaseshould
+be mandatory for acceptance.
+6 Further Considerations
+Finally,wediscusssuggestions( 𝑄19)thatdonotfit
+intoanyofthepreviouslydiscussedtopics. From
+the 67 free-text responses (21.5%), the two most
+prominent topics were evaluation (11 respondents)
+and emphasizing research over engineering (7 re-
+spondents).
+Evaluation. 16.4% of the free-text respondents
+touched upon the issue of evaluation and model
+comparability;ascurrentbenchmarksoftenfocus
+on improving a single metric. One measure to
+counterthistrendwouldbetoreportperformance
+basedonParetofrontiersandtoconsiderthecom-
+pute budget along with the model performance. To
+promote such curves, it would also be important
+to release metadata including preprocessing and
+hyperparameter choices that allows future research
+to draw proper comparisons as well as to provide
+concrete guidelines for reviewers.
+Researchvs.engineering. 10.4%ofthefree-text
+respondentsfurthernotedthatthefieldseemedto
+havedriftedmoretowardsengineeringbyprimar-
+ilychasinghighperformance; strayingawayfrom
+producing meaningful scientific insights. The re-
+spondentsbroughtforwardvarioussuggestionsto
+combatthis;forinstancethatauthorsshouldclearly
+statetheirscientifichypothesisandthenreportre-
+search that tests this hypothesis using the lowest
+appropriateamountofresources. Othersuggestions
+were to actively promote more theoretical, or more
+non deep learning work.
+Other suggestions. Another suggestion worth
+mentioningwasthecreationofaseparatetrack(four
+respondents);eitherspecificallyforsmallmodels
+orforindustrythatcannotpublishtheirmodels. Fi-
+nally, there was also a call for more shared tasks
+with limited resources such as the efficient NMT
+challenge (Heafield et al., 2022) or the efficient in-
+ference task (Moosavi et al., 2020).
+7 Conclusion
+Wepresentedafirstattempttocaptureandquantify
+existingconcernsabouttheenvironmentalimpact
+and equity within the *CL community. We further
+investigated the resulting implications on peer re-
+viewing consideringthe increasingcomputational
+(a) Potential changes to reviewing% Participants
+020406080100
+90 10
+41 36 23
+84 134
+75 178
+Q14 Q15 Q16 Q17Q14: Would consider submitting to efficiency track?
+Q15: Authors to justify budget allocation?
+Q16: Reviewers to justfy petition for more experiments?
+Q17: Benefit from releasing smaller models?
+Possible answers: yes ( ◼), not sure ( ◼), no (◼).
+(b) Model release
+Q18: How to encourage model release?% Participants
+0102030405060
+Branding
+in proceedingsAward
+for best artifactReviewers
+reward releaseOtherNone
+(c) Model release (by seniority)
+Q18: How to encourage model release?% Participants
+020406080
+Brandingin proceedingsAward
+for best artifactReviewersreward releaseOtherNone
+1–56–1011–1516+(d) Model release (by job sector)
+Q18: How to encourage model release?% Participants
+020406080
+Brandingin proceedingsAward
+for best artifactReviewersreward releaseOtherNone
+StudentAca. PDAca. PIInd. (s)Ind. (l)
+Figure9: Analysisofresponsesonhowtoimprovethereviewingprocess. In(a),weshowthedistribution
+of our participants’ responses for 𝑄14–𝑄17(in %). A majority of our participants would submit to an
+efficiency track ( 𝑄14) and would prefer reviewers to justify a request for more experiments ( 𝑄16). They
+further would benefit from a release of smallermodels ( 𝑄16). In contrast, the responses are more mixed
+about the authors justifying the compute budget ( 𝑄15). In (b–d), we show our participants’ responses on
+howtoencouragethereleaseofmodels(in%): (b)overall,(c)byseniority,(d)byjobsector. Multiple
+responses were allowed for 𝑄18.
+demand. Amajorityofourrespondentswerecon-
+cerned regarding the environmental footprint of
+NLP experiments with model training and model
+selectionbeingthemostpressingissues. Wealso
+found a high disparity among our respondents with
+students and small industry researchers suffering
+most from a lack of resources. There was a large
+supportformeasurestoimproveequityandaccessi-
+bility across all respondents; most prominently for
+anefficiencytrack,askingreviewerstojustifythe
+petition for additional experiments, and the release
+of small versions of pretrained models.
+Considering the continuous increase of param-eters in PLMs (Zhao et al., 2023), one danger we
+faceisthatexistingdisparitiesmayintensifyeven
+further. However, we find that much can be done
+tocombatthis,evenonanindividuallevel. Asare-
+searcher, by making our model weights, code, and
+data publicly available; and as a reviewer, by being
+consideratetowardstheavailablecomputebudget.
+Limitations
+To receive a large number of responses, this survey
+wasadvertisedthroughoutvariouschannels. Hence,
+thisisbynomeansarepresentativestudywithinthe
+whole*CLcommunity. Thisispartiallyreflectedin
+theevaluationofthegeographiclocations,e.g.,they
+were too coarse to capture a more precise picture
+about existing geographic inequalities. Nonethe-
+less, the fact that we did not receive any responses
+from bodies located in Africa indicates that there
+mayexisthighdisparitiesintermsofgeographiclo-
+cation. Forthesamereason,thedisparitiesfoundin
+this survey are more indicative than representative.
+Consequently,anyactionthatisbeingimplemented
+shouldnotbesolelyderivedfromthesurveydata
+and carefully considered beforehand.
+Acknowledgements
+This work was initiated at and benefited substan-
+tiallyfromtheDagstuhlSeminar22232: Efficient
+and Equitable Natural Language Processing in the
+Age of Deep Learning . We further thank Niran-
+jan Balasubramanian, Jonathan Frankle, Michael
+Hassid, Kenneth Heafield, Sara Hooker, Alexan-
+derKoller,AlexandraSashaLuccioni,Alexander
+Löser, André F. T. Martins, Colin Raffel, Nils
+Reimers, Leonardo Riberio, Anna Rogers, Ed-
+winSimpson,NoamSlonim,NoahA.Smith,and
+ThomasWolfforafruitfuldiscussionandhelpful
+feedback at the seminar. We further thank Leshem
+Choshen for helpful feedback on this work.
+References
+Milton Abramowitz. 1974. Handbook of Mathe-
+matical Functions, With Formulas, Graphs, and
+Mathematical Tables, . Dover Publications, Inc.,
+USA.
+Yuki Arase, Phil Blunsom, Mona Diab, Jesse
+Dodge, Iryna Gurevych, Percy Liang, Colin Raf-
+fel, Andreas Rücklé, Roy Schwartz, Noah A.
+Smith, Emma Strubell, and Yue Zhang. 2021.
+Efficient NLP policy document.
+Carlo Bonferroni. 1936. Teoria statistica delle
+classi e calcolo delle probabilita. Pubblicazioni
+delRIstitutoSuperiorediScienzeEconomiche
+e Commericiali di Firenze , 8:3–62.
+RolandA.Fisher.1921. Onthe"probableerror"of
+acoefficientofcorrelationdeducedfromasmall
+sample.Metron, 1:3–32.
+Kenneth Heafield, Biao Zhang, Graeme Nail,
+JelmerVanDerLinde,andNikolayBogoychev.
+2022. FindingsoftheWMT2022sharedtaskonefficienttranslation. In ProceedingsoftheSev-
+enthConferenceonMachineTranslation(WMT) ,
+pages 100–108, Abu Dhabi, United Arab Emi-
+rates (Hybrid). Association for Computational
+Linguistics.
+Peter Izsak, Moshe Berchansky, and Omer Levy.
+2021. HowtotrainBERTwithanacademicbud-
+get. InProceedingsofthe2021Conferenceon
+EmpiricalMethodsinNaturalLanguageProcess-
+ing,pages10644–10652,OnlineandPuntaCana,
+Dominican Republic. Association for Computa-
+tional Linguistics.
+WilliamH.KruskalandW.AllenWallis.1952. Use
+of Ranks in One-Criterion Variance Analysis.
+JournaloftheAmericanStatisticalAssociation ,
+47(260):583–621.
+Howard Levene. 1960. Robust tests for equality
+of variances. Contributions to probability and
+statistics, pages 278–292.
+Nafise Sadat Moosavi, Angela Fan, Vered Shwartz,
+Goran Glavaš, Shafiq Joty, Alex Wang, and
+Thomas Wolf, editors. 2020. Proceedings of
+SustaiNLP: Workshop on Simple and Efficient
+Natural Language Processing . Association for
+Computational Linguistics, Online.
+David Patterson, Joseph Gonzalez, Urs Hölzle,
+Quoc Le, Chen Liang, Lluis-Miquel Munguia,
+DanielRothchild,DavidRSo,MaudTexier,and
+Jeff Dean. 2022. The carbon footprint of ma-
+chine learning training will plateau, then shrink.
+Computer , 55(7):18–28.
+Roy Schwartz, Jesse Dodge, Noah A Smith, and
+OrenEtzioni.2020. Greenai. Communications
+of the ACM , 63(12):54–63.
+S Shaphiro and MBJB Wilk. 1965. An analy-
+sis of variance test for normality. Biometrika ,
+52(3):591–611.
+Emma Strubell, Ananya Ganesh, and Andrew Mc-
+Callum.2019. Energyandpolicyconsiderations
+for deep learning in NLP. In Proceedings of the
+57thAnnualMeetingoftheAssociationforCom-
+putational Linguistics , pages 3645–3650, Flo-
+rence, Italy. Associationfor Computational Lin-
+guistics.
+Julian Togelius and Georgios N Yannakakis.
+2023. Choose your weapon: Survival strate-
+giesfordepressedaiacademics. arXivpreprint
+arXiv:2304.06035 .
+Marcos Treviso, Ji-Ung Lee, Tianchu Ji, Betty van
+Aken,QingqingCao,ManuelR.Ciosici,Michael
+Hassid, Kenneth Heafield, Sara Hooker, Colin
+Raffel, Pedro H. Martins, André F. T. Martins,
+Jessica Zosa Forde, Peter Milder, EdwinSimp-
+son,NoamSlonim,JesseDodge,EmmaStrubell,
+Niranjan Balasubramanian, Leon Derczynski,
+IrynaGurevych,andRoySchwartz.2023. Effi-
+cient Methods for Natural Language Processing:
+A Survey. Transactions of the Association for
+Computational Linguistics , 11:826–860.
+JohnW.Tukey.1977. ExploratoryDataAnalysis .
+Addison-Wesley.
+BernardLewisWelch.1951. OntheComparisonof
+Several Mean Values: An Alternative Approach.
+Biometrika , 38(3/4):330–336.
+Carole-Jean Wu, Ramya Raghavendra, Udit Gupta,
+Bilge Acun, Newsha Ardalani, Kiwan Maeng,
+Gloria Chang, Fiona Aga, Jinshi Huang, Charles
+Bai, et al. 2022. Sustainable ai: Environmen-
+tal implications, challenges and opportunities.
+ProceedingsofMachineLearningandSystems ,
+4:795–813.
+WayneXinZhao,KunZhou,JunyiLi,TianyiTang,
+Xiaolei Wang, Yupeng Hou, Yingqian Min, Be-
+ichen Zhang, Junjie Zhang, Zican Dong, et al.
+2023. A survey of large language models. arXiv
+preprint arXiv:2303.18223 .
+Xiyou Zhou, Zhiyu Chen, Xiaoyong Jin, and
+WilliamYangWang.2021. HULK:Anenergy
+efficiency benchmark platform for responsible
+naturallanguageprocessing. In Proceedingsof
+the 16th Conference of the European Chapter of
+the Association for Computational Linguistics:
+System Demonstrations , pages 329–336, Online.
+Association for Computational Linguistics.

@@ -1,0 +1,30 @@
+{
+    "authorId": "144287919",
+    "url": "https://www.semanticscholar.org/author/144287919",
+    "name": "Eric Nyberg"
+}
+
+{
+    "paperId": "0f008e07d601e8f21d1df5db3d36e85484840083",
+    "url": "https://www.semanticscholar.org/paper/0f008e07d601e8f21d1df5db3d36e85484840083",
+    "title": "GameQA: Gamified Mobile App Platform for Building Multiple-Domain Question-Answering Datasets",
+    "year": 2023
+}
+{
+    "paperId": "3a30217c4115777fb30c182c97cc77d34d065556",
+    "url": "https://www.semanticscholar.org/paper/3a30217c4115777fb30c182c97cc77d34d065556",
+    "title": "InPars-Light: Cost-Effective Unsupervised Training of Efficient Rankers",
+    "year": 2023
+}
+{
+    "paperId": "444737639aeea4e1e616509e368afb0bae8f89d6",
+    "url": "https://www.semanticscholar.org/paper/444737639aeea4e1e616509e368afb0bae8f89d6",
+    "title": "Language-Agnostic Transformers and Assessing ChatGPT-Based Query Rewriting for Multilingual Document-Grounded QA",
+    "year": 2023
+}
+{
+    "paperId": "61354e45bca908ad08f24e44bd507b4e1c958e6f",
+    "url": "https://www.semanticscholar.org/paper/61354e45bca908ad08f24e44bd507b4e1c958e6f",
+    "title": "Chain-of-Skills: A Configurable Model for Open-Domain Question Answering",
+    "year": 2023
+}

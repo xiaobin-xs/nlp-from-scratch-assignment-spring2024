@@ -1,0 +1,368 @@
+Approach to Learning Generalized Audio
+Representation Through Batch Embedding
+Covariance Regularization and Constant-Q
+Transforms
+Ankit Shah
+Language Technologies Institute
+Carnegie Mellon University
+Pittsburgh, PA 15213
+aps1@andrew.cmu.eduShuyi Chen
+Heinz Information College
+Carnegie Mellon University
+Pittsburgh, PA 15213
+shuyic@andrew.cmu.eduKejun Zhou
+Heinz Information College
+Carnegie Mellon University
+Pittsburgh, PA 15213
+kejunz@andrew.cmu.edu
+Yue Chen
+Heinz Information College
+Carnegie Mellon University
+Pittsburgh, PA 15213
+yuechen2@andrew.cmu.eduBhiksha Raj
+Language Technologies Institute
+Carnegie Mellon Institute
+Pittsburgh, PA, 15213
+bhiksha@cs.cmu.edu
+Abstract
+General-purpose embedding is highly desirable for few-shot even zero-shot
+learning in many application scenarios, including the audio tasks. In order
+to understand representations better, we conducted thorough error analysis
+and visualization of HEAR 2021 submission results. Inspired by the analysis,
+this work experiments with different front-end audio preprocessing methods,
+including Constant-Q Transform (CQT) and Short-time Fourier transform (STFT),
+and proposes a Batch Embedding Covariance Regularization (BECR) term to
+uncover a more holistic simulation of the frequency information received by the
+human auditory system. We tested the models on the suite of HEAR 2021 tasks,
+which encompass a broad category of tasks. Preliminary results show (1) the
+proposed BECR can incur a more dispersed embedding on the test set, (2) BECR
+improves the PaSST model without extra computation complexity, and (3) STFT
+preprocessing outperforms CQT in all tasks we tested.
+Github: https://github.com/ankitshah009/general_audio_embedding_hear_2021
+1 Introduction
+General-purpose representation learning is still an open question in audio datasets. Therefore, Holistic
+Evaluation of Audio Representations 2021 (HEAR 2021) challenge was proposed, aiming at providing
+longitudinal insights into different generalized audio representation models [ 1]. The challenge was
+to train one audio representation model that is ﬂexible enough to represent unseen audio datasets.
+The representations were evaluated by training and testing a shallow network built on the embedding
+output of the models. The end-to-end process of HEAR2021 is summarized in Fig. 1.
+Inspired by the results of the challenge, this work ﬁrst compares Short-time Fourier transform
+(STFT) with Constant-Q Transform (CQT), which was not used by any team in the challenge as
+the audio preprocessing method. Secondly, based on thorough error analysis and visualization of
+HEAR 2021 submission results, we propose Batch Embedding Covariance Regularization (BECR),
+Draft.arXiv:2303.03591v1  [cs.SD]  7 Mar 2023
+a regularizing term that utilizes the Gini Index to measure the statistical dispersion of eigenvalues
+of the covariance matrix of the embedding on a training task. More speciﬁcally, it encourages the
+projection of representations of a speciﬁc pre-training task in all its eigenvectors to be as evenly
+dispersed as possible. Therefore, it aims to learn a deep representation network that is more versatile
+in low-dimension space when trained with only one dataset of a speciﬁc domain. We also propose an
+optimized implementation algorithm to reduce the time complexity.
+We tested the two proposals along with a baseline model on four HEAR 2021 tasks, which encompass
+tasks from three audio domains including speech, music, and broad. Results show BECR improves
+the PaSST baseline in all tasks while CQT-trained results are inferior compared to Mel STFT models.
+2 Related Work
+2.1 Audio Data Preprocessing Techniques
+2.1.1 Short-time Fourier transform (STFT) and Mel Spectrogram
+An approach to better solve the general representation learning challenge is by applying different
+hand-crafted transformations based upon domain expertise for different tasks, for example, using
+Short-time Fourier transform (STFT) [ 1]. STFT is a powerful audio signal processing tool that can be
+applied in many tasks. It speciﬁes complex amplitude versus time and frequency for every signal and
+deﬁnes a valuable class of time-frequency distributions. However, the STFT has its disadvantages,
+such as the limit in its time-frequency resolution capability. Low frequencies can be hardly depicted
+with short windows, whereas short pulses can only poorly be localized in time with long windows.[ 2]
+As humans don’t perceive the sound in linear scale, Mel scale is proposed such that equal distances
+in pitch are equally distant to the listener, the human. The Mel spectrogram converts the values in
+hertz to Mel scale. This transformation can better stimulate human hearing than STFT [3].
+2.1.2 Constant Q-transform (CQT)
+Another way suitable to preprocess the music, human voice, and other sound varying data is Constant
+Q-transform. In 1991, Brown proposed CQT to simulate the human auditory system by using a
+transform with a ﬁxed quality factor Q [ 4]. Constant Q-transform is different from STFT in several
+ways. The Constant-Q transform has logarithmically spaced frequency bins, while the frequency
+component of STFT is linear. Further, the Constant-Q transform has octaves bin widths other than
+absolute value bin width. As the output of the transform is effectively amplitude/phase against log
+frequency, fewer frequency bins are required to cover a given range effectively [ 3]. Therefore, some
+argue Constant-Q transform better describes what is received by the human auditory system and is
+thus better positioned in the musical area [5].
+2.2 Gini Index in Machine Learning
+Gini Index is a data purity measure. A small Gini Index indicates a high purity of the encodings or
+signals. Gini Index has been widely applied in Machine Learning. For example, Randall [ 6] proposed
+neural decision trees (NDT) based on decision trees and MLP in the practice of combining Gini Index
+with neural networks. Park [ 7] also proposed a deep learning model using the Gini Index algorithm
+for the extraction of features from datasets.
+We noticed the need for a summary statistic that describes the overall geometric property of the
+embedding matrix on an evaluation dataset during the analysis of HEAR2021 results – speciﬁcally,
+how spread out the embedding for different tasks. Therefore we got the idea to apply Gini Index to
+normalized eigenvalues of embedding matrix as a regularization term. We believe this work presents
+the ﬁrst application of Gini Index with such a deﬁnition in audio tasks.
+3 Method
+The end-to-end process of this work is summarized in Fig. 1. We ﬁrst compare the effects of two
+preprocessing methods. Secondly, we experiment with a novel Gini Index-based regularization to
+improve the versatility of the model. The resulting models are used to generate embedding on a
+2
+variety of unknown datasets of HEAR2021 dataset, which will be used to train shallow MLP layers
+to get a ﬁnal evaluation score.
+Figure 1: The End-to-end Training and Evaluation Process for HEAR2021. In this work, we made
+two modiﬁcations of it. (1) We compared the effects of CQT and STFT, and (2) we designed a
+regularization term in the training time.
+3.1 Preprocessing Methods
+Short-time Fourier transform (STFT) ﬁrst divides the long recording signal into short equal segments
+in the time domain. Then, it computes a Fourier transform on each segment and generate several
+frequency spectrums. Discrete STFT can be expressed as:
+X(m,ω) =∞∑
+n=−∞x[n]ω[n−m]e−jωn(1)
+CQT transform mirrors the human auditory system, whereby at lower-frequencies spectral resolution
+is better [8]. Discrete CQT can be expressed as:
+X[k] =1
+N[k]N[k]−1∑
+n=0W[k,n]x[n]e−j2πQn
+N[k] (2)
+3.2 Baseline Architecture
+We choose PaSST model as the baseline structure [ 9] which achieved overall top results in the 19 tasks
+(14 are secret tasks) of HEAR2021 challenge [ 1]. PaSST is the state-of-the-art transformer-based
+audio model that can achieve SOTA results with less memory and time complexity compared to other
+CNN-based models [ 9]. As shown in Fig. 2, the input of the model is an audio spectrogram generated
+by preprocessing methods. In part 1, it experiences a patch extraction and linear projection. In part
+2, frequency and time positional encodings are added. Then a Patchout operation will be applied.
+The Patchout idea is to encourage the transformer to classify with an incomplete sequence, similar to
+dropout. Finally, the sequence is ﬂattened and then passed through Self-attention layer. In the last, a
+classiﬁer MLP layer operates on the classiﬁcation token and generates predictions [9].
+3.3 Batch Embedding Covariance Regularization (BECR)
+3.3.1 Analysis of Low-dimension Representation Projections
+Through analysis of the embedding of top models in various tasks, we observed that given the same
+task, those models that perform better in the downstream task generally have higher embedding
+3
+Figure 2: The Patchout transformer (PaSST) architecture [9].
+(a) Gini Index of normalized eigenvalues
+ (b) F-test of K-means results
+(c) Calinski-harabasz score of K-means results
+ (d) Variance explained by top 2 principal vectors
+Figure 3: Summary of Embedding Performance and Dispersion Metrics. Each data point is either a
+submitted or a replicated model of HEAR2021. Nsynth Pitch, FSD50K, and CREMA-D are music,
+broad, and speech tasks respectively.
+dispersion, for example with lower variance explained by top principal components and lower K-
+means F-test score. See Fig. 3 for a summary. Thus, we conjecture the high dispersion of the
+embedding produced by a model is helpful in downstream tasks.
+3.3.2 BECR Design
+Since we have restricted the training process to only using one task dataset, the eigenvalues of the
+covariance matrix are suitable to simulate the variance of embedding when projected to different
+dimensions for different testing tasks. The Gini Index of normalized eigenvalues is therefore a
+summary statistic that describes how evenly dispersed the embedding is across the eigenspace. So we
+deﬁne BECR in the following way:
+For embedding layer with Doutputs, Kis theDdimensional covariance matrix of each batch
+embeddingfθ(Xi),
+4
+K(fθ(Xi)) = (fθ(Xi)−E[fθ(Xi)])(fθ(Xi)−E[fθ(Xi)])T(3)
+Kis always positive semi-deﬁnite with real nonnegative eigenvalues. Gapplies the deﬁnition of Gini
+Index to the normalized eigenvalues of K,
+G(fθ(Xi)) = 1−D∑
+i=1(λi(K(fθ(Xi)))∑D
+i=1λi(K(fθ(Xi))))2(4)
+Ris the proposed regularization term,
+R(Xi,θ) = max(0,ϵ−G(fθ(Xi)))2(5)
+whereϵis a hyperparameter, deﬁning the upper bound of the Gini Index when incurring a loss.
+Finally, the total loss is deﬁned by
+L′(Xi,θ) = (1−λ)L(Xi,θ) +λR(Xi,θ) (6)
+In our case, the vanilla loss Lis Binary Cross Entropy loss, whose range is [0, 1]. By adding the
+regularization term, it encourages a large Gini Index that is encouraging evenly distributed eigenvalues.
+Also, the regularization term is a convex function added to the original loss function, which has
+desirable convergence property.
+3.3.3 Implementation Details of BECR
+Let batch size be N and embedding dimension be K. The eigenvalue decomposition algorithm takes
+O(K3)complexity. Adding the covariance matrix calculation, the total additional complexity per
+batch isO(K3+K2∗N), which is categorically impractical in our case since N is around 10 and
+K is around 1000. Through our experiment, training one 10-sample batch of FSD50K dataset with
+embedding eigenvalue decomposition takes around 6 hours in an RTX 3090 machine, 18 times longer
+than that without the loss. Therefore, we propose an optimized implementation without eigenvalue
+decomposition, that is with a complexity of O(K2∗N).
+Recalltr(A) =∑
+iλi(A)andtr(A2) =∑
+iλi(A)2. Therefore, Eq. 4 can be simpliﬁed to
+G(fθ(Xi)) = 1−∑
+(λi∑λi)2= 1−∑λ2
+i
+(∑λi)2= 1−tr(K(fθ(Xi))2)
+tr(K(fθ(Xi)))2(7)
+Through experiment, the speed of this implementation method is similar to vanilla loss calculation.
+Simpliﬁed BECR takes 33 hours compared to vanilla loss’s 36 hours in training as shown in Table 3.
+So we can apply BECR with little extra complexity.
+4 Experimental Evaluation
+4.1 Datasets and Evaluation Metric
+We evaluate the performance of the models on three types of data sets: music, speech, and broad
+sounds. See Table 1 for dataset and evaluation metrics summary.
+For music, we use the NSynth Pitch containing 305,979 musical notes, each with a unique pitch,
+timbre, and envelope. For 1,006 instruments from commercial sample libraries, the dataset was
+generated in four seconds, monophonic 16kHz audio snippets by ranging over every pitch of a
+standard MIDI piano (21-108) as well as ﬁve different velocities (25, 50, 75, 100, 127). The goal of
+this task is to classify instrumental sounds into one of 88 pitches [ 10]. The Pitch Accuracy was used
+for evaluation on NSynth Pitch task.
+5
+We also use Beijing Opera Percussion for music task evaluation. Beijing Opera Percussion Instrument
+Dataset is based on recordings from The Beijing Opera [ 11]. It contains six main percussion
+instruments that can be classiﬁed into four main categories: Bangu, Naobo, Daluo, and Xiaoluo.
+There are 236 audio clips in total. Classiﬁcation accuracy is used for evaluation on Beijing Opera
+Percussion task.
+For speech, we use the CREMA-D for emotion recognition [ 12]. This dataset contains audio data
+of actors reciting sentences with one of six different emotions (anger, disgust, fear, happy, neutral,
+and sad). The goal of this task is to identify the type of emotion the actors are in when they say the
+sentences. Classiﬁcation accuracy is used for evaluation on CREMA-D task.
+For broad sounds, we use the FSD50K, each of the audio clips in this dataset is labeled using one or
+more of 200 classes in environmental sounds, speech, and music [ 13]. This dataset contains over 51K
+audio clips, totaling over 100 hours of audio, and is extracted from the AudioSet Ontology. We also
+use FSD50K for training. mAP was used for multi-label evaluation on FSD50K task.
+Task Name Predictor Type Split Mode Evaluation Metric
+NSynth Pitch 5h C TVT Pitch Acc.
+Beijing Opera C 5-fold Accuracy
+CREMA-D C 5-fold Accuracy
+FSD50K L TVT mAP
+Table 1: Summary of the four evaluation tasks selected from HEAR 2021 [ 1]. For all four tasks, the
+embedding type are either scene based. The predictor types are either multiclass (C) or multilabel (L).
+The split method used during downstream evaluation are either train/validation/test (TVT) or K-fold.
+4.2 Hyperparameter Tuning
+The proposed BECR involves two hyperparameters, λandϵ. We only experimented with λof 0.05
+and 0.10 as through our experiment λ≤0.1ensures the BECR does not cannibalize all the loss in
+the beginning few epochs.
+For determination of search space of ϵ, we observed that the Gini Index of vanilla PaSST’s embedding
+on FSD50K is 0.92 after 100 epochs (See Table 4). Also, in the initial batches, the Gini Index is
+around 0.3-0.6 in experiments. So it would not make sense if we set epsilon smaller than 0.6 which
+makes little difference in the ﬁnal output (See Eq. 5). So we experimented with ϵlarger than 0.7. The
+tuning results in Table 2 show (λ,ϵ) = (0.05,0.7)is the best combination.
+ϵ λ # Epochs Test Set Per-
+formance
+0.7 0.05 50 (19hr) 30.7
+0.8 0.05 50 (18hr) 24.4
+0.9 0.05 50 (18hr) 24.9
+0.7 0.10 50 (19hr) 25.6
+0.8 0.10 50 (18hr) 25.7
+0.9 0.10 50 (18hr) 29.8
+Table 2: Hyperparameter Tuning Results on Training Set (FSD50K)
+.
+5 Results
+Results show that CQT-preprocessing is worse a choice than STFT+Mel in all four tasks. Additionally,
+the computational complexity of CQT transformation is larger than STFT+Mel, taking more than
+two times than original STFT+Mel (approximately 1 hour per epoch in FSD50K with a batch size of
+6
+(a) T-SNE of CQT-based PaSST
+Model Embedding
+(b) T-SNE of STFT-based PaSST
+Model Embedding
+(c) T-SNE of STFT-based PaSST
+with BECR Model Embedding
+(d) PCA of CQT-based PaSST
+Model Embedding
+(e) PCA of STFT-based PaSST
+Model Embedding
+(f) PCA of STFT-based PaSST with
+BECR Model Embedding
+Figure 4: Projection of Embedding with PCA and T-SNE. The points are colored using the groundtruth
+labels. Dataset is CREMA-D. The models were trained on FSD-50K, not the CREMA-D dataset.
+6). The proposed BECR combined with Mel+STFT outperforms the baseline model in all four tasks
+with similar training complexity.
+Models # EpochsDownstream Evaluation Scores (%)
+Beijing Opera Nsynth Pitch 5 CREMA-D FSD50K
+STFT Mel+PaSST (Baseline) 100 (33hr) 90.6 50.9 46.5 27.8
+STFT Mel+PaSST (BECR) 100 (36hr) 92.7 51.2 47.6 36.8
+CQT+PaSST 50 (50hr) 36.8 4.8 19.4 3.5
+CP-JKU PaSST in HEAR2021 [1] Unknown 96.6 25.6 61.0 55.8
+Table 3: Summary of Model Performances. ϵandλof BECR are tuned on training set in section 4.2.
+5.1 Discussion on CQT’s Results
+We tried to ﬁnd some explanation for CQT’s worse performance than STFT.
+First, by comparing the resulting embedding of STFT and CQT-based PaSST model dimension reduc-
+tion methods of PCA and T-SNE, we found projection of CQT are usually in linearly unseperatable
+shape, while those of STFT seems more cluster-like. Considering evaluation process builds a 2-layer
+MLP on the embedding results (see Fig 1), it’s reasonable to assume that embedding of CQT-based
+PaSST being unseperatable accounts for its bad performance in the downstream tasks.
+Secondly, CQT-based PaSST performance and some of its metrics follow the pattern mentioned in
+Section 3.3.1. Compared with STFT-based PaSST models, CQT-based PaSST embedding results are
+less dispersed in unseen datasets. See Table 4.
+Thirdly, the experimental results aside, we suspect a relatively "good" preprocessing method partly
+depends on the choice of model. The original implementation of PaSST uses STFT transformation
+[9], so it’s natural that PaSST model works best with STFT preprocessing method instead of others.
+7
+(a) Total loss descent and BECR’s percentage of
+total loss
+ (b) BECR term descent
+Figure 5: BECR descent and the total training loss descent comparison ( λ= 0.05,ϵ= 0.7)
+(a) PaSST with STFT + Mel (Baseline)
+ (b) PaSST with BECR and STFT + Mel
+(c) PaSST with CQT
+Figure 6: Training loss descent of the models
+5.2 Discussion on BECR’s Results
+To verify that the BECR is making the improvement on baseline PaSST model, we show the
+regularization term successfully converges to zero after the ﬁrst few epochs. See Fig 5. In particular,
+the percentage of BECR term of total loss steadily descent from 15% to 0%, and does not cannibalize
+the total loss even in the early stage. Therefore compared with the baseline model, the validation loss
+descent is not signiﬁcantly affected in the 100-epoch training process (Fig 6).
+Another piece of evidence is after adding BECR to the baseline PaSST, the variance explained by top
+eigenvectors decreases, F-test score decreases, and Gini Index of normalized eigenvalues increases,
+as BECR is intended for (see Table 4). These changes indicate the embedding projection is more
+spread out than before, which leads to its better performance according to our analysis in Section
+3.3.1.
+8
+Dataset Models Gini Index Top 2 eigen-
+values ratioPerformance
+Nsynth Pitcht 5hCQT+PaSST 0.20 0.88 0.048
+STFT+PaSST 0.90 0.31 0.509
+STFT+PaSST (BECR) 0.91 0.29 0.512
+FSD50KCQT+PaSST 0.29 0.77 0.035
+STFT+PaSST 0.92 0.28 0.278
+STFT+PaSST (BECR) 0.94 0.21 0.368
+CREMA-DCQT+PaSST 0.02 0.95 0.195
+STFT+PaSST 0.89 0.34 0.465
+STFT+PaSST (BECR) 0.90 0.31 0.476
+Table 4: Effect of BECR. Models are trained on FSD50K dataset with 100 epochs of batch size 10.
+6 Conclusion
+In this paper, we verify that CQT is a less ideal audio preprocessing method than STFT+Mel when
+used with PaSST model, not only decreasing downstream task performances but also dramatically
+increasing the computational complexity when transforming the audio data into the frequency domain.
+We also propose Batch Embedding Covariance Regularization (BECR), a Gini Index-based regular-
+ization term, which encourages widespread embedding in its eigenspace, and a fast implementation
+algorithm for it. We tested BECR with SOTA audio model PaSST in a wide variety of audio domains:
+music, speech, and broad and achieve better performance when compared with using PaSST alone
+trained with the same dataset and similar hours. The simplicity in intuition and low complexity of
+implementation to apply the method, together with the encouraging results in challenging unknown
+test tasks, demonstrate the promising potential BECR has for general-purpose audio representation
+learning.
+We would like to note some limitations of this work. First, different models work well with different
+preprocessing methods. So the conclusion of CQT is better than STFT limits to our experiment
+setting which uses a PaSST model. Second, we have not veriﬁed if BECR is a generalizable technique
+working beyond PaSST model. It would be interesting to apply BECR to other common baselines in
+the future, for example, OpenL3 and wav2vec2 models, and see the difference it makes.
+Acknowledgement
+Thanks to Chaoran Zhang, Yuxiang Zhang for their helpful comments on the work.
+References
+[1]Joseph Turian, Jordie Shier, Humair Raj Khan, Bhiksha Raj, Björn W Schuller, Christian J
+Steinmetz, Colin Malloy, George Tzanetakis, Gissel Velarde, Kirk McNally, et al., “Hear: Holis-
+tic evaluation of audio representations,” in NeurIPS 2021 Competitions and Demonstrations
+Track . PMLR, 2022, pp. 125–145.
+[2]“Local time-frequency analysis and short time fourier transform.,” https://www.math.
+ucdavis.edu/~strohmer/research/gabor/gaborintro/node3.html , 2010, [Online;
+accessed Retrieved May 2, 2022,].
+[3]Ziqiang Shi, Huibin Lin, Liu Liu, Rujie Liu, and Jiqing Han, “Is cqt more suitable for monaural
+speech separation than stft? an empirical study,” arXiv preprint arXiv:1902.00631 , 2019.
+[4]DeLiang Wang and Guy J Brown, Computational auditory scene analysis: Principles, algo-
+rithms, and applications , Wiley-IEEE press, 2006.
+9
+[5]Christian Schörkhuber and Anssi Klapuri, “Constant-q transform toolbox for music processing,”
+in7th sound and music computing conference, Barcelona, Spain , 2010, pp. 3–64.
+[6] Randall Balestriero, “Neural decision trees,” arXiv preprint arXiv:1702.07360 , 2017.
+[7]Heum Park, “Deep learning with gini-index algorithm for extraction of major features: Major
+adverse cardiac bvents from kamir,” International Information Institute (Tokyo). Information ,
+vol. 21, no. 2, pp. 631–638, 2018.
+[8]“Constant-q transform,” https://en.wikipedia.org/wiki/Constant-Q_transform ,
+2019, [Online; accessed Retrieved May 2, 2022,].
+[9]Khaled Koutini, Jan Schlüter, Hamid Eghbal-zadeh, and Gerhard Widmer, “Efﬁcient training of
+audio transformers with patchout,” arXiv preprint arXiv:2110.05069 , 2021.
+[10] Jesse Engel, Cinjon Resnick, Adam Roberts, Sander Dieleman, Mohammad Norouzi, Douglas
+Eck, and Karen Simonyan, “Neural audio synthesis of musical notes with WaveNet autoen-
+coders,” in Proceedings of the 34th International Conference on Machine Learning , Doina
+Precup and Yee Whye Teh, Eds., International Convention Centre, Sydney, Australia, 06–11
+Aug 2017, vol. 70 of Proceedings of Machine Learning Research , pp. 1068–1077, PMLR.
+[11] Mi Tian, Ajay Srinivasamurthy, Mark Sandler, and Xavier Serra, “Beijing opera percussion
+instrument dataset,” Mar. 2014.
+[12] Houwei Cao, David G Cooper, Michael K Keutmann, Ruben C Gur, Ani Nenkova, and Ragini
+Verma, “Crema-d: Crowd-sourced emotional multimodal actors dataset,” IEEE transactions on
+affective computing , vol. 5, no. 4, pp. 377–390, 2014.
+[13] Eduardo Fonseca, Xavier Favory, Jordi Pons, Frederic Font, and Xavier Serra, “Fsd50k: an
+open dataset of human-labeled sound events,” IEEE/ACM Transactions on Audio, Speech, and
+Language Processing , vol. 30, pp. 829–852, 2021.
+10

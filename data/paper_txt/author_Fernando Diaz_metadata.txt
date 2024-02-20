@@ -1,0 +1,30 @@
+{
+    "authorId": "145472333",
+    "url": "https://www.semanticscholar.org/author/145472333",
+    "name": "Fernando Diaz"
+}
+
+{
+    "paperId": "55704caaf3d31e1795a1ca0c3bed9e77ae3a3c95",
+    "url": "https://www.semanticscholar.org/paper/55704caaf3d31e1795a1ca0c3bed9e77ae3a3c95",
+    "title": "Best-Case Retrieval Evaluation: Improving the Sensitivity of Reciprocal Rank with Lexicographic Precision",
+    "year": 2023
+}
+{
+    "paperId": "567f6bc975deb3d728feec9bfcf7d4036ceabb12",
+    "url": "https://www.semanticscholar.org/paper/567f6bc975deb3d728feec9bfcf7d4036ceabb12",
+    "title": "Fairness Through Domain Awareness: Mitigating Popularity Bias For Music Discovery",
+    "year": 2023
+}
+{
+    "paperId": "5e1ba2d4416333dd6f6a31a4ff4221b40dfb74b1",
+    "url": "https://www.semanticscholar.org/paper/5e1ba2d4416333dd6f6a31a4ff4221b40dfb74b1",
+    "title": "Overview of the TREC 2021 Fair Ranking Track",
+    "year": 2023
+}
+{
+    "paperId": "c1f4b2b56ac6135ecd4f05a44d7725f6739e7742",
+    "url": "https://www.semanticscholar.org/paper/c1f4b2b56ac6135ecd4f05a44d7725f6739e7742",
+    "title": "Recall, Robustness, and Lexicographic Evaluation",
+    "year": 2023
+}

@@ -1,0 +1,360 @@
+research papers
+J. Synchrotron Rad. (2023). 30, 169–178 https://doi.org/10.1107/S1600577522011067 169Received 21 April 2022
+Accepted 18 November 2022
+Edited by A. Stevenson, Australian Synchrotron,
+Australia
+‡ These authors contributed equally to this
+work.
+Keywords: scanning tomography;
+rotation-axis alignment; sample alignment;genetic algorithms; human-in-the-loop;
+computed tomography; X-ray microscopy.
+Supporting information :this article has
+supporting information at journals.iucr.org/sAutomatic synchrotron tomographic alignment
+schemes based on genetic algorithms andhuman-in-the-loop software
+Zhen Zhang,a,b‡ Xiaoxue Bi,c‡ Pengcheng Li,cChenglong Zhang,cYiming Yang,c
+Yu Liu,cGang Chen,cYuhui Dong,cGongfa Liua* and Yi Zhangc,b*
+aNational Synchrotron Radiation Laboratory, University of Science and Technology of China, Hefei, Anhui 230029,
+People’s Republic of China,bUniversity of Chinese Academy of Sciences, Beijing 100049, People’s Republic of
+China, andcBeijing Synchrotron Radiation Facility, Institute of High Energy Physics, Chinese Academy of Sciences,
+Beijing 100049, People’s Republic of China. *Correspondence e-mail: gfliu@ustc.edu.cn, zhangyi88@ihep.ac.cn
+Tomography imaging methods at synchrotron light sources keep evolving,
+pushing multi-modal characterization capabilities at high spatial and temporalresolutions. To achieve this goal, small probe size and multi-dimensionalscanning schemes are utilized more often in the beamlines, leading to risingcomplexities and challenges in the experimental setup process. To avoid
+spending a signiﬁcant amount of human effort and beam time on aligning the
+X-ray probe, sample and detector for data acquisition, most attention has beendrawn to realigning the systems at the data processing stages. However, post-processing cannot correct everything, and is not time efﬁcient. Here we presentautomatic alignment schemes of the rotational axis and sample pre- and duringthe data acquisition process using a software approach which combines theadvantages of genetic algorithms and human intelligence. Our approach showsexcellent sub-pixel alignment efﬁciency for both tasks in a short time, and
+therefore holds great potential for application in the data acquisition systems of
+future scanning tomography experiments.
+1. Introduction
+In order to image a larger sample volume while retaininghigh spatial resolution, scanning tomography methods arebecoming increasingly popular (Rawson et al. , 2020; Sakdi-
+nawat & Attwood, 2010; Withers et al. , 2021; Withers, 2007)
+at synchrotrons. Scanning tomography experiments usuallyinvolve multi-dimensional scans across the sample coupled
+with multimodal characterizations using X-ray beams with
+small spot sizes. Scientists seek to incorporate varioussynchrotron techniques like X-ray ﬂuorescence (XRF),X-ray diffraction (XRD), X-ray absorption near-edge struc-ture (XANES), ptychography, etc.in scanning tomography
+experiments to correlate the local chemical, phase, strain,oxidation states and other functional properties with thestructure of advanced materials (Liu et al. , 2021; Zhao et al. ,
+2018; Nguyen et al. , 2021; Vojtova ´et al. , 2019; Kodama et al. ,
+2021; Mu ¨lleret al. , 2021), hence providing a deeper under-
+standing of structure–function relationships. For experimentscarried out in micro- or nanoprobe beamlines, the amount oftime necessary to collect a full dataset composed of hundredsof thousands of scan points is quite signiﬁcant (Sasov, 2004).Therefore, the majority of the experiments performed atcurrent third-generation light sources are limited to static
+characterization. At present, the main reason for the long
+scan times is the relatively low beam intensities. Whilediffraction-limited storage rings will bring game-changing
+ISSN 1600-5775
+Published under a CC BY 4.0 licence
+
+brilliant sources to speed up the acquisition process and
+potentially meet the demand of dynamic or operando studies,the inconvenience of achieving a ﬁne alignment between theX-ray probe and the examined sample (Fig. 1) may also be amajor limiting factor in accelerating the whole acquisitionprocess.
+Generally, a 2D raster scan will be carried out at each
+projection and then the process is identical to the full-ﬁeld
+imaging methods with the sample stage rotating to different
+angles. To satisfy the tomography reconstruction require-ments, the raster scan region needs to be capable of coveringthe sample area at all projections. While for full-ﬁeld tomo-graphy the sample is not necessarily required to be preciselyaligned to the center of the ﬁeld of view, in scanning tomo-graphy experiments a bad alignment of the sample with therotation center means an enlarged area needs to be scanned at
+each projection, thereby causing unnecessary time loss. Unlike
+the straightforward alignment process directly from projectionimages in full-ﬁeld imaging (Ma et al. , 2018), the alignment
+of the sample with respect to the rotation center in scanningtomography is usually far more complicated. Currentlyscientists are mainly relying on in-line microscopes to conductcoarse alignment at beamlines. However, the alignmentaccuracy using microscopes will not meet future scanningtomography experimental demands as the probe size reaches
+the nanometer range. A precise alignment should be based onthe functional projection images acquired from real-timeanalysis of XRF, XRD and ptychography signals etc. Due to
+the complex alignment procedure and poor resolution of thecomposed projection image, a more automated and intelligentalignment method needs to be developed to cater to theﬁne alignment requirements of future scanning tomography
+experiments.
+Although adding a layer of complexity, the obtained XRF,
+XRD and ptychography data from each projection can beautomatically processed in real time using custom processingpipelines. The remaining alignment process of the scanningtomography will be based on 2D projection images, whichshares great similarity with full-ﬁeld tomography. Hence,alignment methods developed for full-ﬁeld tomography can
+also be applied to scanning tomography experiments. In
+general, the tomographic alignment includes rotation-axisalignment and sample alignment with respect to the center ofrotation (CoR) (Dong et al. , 2013; Donath et al. , 2006; Yu et
+al., 2019; Yang et al. , 2015). For both scanning and full-ﬁeld
+tomography, the rotation axis needs to be precisely aligned tobe perpendicular to the incoming beam direction and parallelto the detector plane. Jun & Yoon (2017) proposed a methodresearch papers
+170 Zhen Zhang et al./C15Automatic synchrotron tomographic alignment schemes J. Synchrotron Rad. (2023). 30, 169–178
+Figure 1
+A larger scanning area is required due to misalignment ( a) of the scanning tomography setup compared with perfectly aligned ( b) systems.
+to correct the tilt error of the rotation axis using the center
+of attenuation and its sinograms. Cheng et al. (2018) mini-
+mized the total deviation of the reconstructed image to correctproblems such as errors resulting from incorrectly determinedrotational axes and projection angles. However, comparingwith other factors, the quality degradation of the recon-structed structure due to the misalignment of the rotation axiswill be more difﬁcult to compensate by reconstruction algo-
+rithms. Therefore, the rotation axis should be well aligned pre-
+acquisition. Once the rotation axis alignment is completed, thesample alignment procedures are ready to be initiated. Inreality, the sample alignments with respect to the CoR areusually done at the post-acquisition stage. A wide range ofpost-acquisition sample alignment schemes based on imageprocessing techniques (McEnvoy, 2007; Matula et al. , 2003;
+Amat et al. , 2008; Cheng et al. , 2014; Pan et al. , 2012;
+Robertson et al. , 2015; Sorzano et al. , 2020) or iterative
+reconstruction-reprojection (Nassi et al. , 1982; Ollinger, 1990;
+Wang et al., 2000; Li et al., 2020) methods have been developed
+and have shown great effects. In particular, Vo et al. (2014)
+proposed a sample alignment scheme based on Fourier spacesinograms. Yang et al. (2017) used convolutional neural
+networks to reduce the horizontal drift problem caused byaspects such as instrument instability.
+All the above methods show well aligned results in their
+respective application scenarios; however, most of them focuson the post-processing stage of tomography experiments, andthese alignment algorithms cannot correct everything and arenot time efﬁcient. Therefore, in contrast to the above align-ment schemes that concentrate on the post-acquisitionprocess, we report here an alignment method in the pre-acquisition process that aligns the rotation axis ﬁrst and then
+the sample. The method divides the workﬂow of rotational-
+axis alignment and sample alignment into two steps – coarsealignment and ﬁne alignment – and provides a graphical userinterface (GUI) and manual intervention to assist the align-ment procedure. In particular, the algorithm used for coarsealignment is based on a physical model and the process isusually very fast. To reach a more accurate alignment, agenetic algorithm (GA) (Kihm & Lyons, 1996) is introduced
+which can optimize the motor position in the global scope to
+realize an automatic alignment. The GA is a global optimi-zation algorithm which ensures the ﬁnal results are globallyoptimized. Moreover, for a subjective function to be optimizedby the GA, its gradient information and mathematical modelare not required. The only necessary information is the outputcorresponding to a certain input. These facts lead to theconclusion that a GA-based optimization can be performed
+at any sample without parameter modiﬁcation. Virtual
+tomography experiments were conducted for the algorithmveriﬁcation and software validation; the results demonstratethat our method can achieve sub-pixel alignment accuracy.Human intervention through the designed GUI has alsoshown signiﬁcant importance in facilitating the alignmentprocess. Together, our method has demonstrated great appli-cation potential for enhancing the data acquisition efﬁciency
+of future synchrotron scanning tomography experiments.2. Methods
+2.1. Virtual tomography experiment
+The in-house-developed Virtual Beamline Studio (VBS)
+provides a test bed for veriﬁcation of the proposed algorithms
+in the paper. VBS was developed to simulate the future multi-
+modal and high-data-throughput experiments performed atthe next-generation beamlines of the High Energy PhotonSource (HEPS). The user can employ a certain combination ofvirtual detectors and motors to perform a virtual experimentinMamba (Liu et al. , 2022). The simulated detectors and
+motors share the sample protocols with real devices in terms
+of control and data communication in the data acquisition
+software framework ( Mamba ) developed for HEPS. The only
+difference is, instead of reading data from chips, the virtualdetectors read images which are stored in memory or gener-ated from third-party simulation programs. The virtualexperiment enables users to test and implement algorithmsand software applications without a real experimental setup.To simulate tomography experiments, we developed a simu-
+lation model that generates projection images using recon-
+structed sample slices with deﬁned measurement geometry(sample, beam and detector). In the procedure, this moduleperforms rotation and integration operations on all recon-structed sample slices, and converts three-dimensional sampleslices into a series of two-dimensional sample projectionimages according to the Radon transformation. The sampleswere simulated using the tomography dataset from Amat et
+al.(2008) and a XANES tomography dataset collected from
+Stanford Synchrotron Radiation Lightsource (SSRL). For theﬁrst set of walnut data, we selected the Feldkamp–Davis–Kress (FDK) reconstruction data of the ﬁrst set of walnuts asthe primary sample. This is a collection of computed tomo-graphy slices that are highly aligned with no artifacts presentand well suitable for algorithm development and evaluationfor other tasks. Furthermore, the second dataset is the one that
+we would face in our actual scanning tomography experiments
+which is of great help for the validation of our algorithm. Thesimulated motors read the predeﬁned trajectories to mimic thescans in real experiments.
+2.2. Rotation-axis alignment
+During synchrotron experiments the rotation axis usually
+only needs to be realigned once for each beam time, andtherefore users rarely use real samples to align the rotation
+axis but instead tend to use a specialized calibration sample
+with sharp features. For convenience, we use the walnutsample for both rotation-axis alignment and sample alignmenttests. To facilitate the alignment of the rotation axis withrespect to the detector, we randomly added a strong absorbingparticle on the surface of the walnut sample. As shown inFig. 2, the position of the sample can be represented by a 3Dcoordinate system, and the tilt of the rotation axis can be
+decomposed as a superposition of two orthogonal vectors Z
+t
+andXt. For the effect caused by these two vectors ( /C18Ztand
+/C18Xt), we can align the rotation axis by adjusting motor /C22and
+motor /C23. It is necessary to note that in a real rotation-axisresearch papers
+J. Synchrotron Rad. (2023). 30, 169–178 Zhen Zhang et al./C15Automatic synchrotron tomographic alignment schemes 171
+alignment scenario, the staff usually use a needle or other
+standard sample with one strong absorbing particle. There-fore, temporarily, here we only extract and track one strongabsorbing particle of the walnut sample, which can be easilyﬁltered out by setting a higher grayscale threshold to obtainits motion trajectory. Ideally, the trajectory of the particle will
+form a straight line after one turn of rotation without any tilt
+(/C18
+Xt=0 ,/C18Zt= 0). As shown in Fig. 3, when /C18Xt= 0 and /C18Zt6¼0,
+the trajectory of the particle turns out to be an ellipse. When/C18
+Xt6¼0a n d /C18Zt= 0, the trajectory of the particle forms a
+straight line at a certain angle to the horizontal direction, withits two endpoints collected from projection angles 90/C14and
+270/C14. When /C18Xt6¼0 and /C18Zt6¼0, the trajectory of the particle
+will be a tilted ellipse, from which /C18Xtand /C18Ztcan be
+calculated as
+/C18Xt¼arctany1/C0y2
+x1/C0x2/C18/C19180
+/C25; ð1Þ
+/C18Zt¼arcsinx3/C0x4 ðÞ2þy3/C0y4 ðÞ2
+x1/C0x2 ðÞ2þy1/C0y2 ðÞ2/C20/C21 1=2()
+180
+/C25;ð2Þresearch papers
+172 Zhen Zhang et al./C15Automatic synchrotron tomographic alignment schemes J. Synchrotron Rad. (2023). 30, 169–178
+Figure 3
+Particle trajectories under different rotation-axis misalignment situations.
+Figure 2
+(a) Sample positioning stage. Motor xand motor zcontrol the movement of the sample, the rotation motor controls the rotation of the sample, and motor
+/C22and motor /C23control the tilt of the rotation axis. ( b) Rotary-axis tilt model. The tilt angle of the axis of rotation can be split into the superposition of two
+orthogonal vectors. ( c) Physical model of the rotary axis coarse alignment. The adjustment angle of the axis of rotation is roughly calculated from the
+coordinates of the four feature points.
+where x1,x2,x3andx4are the horizontal coordinate values of
+P1,P2,P3andP4,a n d y1,y2,y3andy4are the vertical coor-
+dinates values of P1,P2,P3andP4, respectively. P1andP2are
+the vertices of the major axis of the ellipse ﬁtted to thetrajectory of the feature particle, while P
+3andP4are the two
+points on the ellipse with the same x-coordinate of the
+midpoint of the minor axis.
+A two-step alignment procedure is introduced for the
+rotation-axis alignment: coarse alignment and ﬁne alignment,
+as shown in Fig. 4. For the coarse alignment, the tilt angles ofmotor /C22and motor /C23are corrected by equations (1) and (2).
+For the ﬁne alignment of the rotation axis based on the GA, aseries of individuals of random rotation-axis positions (motor/C22and motor /C23) are generated to form the initial population
+around the coarsely aligned rotation-axis position. Thepopulation ﬁtness is assessed according to the trajectory
+characteristics of the strong absorbing particle. After several
+rounds of selection, crossover and mutation, the populationﬁnally reaches convergence and obtains the optimum adjust-ment angles. To avoid repetition in data acquisition, thetrajectory information of new individuals in the previousgenerations will be stored for the new iteration. Typically, weset two adjustment accuracy modes to accommodate different
+adjustment needs: ( a) 15 population iterations for a popula-
+tion of 20 individuals and ( b) 15 population iterations for
+a population of 30 individuals. The number of populationiterations and individuals are application-scenario-dependentinput parameters for the alignment program. The program canalso be terminated early by human intervention if the popu-lation has converged.
+2.3. Sample alignment
+To simulate the projection images for a misaligned sample
+with respect to the rotation axis, an offset was applied on the
+sample. In the virtual experiment, this offset is a combination
+of the offsets of the two sample motors (motor xand motor z),
+which we denote as offset_x andoffset_z . The physical model
+for the coarse alignment is shown in Fig. S1 of the supportinginformation. During the coarse alignment of the sample, ﬁrstlywe performed one coarse tomography scan and checkedwhether the sample was within the ﬁeld of view (FoV) of thedetector for all projections. If the sample was falling out of the
+FoV at certain projections, another scan was performed fromresearch papers
+J. Synchrotron Rad. (2023). 30, 169–178 Zhen Zhang et al./C15Automatic synchrotron tomographic alignment schemes 173
+Figure 4
+(a) The process of ﬁne alignment of the rotation axis. Genetic-algorithm-based selection, crossover, mutation and inheritance processes for rotatin g-axis
+individuals. ( b) Framework design of the rotation alignment software. The blue color indicates the rotation alignment algorithm and its associated
+functional modules, and the orange color indicates the GUI module.
+0/C14to 180/C14to ﬁnd the projection angle !1where the sample was
+completely rotated back into the FoV and the angle !2where
+the center of the sample reached the center of the detector.
+After that, we obtained the distance between the sample
+center and the detector center at the !1angle and denoted this
+distance as distance_ !1. Among them, the offsets of the two
+motors can be expressed as
+tan!2ðÞ ’ /C0offset x
+offset z: ð3Þ
+Meanwhile, distance_ !1can be expressed as the superposition
+of two offsets at angle !1,
+distance !1¼offset xsinð!1Þþoffset zcosð!1Þ:ð4ÞHere, according to the relationship of the offset and the
+reference angles, we can obtain offset_x and offset_z by
+equations (5) and (6),
+offset x’distance !1
+sinð!1Þ/C0cosð!1Þtanð!2Þ; ð5Þ
+offset z’/C0offset xtanð!2Þ: ð6Þ
+The sample was then moved according to the calculated
+offset_x andoffset_z for the coarse alignment. Following the
+coarse alignment, a ﬁne alignment process triggered by geneticalgorithm is required for further alignment work as shown inFig. 5. Based on genetic algorithm, we use movement values of
+the two motors as the gene and the sum of the difference
+between the center of the sample at 90
+/C14and 270/C14and the
+difference between the center of the sample at 0/C14and 180/C14asresearch papers
+174 Zhen Zhang et al./C15Automatic synchrotron tomographic alignment schemes J. Synchrotron Rad. (2023). 30, 169–178
+Figure 5
+(a) The process of ﬁne sample alignment. ( b) Framework design of the sample alignment software. The blue color indicates the sample alignment
+algorithm and its associated functional modules, and the orange color indicates the GUI module.
+the ﬁtness evaluation metric. After the initial population has
+evolved through selection, crossover and mutation, the indi-vidual eventually converges, and that individual is the optimaldistance to move for sample precision alignment. To speed upthe program, the images acquired from motor positions whichhave been generated in the previous generations will bereused in the new iteration. In practice, the current positionis not exactly accurate due to sample center calculations,
+movement errors, etc.
+2.4. User interaction design
+As shown in Figs. 5( a) and 5( b), the framework design of
+the software is mainly composed of two parts – the GUI andthe backend server. Among them, the GUI has been devel-oped based on PyQt and provides a number of advanced
+interfaces that enable users to monitor the alignment status
+and deﬁne parameters for the algorithms. The backend serverintegrates the coarse alignment module, the ﬁne alignmentmodule and some basic motion control modules. The GUI andbackend server communicate through the ZeroMQ protocol.
+3. Results
+3.1. Rotation-axis alignment
+Currently, a large number of tomography beamlines rely on
+using calibration samples with sharp edges or gold particlesto accomplish the rotation-axis alignment. Here we appliedthe rotation-axis alignment algorithm to a simulated rotational
+model with a gold particle. For demonstration, the rotation
+axis was initially deﬁned as parallel to the vector with /C18
+Ztset
+to be 14.01/C14and/C18Xtset to be 14.01/C14, and the initial coordinate
+of the gold particle was set to [150, 81, 138]. In addition, arandom noise error was added to the rotation axis to morerealistically simulate the movement of the gold particle. Theresults of the complete axis alignment are shown in Figs. 6( a),
+6(b) and 6( c). In the initial state, there were signiﬁcant offsets
+in the movement trajectory of a gold particle at rotation angles
+of 0, 90, 180 and 270. After a coarse alignment of the rotationaxis, a reduction in the offset was clearly observed at the fourangles mentioned above. The rotational trajectory of the goldparticle also transformed from a larger ellipse to a smallerellipse with /C18
+Ztreduced to 1.43/C14. Then, after a ﬁne alignment
+based on genetic algorithms, with the number of individualswithin the population set at 20, with 48 genes per individual
+and 15 generations of evolution, both orthogonal tilt angles ofthe rotation axis ﬁnally converged to close to 0
+/C14. In theoretical
+terms, the rotation axis has been adjusted to an ideal positionfor subsequent sample alignment. In practice, the algorithmshould be applicable for samples with arbitrary characteristicpoints such as gold particles, needle tips, etc. and the efﬁciency
+will also be limited by the accuracy of the motors and the pixelsize of the detector. For a ﬁne rotation-axis alignment, only42 s was needed for the individuals within the population to be
+converged if the acquisition time for the projection images is
+not accounted for.
+In a real scenario, the initial position of the gold particle can
+be very close to the rotation axis, which may raise potentialdifﬁculty for the algorithm. Therefore, to verify the robustnessof the algorithm, we initialized a series of gold particles atdifferent positions and compared their alignment results, asdemonstrated in Fig. S2 of the supporting information. The
+effect of the alignment of the rotation axis is gradually
+affected as the distance between the gold particle and therotation axis decreases. When the initial position was ahead of[0, 6, 0], the distance between the gold particle and the rota-tion axis was about two pixels at this time, and the rotationaxis could be better calibrated. The orthogonal tilt angles ofthe rotation axis ﬁnally converged to close to 0
+/C14after ﬁne
+alignment.
+3.2. Sample alignment
+For the sample alignment, a coarse alignment procedure is
+necessary to move the sample completely into the FoV for all
+projections when the sample is too far away from the CoR. To
+test the coarse alignment module, we used the walnut datasetas the data source and set large offsets of the sample (159 and104 pixels in the xandzdirections, respectively) with respect
+to the CoR as the initial position. As shown in the projectionimages [Fig. 7( a)t o7 ( h)], the sample falls out of the FoVof the
+detector in certain projections. After the coarse alignment, itcan be observed that the sample had been moved all the way
+into the imaging area of the detector. Until now there was still
+a two-pixels offset in the xdirection and a three-pixels offset
+in the zdirection for the following ﬁne alignment. With the
+number of individuals within the population set to be 20, theoffset was reduced to 0.51 ( xdirection) and 0.73 ( zdirection)
+pixel after ﬁne alignment. The comparative results of theexperiments are shown in Figs. 7( i)a n d7 ( j). The time
+consumption of the ﬁne alignment was only 50 s when not
+considering the simulation time to generate the projectionresearch papers
+J. Synchrotron Rad. (2023). 30, 169–178 Zhen Zhang et al./C15Automatic synchrotron tomographic alignment schemes 175
+Figure 6
+(a) Initial trajectory with tilted rotation axis. ( b) Trajectory after coarse alignment. ( c) Trajectory after ﬁne alignment.
+images calculation, which in real experiments will be the
+sample rotation and image acquisition time. The results showthat a very high accuracy alignment was achieved for thewalnut sample at a short time cost.
+Finally, to test the alignment efﬁcacy of the scanning
+tomography experiment, we utilized poor-resolution data
+collected from a XANES experiment at SSRL. We set theinitial offset_x to 178 pixels and offset_z to 117.5 pixels
+[Fig. 8( a)] and the alignment accuracy to the ﬁrst level, and the
+entire alignment process took approximately 48 s. As shown inFig. 8( b), at the end of the coarse alignment, the samples had
+anoffset_x of 2.5 pixels and an offset_z of 3 pixels. At the
+end of the ﬁne alignment [Fig. 8( c)],offset_x = 0.43 pixel and
+offset_z = 0.14 pixel, showing a better alignment.
+3.3. Human-in-the-loop control software
+An interactive GUI was developed to facilitate the align-
+ment procedure. As shown in Fig. 9, the GUI not onlyprovides visualization of the streaming projection images,research papers
+176 Zhen Zhang et al./C15Automatic synchrotron tomographic alignment schemes J. Synchrotron Rad. (2023). 30, 169–178
+Figure 7
+(a)–(d) Projection images of the sample before alignment. ( e)–(h) Projection images after coarse alignment. ( i)–(j) Sample offset in the xandzdirections
+after each generation when the number of individuals in the population is set to 20 during the ﬁne alignment procedure.
+Figure 8
+Algorithms validation using a XANES dataset.
+current acquisition parameters, alignment progress informa-
+tion, etc. but also components for the users to set and change
+the alignment parameters. At the moment, the displacementon the projection images can be directly translated intomovements of the motors in virtual experiments. For futuresynchrotron experiments, a calibration between the pixel
+distance and motor movement needs to be performed to
+use the module. In addition, users can also intervene in therunning alignment process simply by setting new values for themotors and overtake the algorithms, which can be more efﬁ-cient when the samples are far away from the rotation center.
+A mask module was introduced into the GUI to give the
+user an option to mask regions with high levels of impuritiesor where other samples may jump into the FoV and cause
+disruption. At the moment, the mask region is deﬁned by
+user experience and needs further development to be moreautomatic.
+4. Conclusion
+In conclusion, for scanning tomography experiments, wepresent here automatic synchrotron tomographic alignmentschemes based on genetic algorithms and human-in-the-loopsoftware. These schemes are dedicated to addressing the needsto improve the sample alignment efﬁciency and automation inscanning tomography experiments and the necessary rotation-axis alignment prior to it. In terms of principle, our schemes
+divide each alignment job into two processes: coarse align-
+ment and ﬁne alignment. Coarse alignment is used for errorcorrection on larger scales, while ﬁne alignment allows forhigh-precision adjustments. This ensures accuracy whilesigniﬁcantly reducing the time consumption on the overallprocess. Meanwhile, for the complex experimental conditionsof scanning X-ray tomography, we have designed a GUI tosupplement the algorithm, which provides sample detection,
+manual adjustment and sample monitoring functional
+modules as part of the coarse alignment workﬂow. Finally, theperformance of our schemes was tested by virtual experi-ments; the misaligned rotation axis and sample were wellaligned with sub-pixel accuracy when the effects of motor
+resolution and detector stability are excluded. The algorithmsin each alignment step were encapsulated into a highlymodular-designed software framework, which offers thepossibility of future algorithm and functional upgrades.Looking to the future, we will also use a software approach toaddress the problems caused by the vibration and drift of thesample with respect to the beam which adds extra complexity
+for the alignment of the system. Together with the current
+work, a systematic software solution for the automation oftomographic alignment will be formed and will ﬁnd wideapplications in the data acquisition and online processingworkﬂow of various synchrotron experiments.
+The code for sample alignment is available from https://
+github.com/sampleAlign/sample Alignment/tree/main/Code,
+and a GUI screen recording video of the sample alignment
+process can be obtained from https://github.com/sampleAlign/
+sampleAlignment/tree/main/GUI_Video.
+Acknowledgements
+YZ and GFL initiated and supervised the whole project. ZZdeveloped all the algorithms described in the paper. XXBdesigned the virtual experiment for the algorithm veriﬁcation,YL, PCL, CLZ and YMY helped to develop the experimentsoftware system, YHD and GC helped with project design andreﬁned the manuscript. All authors have given approval to theﬁnal version of the manuscript.
+Funding information
+The following funding is acknowledged: Chinese Academy of
+Sciences (award No. XDB37000000; award No. WX2021PY-
+0106); National Science Foundation for Young Scientists ofChina (grant No. 12005253); Hefei Science Center, ChineseAcademy of Sciences (award No. 2019HSC-KPRD003);Chinese Academy of Sciences, Institute of High EnergyPhysics (award No. E25455U210).
+References
+Amat, F., Moussavi, F., Comolli, L. R., Elidan, G., Downing, K. H. &
+Horowitz, M. (2008). J. Struct. Biol. 161, 260–275.
+Cheng, C. C., Chien, C. C., Chen, H. H., Hwu, Y. & Ching, Y. T.
+(2014). PLoS One ,9, e84675.
+Cheng, C. C., Ching, Y. T., Ko, P . H. & Hwu, Y. (2018). Sci. Rep. 8,
+9884.
+Di Dong,, Shouping Zhu,, Chenghu Qin,, Kumar, V., Stein, J. V .,
+Oehler, S., Savakis, C., Jie Tian, & Ripoll, J. (2013). IEEE J.
+Biomed. Heal. Inf. 17, 198–204.
+Donath, T., Beckmann, F. & Schreyer, A. (2006). J. Opt. Soc. Am. A ,
+23, 1048–1057.
+Jun, K. & Yoon, S. (2017). Sci. Rep. 7, 41218.
+Kihm, K. D. & Lyons, D. P . (1996). Opt. Lett. 21, 1327–1329.
+Kodama, M., Ohashi, A., Adachi, H., Miyuki, T., Takeuchi, A.,
+Yasutake, M., Uesugi, K., Kaburagi, T. & Hirai, S. (2021). J. Power
+Sources Adv. 8, 100048.
+Li, L., Han, R., Zhang, Z., Guo, T., Liu, Z. & Zhang, F. (2020). BMC
+Bioinformatics ,21, 202.
+Liu, X., Ronne, A., Yu, L.-C., Liu, Y., Ge, M., Lin, C.-H., Layne, B.,
+Halstenberg, P ., Maltsev, D. S., Ivanov, A. S., Antonelli, S., Dai, S.,research papers
+J. Synchrotron Rad. (2023). 30, 169–178 Zhen Zhang et al./C15Automatic synchrotron tomographic alignment schemes 177
+Figure 9
+GUI of the alignment software.
+Lee, W. K., Mahurin, S. M., Frenkel, A. I., Wishart, J. F., Xiao, X. &
+Chen-Wiegart, Y. K. (2021). Nat. Commun. 12, 3441.
+Liu, Y., Geng, Y.-D., Bi, X.-X., Li, X., Tao, Y., Cao, J.-S., Dong, Y.-H.
+& Zhang, Y. (2022). J. Synchrotron Rad. 29, 664–669.
+Ma, L., Guo, Z., Zhang, X., Xu, Z., Liu, H., Zhang, L., Wang, Y. & Tai,
+R. (2018). Microsc. Microanal. 24, 124–125.
+Matula, P ., Kozubek, M., Staier, F. & Hausmann, M. (2003). J.
+Microsc. 209, 126–142.
+McEnvoy, F. J. (2007). Vet. Radiol. Ultrasound ,48, 528–534.
+Mu¨ller, D., Graetz, J., Balles, A., Stier, S., Hanke, R. & Fella, C.
+(2021). arXiv :2102.06644.
+Nassi, M., Brody, W. R., Medoff, B. P . & Macovski, A. (1982). IEEE
+Trans. Biomed. Eng. BME-29 , 333–341.
+Nguyen, T. T., Villanova, J., Su, Z., Tucoulou, R., Fleutot, B., Delobel,
+B., Delacourt, C. & Demortie `re, A. (2021). Adv. Energy Mater. 11,
+2003529.
+Ollinger, J. M. (1990). IEEE Trans. Med. Imaging ,9, 94–98.
+Pan, Y., De Carlo, F. & Xiao, X. (2012). Proc. SPIE ,8313, 831328.
+Rawson, S. D., Maksimcuka, J., Withers, P . J. & Cartmell, S. H. (2020).
+BMC Biol. 18, 21.
+Robertson, W. D., Porto, L. R., Ip, C. J. X., Nantel, M. K. T., Tellkamp,
+F., Lu, Y. & Dwayne Miller, R. J. (2015). Rev. Sci. Instrum. 86,
+086105.Sakdinawat, A. & Attwood, D. (2010). Nat. Photon. 4, 840–848.
+Sasov, A. (2004). Proc. SPIE ,5535, 201–211.
+Sorzano, C. O. S., de Isidro-Go ´mez, F., Ferna ´ndez-Gime ´nez, E.,
+Herreros, D., Marco, S., Carazo, J. M. & Messaoudi, C. (2020). J.
+Struct. Biol. X ,4, 100037.
+Vo, N. T., Drakopoulos, M., Atwood, R. C. & Reinhard, C. (2014).
+Opt. Express ,22, 19078–19086.
+Vojtova ´, L., Zikmund, T., Pavlin ˇa´kova´, V ., Sˇalplachta, J., Kalasova ´,D . ,
+Prosecka ´, E., Brtnı ´kova´, J., Z ˇı´dek, J., Pavlin ˇa´k, D. & Kaiser, J.
+(2019). J. Microsc. 273, 169–177.
+Wang, G., Frei, T. & Vannier, M. W. (2000). Acad. Radiol. 7, 607–614.
+Withers, P . J. (2007). Mater. Today ,10, 26–34.
+Withers, P . J., Bouman, C., Carmignato, S., Cnudde, V ., Grimaldi, D.,
+Hagen, C. K., Maire, E., Manley, M., Du Plessis, A. & Stock, S. R.(2021). Nat. Rev. Methods Primers ,1, 18.
+Yang, X., De Carlo, F., Phatak, C. & Gu ¨rsoy, D. (2017). J. Synchrotron
+Rad. 24, 469–475.
+Yang, Y., Yang, F., Hingerl, F. F., Xiao, X., Liu, Y., Wu, Z., Benson,
+S. M., Toney, M. F., Andrews, J. C. & Pianetta, P . (2015). J.
+Synchrotron Rad. 22, 452–457.
+Yu, X., Yin, W., Lan, Y. & Liu, Z. (2019). J. Biomed. Eng. 36, 664–669.
+Zhao, C., Wada, T., De Andrade, V ., Gu ¨rsoy, D., Kato, H. & Chen-
+Wiegart, Y. K. (2018). Nano Energy ,52, 381–390.research papers
+178 Zhen Zhang et al./C15Automatic synchrotron tomographic alignment schemes J. Synchrotron Rad. (2023). 30, 169–178

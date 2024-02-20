@@ -1,0 +1,132 @@
+{
+    "authorId": "1681921",
+    "url": "https://www.semanticscholar.org/author/1681921",
+    "name": "B. Raj"
+}
+
+{
+    "paperId": "078f86c6a691806cc71bbef1e734f75690db0ffc",
+    "url": "https://www.semanticscholar.org/paper/078f86c6a691806cc71bbef1e734f75690db0ffc",
+    "title": "FREDOM: Fairness Domain Adaptation Approach to Semantic Scene Understanding",
+    "year": 2023
+}
+{
+    "paperId": "0a8d38686b18f28aae1222529e6b9e8a60cab1c2",
+    "url": "https://www.semanticscholar.org/paper/0a8d38686b18f28aae1222529e6b9e8a60cab1c2",
+    "title": "UTOPIA: Unconstrained Tracking Objects without Preliminary Examination via Cross-Domain Adaptation",
+    "year": 2023
+}
+{
+    "paperId": "100da279ee981960884a12dfc5a0697c24ed315a",
+    "url": "https://www.semanticscholar.org/paper/100da279ee981960884a12dfc5a0697c24ed315a",
+    "title": "SoftMatch: Addressing the Quantity-Quality Trade-off in Semi-supervised Learning",
+    "year": 2023
+}
+{
+    "paperId": "11c50900f50036fb3247be7c83849a8774a4ba60",
+    "url": "https://www.semanticscholar.org/paper/11c50900f50036fb3247be7c83849a8774a4ba60",
+    "title": "Fixed Inter-Neuron Covariability Induces Adversarial Robustness",
+    "year": 2023
+}
+{
+    "paperId": "22c9eb4868c5cabb26d132e0a160b9a093579f08",
+    "url": "https://www.semanticscholar.org/paper/22c9eb4868c5cabb26d132e0a160b9a093579f08",
+    "title": "Understanding political polarization using language models: A dataset and method",
+    "year": 2023
+}
+{
+    "paperId": "35a8802facb4441787017ac5c630a8fa0f2413bd",
+    "url": "https://www.semanticscholar.org/paper/35a8802facb4441787017ac5c630a8fa0f2413bd",
+    "title": "Prolonged school closure during the pandemic time in successive waves of COVID-19- vulnerability of children to sexual abuses \u2013 A case study in Tamil Nadu, India",
+    "year": 2023
+}
+{
+    "paperId": "3bd320ddb25886417ae90011b00f13f5d558097b",
+    "url": "https://www.semanticscholar.org/paper/3bd320ddb25886417ae90011b00f13f5d558097b",
+    "title": "BASS: Block-wise Adaptation for Speech Summarization",
+    "year": 2023
+}
+{
+    "paperId": "4e6a004e4f9a3b489004a2efb5b25b0bcd0f48b5",
+    "url": "https://www.semanticscholar.org/paper/4e6a004e4f9a3b489004a2efb5b25b0bcd0f48b5",
+    "title": "Understanding Political Polarisation using Language Models: A dataset and method",
+    "year": 2023
+}
+{
+    "paperId": "593a603354c09d151440ae044de1d80324a2ab01",
+    "url": "https://www.semanticscholar.org/paper/593a603354c09d151440ae044de1d80324a2ab01",
+    "title": "An Approach to Ontological Learning from Weak Labels",
+    "year": 2023
+}
+{
+    "paperId": "5a3307b2e64bbcaff1202e261b8a83f7d03418a8",
+    "url": "https://www.semanticscholar.org/paper/5a3307b2e64bbcaff1202e261b8a83f7d03418a8",
+    "title": "Rethinking Voice-Face Correlation: A Geometry View",
+    "year": 2023
+}
+{
+    "paperId": "611f9ee6eef0936462cd78f371798d0699951c59",
+    "url": "https://www.semanticscholar.org/paper/611f9ee6eef0936462cd78f371798d0699951c59",
+    "title": "Paaploss: A Phonetic-Aligned Acoustic Parameter Loss for Speech Enhancement",
+    "year": 2023
+}
+{
+    "paperId": "7333be530df311b3148e9857ce9f481975cf0a9b",
+    "url": "https://www.semanticscholar.org/paper/7333be530df311b3148e9857ce9f481975cf0a9b",
+    "title": "Improving Perceptual Quality, Intelligibility, and Acoustics on VoIP Platforms",
+    "year": 2023
+}
+{
+    "paperId": "740488982dee323d559f2dae70b1f4b3aa5f7171",
+    "url": "https://www.semanticscholar.org/paper/740488982dee323d559f2dae70b1f4b3aa5f7171",
+    "title": "Approach to Learning Generalized Audio Representation Through Batch Embedding Covariance Regularization and Constant-Q Transforms",
+    "year": 2023
+}
+{
+    "paperId": "74664618ad3b44eb191ba96fdff5b93f27a29ced",
+    "url": "https://www.semanticscholar.org/paper/74664618ad3b44eb191ba96fdff5b93f27a29ced",
+    "title": "Training on Foveated Images Improves Robustness to Adversarial Attacks",
+    "year": 2023
+}
+{
+    "paperId": "8665c864d71df1e918d2010778fc06712f4e5550",
+    "url": "https://www.semanticscholar.org/paper/8665c864d71df1e918d2010778fc06712f4e5550",
+    "title": "Imprecise Label Learning: A Unified Framework for Learning with Various Imprecise Label Configurations",
+    "year": 2023
+}
+{
+    "paperId": "a6e3a10a6286967413e3406374bbeea533640030",
+    "url": "https://www.semanticscholar.org/paper/a6e3a10a6286967413e3406374bbeea533640030",
+    "title": "The Hidden Dance of Phonemes and Visage: Unveiling the Enigmatic Link between Phonemes and Facial Features",
+    "year": 2023
+}
+{
+    "paperId": "ac856b6b7b3f32fb34320b7170526d3ab15ba5f3",
+    "url": "https://www.semanticscholar.org/paper/ac856b6b7b3f32fb34320b7170526d3ab15ba5f3",
+    "title": "Fairness Continual Learning Approach to Semantic Scene Understanding in Open-World Environments",
+    "year": 2023
+}
+{
+    "paperId": "dc157eba8bdb4cfe6ee65566d8295939ac5b4b37",
+    "url": "https://www.semanticscholar.org/paper/dc157eba8bdb4cfe6ee65566d8295939ac5b4b37",
+    "title": "PaintSeg: Training-free Segmentation via Painting",
+    "year": 2023
+}
+{
+    "paperId": "e146e5221c124d93f69516c5ae7e1b7b1822848e",
+    "url": "https://www.semanticscholar.org/paper/e146e5221c124d93f69516c5ae7e1b7b1822848e",
+    "title": "TAPLoss: A Temporal Acoustic Parameter Loss for Speech Enhancement",
+    "year": 2023
+}
+{
+    "paperId": "fcbff0a046938d634b5627d828e0e434c6d045a1",
+    "url": "https://www.semanticscholar.org/paper/fcbff0a046938d634b5627d828e0e434c6d045a1",
+    "title": "Improving sound event detection with ontologies",
+    "year": 2023
+}
+{
+    "paperId": "feecd2cfb7871a818ba514e8b4b3f9da482f17bc",
+    "url": "https://www.semanticscholar.org/paper/feecd2cfb7871a818ba514e8b4b3f9da482f17bc",
+    "title": "Synergy between human and machine approaches to sound/scene recognition and processing: An overview of ICASSP special session",
+    "year": 2023
+}

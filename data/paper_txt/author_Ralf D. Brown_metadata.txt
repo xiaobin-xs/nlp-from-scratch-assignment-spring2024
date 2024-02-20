@@ -1,0 +1,6 @@
+{
+    "authorId": "2109449533",
+    "url": "https://www.semanticscholar.org/author/2109449533",
+    "name": "Ralf D. Brown"
+}
+

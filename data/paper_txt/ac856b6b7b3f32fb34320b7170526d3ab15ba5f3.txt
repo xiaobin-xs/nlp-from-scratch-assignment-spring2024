@@ -1,0 +1,852 @@
+Fairness Continual Learning Approach to Semantic
+Scene Understanding in Open-World Environments
+Thanh-Dat Truong1, Hoang-Quan Nguyen1, Bhiksha Raj2,3, and Khoa Luu1
+1CVIU Lab, University of Arkansas, Fayetteville, AR, 72701
+2Carnegie Mellon University, Pittsburgh, PA, 15213
+3Mohammed bin Zayed University of AI, Abu Dhabi, UAE
+{tt032, hn016, khoaluu}@uark.edu, bhiksha@cs.cmu.edu
+Abstract
+Continual semantic segmentation aims to learn new classes while maintaining
+the information from the previous classes. Although prior studies have shown
+impressive progress in recent years, the fairness concern in the continual semantic
+segmentation needs to be better addressed. Meanwhile, fairness is one of the most
+vital factors in deploying the deep learning model, especially in human-related or
+safety applications. In this paper, we present a novel Fairness Continual Learning
+approach to the semantic segmentation problem. In particular, under the fairness
+objective, a new fairness continual learning framework is proposed based on class
+distributions. Then, a novel Prototypical Contrastive Clustering loss is proposed to
+address the significant challenges in continual learning, i.e., catastrophic forgetting
+and background shift. Our proposed loss has also been proven as a novel, gener-
+alized learning paradigm of knowledge distillation commonly used in continual
+learning. Moreover, the proposed Conditional Structural Consistency loss further
+regularized the structural constraint of the predicted segmentation. Our proposed
+approach has achieved State-of-the-Art performance on three standard scene under-
+standing benchmarks, i.e., ADE20K, Cityscapes, and Pascal VOC, and promoted
+the fairness of the segmentation model.
+1 Introductions
+Figure 1: The Class Distribution of ADE20K.
+In the ADE20K 50-50 (3 steps) benchmark, the
+distribution of classes in the majority group in
+the early step dominates the ones in the minority
+groups in the later steps. The distributions of
+classes gradually decrease over steps.Convolutional Neural Networks (CNNs) [ 5,7]
+and Transformers [ 45,8] have been introduced
+to approach semantic segmentation tasks where
+the models learn from the large-scale data hav-
+ing known classes at once. These segmentation
+models learned on large-scale data may perform
+poorly as they may counter the new objects or
+new environments. To bridge this gap, several ap-
+proaches have been proposed to adapt the model
+to the new data. Domain Adaptation is one of the
+common approaches [ 39,42,43,1,18] that adap-
+tively transfer the segmentation model into the
+deployed environment. However, domain adapta-
+tion cannot handle when new objects appear due
+to its close-set setup. Also, this approach requires
+access to both original and new training data. In
+practice, the segmentation models should be ca-
+pable of learning new classes continually without
+Preprint. Under review.arXiv:2305.15700v4  [cs.CV]  1 Oct 2023
+re-training from the previous data. This paradigm is defined as Continual Semantic Segmentation
+[12,46]. The current continual semantic segmentation approaches [ 12,46] concentrate on addressing
+two main challenges, i.e., (1) catastrophic forgetting [ 33,14,38] and (2) background shift [ 12,46].
+The former problem indicates the forgetting issue of the model about the previous knowledge when
+learning on new training data [ 12,46,4]. Meanwhile, the latter problem refers to the classes of
+previous or future data that have collapsed into a background class [ 3]. However, another critical
+problem that needs attention is the fairness issue in semantic segmentation.
+Fairness in semantic segmentation refers to the problem of the model where it behaves unfairly
+between classes in the dataset due to the class distribution, i.e., the model tends to produce prediction
+bias toward a specific group of classes occupying a large region on an image or frequently existing in
+the dataset (as shown in Fig. 1). The unfair predictions could result in severe problems, especially in
+human-related applications that could influence human safety. Moreover, the fairness problem could
+even be well observed in the context of continual learning when the model encounters new classes
+without accessing previous training data. The prior work of continual learning in image classification
+[48] has also considered this problem. Several prior studies [ 1,18,19] in semantic segmentation
+have tried to reduce the effect of the class imbalance by introducing the weighted cross entropy
+[11,44,19], focal loss [ 1], over-sampling techniques [ 18,47,1]. However, the fairness problem in
+continual semantic segmentation has yet to be well-defined and directly addressed. There should
+be more attention on addressing the fairness issue in continual semantic segmentation. Therefore,
+this work aims to address the fairness problem in continual semantic segmentation caused by the
+imbalanced class distribution defined based on the number of pixels of each class in the dataset.
+Contributions of this Work: This work presents a novel Fairness Continual Learning ( FairCL )
+approach to semantic scene segmentation. Our contributions can be summarized as follows. First,
+under the perspective of fairness learning, the new metric is formulated to measure the fairness of
+the model via the error rate among classes. Then, the metric is further derived into the three main
+objectives, i.e., (1) the Task-specific Objective that handles the catastrophic forgetting problem, (2)
+theFairness Objective that maintains the fairness of predictions produced by the model based on the
+class distribution, and (3) the Conditional Structural Constraint that imposes the consistency of the
+segmentation predictions. Second, to sufficiently model the continual learning problem, the novel
+Prototypical Contrastive Clustering loss is presented to address the catastrophic forgetting and the
+background shifting problems. Moreover, the proposed Prototypical Contrastive Clustering loss has
+been proven to be a generalized paradigm of knowledge distillation approaches commonly adopted
+in continual learning. Last, sufficient ablation studies have shown the effectiveness of our method
+in continual learning and promoted the fairness of the model. The empirical comparison with prior
+methods has shown the State-of-the-Art (SOTA) results on the standard benchmarks.
+2 Related Work
+Continual Semantic Segmentation While there is enormous progress in the continual learning
+problem, most approaches focus on image classification. Existing continual learning methods [ 22,17]
+have been extended for continual semantic segmentation in medical images [ 27,28] and general
+datasets [ 24]. Cermelli et al. [ 3] addressed a background shifting problem in the continual semantic
+segmentation. Douillard et al. [ 12] introduced a multi-scale spatial distillation scheme that preserves
+long- and short-range spatial relationships at the feature level. V olpi et al. [ 41] presented a continual
+learning framework where the model is sequentially trained on multiple labeled data domains. Rostami
+et al. [ 34] proposed a continual learning framework under the unsupervised domain adaptation setting
+using data rehearsal. Saporta et al. [ 35] introduced a multi-head knowledge distillation framework
+for the continual unsupervised domain. Zhang et al. [ 46] presented a representation compensation
+module to decouple the representation learning of both old and new knowledge. Cha et al. [ 4]
+suggested finding the unknown class from the background to distinguish the representations of the
+potential future classes. Qiu et al. [ 30] proposed a self-attention transferring method to capture both
+within-class and between-class knowledge. Phan et al. [ 29] introduced a class-similarity knowledge-
+distillation method to revise the old classes more likely to be forgotten and better learn new classes
+related to the previous classes.
+Class Imbalance and Fairness Approaches in Semantic Segmentation Jiawei et al. [ 32] presented
+a balanced Softmax loss that reduces the distribution shift of labels and alleviates the long-tail issue.
+Wang et al. [ 44] proposed a Seesaw loss that reweights the contributions of gradients produced by
+positive and negative instances of a class by using two regularizers, i.e., mitigation and compensation.
+2
+Liu et al. [ 23] proposed an algorithm that handles imbalanced classification, few-shot learning, and
+open-set recognition using dynamic meta-embedding. Chu et al. [ 9] proposed a stochastic training
+scheme for semantic segmentation, which improves the learning of debiased and disentangled
+representations. Szabo et al. [ 37] proposed tilted cross-entropy loss to reduce the performance
+differences, which promotes fairness among the target classes. Truong et al. [ 40] introduced a
+fairness domain adaptation approach to semantic segmentation that maintains the fairness of the
+predictions produced by the segmentation model on the target domain.
+3 The Proposed Fairness Continual Learning Approach
+LetFparameterized by θbe the deep semantic segmentation model that maps an input image x∈ X
+to the segmentation map y∈ Y,y=F(x, θ). Continual Semantic Segmentation (CSS) aims to
+learn a model in Tsteps. In each step, the segmentation model Fencounters a dataset Dt={xt,ˆ yt}
+where xtis the input image and ˆ ytis the ground-truth segmentation at time t∈[1..T]. The current
+ground-truth segmentation map ˆ ytonly contains the labels of the current classes Ctand all the class
+labels of prevision steps, C1..t−1, or the future steps, Ct+1..Tare collapsed into a background class or
+ignored. Formally, learning the semantic segmentation at time step tcan be formulated as follows:
+θ∗
+t= arg min
+θtExt,ˆ yt∈DtL 
+F(xt, θt),ˆ yt
+(1)
+where θ∗
+tis the parameters of Fat time step t,Lis the objective learning of the continual learning
+task. In CSS learning, at the current time step t, the segmentation model Fis expected to not only
+predict all the classes C1..t−1learned in the previous steps but also predict the current new classes Ct.
+Three significant challenges have been identified in this learning setting and should be addressed.
+•Background Shift At time step t, the labels of previous and future steps have been ignored.
+Thus, the pixels of these classes are ambiguous, which means these could contain either the
+class of previous or future steps. During learning Ct, the model could consider these classes
+as negative samples. As a result, the model tends to learn non-discriminative features for
+these pixels, leading to difficulty learning new classes or forgetting the old ones.
+•Catastrophic Forgetting cause the model may partially or completely forget the knowledge
+of classes C1..t−1when learning the new classes Ct. This problem could be caused by the
+background shift and the learning mechanism. Since classes in C1..t−1are considered as the
+background class at time step t, the model tends to update the knowledge of the new classes
+while the predictions of classes incline to be suppressed.
+•Fairness While the prior approaches [ 12,46,4] focus on addressing the two above chal-
+lenges, the fairness issue has received less attention and has not been well addressed yet.
+However, fairness is one of the most important criteria as it guarantees the model behaves
+fairly among not only classes in Ctbut also classes in C1..tthat have been learned. The
+fairness in CSS is typically caused by the imbalance distribution between classes as several
+classes occupy the larger portion or exist more frequently than other classes (Fig. 1). In
+addition, the appearance of training samples at the training step talso exaggerates the bias
+due to the new classes since the classes in the previous training steps have collapsed.
+To address these challenges in CSS, we first reconsider the semantic segmentation problem from the
+fairness viewpoint followed by introducing a novel approach to alleviate the fairness issue based on
+the ideal class distribution. Then, we introduce a novel Prototypical Contrastive Clustering loss to
+model background classes and catastrophic forgetting.
+3.1 Fairness Learning Approach to Continual Semantic Segmentation
+Maintaining fairness is one of the most important factors in learning CSS as it reduces the bias of
+the model toward a certain group of classes. Formally, under the fairness constraint in semantic
+segmentation, the error rate of each class should be equally treated by the segmentation model. Given
+classes caandcbin the set of classes C1..T, this constraint can be formulated as follows:
+max
+ca,cb∈C1..TEx,ˆ y∈DX
+i,jL(yi,j,ˆyi,j=ca)−Ex,ˆ yX
+i,jL(yi,j,ˆyi,j=cb)≤ϵ (2)
+3
+where yi,jandˆyi,jis the prediction and ground truth at the pixel location (i, j), respectively; the
+loss function Lmeasures the error rates of predictions. Intuitively, Eqn. (2)aims to maintain the
+differences in the error rates between classes lower than a small threshold ϵto guarantee fairness
+among classes. For simplicity, this constraint can be considered as an additional loss while optimizing
+Eqn. (1). However, this approach could not guarantee the model being fair due to Eqn. (3).
+max
+ca,cb∈C1..TEx,ˆ y∈DX
+i,jL(yi,j,ˆyi,j=ca)−Ex,ˆ yX
+i,jL(yi,j,ˆyi,j=cb)
+≤X
+ca,cb∈C1..TEx,ˆ y∈DX
+i,jL(yi,j,ˆyi,j=ca)−Ex,ˆ yX
+i,jL(yi,j,ˆyi,j=cb)≤2C1..T[Ex,ˆ y∈DL(F(x, θ),ˆ y)](3)
+As shown in the above inequality, the constraint of Eqn. (2)has been bounded by the loss function in
+Eqn. (1). Although minimizing Eqn. (1)could also impose the constraint in Eqn. (2), the fairness
+issue still remains unsolved due to the imbalanced class distributions indicated through Eqn. (4).
+θ∗= arg min
+θ"Z
+L(y,ˆ y)p(y)p(ˆ y)dydˆ y#
+= arg min
+θ"ZX
+i,jL(yi,j,ˆyi,j)p(yi,j)p(y\(i,j)|yi,j)p(ˆ y)dydˆ y#
+(4)
+where p(·)is the data distribution, y\(i,j)is the predicted segmentation map without the pixel at
+position (i, j),p(yk)is the class distribution of pixels, and p(y\(i,j)|y(i,j))is the conditional structural
+constraint of the predicted segmentation y\(i,j)conditioned on the prediction yi,j. Practically, the
+class distributions of pixels p(yi,j)suffer imbalanced issues, where several classes in the majority
+group significantly dominate other classes in the minority group. Then, learning by gradient descent
+method, the model could potentially bias towards the class in the majority group because the
+produced gradients of classes in the majority group tend to prevail over the ones in the minority group.
+Formally, considering the two classes caandcbof the dataset where their distributions are skewed,
+i.e.,p(ca)< p(cb), the gradients produced are favored towards class cbas shown in Eqn. (5).
+∂RP
+i,jL(yi,j,ˆyi,j)p(yi,j=ca)p(y\(i,j)|yi,j)p(ˆ y)dydˆ y
+∂y(ca)
+<∂RPN
+k=1L(yi,j,ˆyi,j)p(yi,j=cb)q(y\(i,j)|yi,j)p(ˆ yk)dydˆ y
+∂y(cb)(5)
+where || · || is the magnitude of gradients, y(ca)andy(cb)are the predictions of classes caandcb.
+Learning Fairness from Ideally Fair Distribution To address this problem, we first assume that
+there exits an ideal distribution q(·)where the class distributions q(yi,j)are equally distributed. Under
+this assumption, the model learned is expected to behave fairly among classes as there is no bias
+toward any groups of classes. It should be noted that our assumption is used to derive our learning
+objective and is going to be relaxed later. In other words, the ideal data is not required at training.
+Then, our learning objective in Eqn. (4) could be rewritten as follows:
+θ∗= arg min
+θ"
+Ex∼p(y),ˆ y∼p(ˆ y)X
+i,jL(yi,j,ˆyi,j)q(yi,j)q(y\(i,j)|yi,j)
+p(yi,j)p(y\(i,j)|yi,j)#
+(6)
+The fraction between the ideal distribution q(·)and the actual data distribution p(·)is the residual
+learning objective for the model to achieve the desired fairness goal. Let us further derive Eqn. (6)by
+taking the log as follows:
+θ∗= arg min
+θEx∼p(x),ˆ y∼p(ˆ y)(
+L(y,ˆ y) +1
+NX
+i,j
+logq(yi,j)
+p(yi,j)
++ logq(y\(i,j)|yi,j)
+p(y\(i,j)|yi,j))
+(7)
+The detailed derivation of Eqn. (6)and Eqn. (7)will be available in the supplementary. As shown in
+the Eqn. (7), there are three learning objectives as follows:
+•The Continual Learning Objective The first term, i.e., L(y,ˆ y), represents the task-specific
+loss which is the continual learning objective. This objective aims to address the catastrophic
+forgetting and background shift problems. To achieve this desired goal, we introduce a novel
+Prototypical Contrastive Clustering Loss that will be discussed in Sec. 3.2.
+4
+Figure 2: The Proposed Fairness
+Continual Learning Framework.
+The predicted segmentation maps
+are imposed the cross-entropy loss,
+the Prototypical Contrastive Cluster-
+ing loss ( Lcluster ), the Fairness Loss
+from Class Distribution ( Lclass),
+and the Conditional Structural Con-
+sistency loss ( Lcons)
+•The Fairness Objective The second term, i.e., Lclass = log
+q(yi,j)
+p(yi,j)
+, maintains the
+fairness in the predictions produced by the model. This objective penalizes the prediction of
+classes forcing the model to behave fairly based on the class distribution. Under the ideal
+distribution assumption where the model is expected to perform fairly, the q(yi,j)will be
+considered as a uniform distribution U, i.e., q(yi,j)∼ U(C)(Cis the number of classes).
+•The Conditional Structural Consistency Objective The third term, i.e., Lcons =
+logq(y\(i,j)|yi,j)
+p(y\(i,j)|yi,j)
+, regularizes the structural consistency of the prediction. This objec-
+tive acts as a metric to constrain the structure of the predicted segmentation under the ideal
+distribution assumption. To model this conditional structure consistency, we introduce a
+conditional structural constraint based on the Markovian assumption discussed in Sec. 3.4.
+3.2 Prototypical Contrastive Clustering Loss for Handling Unknown Classes
+A successful continual learning approach should be able to model background classes without explicit
+supervision and confront the forgetting problem of previously learned classes when the labels of
+the task are provided to update the knowledge of the model [ 20]. A straightforward adoption of
+Softmax could not be enough to handle. Indeed, the unlabeled pixels will be ignored during training.
+Thus, it results in these unannotated pixels could be treated as negative samples. Consequently, the
+segmentation model tends to produce indiscriminative features for these unknown classes that limit
+the capability of learning new classes in future tasks or recognizing the classes learned previously.
+To address this limitation, in addition to the Softmax loss, we introduce a novel Prototypical Con-
+trastive Clustering Loss. In particular, the semantic segmentation pixel belonging to each class can
+be represented in latent space. Inspired by [ 20,2,21], the features representing the classes can be
+separated by defining it as a contrastive clustering problem [ 20] where features of the same class
+would be pulled closer while features of different classes would be pushed far away. In addition, the
+deep representations of unknown classes will be grouped into the same cluster of unknown classes to
+produce discriminative features against other classes.
+Formally, for each class c∈ C1..t, it is represented by a prototypical vector pc. In addition, the
+additional prototypical vector p0represents a cluster of unknown classes. Let ft
+i,jbe a feature
+representation of pixel at location (i, j)of the input xt. Then, the Prototypical Contrastive Clustering
+LossLcluster can be defined via a distance Das follows:
+Lcluster (xt,F, θt) =X
+i,jX
+cD(ft
+i,j,pc) (8)
+D(ft
+i,j,pc) =ℓ(ft
+i,j,pc) Ifˆyt
+i,j=c
+max{0,∆−ℓ(ft
+i,j,pc}otherwise(9)
+where ℓis a distance metric, ∆is a margin between the feature vectors of different classes, and
+ˆyt
+i,jis the label of pixel (i, j). Minimizing this loss separates the classes represented in the latent
+space. For step t >1,ˆyt
+i,jof an unknown-class pixel will utilize a pseudo label where its assigned
+label is computed based on the closest cluster. In addition, since the prototypical vectors of classes
+c∈ C1..t−1have been well learned to represent for classes, these vectors pc(where c∈ C1..t−1) will
+be frozen at step tto maintain its learned knowledge of classes C1..t−1.
+5
+The set of prototypical vectors at current step t, i.e., p0andpcwhere c∈ Ctare updated gradually
+with respect to the growth of feature vectors. In particular, the prototypical vector pcwill be
+periodically updated (after every Miterations) with momentum ηbased on the set of features fi,jof
+class c. Following common practices [ 20,16], to effectively support the updating step and memory
+efficiency, for each class c, we only maintain a set of features Scwith a fixed length of L. Algorithm
+1 in the supplementary illustrates an overview of computing the prototypical contrastive clustering
+loss while updating the class prototypes. Fig. 2 illustrates our proposed FairCL framework.
+3.3 Prototypical Constrative Clustering Loss to Catastrophic Forgetting
+Knowledge Distillation is a common continual learning approach [ 36,3,12,46] where the knowl-
+edge of the previous model will be distilled into the current model. This mechanism prevents the
+segmentation model from diverging knowledge learned previously and avoiding the catastrophic
+forgetting problem. This continual learning paradigm has been widely adopted due to its efficiency
+in computation. In addition, this approach also does not require data rehearsal, i.e., storing the data
+samples of previous tasks. In this paper, we demonstrate that our Prototypical Constrative Clustering
+approach is a comprehensive upper limit of the Knowledge Distillation approach. In particular, the
+common knowledge distillation approach can be formulated as follows:
+Ldistill (xt,F, θt, θt−1) =D(ft−1,ft) (10)
+where ftandft−1are the features of the input xtproduced by the segmentation model at step tand
+stept−1, respectively; and the distance metric Dmeasure the knowledge gap between ftandft−1.
+Proposition 1: The Prototypical Constrative Clustering Approach is the generalized upper bound of
+the Knowledge Distillation Approach.
+Ldistill (xt,F, θt, θt−1) =O 
+Lcluster (xt,F, θt)
+(11)
+Proof: Without lack of generality, we assume that Dis a metric that measures distance between
+features. Given a set of fixed prototypical vectors pc, we consider the following triangle inequality of
+the metric Das follows:
+∀c∈ {0} ∪ C1..t:D(ft,ft−1)≤ D(ft,pc) +D(pc,ft−1)
+⇔ D(ft,ft−1)≤1
+|C|X
+c
+D(ft,pc) +D(pc,ft−1) (12)
+where |C|is the number of prototypical vectors. The prototypical vectors pcand the feature vectors
+ft−1produced by the segmentation model at step t−1are considered as constant features as the
+model in the previous model t−1has been fixed at step t. Thus, the distance D(pc,ft−1)could be
+considered as constant number. Then, Eqn. (12) can be further derived as follows:
+D(ft,ft−1) =O 
+1
+|C|X
+c
+D(ft,pc) +D(pc,ft−1)!
+=O X
+cD(ft,pc)!
+⇒ L distill (xt,F, θt, θt−1) =O 
+Lcluster (xt,F, θt)(13)
+Intuitively, under this upper bound in Eqn. (13), by only optimizing our prototypical contrastive
+clustering loss, the knowledge distillation constraint has also been implicitly imposed. Beyond the
+property of generalized upper bound stated in Proposition 1 , our approach offers other benefits
+over the knowledge distillation approach. In particular, our approach is computationally efficient,
+where our method only requires a single forward pass of the segmentation model. Meanwhile, the
+knowledge distillation demands two forward passes for both the current and previous models, which
+also requires additional computational memory for the previous model. Moreover, our approach
+provides a better representation of each class cthrough the prototypical vector pc. This mechanism
+helps to effectively maintain the knowledge of classes learned previously while allowing the model to
+update the new knowledge without rehearsing the old data.
+3.4 Learning Conditional Structural Consistency
+The conditional structural constraint plays an important role as it will ensure the consistency of the pre-
+dicted segmentation map. However, modeling the conditional structural constraint logq(y\(i,j)|yi,j)
+p(y\(i,j)|yi,j)
+6
+in Eqn. (7)is a quite challenging problem due to two factors, i.e., (1) the unknown ideal conditional
+distribution q(y\(i,j)|yi,j), and the complexity of the distribution q(y\(i,j)|yi,j). To address the first
+limitation of unknown ideal distribution, let us consider the following tight bound as follows:
+Ex∼p(x)logq(y\(i,j)|yi,j)
+p(y\(i,j)|yi,j)
+≤ −Ex∼p(x)logp(y\(i,j)|yi,j) (14)
+The inequality in Eqn. (14) always hold with respect to any form ideal distribution q(·). Thus,
+optimizing the negative log-likelihood of logp(y\(i,j)|yi,j)could also regularize the conditional
+structural constraint due to the upper bound of Eqn. (14). More importantly, the requirement of
+ideal data distribution during training has also been relaxed. However, up to this point, the second
+limitation of modeling the complex distribution q(y\(i,j)|yi,j)has still not been solved.
+To address this problem, we adopt the Markovian assumption [ 5,39] to model conditional structural
+consistency. In particular, we propose a simple yet effective approach to impose the consistency of
+the segmentation map through the prediction at location (i, j)and predictions of its neighbor pixels.
+Formally, the conditional structure consistency can be formed via the Gaussian kernel as follows:
+−logp(y\(i,j)|yi,j)∝X
+(i′,j′)∈N(i,j)exp(
+−||xi,j
+t−xt
+i′,j′||2
+2
+2σ2
+1−||yi,j
+t−yt
+i′,j′||2
+2
+2σ2
+2)
+(15)
+where N(i, j)is the set of neighbor pixels of (i, j),{σ1, σ2}are the scale hyper-parameters of the
+Gaussian kernels. The conditional structural consistency loss defined in Eqn. (15) enhance the
+smoothness and maintain the consistency of the predicted segmentation map by imposing similar
+predictions of neighbor pixels with similar contextual colors.
+4 Experiments
+In this section, we first describe the datasets and metrics used in our experiments. Then, we present
+the ablation studies to illustrate the effectiveness of our proposed method. Finally, we compare our
+approach with prior CSS methods to demonstrate our SOTA performance.
+4.1 Datasets and Evaluation Protocols
+Datasets ADE20K [49] is a semantic segmentation dataset that consists of more than 20K scene
+images of 150 semantic categories. Each image has been densely annotated with pix-level objects and
+objects parts labels. Cityscapes [10] is a real-world autonomous driving dataset collected in European.
+This dataset includes 3,975urban images with high-quality, dense labels of 30 semantic categories.
+PASCAL VOC [13] is a common dataset that consists of more than 10K images of 20classes.
+Implementation Two segmentation network architectures are used in our experiments, i.e., (1)
+DeepLab-V3 [ 6] with the ResNet-101 backbone, and (2) SegFormer [ 45] with MiT-B3 backbone.
+Further details of our implementation will be available in our supplementary.
+Evaluation Protocols: Following [ 12], we focus on the overlapped CSS evaluation. Our proposed
+method is evaluated on several settings for each dataset, i.e., ADA20K 100-50 (2 steps), ADA20K
+Backbone Lcluster LclassLcons0-100 100-150 all avg
+mIoU STD mIoU STD mIoU STD mIoU STD
+DeepLab-V30.08 0.84 19.52 20.18 6.52 13.14 24.41 13.14
+✓ 41.71 19.90 15.33 21.96 32.97 23.03 37.58 23.03
+✓ ✓ 42.25 19.31 18.55 20.52 34.40 22.07 38.35 22.07
+✓ ✓ ✓ 43.40 19.08 24.04 19.12 36.99 21.67 40.45 21.67
+SegFormer0.10 0.84 23.18 19.83 7.74 15.74 25.82 15.74
+✓ 43.40 19.35 21.60 22.06 36.18 22.32 39.85 22.32
+✓ ✓ 43.35 19.03 23.50 20.75 36.78 21.86 40.34 21.86
+✓ ✓ ✓ 43.56 18.71 25.46 19.99 37.56 21.10 40.73 21.10
+Table 1: Effectiveness of our approach on the ADE20K 100-50 benchmark. Two different networks,
+i.e., DeepLab-V2 [ 5] and SegFormer [ 45], and three different losses, i.e., Prototypical Contrastive
+Clustering ( Lcluster ), Fairness Loss ( Lclass), and Conditional Structural Consistency ( Lcons).
+7
+100-10 (6 steps), ADA20K 100-5 (11 steps), Cityscapes 11-5 (3 steps), Cityscapes 11-1 (11 steps),
+Cityscapes 1-1 (21 steps), Pascal VOC 15-1 (3 steps), and Pascal VOC 10-1 (11 steps). The mean
+Intersection over Union (mIoU) metric is used in our experiments. The mIoU is computed after the
+last step for the classes learned from the first step, the later continual classes, and all classes. The
+mIoU for the initial classes shows the robustness of the model to catastrophic forgetting, while the
+metric for the later classes reflects the ability to learn new classes. To measure the fairness of the
+model, we also report the standard deviation (STD) of IoUs over all classes.
+4.2 Ablation Study
+Our ablative experiments study the effectiveness of our proposed FairCL approach on the performance
+of the CSS model and fairness improvement on the ADE20K 100-50 benchmark (Table 1).
+Method11-5 11-1 1-1
+3 steps 11 steps 21 steps
+Joint 79.30 79.30 79.30
+LWF-MC [31] 58.90 56.92 31.24
+ILT [25] 59.14 57.75 30.11
+MiB [3] 61.51 60.02 42.15
+PLOP [12] 63.51 62.05 45.24
+RCIL [46] 64.30 63.00 48.90
+FairCL + DeepLab-V3 66.96 66.61 49.22
+FairCL + SegFormer 67.85 67.09 55.68
+Table 2: Final mIoU (%) for Continual Semantic
+Segmentation on Cityscapes.Effectiveness of the Network Backbone Ta-
+ble 1 illustrates the results of our approach us-
+ing the DeepLab-V3 [ 5] with the Resnet101
+backbone and the SegFormer [ 45] with a Trans-
+former backbone, i.e. MiT-B3 [ 45]. As shown
+in our results, the performance of segmentation
+models using a more powerful backbone, i.e.,
+Transformer, outperforms the models using the
+Resnet backbone. The capability of learning
+new classes has been improved notably, i.e., the
+mIoU of classes 101-150 in the full configura-
+tion has been improved from 19.86% to25.46%
+while the model keeps robust to catastrophic
+forgetting, the mIoU has been increased from
+41.96% to43.56% in the classes 0-100. Additionally, fairness between classes has been promoted
+when the standard deviation of the IoU over classes has been reduced from 21.67% to21.10%.
+Effectiveness of the Prototypical Contrastive Clustering Loss We evaluate the impact of the
+Prototypical Contrastive Clustering Loss ( Lcluster ) in improving the performance in the continual
+learning problem compared to the fine-tuning approach. As shown in Table 1, the clustering loss has
+significant improvements in the catastrophic forgetting robustness compared to using only the Softmax
+loss. In particular, the mIoU of classes 0-100 for both DeepLab-V3 and SegFormer backbones has
+been improved by +41.63% and+43.30% respectively that makes the overall mIoU increase by
++26.45% and+28.44%, and the average mIoU between classes increases by +13.17% and+14.03%.
+Although the STD of IoUs has slightly increased in this setting, the major target of our Lcluster is
+used to model the catastrophic forgetting and background shift problems in CSS illustrated by the
+significant performance improvement of mIoU.
+Effectiveness of the Fairness Treatment Loss As reported in Table 1, the fairness treatment from
+the class distribution loss Lclass significantly improves the overall performance and the accuracy
+of classes. In detail, the STD of IoU from classes has been reduced by 0.96% and0.46% for both
+backbones while the mIoU has been improved from 32.97% to34.40% and from 36.18% to36.78%,
+respectively. The results have shown that our approach has promoted the fairness of the model.
+Effectiveness of the Conditional Structural Consistency The full configuration in Table 1 shows
+experimental results of our model using conditional structure constraint loss Lcons. As illustrated
+Method100-50 (2 steps) 50-50 (3 steps) 100-10 (6 steps)
+0-100 101-150 all avg 0-50 51-150 all avg 0-100 101-150 all avg
+Joint 44.30 28.20 38.90 - 51.10 32.80 38.90 - 44.30 28.20 38.90 -
+ILT [25] 18.29 14.40 17.00 29.42 3.53 12.85 9.70 30.12 0.11 3.06 1.09 12.56
+MiB [3] 40.52 17.17 32.79 37.31 45.57 21.01 29.31 38.98 38.21 11.12 29.24 35.12
+PLOP [12] 41.87 14.89 32.94 37.39 48.83 20.99 30.40 39.42 40.48 13.61 31.59 36.64
+RCIL [46] 42.30 18.80 34.50 38.48 48.30 25.00 32.50 - 39.30 17.60 32.10 -
+MiB + AWT [15] 40.90 24.70 35.60 - 46.60 26.85 33.50 - 39.10 21.28 33.20 -
+SSUL [4] 41.28 18.02 33.58 - 48.38 20.15 29.56 - 40.20 18.75 33.10 -
+SATS [30] - - - - - - - - 41.42 19.09 34.18 -
+FairCL + DeepLab-V3 43.40 24.04 36.99 40.45 49.65 26.84 34.55 41.68 41.73 20.36 34.65 39.01
+FairCL + SegFormer 43.56 25.46 37.56 40.73 49.62 27.78 35.15 42.25 42.21 21.91 35.49 39.36
+Table 3: Continual Semantic Segmentation results on ADE20k in Mean IoU (%).
+8
+in our results, the conditional structure constraint demonstrates effective improvement. Indeed, it
+promotes the accuracy of the initial classes and the novel classes when the mIoU has been increased
+from 43.35% to43.56% and from 23.50% to25.46% respectively with the Transformer backbone.
+The fairness of classes is also improved as the standard deviation of the IoU of classes 0-100 and
+classes 101-150 is reduced from 19.03% to18.71% and from 20.75% to19.99%.
+4.3 Comparison with State-of-the-Art Methods
+Figure 3: Qualitative results of Our Approach
+and PLOP [12] on ADE20K 100-10.Cityscapes As shown in Table 2, our FairCL out-
+performs previous SOTA methods evaluated on
+Cityscapes benchmarks. In particular, in the 11-5
+task, our method using Resnet and Transformer
+achieves the mIoU of 66.96% and67.85% respec-
+tively which shows better performance than prior
+methods. Meanwhile, the results for the 11-1
+task are 66.61% and67.09% w.r.t. the Resnet
+and Transformer backbones. For the 1-1 task, the
+mIoU of our method is 49.22% and55.68%.
+ADE20K Table 3 presents our experimental re-
+sults using ResNet and Transformer backbones
+compared to prior SOTA approaches. Our pro-
+posed approach achieves SOTA performance and
+outperforms prior methods. In particular, our ap-
+proach achieves the final mIoU of 36.99% for
+Resnet and 37.56% for Transformer in the 100-
+50 tasks. For the 50-50 tasks, the model reaches the final mIoU of 34.55% and35.15% for the Resnet
+and Transformer backbones, respectively while the result of the prior method [ 15] is33.50%. Mean-
+while, the overall results of our method for the 100-10 task are 34.65% and35.49% which shows
+outperforming previous approaches. Fig. 3 visualizes the qualitative result of our method compared to
+PLOP [ 12]. Initially, the ground truth contains the class “car” in the first step and the class “minibike”
+in the third step. Then, in the fourth step, the class “bicycle” is included. As a result, PLOP [ 12]
+partly forgets the “minibike” information when learning the class “bicycle” information. Meanwhile,
+our method consistently maintains the information of “minibike” and predicts segmentation correctly.
+Method15-1 (6 steps) 10-1 (11 steps)
+0-15 16-20 all 0-10 11-20 all
+Joint 79.8 72.4 77.4 78.4 76.4 77.4
+LWF [31] 6.0 3.9 5.5 8.0 2.0 4.8
+ILT [25] 9.6 7.8 9.2 7.2 3.7 5.5
+MiB [3] 38.0 13.5 32.2 20.0 20.1 20.1
+SDR [26] 47.3 14.7 39.5 32.4 17.1 25.1
+PLOP [12] 65.1 21.1 54.6 44.0 15.5 30.5
+RCIL [46] 70.6 23.7 59.4 55.4 15.1 34.3
+FairCL + DeepLab-V3 72.0 22.7 60.3 42.3 25.6 34.4
+FairCL + SegFormer 73.5 22.8 61.5 57.1 14.2 36.6
+Table 4: The mIoU (%) of CSS on Pascal VOC.Pascal VOC As shown in Table 4, the proposed
+method outperforms the prior approaches eval-
+uated on the Pascal VOC 2012 dataset. In detail,
+our method achieves the overall mIoU of 61.5%
+in the 15-1 task while the result of the previous
+method [ 46] is59.4%. Meanwhile, the mIoU
+in the 10-1 task is 36.6%which shows better
+performance than the prior methods.
+5 Conclusions and Dicussions
+Conclusions: This paper introduces a novel fair-
+ness continual learning approach in semantic segmentation by analyzing the effect of class distribution.
+Furthermore, a new learning paradigm of continual learning, i.e., the prototypical Contrastive clus-
+tering loss, is proposed to sufficiently address the catastrophic forgetting and the background shift
+problems. The experimental results on the three CSS benchmarks, i.e., ADE20K, Cityscapes, and
+Pascal VOC, have shown our SOTA performance.
+Limitations: Our paper has chosen specific configurations of network backbones and hyper-
+parameters to support our hypothesis. However, the other aspects of learning have not been fully
+investigated, e.g., learning hyper-parameters, the selected neighbor pixels, or other forms of Lcons.
+Broader Impacts: This work studies the problem of Fairness in Continual Learning which is a step
+toward fairness awareness in continual semantic segmentation. Our contributions emphasize the
+importance of fairness in continual semantic segmentation learning and provide a solution to address
+the fairness concern that increases the robustness and trustworthiness of the segmentation model.
+9
+Acknowledgment This work is partly supported by NSF Data Science, Data Analytics that are Robust and
+Trusted (DART), and Googler Initiated Research Grant. We also thank Utsav Prabhu for invaluable discussions
+and suggestions and acknowledge the Arkansas High-Performance Computing Center for providing GPUs.
+References
+[1]N. Araslanov, , and S. Roth. Self-supervised augmentation consistency for adapting semantic segmentation.
+InProceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , 2021.
+[2]J. Cen, P. Yun, J. Cai, M. Y . Wang, and M. Liu. Deep metric learning for open world semantic segmentation.
+InProceedings of the IEEE/CVF International Conference on Computer Vision , pages 15333–15342, 2021.
+[3]F. Cermelli, M. Mancini, S. Rota Bulò, E. Ricci, and B. Caputo. Modeling the background for incremental
+learning in semantic segmentation. In Proc. Conf. Comp. Vision Pattern Rec. , 2020.
+[4]S. Cha, b. kim, Y . Yoo, and T. Moon. Ssul: Semantic segmentation with unknown label for exemplar-based
+class-incremental learning. In M. Ranzato, A. Beygelzimer, Y . Dauphin, P. Liang, and J. W. Vaughan,
+editors, Advances in Neural Information Processing Systems , volume 34, pages 10919–10930. Curran
+Associates, Inc., 2021.
+[5]L.-C. Chen, G. Papandreou, I. Kokkinos, K. Murphy, and A. L. Yuille. Deeplab: Semantic image
+segmentation with deep convolutional nets, atrous convolution, and fully connected CRFs. TPAMI , 2018.
+[6]L.-C. Chen, G. Papandreou, F. Schroff, and H. Adam. Rethinking atrous convolution for semantic image
+segmentation. arXiv preprint arXiv:1706.05587 , 2017.
+[7]L.-C. Chen, Y . Zhu, G. Papandreou, F. Schroff, and H. Adam. Encoder-decoder with atrous separable
+convolution for semantic image segmentation. In ECCV , 2018.
+[8]R. Chen, Y . Rong, S. Guo, J. Han, F. Sun, T. Xu, and W. Huang. Smoothing matters: Momentum
+transformer for domain adaptive semantic segmentation. CoRR , 2022.
+[9]S. Chu, D. Kim, and B. Han. Learning debiased and disentangled representations for semantic segmentation.
+Advances in Neural Information Processing Systems , 34:8355–8366, 2021.
+[10] M. Cordts, M. Omran, S. Ramos, T. Rehfeld, M. Enzweiler, R. Benenson, U. Franke, S. Roth, and
+B. Schiele. The Cityscapes dataset for semantic urban scene understanding. In CVPR , 2016.
+[11] Y . Cui, M. Jia, T.-Y . Lin, Y . Song, and S. Belongie. Class-balanced loss based on effective number of
+samples. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition
+(CVPR) , June 2019.
+[12] A. Douillard, Y . Chen, A. Dapogny, and M. Cord. Plop: Learning without forgetting for continual semantic
+segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,
+pages 4040–4050, 2021.
+[13] M. Everingham, S. M. A. Eslami, L. Van Gool, C. K. I. Williams, J. Winn, and A. Zisserman. The pascal
+visual object classes challenge: A retrospective. IJCV , 2015.
+[14] R. French. Catastrophic forgetting in connectionist networks. Trends in Cognitive Sciences , 1999.
+[15] D. Goswami, R. Schuster, J. van de Weijer, and D. Stricker. Attribution-aware weight transfer: A warm-
+start initialization for class-incremental semantic segmentation. In Proceedings of the IEEE/CVF Winter
+Conference on Applications of Computer Vision , pages 3195–3204, 2023.
+[16] K. He, H. Fan, Y . Wu, S. Xie, and R. Girshick. Momentum contrast for unsupervised visual representation
+learning. In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages
+9729–9738, 2020.
+[17] S. Hou, X. Pan, C. C. Loy, Z. Wang, and D. Lin. Learning a unified classifier incrementally via rebalancing.
+InProceedings of the IEEE/CVF conference on Computer Vision and Pattern Recognition , pages 831–839,
+2019.
+[18] L. Hoyer, D. Dai, and L. Van Gool. DAFormer: Improving network architectures and training strategies
+for domain-adaptive semantic segmentation. In CVPR , 2022.
+[19] T.-I. Hsieh, E. Robb, H.-T. Chen, and J.-B. Huang. Droploss for long-tail instance segmentation. In
+Proceedings of the Workshop on Artificial Intelligence Safety 2021 co-located with the Thirty-Fifth AAAI
+Conference on Artificial Intelligence , 2021.
+[20] K. Joseph, S. Khan, F. S. Khan, and V . N. Balasubramanian. Towards open world object detection. In
+Proceedings of the IEEE/CVF conference on computer vision and pattern recognition , pages 5830–5840,
+2021.
+[21] J. Li and Q. Dong. Open-set semantic segmentation for point clouds via adversarial prototype framework. In
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 9425–9434,
+2023.
+10
+[22] Z. Li and D. Hoiem. Learning without forgetting. IEEE transactions on pattern analysis and machine
+intelligence , 40(12):2935–2947, 2017.
+[23] Z. Liu, Z. Miao, X. Zhan, J. Wang, B. Gong, and S. X. Yu. Large-scale long-tailed recognition in an open
+world, 2019.
+[24] U. Michieli and P. Zanuttigh. Incremental learning techniques for semantic segmentation. In Proceedings
+of the IEEE/CVF international conference on computer vision workshops , pages 0–0, 2019.
+[25] U. Michieli and P. Zanuttigh. Incremental learning techniques for semantic segmentation. In ICCVWS ,
+2019.
+[26] U. Michieli and P. Zanuttigh. Continual semantic segmentation via repulsion-attraction of sparse and
+disentangled latent representations. In Proc. Conf. Comp. Vision Pattern Rec. , 2021.
+[27] F. Ozdemir, P. Fuernstahl, and O. Goksel. Learn the new, keep the old: Extending pretrained models with
+new anatomy and images. In Medical Image Computing and Computer Assisted Intervention–MICCAI
+2018: 21st International Conference, Granada, Spain, September 16-20, 2018, Proceedings, Part IV 11 ,
+pages 361–369. Springer, 2018.
+[28] F. Ozdemir and O. Goksel. Extending pretrained segmentation networks with additional anatomical
+structures. International journal of computer assisted radiology and surgery , 14:1187–1195, 2019.
+[29] M. H. Phan, T.-A. Ta, S. L. Phung, L. Tran-Thanh, and A. Bouzerdoum. Class similarity weighted
+knowledge distillation for continual semantic segmentation. In Proceedings of the IEEE/CVF Conference
+on Computer Vision and Pattern Recognition (CVPR) , pages 16866–16875, June 2022.
+[30] Y . Qiu, Y . Shen, Z. Sun, Y . Zheng, X. Chang, W. Zheng, and R. Wang. Sats: Self-attention transfer for
+continual semantic segmentation. Pattern Recognition , 138:109383, 2023.
+[31] S.-A. Rebuffi, A. Kolesnikov, G. Sperl, and C. H. Lampert. icarl: Incremental classifier and representation
+learning. In Proc. Conf. Comp. Vision Pattern Rec. , 2017.
+[32] J. Ren, C. Yu, S. Sheng, X. Ma, H. Zhao, S. Yi, and H. Li. Balanced meta-softmax for long-tailed visual
+recognition, 2020.
+[33] A. Robins. Catastrophic forgetting, rehearsal and pseudorehearsal. Connection Science , 1995.
+[34] M. Rostami. Lifelong domain adaptation via consolidated internal distribution. In NeurIPS , 2021.
+[35] A. Saporta, A. Douillard, T.-H. Vu, P. Pérez, and M. Cord. Multi-head distillation for continual unsupervised
+domain adaptation in semantic segmentation. In Proceedings of the IEEE/CVF Conference on Computer
+Vision and Pattern Recognition (CVPR) Workshop , 2022.
+[36] K. Shmelkov, C. Schmid, and K. Alahari. Incremental learning of object detectors without catastrophic
+forgetting. In Proceedings of the IEEE international conference on computer vision , pages 3400–3409,
+2017.
+[37] A. Szabó, H. Jamali-Rad, and S.-D. Mannava. Tilted cross-entropy (tce): Promoting fairness in semantic
+segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,
+pages 2305–2310, 2021.
+[38] S. Thrun. Lifelong learning algorithms. In Springer Learning to Learn , 1998.
+[39] T.-D. Truong, C. N. Duong, N. Le, S. L. Phung, C. Rainwater, and K. Luu. Bimal: Bijective maximum
+likelihood approach to domain adaptation in semantic scene segmentation. In International Conference on
+Computer Vision , 2021.
+[40] T.-D. Truong, N. Le, B. Raj, J. Cothren, and K. Luu. Fredom: Fairness domain adaptation approach to
+semantic scene understanding. In IEEE Conference on Computer Vision and Pattern Recognition (CVPR) ,
+2023.
+[41] R. V olpi, D. Larlus, and G. Rogez. Continual adaptation of visual representations via domain randomization
+and meta-learning. In Proc. Conf. Comp. Vision Pattern Rec. , 2021.
+[42] T.-H. Vu, H. Jain, M. Bucher, M. Cord, and P. Pérez. Advent: Adversarial entropy minimization for domain
+adaptation in semantic segmentation. In CVPR , 2019.
+[43] T.-H. Vu, H. Jain, M. Bucher, M. Cord, and P. Pérez. Dada: Depth-aware domain adaptation in semantic
+segmentation. In ICCV , 2019.
+[44] J. Wang, W. Zhang, Y . Zang, Y . Cao, J. Pang, T. Gong, K. Chen, Z. Liu, C. C. Loy, and D. Lin. Seesaw
+loss for long-tailed instance segmentation. In Proceedings of the IEEE Conference on Computer Vision
+and Pattern Recognition , 2021.
+[45] E. Xie, W. Wang, Z. Yu, A. Anandkumar, J. M. Alvarez, and P. Luo. Segformer: Simple and efficient
+design for semantic segmentation with transformers. In NeurIPS , 2021.
+11
+[46] C.-B. Zhang, J.-W. Xiao, X. Liu, Y .-C. Chen, and M.-M. Cheng. Representation compensation networks
+for continual semantic segmentation. In Proceedings of the IEEE/CVF Conference on Computer Vision
+and Pattern Recognition , pages 7053–7064, 2022.
+[47] P. Zhang, B. Zhang, T. Zhang, D. Chen, Y . Wang, and F. Wen. Prototypical pseudo label denoising and
+target structure learning for domain adaptive semantic segmentation. arXiv preprint arXiv:2101.10979 ,
+2021.
+[48] B. Zhao, X. Xiao, G. Gan, B. Zhang, and S.-T. Xia. Maintaining discrimination and fairness in class
+incremental learning. In Proceedings of the IEEE/CVF conference on computer vision and pattern
+recognition , pages 13208–13217, 2020.
+[49] B. Zhou, H. Zhao, X. Puig, S. Fidler, A. Barriuso, and A. Torralba. Scene parsing through ade20k dataset.
+InCVPR , pages 633–641, 2017.
+12
+Supplementary
+6 Proof of Eqn. (6)
+θ∗=Z
+L(y,ˆ y)q(y)q(ˆ y)dydˆ y
+=Z
+L(y,ˆ y)q(y)
+p(y)q(ˆ y)
+p(ˆ y)p(y)p(ˆ y)dydˆ y(16)
+It should be noted that the fractionq(ˆ y)
+p(ˆ y)could be considered as constants as q(ˆ y)andp(ˆ y)are distriuted over
+the ground-truth segmentation. Thus, it would be ignored during the optimization process. Then, the formula
+can be further derived as follows:
+θ∗≃Z
+L(y,ˆ y)q(y)
+p(y)p(y)p(ˆ y)dydˆ y
+= arg min
+θ
+Ex∼p(y),ˆ y∼p(ˆ y)L(y,ˆ y)q(y)
+p(y)
+= arg min
+θ"
+Ex∼p(y),ˆ y∼p(ˆ y)X
+i,jL(yi,j,ˆyi,j)q(yi,j)q(y\(i,j)|yi,j)
+p(yi,j)p(y\(i,j)|yi,j)#(17)
+7 Proof of Eqn. (7)
+By taking the logarithm, the optimization process can be rewritten as follows:
+θ∗= arg min
+θEx∼p(x),ˆ y∼p(ˆ y)L(y,ˆ y)q(y)
+p(y)
+≃arg min
+θEx∼p(x),ˆ y∼p(ˆ y)log
+L(y,ˆ y)q(y)
+p(y)
+= arg min
+θEx∼p(x),ˆ y∼p(ˆ y)
+logL(y,ˆ y) + logq(y)
+p(y)
+= arg min
+θEx∼p(x),ˆ y∼p(ˆ y)"
+logL(y,ˆ y) +1
+NX
+i,jlogq(yi,j)q(y\(i,j)|yi,j)
+p(yi,j)p(y\(i,j)|yi,j)#
+= arg min
+θEx∼p(x),ˆ y∼p(ˆ y)(
+logL(y,ˆ y) +1
+NX
+i,j
+logq(yi,j)
+p(yi,j)
++ logq(y\(i,j)|yi,j)
+p(y\(i,j)|yi,j))
+where Nis the total number of pixels. In addition, minimizing logL(y,ˆ y)is equivalent to minimizing L(y,ˆ y).
+Therefore, the formula can be further derived as follows:
+θ∗= arg min
+θEx∼p(x),ˆ y∼p(ˆ y)(
+L(y,ˆ y) +1
+NX
+i,j
+logq(yi,j)
+p(yi,j)
++ logq(y\(i,j)|yi,j)
+p(y\(i,j)|yi,j))
+8 Protypical Contrastive Clustering Algorithm
+Inspired by [ 20,16], we develop the algorithm to compute the Prototypical Contrastive Clustering loss and
+update prototypical vectors. Algorithm 1 illustrates the procedure to compute the Prototypical Contrastive
+Clustering loss and update the prototypical vectors.
+9 Implementation
+Two segmentation network architectures have been used in our experiments, i.e., (1) DeepLab-V3 [ 5] with
+the ResNet-101 backbone, and (2) SegFormer [ 45] with MiT-B3 backbone. Our framework is implemented
+in PyTorch and trained on four 40GB-VRAM NVIDIA A100 GPUs. The model is optimized by the SGD
+optimizer [ ?] with momentum 0.9, weight decay 10−4, and batch size of 6per GPU. The learning rate is set
+individually for each step and dataset. In particular, the learning rate for the initial step and the continual steps of
+the ADE20K dataset is 10−2and10−3respectively, while the learning rate for the Cityscapes experiment is
+2×10−2and2×10−3. The feature vectors from the last layer of the decoder are used for the prototypical
+13
+Algorithm 1: Prototypical Constrative Clustering Loss
+Input: Current iteration iof step t; A set of prototypical vectors {pc}|C1..t|
+c=0 ; A set of features fi,j; Momentum
+parameter: η; A set of storing features {Sc}|C1..t|
+c=0
+1: Initialize pcwhere c∈ Ctin the first iteration.
+2:Lcluster ←0
+3:ifi==Mthen
+4: For each c∈ {0} ∪ Ct
+5: pc←Ef∈Scf.
+6: Lcluster ←Compute Prototypical Constrative Clustering Loss based on Eqn. (9).
+7:else if i > M then
+8: ifi%M== 0 then
+9: For each c∈ {0} ∪ Ct
+10: pc←ηpc+ (1−η)Ef∈Scf.
+11: Lcluster ←Compute Prototypical Constrative Clustering Loss based on Eqn. (9).
+12:return Lcluster
+clustering loss. For each class, the number of feature vectors in each set Scfor computing the prototypes is
+500features. Following common practices in contrastive learning [ 20,16], we adopt the Euclidean distance for
+ourℓin the Prototypical Contrastive Clustering loss Lcluster and the margin ∇between features of different
+classes is set to 10. The momentum ηto update the prototypical vectors is set to 0.99. Following [ 5,39], in the
+conditional structural consistency loss, the number of neighbor pixels is within a window size of 3×3.
+10 Additional Experiments
+10.1 Performance Improvement of Major and Minor Groups
+To illustrate the performance improvement of our proposed method in major and minor classes, we include the
+results of the mIoU (all) and the STD among IoUs of the major group and the minor group on the ADE20K
+100-50 (Table 5) and Cityscapes 11-5 (Table 6) benchmarks. As shown in the table below, our proposed
+approach has improved the performance of both major and minor groups. Thus, these results illustrated that
+the performance improvement in mIoU is also coming from the minority classes. It helps to enhance the mIoU
+performance and reduce the STD in both major and minor classes, thus, improving the fairness of the model
+predictions.
+Backbone Lcluster Lclass LconsMajor Group Minor Group
+mIoU STD mIoU STD
+✓ 48.78 18.12 25.13 21.12
+DeepLab-V3 ✓ ✓ 48.89 17.87 27.24 20.76
+✓ ✓ ✓ 50.11 17.46 30.52 20.43
+Table 5: ADE20K 150-50 Benchmark
+Backbone Lcluster Lclass LconsMajor Group Minor Group
+mIoU STD mIoU STD
+✓ 87.44 9.25 53.37 16.72
+DeepLab-V3 ✓ ✓ 88.29 8.85 55.72 13.39
+✓ ✓ ✓ 89.20 8.41 56.70 11.96
+Table 6: Cityscapes 11-5 Benchmark
+Similarly, to illustrate the effectiveness and robustness of our method in the non-incremental setting. We
+report our results after the first learning step on the ADE20K 100-50 (Table 7) and Cityscapes 11-5 (Table 8)
+benchmarks. Our proposed fairness approach has also contributed to the performance improvement of both
+major and minor classes in non-incremental settings. The comparison table of major and minor groups in the
+first step is illustrated below.
+14
+Backbone Lcluster Lclass LconsMajor Group Minor Group
+mIoU STD mIoU STD
+✓ 49.07 18.35 35.45 19.08
+DeepLab-V3 ✓ ✓ 49.17 18.31 35.57 18.24
+✓ ✓ ✓ 50.04 17.92 37.88 18.19
+Table 7: ADE20K 150-50 Benchmark (Non-incremental Setting)
+Backbone Lcluster Lclass LconsMajor Group Minor Group
+mIoU STD mIoU STD
+✓ 87.64 8.96 53.78 17.16
+DeepLab-V3 ✓ ✓ 88.56 8.70 56.45 13.46
+✓ ✓ ✓ 89.52 8.08 57.87 12.08
+Table 8: Cityscapes 11-5 Benchmark (Non-incremental Setting)
+10.2 The Role of Conditional Structural Consistency
+The goal of conditional structural consistency is to improve the prediction gap among neighbor pixels, thus,
+enhancing the smoothness of the predictions. In addition, it helps to increase fairness among classes. It is
+because this loss helps to clean up the spurious or ambiguous predictions produced by the major classes around
+minor classes. Therefore, the loss alleviates the dominance of the major groups and improves the accuracy of the
+minor groups, thus, resulting in fairness that has also been further improved (as illustrated in Table 1 in the main
+paper).
+10.3 The Choice of Margin ∆
+We also perform an additional ablation study on the ADE20K (100-50) benchmark to investigate the impact of
+the delta. As shown in Table 9, the impact of ∆does not significantly influence the results due to the minor
+performance drop.
+∆ 0-100 101-150 all avg
+∆ = 5 43.04 23.84 36.68 40.23
+∆ = 10 43.40 24.04 36.99 40.45
+∆ = 15 42.89 23.92 36.61 40.26
+Table 9: The effectiveness of ∆
+10.4 The Performance Analysis of ADE20K, Cityscapes, and Pascal VOC
+We have observed the performance improvement of our approach on Pascal VOC is less significant than the
+ADE20K and Cityscapes because of the minor bias in Pascal VOC. In particular, the data distributions of these
+datasets are visualized in Figure 4 in the rebuttal file (the PDF file of the rebuttal is attached in Global Response).
+We calculated the entropy value of the data distributions that illustrate the balance level of the datasets (the
+higher value of entropy, the more balance the dataset as the data distribution tends to be more uniform). Then,
+based on the data distributions and entropy values, we observe the data distributions of ADE20K and Cityscapes
+suffer more bias than the Pascal VOC since the entropy value of Pascal VOC (H = 0.81) is higher than ADE20K
+(H = 0.69) and Cityscapes (H = 0.62). Thus, ADE20K and Cityscapes suffer severe fairness issues compared
+to Pascal VOC. Our approach aims to improve the fairness of the model. Therefore, on the more severe bias
+datasets (ADE20K and Cityscapes), our approach performs more significantly.
+15
+Figure 4: Data Distribution of ADE20K, Cityscapes, and Pascal VOC. The data distributions of
+ADE20K and Cityscapes suffer a more severe imbalance compared to Pascal VOC.
+10.5 Memory Efficiency
+We would like to highlight that storing prototypical vectors requires significantly less memory than using the
+additional teacher model as used in distillation approaches [ 12]. For example, in the ADE20K benchmark,
+storing DeepLab-V3 (151 classes) requires 58.664M parameters, while storing 152prototypical 2048 -D vectors
+(including the unknown cluster) only uses 0.311M parameters. In addition, the computation of loss with is
+cheaper than a forward pass of the entire network used in distillation. Therefore, in terms of computational cost
+and memory, our approach remains more efficient compared to knowledge distillation approaches.
+16

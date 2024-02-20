@@ -1,0 +1,12 @@
+{
+    "authorId": "1758714",
+    "url": "https://www.semanticscholar.org/author/1758714",
+    "name": "S. Fahlman"
+}
+
+{
+    "paperId": "13922d438c437cea443b6c4747c54a29a8bdd742",
+    "url": "https://www.semanticscholar.org/paper/13922d438c437cea443b6c4747c54a29a8bdd742",
+    "title": "Score: A Rule Engine for the Scone Knowledge Base System",
+    "year": 2023
+}

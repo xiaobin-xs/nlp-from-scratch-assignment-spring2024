@@ -1,0 +1,42 @@
+{
+    "authorId": "144987107",
+    "url": "https://www.semanticscholar.org/author/144987107",
+    "name": "Jamie Callan"
+}
+
+{
+    "paperId": "197d5fbc3764ff18186275545d0764d5b1c7659b",
+    "url": "https://www.semanticscholar.org/paper/197d5fbc3764ff18186275545d0764d5b1c7659b",
+    "title": "Conversational Search with Random Walks over Entity Graphs",
+    "year": 2023
+}
+{
+    "paperId": "1e0a4ff0c5d2d850ff5907e310ffcedc9cad9718",
+    "url": "https://www.semanticscholar.org/paper/1e0a4ff0c5d2d850ff5907e310ffcedc9cad9718",
+    "title": "KALE: Using a K-Sparse Projector for Lexical Expansion",
+    "year": 2023
+}
+{
+    "paperId": "6b7eefa15c0a461afeab4fa13cf862c5340fdc2a",
+    "url": "https://www.semanticscholar.org/paper/6b7eefa15c0a461afeab4fa13cf862c5340fdc2a",
+    "title": "CSurF: Sparse Lexical Retrieval through Contextualized Surface Forms",
+    "year": 2023
+}
+{
+    "paperId": "868e602f59e836c28534b888a6700429be75ea84",
+    "url": "https://www.semanticscholar.org/paper/868e602f59e836c28534b888a6700429be75ea84",
+    "title": "COILcr: Efficient Semantic Matching in Contextualized Exact Match Retrieval",
+    "year": 2023
+}
+{
+    "paperId": "88884b8806262a4095036041e3567d450dba39f7",
+    "url": "https://www.semanticscholar.org/paper/88884b8806262a4095036041e3567d450dba39f7",
+    "title": "Active Retrieval Augmented Generation",
+    "year": 2023
+}
+{
+    "paperId": "ac9ee72a5cd611e9143e385f668af662583721ee",
+    "url": "https://www.semanticscholar.org/paper/ac9ee72a5cd611e9143e385f668af662583721ee",
+    "title": "Multi-Objective Improvement of Android Applications",
+    "year": 2023
+}

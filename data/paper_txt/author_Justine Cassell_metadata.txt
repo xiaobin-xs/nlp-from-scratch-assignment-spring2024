@@ -1,0 +1,36 @@
+{
+    "authorId": "145431806",
+    "url": "https://www.semanticscholar.org/author/145431806",
+    "name": "Justine Cassell"
+}
+
+{
+    "paperId": "24bff26f19051b1413d1e343322c1ae4bba05428",
+    "url": "https://www.semanticscholar.org/paper/24bff26f19051b1413d1e343322c1ae4bba05428",
+    "title": "When to generate hedges in peer-tutoring interactions",
+    "year": 2023
+}
+{
+    "paperId": "2790a0e84aa0cc1c6db291fc85efe6c53c1d3ff0",
+    "url": "https://www.semanticscholar.org/paper/2790a0e84aa0cc1c6db291fc85efe6c53c1d3ff0",
+    "title": "Socially Interactive Agents as Peers Justine Cassell",
+    "year": 2023
+}
+{
+    "paperId": "74fedee9d809ec766a2089a89435fa7dd1346693",
+    "url": "https://www.semanticscholar.org/paper/74fedee9d809ec766a2089a89435fa7dd1346693",
+    "title": "How About Kind of Generating Hedges using End-to-End Neural Models?",
+    "year": 2023
+}
+{
+    "paperId": "a82f56482b9e63714ea0d1948ac3aa6edb092001",
+    "url": "https://www.semanticscholar.org/paper/a82f56482b9e63714ea0d1948ac3aa6edb092001",
+    "title": "Beyond Single-Mindedness: A Figure-Ground Reversal for the Cognitive Sciences",
+    "year": 2023
+}
+{
+    "paperId": "b3efaa75beada858414a5ba2346dec317203633c",
+    "url": "https://www.semanticscholar.org/paper/b3efaa75beada858414a5ba2346dec317203633c",
+    "title": "\"You might think about slightly revising the title\u201d: Identifying Hedges in Peer-tutoring Interactions",
+    "year": 2023
+}

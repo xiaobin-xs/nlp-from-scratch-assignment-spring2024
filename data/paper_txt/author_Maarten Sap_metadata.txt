@@ -1,0 +1,114 @@
+{
+    "authorId": "2729164",
+    "url": "https://www.semanticscholar.org/author/2729164",
+    "name": "Maarten Sap"
+}
+
+{
+    "paperId": "088a5fa00ed6c14351209da5f53e770b51fd2909",
+    "url": "https://www.semanticscholar.org/paper/088a5fa00ed6c14351209da5f53e770b51fd2909",
+    "title": "FANToM: A Benchmark for Stress-testing Machine Theory of Mind in Interactions",
+    "year": 2023
+}
+{
+    "paperId": "14ddefae2be4b5bb50b9fcb4a085e45fbecb5c5c",
+    "url": "https://www.semanticscholar.org/paper/14ddefae2be4b5bb50b9fcb4a085e45fbecb5c5c",
+    "title": "Modeling Empathic Similarity in Personal Narratives",
+    "year": 2023
+}
+{
+    "paperId": "185ace5661963e2e1eb998e739e4110272a6bb43",
+    "url": "https://www.semanticscholar.org/paper/185ace5661963e2e1eb998e739e4110272a6bb43",
+    "title": "COBRA Frames: Contextual Reasoning about Effects and Harms of Offensive Statements",
+    "year": 2023
+}
+{
+    "paperId": "27553f8bd9cbee90f6e65b9cdecadff0e7cc55ee",
+    "url": "https://www.semanticscholar.org/paper/27553f8bd9cbee90f6e65b9cdecadff0e7cc55ee",
+    "title": "Riveter: Measuring Power and Social Dynamics Between Entities",
+    "year": 2023
+}
+{
+    "paperId": "57d65e85c62aef04dfb2a48380e415fbb790e5ee",
+    "url": "https://www.semanticscholar.org/paper/57d65e85c62aef04dfb2a48380e415fbb790e5ee",
+    "title": "Don't Take This Out of Context!: On the Need for Contextual Models and Evaluations for Stylistic Rewriting",
+    "year": 2023
+}
+{
+    "paperId": "7d494710c0ae6b7608448ad22b27705a52271a9e",
+    "url": "https://www.semanticscholar.org/paper/7d494710c0ae6b7608448ad22b27705a52271a9e",
+    "title": "Beyond Denouncing Hate: Strategies for Countering Implied Biases and Stereotypes in Language",
+    "year": 2023
+}
+{
+    "paperId": "85a5ffc509fa50c96b415e09ae87fb6e5f435b37",
+    "url": "https://www.semanticscholar.org/paper/85a5ffc509fa50c96b415e09ae87fb6e5f435b37",
+    "title": "BiasX: \"Thinking Slow\" in Toxic Content Moderation with Explanations of Implied Social Biases",
+    "year": 2023
+}
+{
+    "paperId": "89512c767e0ca0fe64d12a436c64f15dffdad1e0",
+    "url": "https://www.semanticscholar.org/paper/89512c767e0ca0fe64d12a436c64f15dffdad1e0",
+    "title": "Can LLMs Keep a Secret? Testing Privacy Implications of Language Models via Contextual Integrity Theory",
+    "year": 2023
+}
+{
+    "paperId": "9d2dc57903e99f33b9cf727c3903718751d82663",
+    "url": "https://www.semanticscholar.org/paper/9d2dc57903e99f33b9cf727c3903718751d82663",
+    "title": "Improving Language Models with Advantage-based Offline Policy Gradients",
+    "year": 2023
+}
+{
+    "paperId": "a5731b32060909bfc8848fa5f7e1e14ca3b53240",
+    "url": "https://www.semanticscholar.org/paper/a5731b32060909bfc8848fa5f7e1e14ca3b53240",
+    "title": "From Dogwhistles to Bullhorns: Unveiling Coded Rhetoric with Language Models",
+    "year": 2023
+}
+{
+    "paperId": "a66ff335f5934fe7503a99d3eb3abed493994df1",
+    "url": "https://www.semanticscholar.org/paper/a66ff335f5934fe7503a99d3eb3abed493994df1",
+    "title": "NLPositionality: Characterizing Design Biases of Datasets and Models",
+    "year": 2023
+}
+{
+    "paperId": "a89c30ceca55783a1b2ff843eb6a4793e4a54b66",
+    "url": "https://www.semanticscholar.org/paper/a89c30ceca55783a1b2ff843eb6a4793e4a54b66",
+    "title": "Don't Take This Out of Context! On the Need for Contextual Models and Evaluations for Stylistic Rewriting",
+    "year": 2023
+}
+{
+    "paperId": "b00979ffda641f6902e2f0985c38d0065b7b4fb7",
+    "url": "https://www.semanticscholar.org/paper/b00979ffda641f6902e2f0985c38d0065b7b4fb7",
+    "title": "Where Do People Tell Stories Online? Story Detection Across Online Communities",
+    "year": 2023
+}
+{
+    "paperId": "c2850c897a179c07a25023029306600e0ea82f75",
+    "url": "https://www.semanticscholar.org/paper/c2850c897a179c07a25023029306600e0ea82f75",
+    "title": "Queer In AI: A Case Study in Community-Led Participatory AI",
+    "year": 2023
+}
+{
+    "paperId": "d655f652d02251b45db43181c5e3c73dfc59cd51",
+    "url": "https://www.semanticscholar.org/paper/d655f652d02251b45db43181c5e3c73dfc59cd51",
+    "title": "Value Kaleidoscope: Engaging AI with Pluralistic Human Values, Rights, and Duties",
+    "year": 2023
+}
+{
+    "paperId": "ddcd2bcc809bd0c2755a4a9487473d61ac327c50",
+    "url": "https://www.semanticscholar.org/paper/ddcd2bcc809bd0c2755a4a9487473d61ac327c50",
+    "title": "Clever Hans or Neural Theory of Mind? Stress Testing Social Reasoning in Large Language Models",
+    "year": 2023
+}
+{
+    "paperId": "ea0585ed23e25d5f8682eb91f20c6ddbeb6a27b4",
+    "url": "https://www.semanticscholar.org/paper/ea0585ed23e25d5f8682eb91f20c6ddbeb6a27b4",
+    "title": "Towards Countering Essentialism through Social Bias Reasoning",
+    "year": 2023
+}
+{
+    "paperId": "f6e893b3e2ee7a62c2fe8a3b0e33920c3e596969",
+    "url": "https://www.semanticscholar.org/paper/f6e893b3e2ee7a62c2fe8a3b0e33920c3e596969",
+    "title": "SOTOPIA: Interactive Evaluation for Social Intelligence in Language Agents",
+    "year": 2023
+}

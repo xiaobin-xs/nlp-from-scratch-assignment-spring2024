@@ -1,0 +1,42 @@
+{
+    "authorId": "1783635",
+    "url": "https://www.semanticscholar.org/author/1783635",
+    "name": "Alexander I. Rudnicky"
+}
+
+{
+    "paperId": "06a8f2e3c4266196b008851f1ec7ef9f340809da",
+    "url": "https://www.semanticscholar.org/paper/06a8f2e3c4266196b008851f1ec7ef9f340809da",
+    "title": "Advancing Regular Language Reasoning in Linear Recurrent Neural Networks",
+    "year": 2023
+}
+{
+    "paperId": "2670612b5e11297cd9b98f4d7ff796725f77fe35",
+    "url": "https://www.semanticscholar.org/paper/2670612b5e11297cd9b98f4d7ff796725f77fe35",
+    "title": "Structured Dialogue Discourse Parsing",
+    "year": 2023
+}
+{
+    "paperId": "4b8d3ede673ddeab9dfb5184da6b748d7a526754",
+    "url": "https://www.semanticscholar.org/paper/4b8d3ede673ddeab9dfb5184da6b748d7a526754",
+    "title": "A Vector Quantized Approach for Text to Speech Synthesis on Real-World Spontaneous Speech",
+    "year": 2023
+}
+{
+    "paperId": "56f04fea0014641cbf280dd382aad867265d8866",
+    "url": "https://www.semanticscholar.org/paper/56f04fea0014641cbf280dd382aad867265d8866",
+    "title": "Tartan: an LLM Driven SocialBot",
+    "year": 2023
+}
+{
+    "paperId": "9799c17fd287bb9e8d231fe032c6dbf9c0c9d675",
+    "url": "https://www.semanticscholar.org/paper/9799c17fd287bb9e8d231fe032c6dbf9c0c9d675",
+    "title": "Overview of Robust and Multilingual Automatic Evaluation Metrics\n\nfor Open-Domain Dialogue Systems at DSTC 11 Track 4",
+    "year": 2023
+}
+{
+    "paperId": "f743324682d5d50db9b114fa60b908f09c10c9a0",
+    "url": "https://www.semanticscholar.org/paper/f743324682d5d50db9b114fa60b908f09c10c9a0",
+    "title": "Learning to Ask Questions for Zero-shot Dialogue State Tracking",
+    "year": 2023
+}

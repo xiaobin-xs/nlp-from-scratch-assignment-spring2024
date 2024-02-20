@@ -1,0 +1,42 @@
+{
+    "authorId": "1724972",
+    "url": "https://www.semanticscholar.org/author/1724972",
+    "name": "A. Waibel"
+}
+
+{
+    "paperId": "100eb82862a66e264686d015934c97c54bdadb4f",
+    "url": "https://www.semanticscholar.org/paper/100eb82862a66e264686d015934c97c54bdadb4f",
+    "title": "SYNTACC : Synthesizing Multi-Accent Speech By Weight Factorization",
+    "year": 2023
+}
+{
+    "paperId": "610d9958390ab83515d0d81e19f8e5264faf8e9b",
+    "url": "https://www.semanticscholar.org/paper/610d9958390ab83515d0d81e19f8e5264faf8e9b",
+    "title": "KIT\u2019s Multilingual Speech Translation System for IWSLT 2023",
+    "year": 2023
+}
+{
+    "paperId": "7e13fcb7b7bae202fb9087e87abaa71a4b19a3e3",
+    "url": "https://www.semanticscholar.org/paper/7e13fcb7b7bae202fb9087e87abaa71a4b19a3e3",
+    "title": "Convoifilter: A case study of doing cocktail party speech recognition",
+    "year": 2023
+}
+{
+    "paperId": "d24d60719e90e69749a75c160cb760d1d9fca44a",
+    "url": "https://www.semanticscholar.org/paper/d24d60719e90e69749a75c160cb760d1d9fca44a",
+    "title": "Incremental Blockwise Beam Search for Simultaneous Speech Translation with Controllable Quality-Latency Tradeoff",
+    "year": 2023
+}
+{
+    "paperId": "f524f119afc13cc07ca15998c10b9509e9e9b0b5",
+    "url": "https://www.semanticscholar.org/paper/f524f119afc13cc07ca15998c10b9509e9e9b0b5",
+    "title": "End-to-End Evaluation for Low-Latency Simultaneous Speech Translation",
+    "year": 2023
+}
+{
+    "paperId": "f7e995c3cae465963ecaa8c9b4ce8b9b4323a71b",
+    "url": "https://www.semanticscholar.org/paper/f7e995c3cae465963ecaa8c9b4ce8b9b4323a71b",
+    "title": "FINDINGS OF THE IWSLT 2023 EVALUATION CAMPAIGN",
+    "year": 2023
+}

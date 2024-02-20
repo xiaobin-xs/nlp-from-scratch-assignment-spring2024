@@ -1,0 +1,935 @@
+arXiv:2301.02998v1  [cs.IR]  8 Jan 2023InPars-Light: Cost-EﬀectiveUnsupervised Training ofEﬀi cient
+Rankers
+LeonidBoytsov∗
+leo@boytsov.info
+Amazon AWSAILabs
+Pittsburgh,USAPrekshaPatel†
+VivekSourabh†
+Riddhi Nisar†
+Sayani Kundu†
+Ramya Ramanathan†
+Carnegie MellonUniversity
+Pittsburgh,USAEric Nyberg
+ehn@cs.cmu.edu
+Carnegie MellonUniversity
+Pittsburgh, USA
+ABSTRACT
+WecarriedoutareproducibilitystudyofInParsrecipeforu nsuper-
+vised training of neural rankers [4].As a by-productof this study,
+wedevelopedasimple-yet-eﬀective modiﬁcationofInPars, which
+wecalledInPars-light.UnlikeInPars,InPars-lightuseso nlyafreely
+available language model BLOOM and 7x-100x smaller ranking
+models. On all ﬁve English retrieval collections (used in th e origi-
+nal InPars study) we obtained substantial (7-30%) andstatistically
+signiﬁcantimprovementsoverBM25innDCGorMRRusingonlya
+30Mparametersix-layerMiniLMranker.Incontrast,intheI nPars
+study only a 100x larger MonoT5-3B model consistently outpe r-
+formedBM25,whereas theirsmallerMonoT5-220Mmodel(whic h
+isstill7xlargerthanourMiniLMranker),outperformedBM2 5only
+on MS MARCO and TREC DL 2020. In a purely unsupervised set-
+ting, our435MparameterDeBERTAv3ranker was roughlyatpar
+withthe7xlargerMonoT5-3B:Infact,onthreeoutofﬁvedata sets,
+it slightly outperformed MonoT5-3B. Finally, these good re sults
+were achieved by re-ranking only 100 candidate documents co m-
+paredto1000usedinInPars.WebelievethatInPars-lightis theﬁrst
+trulycost-eﬀectiveprompt-basedunsupervisedrecipetot rainand
+deployneural ranking modelsthatoutperformBM25.
+CCS CONCEPTS
+•Information systems →Retrievalmodelsand ranking .
+KEYWORDS
+unsupervised training, neural information retrieval, ran king
+1 INTRODUCTION
+Training eﬀective neural IR models often requires abundant in-
+domaintrainingdata,whichcanbequitecostlytoobtain:Judging
+a single document-query pair takes at least one minute on ave r-
+age [13, 19] and a single query typically needs at least 50 of s uch
+judgements [7].1In that, models trained on out-of-domain data
+and/or ﬁne-tuned using a small number of in-domain queries a re
+oftenworseorperformonlymarginallybetter[31,47]thans imple
+non-neural BM25rankers.
+∗Work done outsideof the scope of employment.
+†Equal contribution: Work done while studying at CarnegieMe llon University.
+1Robust04andTREC-COVIDcollectionsusedinourstudyhavea bout1Kjudgements
+per query.A recent trend to deal with this problem consists in generat-
+ingsynthetic in-domain training data via prompting of Large Lan-
+guage Models (LLMs) [4, 9, 43], However, proposed solutions are
+notcosteﬀective.Furthermore,becauseresearchersusedp rimarily
+proprietary LLMs—whose training procedure was not control led
+bythescientiﬁc community—orinstruction-ﬁnetunedLLMst here
+isa questionofwhether informationretrieval capabilitie s emerge,
+indeed, from a large scale training with a next-token-predi ction
+objective.
+To enable a practical solution for a large scale LLM-based ge n-
+eration of training data for IR systems, as well as to answer t his
+key scientiﬁc question, we carry out a reproducibilitystud y of In-
+Pars [4] using medium-size (at most 7B parameters) open-sou rce
+LLMs [44, 50]. In addition, our study employs more practical and
+morecommonlyusedBERT-basedcross-encodermodelshaving as
+little as 30 million parameters. In contrast, the original s tudy em-
+ployed large MonoT5 rankers of which only MonoT5-3B ranker
+(with 3billionparameters) performedwell[35].
+We discover that in a purely unsupervised setting we can re-
+placeanimpracticalthree-billionparameterMonoT5-3Bmo del[35]
+witha7xsmallerbi-directionalBERTmodelwhileobtaining com-
+parable results. Moreover, unlike the original InPars stud y where
+a 220MmillionMonoT5 modelfails tooutperformBM25onthree
+out of ﬁve datasets, we show that a much smaller MiniLM model
+withonly30millionparameters[53]canalwaysoutperformB M25
+by7-30%in key metrics (nDCG@K orMRR).
+In that, obtaining these good results required re-ranking o nly
+100candidatedocumentscomparedto1000intheInParsstudy [4].
+Compared to InPars, our recipe—which we call InPars-Light —is
+substantiallymorecosteﬀectiveinthreedimensions:(a)s ynthetic
+datageneration, (b) modeltraining, and (c) inference.
+Inourstudywe ask thefollowingresearch questions:
+•RQ1:Doinformationretrieval(IR)capabilitiesemergemerely
+fromalarge-scalenext-token-predictiontraining?Altho ugh,
+prior studies (see § 2) provide limited evidence to answer
+thisquestionpositively,webelievedthatadditionalevid enced
+was required.
+•RQ2:Areopen-sourcemodelsmoreorlessusefulforgener-
+ation of synthetic IR training data compared to the similar-
+sizeGPT-3 model?
+•RQ3:Doesconsistency checkingproposedbyDai etal.[9],
+indeed, beneﬁcial. Is it applicable in the re-ranking setti ng
+(as opposedtousingit withretrievers as in[9])?
+•RQ4:Can we match performance of a large MonoT5-3B
+ranker using muchsmaller BERTmodels?
+•RQ5:In particular, can we substantially outperform BM25
+usingasmallandfastrankersuchasaMiniLMrankerwith
+merely 30millionparameters?
+We obtainthefollowingresults:
+•RQ1&RQ2 :Notonlyopen-sourceLLMsBLOOM[44]and
+GPT-J [50] trained in a fully unsupervised fashion can be
+promptedtogenerate eﬀective synthetic queries, butusing
+them leads to consistent improvement compared to GPT-3
+Curiemodel[6].Atthesametime,weestimatethatgenera-
+tionofsyntheticqueriesusingopen-sourcemodelsisabout
+10x cheaper. Note that in the concurrent work, Jeronymo
+et al. [18] also obtained good results using an open-source
+generation models, but they do not have an ablation that
+focuses speciﬁcally on replacing GPT-3 Curie with open-
+sourcemodels.
+•RQ3: Although we conﬁrm the eﬀectiveness of the InPars
+trainingrecipe,ﬁne-tuningthemodelusingconsistency-c hecked
+dataalways produceda bettermodel;
+•RQ4 & RQ5 : We conﬁrm the ﬁnding of Bonifacio et al.[4]
+that the InPars-recipe (even if combined with consistency
+checking) does not work well for small models. We never-
+theless discover that a combination of pre-training on all
+queries(from alldatasets)andin-domainﬁnetuningonconsistency-
+checked data produces a small MiniLM-30M model that al-
+waysoutperformedBM25by7-30%inkeymetrics(nDCG@k
+orMRR);
+2 RELATED WORK
+Neural informationretrieval has becomeabusyresearch are a. An
+overviewoftherecentapproachesandtrendsweaddressther eader
+tothesurveybyLinetal.[24].Likewise,promptingmethods have
+gained quite a bit of popularityin NLP (see, e.g., [26] for a r ecent
+survey), but they were scarcely used in IR: We know only three
+papers directlyrelated toourwork.
+Sachan et al. [43] were probably the ﬁrst to demonstrate eﬀec -
+tiveness ofLLMs inthedocumentranking task.Intheirappro ach,
+which they named UPR, they concatenate a document, a special
+promptsuchas"pleasewriteaquestionforthisdocument"an dthe
+queryitself.Then, UPR uses a pre-trained LLM modeltocompu te
+thelikelihoodofgeneratingthequerygiventhepassagetex t.How-
+ever,theyevaluateonlyonQA(butnotIR)datasetsandtheir main
+results are for an impractical three-billion parameter instruction-
+ﬁnetuned model,whichisusedessentiallyasare-ranker(inazero-
+shotsceanrio). BecausethisLLM was instructionﬁne-tuned these
+experiments do not permit deﬁnitive conclusions about RQ1. Al-
+thoughtheyalsodemonstratedtheeﬀectiveness ofastandar d(i.e.,
+just next-token-prediction training) 2.7B GPT-Neo LLM [3] , this
+was done only for a single QA dataset, namely Natural Questio ns
+[19].
+The smallest model that they used had 250 million parameters
+(comparedtoour30-millionMiniLMmodel):Theevaluatedit onlyon the Natural Questions [19] collection, where it outperfo rmed
+BM25onlybyabout10%.
+Bonifacio et al. [4] proposed an InParsmethod, which relied
+on few-shot prompting. The study had a convincing evaluatio n
+on ﬁve datasets where only one dataset, namely NQ, is a typica l
+QA collection. Unlike Sachan et al. [43] Bonifacio et al. use d few-
+shotpromptingtodistillanLLM intosmallerrankers.Tothi send,
+few-shot prompting was used to generate synthetic queries f or
+randomlysampleddocuments.For each collectionthey gener ated
+100Ksynthetic queries and retained only10Kwith thehighes t av-
+eragelog-probabilities.
+However, they obtained good results only for a huge MonoT5-
+3Bparametermodel.Moreover,theusedaproprietaryGPT-3m odel,
+whichcanbequitecostlytouse.Inafollow-upstudy,whichi scon-
+currentwiththiswork,Jeronymoet.al[18]introducedamod iﬁca-
+tion of InPars—dubbed InPars v2—where GPT-3 Curie [6] was re -
+placedwithanopen-sourcemodelGPT-J[50].However,thism odel
+swap is “entangled” with at least two other modiﬁcations in t he
+training recipe:
+•AnewﬁlteringconditionthatemploysanMSMARCOtrained
+MonoT5-3Bmodel.
+•The vanilla prompt (which was used in InPars and our ex-
+periments) was replaced with the Guided by Bad Question
+prompt(introducedin[4]).
+Thus,itisnotpossibletofairlyassesstheimpactofreplac ingGPT-
+3Curiewith GPT-J[50].
+An important disadvantage of InPars v2 recipe is that it is st ill
+not cost-eﬀect as authors use a huge MonoT5-3B model. The ﬁl-
+teringcheckusesaMonoT5-3BmodeltrainedonMSMARCOcor-
+pus, which is not always possible in a commercial setting due to
+licensing issues (MS MARCO is a research-only collection). More-
+over, the MonoT5-3B model trained on MS MARCO—albeit being
+impractical—hasexcellentzero-shottransferability:Fi ne-tuningMonoT5-
+3BmodeltrainedonMSMARCOwithInParsv2onlyimprovesthe
+average BEIRscoreonlyby2.4%:from 0.538to0.551.
+Dai et al. [9] used an InPars-like method called Promptagato r
+andcreatedsynthetictrainingdatausingahugeproprietar yFLAN
+model with 137 billion parameters. Although they used modes tly
+sizedmodels with110millionparameters, Dai et al.[9] gene rated
+as many as million synthetic training queries for each datas et. In
+contrast,InParsusedonly100Kqueriesperdataset,whichi smuch
+less expensive (see a discussionin§5.2).
+Importantly,Dai etal[9]proposedtouseconsistencycheck ing
+[1] toﬁlter-outpotentiallyspuriousqueries, which was no t previ-
+ouslydoneintheIRcontext.Weuseavariantofthisprocedur eas
+well.
+In addition, to prompt-based generation of training data, t here
+aremultipleproposalsforself-supervisedadaptationofo ut-of-domain
+models using generative pseudo-labeling [22, 38, 51]. To th is end,
+questionsorqueriesaregeneratedusingapretrainedseq2s eqmodel
+(though an LLMs can be used as well) and negative examples are
+mined using either BM25 or an out-of-domain retriever or ran ker.
+Unsuperviseddomainadaptationiscomplementarytotheapp roaches
+considered inthis work.
+The disadvantage of such approaches is that they may need a
+reasonably eﬀective out-of-domain model. However, such mo dels
+Table 1: The formatof thevanilla 3-shotInPars prompt
+Example1 :
+Document :<text oftheﬁrst example document>
+RelevantQuery :<textof theﬁrst relevant query>
+Example2:
+Document: <textof thesecond example document>
+RelevantQuery: <text ofthesecond relevant query>
+Example3:
+Document: <textof thethird example document>
+RelevantQuery: <text ofthethird relevant query>
+Example4:
+Document: <realin-domain documenttext placeholder >
+RelevantQuery:
+Notes:Togenerateasyntheticquery,weﬁrstinsertatextofa
+chosen real in-domain document after the preﬁx “Document:”
+inexamplefour.Then, we “ask” anLLM togenerate a comple-
+tion.
+canbehardtoobtainduetolicensingissuesandpoortransfe rabil-
+ityfromotherdomains.Forexample,MSMARCOmodelshaverea -
+sonabletransferability[31,47],butMSMARCOcannotbeuse dto
+trainmodelsinacommercialcontext(withoutextralicensi ngfrom
+Microsoft).Incontrast,theNaturalQuestions(NQ) collec tion[19]
+has a permissive license2, but models trained on NQ can fail to
+transfer todatasetsthatare notbased onWikipedia [31].
+Another potentially complementary approach is LLM-assist ed
+query expansion. In particular Gao et al. prompt a 175B Instr uct-
+GPT model to generate a hypothetical answer to a question [12 ].
+Thenthisanswerisencodedandtogetherwiththeencodingof the
+original question they are compared with encoded documents . In
+a purely unsupervised setting—-using the Contriever bi-en coder
+training without supervision [17]—they were able to outper form
+BM25byas much as 20%.
+Despitestrongresults,aseriousdisadvantageofthisappr oachis
+itsdependenceonthe externalproprietary modelthatiscostlyand
+haslonggenerationtimes.Althoughwecouldnotﬁndanyreli able
+benchmarks, a folkloreopinion is that generation latency i s a few
+seconds.Toverifythis,weusedtheOpenAIplayground3togener-
+ateafewhypotheticalanswers usingthepromptinGaoetal.[ 12]
+and a sample of TREC DL 2020queries. With a maximum genera-
+tion length of 256 tokens (a default setting), the latency ex ceeded
+fourseconds.
+Quite interestingly, Gao et al. [12] tried to replace a 175B G PT-
+3 model with smaller open-source models on TREC DL 2019 and
+TRECDL2020(seeTable4intheirstudy),butfailedtoobtain con-
+sistent and substantial gains with models having fewer than 50B
+parameters.3 METHODS
+3.1 Information Retrieval Pipeline
+We use a variant of a classic ﬁlter-and-reﬁne multi-stage re trieval
+pipeline [30, 36, 52], where top- /u1D458candidate documents retrieved
+by a fast BM25 ranker [40] are re-ranked using a slower neural
+re-ranker. For collections where document have titles, the BM25
+retriever itself has two stages: In the ﬁrst stage we retriev e 1K
+documents using a Lucene index built over the concatenation of
+all document ﬁelds. In the second stage, these candidates ar e re-
+ranked using equallyweighted BM25 scores computedseparat ely
+foreach ﬁeld.
+Our neural rankers are cross-encoder models [24, 34], which
+operate on queries concatenated with documents. Concatena ted
+texts are passed to a backbone bi-directional encoder-only Trans-
+former model [10] equipped with an additional ranking head ( a
+fully-connected layer), which produces a relevance score ( using
+the last-layer contextualized embedding of a CLS-token [34 ]). In
+contrast, authors of InPars [4] use a T5 [37] cross-encoding re-
+ranker[35],whichisa fullTransformermodel[48].Itusesboththe
+encoder and the decoder. The T5 ranking Transformer is train ed
+togenerate labels “true”and “false”, which represent rele vant and
+non-relevant document-querypairs,respectively.
+Backbone Transformer models can diﬀer in the number of pa-
+rametersandpre-trainingapproaches(includingpre-trai ningdatasets).
+Inthispaperweevaluatedthefollowingmodels,allofwhich were
+pre-trainedintheself-supervisedfashionwithoutusingI R-speciﬁc
+pre-training orsupervision withIR datasets:
+•A six-layer MiniLM-L6 model [53]. It is a tiny (by modern
+standards)30-millionparametermodel,whichwasdistille d
+[15,21,41]fromRoberta[27].WedownloadmodelL6xH384
+MiniLMv2 from theMicrosoftwebsite.4
+•A 24-layer (large) ERNIE v2 model from the HuggingFace
+hub[46]5. Ithas 335millionparameters.
+•A 24-layer (large) DeBERTA v3 model with 435 million pa-
+rameters [14]from theHuggingFace hub6.
+WechooseERNIEv2andDeBERTAv3because(fromourpriorex-
+perience)weknewtheyhadstrongperformanceontheMSMARCO
+dataset(betterthanBERTlarge[10]andseveralothermodel sthat
+wetestedinthepast).Bothmodelsperformedcomparablywel l(see
+Table 4) in the preliminary experiments, but we chose DeBERT A
+for main experiments because it is more eﬀective on MS MARCO
+and TREC-DL2020.
+However,bothofthesemodelsarequitelargeandweaspiredt o
+show that an InPars-like training recipe can be used with sma ller
+modelstoo.Incontrast,Bonifacioet al.[4]were abletosho wthat
+onlyabigT5-3Bmodelwith3BparametersoutperformedBM25on
+all ﬁve datasets, while the smaller (but still quite large) T 5-200M
+ranker with “merely” 200 million parameters did not outperf orm
+BM25onthreedatasets(itonlyworkedonMSMARCOandTREC-
+DL2020).
+2https://github.com/google-research-datasets/natural -questions/blob/master/LICENSE
+3https://beta.openai.com/playground
+4https://github.com/microsoft/unilm/tree/master/mini lm
+5https://huggingface.co/nghuyong/ernie-2.0-large-en
+6https://huggingface.co/microsoft/deberta-v3-large
+3.2 Generation ofSyntheticTraining Data
+In-domaintrainingdataisgeneratedusingawell-knownfew -shot
+prompting approach introduced by Brown et al. [6]. In the IR d o-
+main, it was ﬁrst used byBonifacio et al. [4] who re-branded i t as
+InPars. Thekey idea is to “prompt”a large language modelwith a
+few-shottextualdemonstrationofknownrelevantquery-do cument
+pairs.Toproduceanovelquery-documentpair,Bonifacioet al.ap-
+pendanin-domaindocumenttothepromptand“ask”themodelt o
+completethetext.Weusetheso-calledvanillaprompt(seeT able1)
+created by Bonifacio et al. [4]. Like in the InPars study, we g ener-
+ated 100K queries for each dataset with exception of MS MARCO
+and TRECDL. Becausebothdatasets usethesame set ofpassage s
+they share thesameset of 100Kgenerated queries.
+Repeating this procedure for many in-domain documents pro-
+ducesalargetrainingset,butitcanbequiteimperfect:Wec arried
+out spot-checking and found quite a few queries that were spu ri-
+ous or only tangentially relevant to the passage from which t hey
+were generated.
+Manyspuriousqueriescanbeﬁlteredoutautomatically.Tot his
+end, in InPars Bonifacio et al. [4] used only 10% of the querie s
+withthehighestlog-probabilities(averagedoverqueryto kens).In
+Promptagator Dai et al. [9] introduced a diﬀerent ﬁltering p roce-
+dure, which was a variant of consistency checking [1]. Dai et al.
+ﬁrsttrainedaretrievermodelusingallthegeneratedqueri es.Then,
+foreachquerytheyretrievedasetofdocuments.Thequerypa ssed
+the consistency check if theﬁrst retrieved document was the doc-
+ument from which thequerywasgenerated.
+Dai et al. [9] used consistency checking with bi-encoding re -
+trieval models, but it is applicable to cross-encoding re-r anking
+models as well. Another straightforward modiﬁcation of thi s ap-
+proach is to check if a generated document is present in a set o f
+top-/u1D458(/u1D458>1)candidateswiththehighestrelevancescores(ascom-
+putedbythere-ranking orretrieval model).
+3.3 InPars-Light Training Recipe
+The InPars-Light is a modiﬁcation of the original InPars, bu t it is
+substantiallymorecosteﬀectiveforgenerationofsynthet icqueries,
+training themodels,andinference. InPars-Light hasthefo llowing
+main “ingredients”:
+•Using open-sourcemodelsinstead of GPT-3;
+•Using much smallerranking models;
+•Fine-tuning modelsonconsistency-checked training data;
+•Optionalpre-trainingofmodelsusing allgeneratedqueries
+fromallcollections.
+•Re-ranking only100candidatedocumentsinstead of1000;
+To obtain consistency-checked queries for a given dataset, a
+model trained on InPars-generated queries (for this datase t) was
+used to re-rank outputof alloriginal queries (for a given dataset).
+Then, all the queries where the query-generating-document did
+notappear among top- /u1D458scored documents was discarded. In our
+study, we experimented with /u1D458from one to three (but onlyon
+MS MARCO).7Although /u1D458=1 worked pretty well, using /u1D458=3
+lead to a small boost in accuracy. Consistency-checking was car-
+riedoutusingDeBERTA-v3-435M[14].Wewanttoemphasizeth at
+7We did not want to optimize this parameter for all collection s and, thus, to commit
+asinof tuning hyper-parameterson the complete test set.consistency-checked training data was used in addition to origi-
+nalInPars-generated data(butnotinstead),namely, toﬁne -tune a
+modelinitially trained onInPars generated data.
+Also, quite interestingly, a set of consistency-checked qu eries
+had only a modest (about 20-30%) overlap with the set of queri es
+thatwereselectedaccordingtotheiraveragelog-probabil ities.Thus,
+consistency-checking increased the amount of available tr aining
+data.Itmightseemappealingtoachievethesameobjectiveb ysim-
+ply picking a larger number of queries (with highest average log-
+probabilities). However, preliminary experiments on MS MA RCO
+showed that a naive increase of the number of queries degrade d
+eﬀectiveness (which is consistent withtheInPars study[4] ).
+Although, the original InPars recipe with open-source mode ls
+and consistency checking allowed us to train strong DeBERTA -
+v3-435M models, performance of MiniLM models was lackluste r
+(roughly atBM25level forallcollections).
+Becausebiggermodelsperformedquitewell,itmaybepossib le
+todistill[15,21,41]theirparametersintoamuchsmallerM iniLM-
+30Mmodel.DistillationisknowntobesuccessfulintheIRdo main
+[16, 25]. However, it failed in our case due to overﬁtting. We left
+investigation ofthefailurereasons forthefutureand used thefol-
+lowingworkaround:
+•First wecarriedoutan all-domain pre-training withoutany
+ﬁltering(i.e., using allqueries from allcollections);
+•Then, we ﬁne-tuned all-domain pre-trained models on the
+consistency-checked in-domain data.
+3.4 Miscellaneous
+Experiments were carried out using the framework FlexNeuAR T
+[5],which provided supportfor basic indexing, retrieval, and neu-
+ral ranking. The neural models are implemented using PyTorc h
+andHuggingface[54].ThemodelsweretrainedusinganInfoN CE
+loss[20].Inasingletrainingepoch,weselectedrandomlyo nepair
+of positive and three negative examples per query (negative s are
+sampled from 1000 documents with highest BM25 scores). Note
+that, however, that during inference we re-ranked only 100 d ocu-
+ments.Anumberofnegatives wasnottuned:Weusedasmuchas
+we can whileensuring we do not runoutof GPUmemory during
+training onanycollection.
+We used an AdamW [28] optimizer with a small weight decay
+(10−7),awarm-upschedule,andabatchsizeof16.8Weuseddiﬀer-
+entbaseratesforthefully-connectedpredictionhead(2 ·10−4)and
+for the main Transformer layers (2 ·10−5). Also note that the loss
+reduction mode was “sum”: To use this recipe with the reducti on
+mode“mean”thelearningratesneedtobemultipliedbytheba tch
+size.
+Wetrainedeachmodelusingthreeseedsandreportedthe aver-
+age results (unless speciﬁed otherwise). To computestatistical sig-
+niﬁcance,weﬁrstobtainedan“average” runwhereforeachqu ery
+we averaged query-speciﬁc metric values over three seeds. N ote
+that we computeexactly the same metric values as in [4]. For s ta-
+tistical signiﬁcance testing we used a paired two-sided t-t est. For
+querysetswithalargenumberofqueries(nameMSMARCOdevel -
+opmentsetandBEIRNaturalQuestions)weusedalowerthresh old
+8The learning rate grows linearly from zero for 20% of the step s until it reaches the
+baselearning rate[32,45]and then goes backto zero(also li nearly).
+of0.01.Forsmallquerysets(Robust04andTREC-COVID),the sta-
+tistical signiﬁcance thresholdwas set to0.05.
+We implemented ourquery generation moduleusing theAuto-
+ModelForCasualLMinterfacefromHuggingFace. Weusedathr ee-
+shot vanilla prompt template used by [4] (also shown in Table
+1). Theoutputwas generated via greedydecoding.Themaximu m
+number ofnew tokens generated for each examplewas set to32.
+4 DATASETS
+Because we aimed to reproducethemain results of InPars [4], we
+used exactly the same set of queries and datasets, which are d e-
+scribed below. Except MS MARCO (which was processed directl y
+usingFlexNeuART[5]scripts),datasetswereingested with ahelp
+of theIRdatasets packages [29].
+Some of the collections below have multiple text ﬁelds, whic h
+wereuseddiﬀerentlybyaBM25andneuralranker.Allcollect ions
+except Robust04 have exactly one query ﬁeld. Robust04 queri es
+have the following parts: title, description, and narrativ e. For the
+purpose of BM25 retrieval and ranker, we use only the title ﬁe ld,
+buttheneuralrankerisusedthedescriptionﬁeld(whichisc onsis-
+tent with [4]).Thenarrative ﬁeldis not used.
+Twocollectionshavedocumentswithboththetitleandthema in
+body text ﬁelds. The neural rankers operate on concatenatio n of
+these ﬁelds. If this concatenation is longer than 477 BERT to kens,
+it is truncated (queries longer than 32 BERT tokens are trunc ated
+aswell).ForBM25scoring,weindextheconcatenatedﬁeldsa swell
+(inLucene).However, afterretrieving 1000candidates,we re-rank
+themusingthesumofBM25scorescomputedforthetitleandth e
+main bodytextﬁelds separately(using FlexNeuART [5]).
+Synthetically Generated Training Queries. For each of the
+datasets, Bonifacio et al. [4] provided both the GPT-3-gene rated
+queries (using GPT-3 Curie model) and the documents that are
+usedtogeneratethequeries.Thispermitsanapples-to-app lescom-
+parisonofthequalityoftrainingdatageneratedusingGPT- 3Curie
+with the quality of synthetic training data generated using open-
+source models GPT-J [50] and BLOOM [44]. According to the es-
+timates of Bonifacio et al. [4],the Curiemodelhas 6B parame ters,
+whichisclosetotheestimatemadebybyGaofromEleutherAI[ 11].
+Thus,weusedGPT-J[50]andBLOOM[44]modelswith6and7bil-
+lionparameters,respectively.Althoughotheropen-sourc emodels
+canpotentiallybeused,generationofsyntheticqueriesis quiteex-
+pensive and exploring other open-sourceoptions is left for future
+work.
+MS MARCO sparse and TREC DL 2020. MS MARCO is col-
+lection of 8.8M passages extracted from approximately 3.6M Web
+documents,whichwasderivedfromtheMSMARCOreadingcom-
+prehension dataset [2, 8]. It “ships“ with more than half a mi llion
+of question-like queries sampled from the Bing search engin e log
+with subsequent ﬁltering. The queries are not necessarily p roper
+English questions, e.g., “lyme disease symptoms mood”, but they
+are answerable by a short passage retrieved from a set of abou t
+3.6M Web documents [2]. Relevance judgements are quite spar se
+(about one relevant passage per query) and a positive label i ndi-
+cates that thepassage can answer therespective question.The MS MARCO collections has several development and test
+query sets of which we use only a development set with approx-
+imately 6.9K sparsely-judged queries and the TREC DL 2020 [8 ]
+collection of 54 densely judged queries. Henceforth, for si mplic-
+ity when we discuss the MS MARCO development set we use a
+shortened name MS MARCO, which is also consistent with Boni-
+facio al.[4].
+NotethattheMSMARCOcollectionhasalargetrainingset,bu t
+we do not use it in the fully unsupervised scenario. We do use i t
+thoughinthehybrid setting (see§5.1).
+Robust04 [49] is a small (but commonly used) collection that
+has about 500K news wire documents. It comes with a small but
+densely judged set of 250 queries, which have about 1.2K judg e-
+ments onaverage.
+NaturalQuestions(NQ)BEIR [19]isanopendomainWikipedia-
+based Question Answering (QA) dataset. Similar to MS MARCO,
+it has real user queries (submitted to Google). We use a BEIR’ s
+variant of NQ [47], which has about 2.6M short passages from
+Wikipedia and 3.4K sparsely-judged queries (about 1.2 rele vant
+documentsperquery).
+TREC COVID BEIR [39] is a small corpus that has 171K sci-
+entiﬁc articles on the topic of COVID-19 and 50 densely-judg ed
+queries(1.3Kjudgeddocumentsperqueryonaverage). Itwas cre-
+atedforaNISTchallengewhoseobjectivewastodevelopinfo rma-
+tion retrieval methods tailored for the COVID-19 domain (wi th a
+hope to be a useful tool during COVID-19 pandemic). We use the
+BEIR’sversion of thisdataset [47].
+5 RESULTS
+5.1 Main Results
+Our main experimental results are presented in Table 2. We or -
+ganize them into multiple sections, where we show eﬀectiven ess
+numbersforvarioussupervised,unsupervised,andhybrida pproaches.
+In addition to our own measurements, we copy key results from
+theworkbyBonifacioetal.[4],whichincluderesultsforBM 25,re-
+rankingusingOpenAIAPI,aswellasresultsforMono-T5rank ers
+[35] trained in the unsupervised, supervised, and hybrid ma nner.
+Becausethereisasubstantialvariabilityofresultsamong seeds(in-
+cludingonecaseofextremelypoorconvergence),forunsupe rvised-
+only training we also present our-best seed results in Table 3. In
+Table4,weshow eﬀectiveness of InPars for threetypes ofmod els
+to generate synthetic training queries (including OpenAI G PT-3
+model). In our experiments, we statistically test several s tatistical
+hypotheses, which are explained separately at the bottomof each
+table.
+BM25 baselines. Comparing eﬀectiveness of FlexNeuART [5]
+BM25 with eﬀectiveness of Pyserini [23] BM25—used the InPar s
+study [4]—we can see that on all datasets except TREC DL 2020
+we closely match (within 1.5%) Pyserini numbers. On TREC DL
+2020our BM25is 6%moreeﬀective innNDCG@10 and 25%more
+eﬀective inMAP.
+Reproducibility Notes. InadditiontoBM25performance, we
+can reproduce some of the key ﬁndings from prior work. In what
+followswediscuss these(and otherﬁndings) in moredetail:
+Table 2: Main Results(averagedover threeseeds)
+MSMARCO TRECDL 2020 Robust04 NQ TRECCOVID
+MRR MAP nDCG@10 MAP nDCG@20 nDCG@10 nDCG@10
+BM25[4] 0.1874 0.2876 0.4876 0.2531 0.4240 0.3290 0.6880
+BM25(ours) 0.1867 0.3612 0.5159 0.2555 0.4285 0.3248 0.6767
+OpenAIRanking API :re-ranking 100Documents[4]
+Curie(6B) [4] $ 0.3296 0.5422 0.2785 0.5053 0.4171 0.7251
+Davinci (175B) [4] $ 0.3163 0.5366 0.2790 0.5103 $ 0.6918
+Unsupervised :InPars-based Training Data
+monoT5-220M(InPars) [4] 0.2585 0.3599 0.5764 0.2490 0.426 8 0.3354 0.6666
+monoT5-3B(InPars) [4] 0.2967 0.4334 0.6612 0.3180 0.5181 0.5133 0.7835
+MiniLM-L6-30M (InPars)/u1D44F/u1D44E0.2117/u1D44F0.3482/u1D44F0.4953/u1D44F/u1D44E0.2263/u1D44F/u1D44E0.3802/u1D44F/u1D44E0.2187/u1D44F0.6361
+MiniLM-L6-30M (InPars ◮consist. check)/u1D450/u1D44F/u1D44E0.2336/u1D450/u1D44F0.3769/u1D450/u1D44F0.5543/u1D450/u1D44F0.2556/u1D450/u1D44F0.4440/u1D450/u1D44F0.3239/u1D450/u1D44F0.6926
+MiniLM-L6-30M (InPars all◮consist. check)/u1D450/u1D44E0.2468/u1D450/u1D44E0.3929/u1D450/u1D44E0.5726/u1D4500.2639/u1D450/u1D44E0.4599/u1D450/u1D44E0.3747/u1D450/u1D44E0.7688
+DeBERTA-v3-435M(InPars)/u1D44F/u1D44E0.2746/u1D44F/u1D44E0.4385/u1D44E0.6649/u1D44F/u1D44E0.2811/u1D44F/u1D44E0.4987/u1D44F/u1D44E0.4476/u1D44E0.8022
+DeBERTA-v3-435M(InPars ◮consist.check)/u1D450/u1D44F/u1D44E0.2815/u1D450/u1D44F/u1D44E0.4446/u1D450/u1D44E0.6717/u1D450/u1D44F/u1D44E0.3009/u1D450/u1D44F/u1D44E0.5360/u1D450/u1D44F/u1D44E0.4621/u1D450/u1D44E0.8183
+DeBERTA-v3-435M(InPars all◮consist. check)/u1D450/u1D44E0.1957/u1D4500.3607/u1D4500.5007/u1D4500.2518/u1D4500.4320/u1D4500.3267/u1D4500.6953
+Supervisedand Hybrid :transfer from MS MARCOwithan optionalﬁne-tuning onconsi stency-checked InPars data
+MiniLM-L6-30M (MS MARCO)/u1D451/u1D44E0.3080/u1D44E0.4370/u1D44E0.6662/u1D451/u1D44E0.2295/u1D451/u1D44E0.3923/u1D451/u1D44E0.4646/u1D451/u1D44E0.7476
+MiniLM-L6-30M (MS MARCO ◮consist.check)/u1D451/u1D44E0.2944/u1D44E0.4311/u1D44E0.6501/u1D451/u1D44E0.2692/u1D451/u1D44E0.4730/u1D451/u1D44E0.4320/u1D451/u1D44E0.7898
+DeBERTA-v3-435M(MS MARCO)/u1D451/u1D44E0.3508/u1D44E0.4679/u1D451/u1D44E0.7269/u1D44E0.2986/u1D44E0.5304/u1D451/u1D44E0.5616/u1D44E0.8304
+DeBERTA-v3-435M(MS MARCO ◮consist.check)/u1D451/u1D44E0.3166/u1D44E0.4553/u1D451/u1D44E0.6912/u1D44E0.3011/u1D44E0.5371/u1D451/u1D44E0.5075/u1D44E0.8165
+monoT5-220M(MS MARCO) [35] 0.3810 0.4909 0.7141 0.3279 0.5 298 0.5674 0.7775
+monoT5-3B(MS MARCO) [35] 0.3980 0.5281 0.7508 0.3876 0.6091 0.6334 0.7948
+monoT5-3B(MS MARCO ◮InPars) [4] 0.3894 0.5087 0.7439 0.3967 0.6227 0.6297 0.8471
+OpenAI API ranking results arecopiedfrom Bonifacio et al.[ 4].Inthat,$denotes experiments thatwere tooexpensive to run.
+InParsdenotes theoriginal query-generation methodwithﬁlterin g-out 90%of queries having lowest average log-probabiliti es.
+InParsall denotes thequery-generation methodwithoutqueryﬁlterin g,which wasused in all-domain pretraining.
+Consist.check denotes consistency ﬁlteringof allgenerated queries using a modeltrained onInPars-generate d data.
+Best unsupervisedand hybrid-training results aremarked b yboldfont (separatelyfor unsupervisedand hybrid-training).
+Super-scriptedlabelsdenotethefollowingstatistically signiﬁcant diﬀerences (thresholds aregiven in themain tex t):
+a:betweena neural modeland BM25;
+b: betweentraining with and withoutﬁne-tuning onconsisten cy-checked data (forthe samemodeltype).
+c:between pre-training using allgenerated queries for allcollectionsand onlyﬁlteredin-domain queries (for the samemodeltype).
+d:between0-shot transferring anMS MARCOmodel&ﬁne-tuning this modelonﬁltered in-domain queries (for the samemodeltype).
+•Generationofsyntheticin-domaindatausinganInPars-lik e
+recipe can permit training very strong in-domain rankers
+withoutany human-provided supervisiondata;
+•Without additional tricks such as all-domain pre-training
+and consistency checking, only a suﬃciently larger model
+canoutperformBM25;
+•AconsistencycheckingintroducedbyPromptagator[9]does
+leadtoa substantial gain inaccuracy;
+•ReplacingtheproprietaryGPT-3CuriemodelwithBLOOM
+[44]canimproveperformance,whichisinlinewithﬁndings
+of Jeronymo et al. [18]. However, unlike our study,they do
+not directly assess the impact of replacing the generating
+modelalone.Unsupervised-only training. In a purely unsupervised set-
+ting, we obtain comparable or better results using much smal ler
+ranking models. With DeBERTA-v3-435M we obtain comparable
+(somewhat better or worse) eﬀectiveness to MonoT5-3B on fou r
+collections out of ﬁve (MonoT5-3B has 7x more parameters). O ur
+biggest gap is for the NQ collection. However, this is the col lec-
+tionwherewealreadyobtainasubstantial15-30%gainoverB M25.
+Moreover,thereisquiteabitofvariabilityacrossmodelse eds,and
+ourbest-seedNQmodelisquiteclosetotheaverage performa nce
+ofMonoT5-3B(seeTable3).
+Our smallest MiniLM-L6-30M model with all-domain pretrain -
+ingandﬁnetuning onconsistency-checked data(InPars all◮con-
+sist. check) roughly matches the 7x larger MonoT5-220M on MS
+MARCO and TREC DL 2020, but it is substantially better than
+Table 3: Best-SeedResultsfor UnsupervisedTraining
+MS MARCO TRECDL 2020 Robust04 NQ TRECCOVID
+MRR MAP nDCG@10 MAP nDCG@20 nDCG@10 nDCG@10
+BM25(ours) 0.1867 0.3612 0.5159 0.2555 0.4285 0.3248 0.6767
+MiniLM results
+MiniLM-L6-30M (InPars)/u1D44F/u1D44E0.2197/u1D44F0.3562/u1D44F0.5151/u1D44F/u1D44E0.2380/u1D44F/u1D44E0.4029/u1D44F/u1D44E0.2415/u1D44F0.6732
+MiniLM-L6-30M (InPars ◮consist. check)/u1D450/u1D44F/u1D44E0.2422/u1D44F0.3844/u1D44F/u1D44E0.5753/u1D450/u1D44F0.2615/u1D450/u1D44F/u1D44E0.4554/u1D450/u1D44F0.3297/u1D44F/u1D44E0.7483
+MiniLM-L6-30M (InPars all◮consist. check)/u1D450/u1D44E0.2517/u1D44E0.3945/u1D44E0.5769/u1D4500.2671/u1D450/u1D44E0.4691/u1D450/u1D44E0.3800/u1D44E0.7709
+DeBERTA results
+DeBERTA-v3-435M(InPars)/u1D44F/u1D44E0.2748/u1D44E0.4437/u1D44E0.6779/u1D44F/u1D44E0.2874/u1D44F/u1D44E0.5131/u1D44E0.4872/u1D44E0.8118
+DeBERTA-v3-435M(InPars ◮consist. check)/u1D44F/u1D44E0.2847/u1D44E0.4479/u1D44E0.6813/u1D44F/u1D44E0.3043/u1D44F/u1D44E0.5417/u1D450/u1D44E0.4924/u1D44E0.8305
+DeBERTA-v3-435M(InPars all◮consist. check)/u1D44E0.2804/u1D44E0.4414/u1D44E0.6575/u1D44E0.3076/u1D44E0.5505/u1D450/u1D44E0.4746/u1D44E0.8259
+Super-scriptedlabelsdenotethefollowingstatistically signiﬁcant diﬀerences (thresholds are given in themaintex t):
+a:betweena neural modeland BM25;
+b: betweentraining with and withoutﬁne-tuning onconsisten cy-checked data(forthe samemodeltype).
+c:between pre-training using allgenerated queries and onlyﬁlteredin-domain queries (for the samemodeltype).
+Notes:Bestresults ( separately foreach modelaremarked by boldfont.
+MonoT5-220Montheremainingdatasets,whereMonoT5-220Me f-
+fectiveness is largely atBM25 level. MiniLM-L6-30M outper forms
+BM25onallcollectionsandallmetrics.Inallbutonecaseth esedif-
+ferences are also statistically signiﬁcant .In terms of nDCG and/or
+MRR,itis 7-30%moreeﬀective.
+Impactofconsistencycheckingandall-domainpre-trainin g.
+It is crucial to note, however, on its own the InPars recipe do es
+notproduceastrongMiniLM-L6-30Mmodel,whichisinlinewi th
+ﬁndingoftheInParsstudywhereonlyMonoT5-3B(butnotamuc h
+smallerMonoT5-220M)outperformedBM25onallcollections .Strong
+performance of MiniLM-L6-30M was due to additional trainin g
+withconsistency-checked dataandpre-trainingonall-dom ain(all
+queriesfromallcollections)data.Therefore,wecarryout ablation
+experiments toassess eﬀectiveness of theseprocedures.
+We can see that for both MiniLM-L6-30M and DeBERTA-v3-
+435M,ﬁne-tuniningonconsistency-checkeddataimproveso utcomes:
+For 12 measurements out of 14, these diﬀerences are also stat isti-
+cally signiﬁcant (denoted by super-script label “b”). More over, all-
+domain pretraining (instead of training on data generated b y the
+originalInParsrecipe)furtherboostsaccuracyofMiniLM- L6-30M
+inallcases.Moreover,allthediﬀerencesarestatisticall ysigniﬁcant
+(denoted by super-script label “c”). However, all-domain p retrain-
+ing substantiallydegrades performanceof DeBERTA-v3-435 M.
+Anin-depthinvestigationshowedthatforoneseed(outofth ree),
+the model failed to converge properly. Although, we could ha ve
+alsochosenadiﬀerent seedand presentbetterresults,wefe ltthat
+this failure to converge (which was the only case out of many e x-
+periments we ran!) was an indication that all-domain pretra ining
+ditnotworkwellforDeBERTA-v3-435M.Tofurtherverifythi shy-
+pothesis, we also checked the best-seed outcomes, which are pre-
+sentedinTable3.ForMiniLM-L6-30M,theall-domainpre-tr aining
+improves the best-seed results in all cases, though we have f ewer
+statistically signiﬁcant diﬀerence now (this is expected, because
+using average-seed runs leads to more stable measurements) . ForDeBERTA-v3-435M, there is either a substantial degradatio n or
+a small decrease/increase that is not statistically signiﬁ cant (de-
+noted by super-script label “c”). Thus, our biggest model—u nlike
+15x smaller MiniLM-L6-30M— does not beneﬁt from all-domain
+pretraining. Infact this pretraining leads toperformance degrada-
+tion(including potentialdecrease intraining stability) .
+Supervisedandhybridtraining. Weﬁndthatforourdatasets,
+amodeltrainedonMSMARCO(bothMiniLM-L6-30MandDeBERTA-
+v3-435M) transfers well to other collections, except for tr ansfer
+of MiniLM-L6-30M to Robust04. However, similar to all-doma in
+pre-training the 15x smaller MiniLM-L6-30M beneﬁts more fr om
+in-domain ﬁne-tuning with consistency-checked data: Ther e are
+substantialandstatisticallysigniﬁcantimprovementsfo rRobust04
+and TREC-COVID (but a degradation for MS MARCO, TREC DL
+2020andNQ,whereasinthecaseofDeBERTA-v3-435Msuchﬁne-
+tuningnoticeablydegrades accuracyinmostcases.
+Also note that DeBERTA-v3-435M roughly matches MonoT5-
+220M while still lagging behind MonoT5-3B. This is in line wi th
+priorﬁndingthatlargerankingmodelshavebetterzero-sho ttrans-
+ferring eﬀectiveness [33,42].However, using multi-billi onparam-
+eter ranking modelsis nota practicalchoice.
+Model-TypeAblation ToassesstheimpactofreplacingGPT-3
+Curie with an open-source model,we carried out experiments us-
+ingERNIE-v2model[46].Althoughwegeneratedsyntheticqu eries
+onlyonce,eachrankerwastrainedwiththreediﬀerentseeds .Thus,
+wecomparedsystemswherequery-speciﬁcmetricvalueswere av-
+eraged over seeds. To our surprise (see Table 4), except for N Q
+where all models were nearly equally good, GPT-3 Curie under -
+performed both open-source models (out of 14 measurements 1 0
+arestatisticallysigniﬁcantasdenotedbysuper-script“b ”).Thedif-
+ference was particularlybigforRobust04.
+We then computed the average gain by (1) computing relative
+gain separatelyfor each datasets and key metrics (nDCG orMR R)
+Table 4: Performanceof InParsfor DiﬀerentGeneratingandR anking Models(averagedoverthreeseeds)
+MS MARCO TRECDL 2020 Robust04 NQ TRECCOVID
+MRR MAP nDCG@10 MAP nDCG@20 nDCG@10 nDCG@10
+BM25(ours) 0.1867 0.3612 0.5159 0.2555 0.4285 0.3248 0.676 7
+ERNIE-v2-335MOpenAI Curie(6B)/u1D44E0.2538/u1D44E0.4140/u1D44E0.6229/u1D44E0.2357 0.4016/u1D44E0.4277/u1D44E0.7411
+ERNIE-v2-335MGPT-J (6B)/u1D44F/u1D44E0.2608/u1D44F/u1D44E0.4286/u1D44E0.6367/u1D450/u1D44F0.2691/u1D450/u1D44F/u1D44E0.4724/u1D44E0.4248/u1D44F/u1D44E0.7750
+ERNIE-v2-335MBLOOM (7B)/u1D451/u1D44F/u1D44E0.2605/u1D44F/u1D44E0.4286/u1D44E0.6407/u1D450/u1D44F/u1D44E0.2852/u1D451/u1D450/u1D44F/u1D44E0.5102/u1D451/u1D44E0.4215/u1D44F/u1D44E0.7871
+DeBERTA-v3-435MBLOOM (7B)/u1D451/u1D44F/u1D44E0.2746/u1D44F/u1D44E0.4385/u1D44F/u1D44E0.6649/u1D44F/u1D44E0.2811/u1D451/u1D44F/u1D44E0.4987/u1D451/u1D44F/u1D44E0.4476/u1D44F/u1D44E0.8022
+Notes:Best results areinbold.Super-scriptedlabelsdenotestat isticallysigniﬁcant diﬀerences (thresholds are given int hemain text):
+a:betweena neural modeland BM25;
+b: betweena given neuralmodeltrained using queriesfrom a gi ven open-sourcemodelsand ERNIEtrained onqueries from GPT -3;
+c:between usingGPT-J-generated queries and BLOOM-generat ed queries (onlyforERNIE);
+d:betweentheDeBERTA modeland theERNIEmodel(bothtrained using BLOOM-generated queries).
+and (2) averaging these relative gains. The resulting gains (not
+shown inthetable) are7.2%for BLOOM and 5.2% forGPT-J.
+In addition to the generation model, we assessed the impact o f
+using DeBERTA-v3 instead of ERNIE-v2. This time around, bot h
+modelsweretrainedusingBLOOM-generated queries.Wecans ee
+that DeBERTAv3 was generally betterthanERNIE-v2.
+5.2 Costand Eﬃciency
+Inthefollowingsub-section,wediscussboththerankingeﬃ ciency
+and query-generation cost.Althoughone may arguethat thec ost
+ofgenerationusingopen-sourcemodelsisnegligiblysmall ,inreal-
+itythisistrueonlyifoneownstheirownhardwareandgenera tes
+enough queries to justify the initial investment. Thus, we m ake a
+more reasonable assessment assuming that the user canemplo y a
+cheap cloudservice.
+Eﬃciency of Re-ranking. A rather common opinion (in par-
+ticular expressed by anonymous reviewers onmultipleoccas ions)
+isthatusingcross-encodersisnotapracticaloption.This mightbe
+trueforextremelyconstrainedlatencyenvironmentsorver ylarge
+models,butwethinkitistotallypracticaltousesmallmode lssuch
+as MiniLM-L6-30M for applications such as enterprise searc h. In
+particular, on a reasonably modern GPU (such as RTX 3090) and
+Pytorch MinLm-L6-30M re-ranking throughput exceeds 500 pa s-
+sages per second (assuming truncationtotheﬁrst 477charac ters).
+Thus re-ranking 100 documents has an acceptable sub-second re-
+ranking latency.
+Cost of Model Training. Here, all training times are given
+with respect to a single RTX 3090 GPU. Training and evaluatin g
+MiniLM6-30Mmodelshad negligible costsdominatedbyall-domain
+pretraining, whichtookabouttwohoursperseed.Incontras t,the
+all-domainpretrainingofDeBERTA-v3-435Mtook28hours.H ow-
+ever, onlyabout20-30%ofqueries wereselectedfortrainin g mod-
+els and ﬁne-tuning themconsistency checked data.Thus,wit hout
+all-domainpretraining, thetraining timeitself was rathe rsmall.
+Asidefromall-domainpre-training,thetwomosttime-cons uming
+operations were validation of large query sets (MS MARCO and
+NQ),whichjointlyhaveabout10Kqueries,andconsistencyc heck-
+ing(usingDeBERTA-v3-435Mmodel).Thetotalvalidationti meforDeBERTA-v3-435 was about 6 hours (for all collections). The con-
+sistencychecking,however,tookabout48hours.Inthefutu re,we
+should consider carrying out consistency checking using a m uch
+faster MiniLM-L6-30M model.
+CostofQueryGeneration. FortheoriginalInPars[4],thecost
+of generation for the GPT-3 Curie model is $0.002 per one thou -
+sand tokens. The token count includes the length of the promp t
+and the prompting document.9We estimate that (depending on
+thecollection)asinglegenerationinvolves300to500toke ns:long-
+documentcollectionsRobust04andTREC-COVIDbothhaveclo se
+to500tokens pergeneration.
+Taking an estimate of 500 tokens per generation, the cost of
+queryingOpenAIGPT-3CurieAPIcanbeupto$100forRobust04
+andTREC-COVID.Assumingthatsamplingfrom137-BFLANmode l
+tobeasexpensiveasfromthelargestGPT-3modelDavinci(wh ich
+hasasimilarnumberofparameters),eachgenerationintheP romp-
+tagator study [9], was 10x more expensive compared to InPars
+study [4]. Moreover, because Dai et al. [4] generated one mil lion
+samplespercollection,thePromptagatorrecipewasabout twoor-
+dersofmagnitude expensive comparedtoInPars.
+Incontrast,ittakesonlyabout15hourstogenerate100Kque ries
+usingRTX3090GPU.ExtrapolatingthisestimatetoA100,whi chis
+about2xfasterthanRTX309010,and usingthepricingofLambda
+GPU cloud,we estimate the costof generation in ourInPars-l ight
+studytobeunder$10per collection.11
+6 CONCLUSION
+WecarriedoutareproducibilitystudyofInParsrecipeforu nsuper-
+visedtraining ofneural rankers. Asa by-productofthis stu dy,we
+developedasimple-yet-eﬀective modiﬁcationofInPars,wh ichwe
+called InPars-light. Unlike InPars, InPars-light uses onl y a freely
+available language model BLOOM, 7x-100x smaller ranking mo d-
+els,and re-ranks only100candidate recordsinstead of1000 .
+Not only can we reproduce key ﬁndings from prior work, but
+combining the original InPars recipe [4] with (1) ﬁne-tunin g on
+consistency-checked data [9], (2) and all-domain pretrain ing, we
+9https://chengh.medium.com/understand-the-pricing-of -gpt3-e646b2d63320
+10https://lambdalabs.com/blog/nvidia-rtx-a6000-benchm arks
+11https://lambdalabs.com/service/gpu-cloud#pricing
+wereabletotrainaveryeﬃcientandsmallmodelMiniLM-L6-3 0M
+thatoutperformedBM25onallcollections(inMRRornDCG).L ast
+but not least, with a larger DeBERTA-v3-435M model we could
+largely match performance of a 7x larger MonoT5-3B (even out -
+performingit ontwodatasets).
+ACKNOWLEDGMENTS
+REFERENCES
+[1] Chris Alberti, Daniel Andor, Emily Pitler, Jacob Devlin , and Michael Collins.
+2019. Synthetic QA Corpora Generation with Roundtrip Consi stency. In Pro-
+ceedings of the 57th Annual Meeting of the Association for Co mputational Lin-
+guistics. Association for Computational Linguistics, Florence, It aly, 6168–6173.
+https://doi.org/10.18653/v1/P19-1620
+[2] Payal Bajaj, Daniel Campos, Nick Craswell, Li Deng, Jian feng Gao, Xiaodong
+Liu, Rangan Majumder, Andrew McNamara, Bhaskar Mitra, Tri N guyen, et al.
+2016.MSMARCO:Ahumangeneratedmachinereadingcomprehen siondataset.
+arXiv preprint arXiv:1611.09268 (2016).
+[3] Sid Black, Leo Gao, Phil Wang, Connor Leahy, and Stella Bi derman. 2021.
+GPT-Neo: Large Scale Autoregressive Language Modeling with Mesh-Tensorﬂow .
+https://doi.org/10.5281/zenodo.5297715
+[4] Luiz Henrique Bonifacio, Hugo Abonizio, Marzieh Fadaee , and Rodrigo
+Nogueira. 2022. InPars: Unsupervised Dataset Generation f or Information Re-
+trieval.In SIGIR. ACM,2387–2392.
+[5] Leonid Boytsov and Eric Nyberg. 2020. Flexible retrieva l with NMSLIB and
+FlexNeuART. In Proceedings of Second Workshop for NLP Open Source Software
+(NLP-OSS) . 32–43.
+[6] Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah , Jared Ka-
+plan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam , Girish Sastry,
+Amanda Askell, Sandhini Agarwal, Ariel Herbert-Voss,Gret chenKrueger,Tom
+Henighan,RewonChild,AdityaRamesh,DanielM.Ziegler,Je ﬀreyWu,Clemens
+Winter, ChristopherHesse, MarkChen, EricSigler, Mateusz Litwin, Scott Gray,
+Benjamin Chess, Jack Clark, Christopher Berner, Sam McCand lish, Alec Rad-
+ford, Ilya Sutskever, and Dario Amodei. 2020. Language Mode ls are Few-Shot
+Learners.In NeurIPS.
+[7] ChrisBuckley,DarrinDimmick,IanSoboroﬀ,andEllenM. Voorhees.2007. Bias
+and the limitsof pooling forlargecollections. Inf. Retr.10,6 (2007), 491–508.
+[8] Nick Craswell, Bhaskar Mitra, Emine Yilmaz, Daniel Camp os, and Ellen M
+Voorhees. 2020. OverviewoftheTREC2019deep learningtrac k.arXivpreprint
+arXiv:2003.07820 (2020).
+[9] ZhuyunDai,VincentY.Zhao,JiMa,YiLuan,JianmoNi,Jin gLu,AntonBakalov,
+KelvinGuu,Keith B.Hall, andMing-WeiChang.2022. Prompta gator:Few-shot
+DenseRetrievalFrom8 Examples. CoRRabs/2209.11755(2022).
+[10] JacobDevlin,Ming-WeiChang,KentonLee,andKristina Toutanova.2018.BERT:
+Pre-training of deep bidirectional transformers for langu age understanding.
+arXiv preprint arXiv:1810.04805 (2018).
+[11] Leo Gao.2021. https://blog.eleuther.ai/gpt3-model -sizes/.
+[12] Luyu Gao, Xueguang Ma, Jimmy Lin, and Jamie Callan. 2022 .
+Precise Zero-Shot Dense Retrieval without Relevance Label s.
+https://doi.org/10.48550/ARXIV.2212.10496
+[13] LeiHan,EddyMaddalena,AlessandroChecco,CristinaS arasua,UjwalGadiraju,
+KevinRoitero, andGianlucaDemartini.2020. CrowdWorkerS trategiesinRele-
+vance Judgment Tasks.In WSDM.ACM,241–249.
+[14] Pengcheng He, Xiaodong Liu, Jianfeng Gao, and Weizhu Ch en. 2021. De-
+berta: decoding-Enhanced Bert with Disentangled Attentio n. InICLR. OpenRe-
+view.net.
+[15] GeoﬀreyE. Hinton, OriolVinyals,and JeﬀreyDean.2015 . Distilling theKnowl-
+edge inaNeuralNetwork. CoRRabs/1503.02531(2015).
+[16] Sebastian Hofstätter, Sophia Althammer, Michael Schr öder, Mete
+Sertkan, and Allan Hanbury. 2020. Improving Eﬃcient Neural
+Ranking Models with Cross-Architecture Knowledge Distill ation.
+https://doi.org/10.48550/ARXIV.2010.02666
+[17] Gautier Izacard, Mathilde Caron, Lucas Hosseini, Seba stian Riedel, Piotr Bo-
+janowski, Armand Joulin, and Edouard Grave. 2021. Towards U nsupervised
+Dense Information Retrieval with Contrastive Learning. CoRRabs/2112.09118
+(2021).
+[18] Vitor Jeronymo, Luiz Bonifacio, Hugo Abonizio, Marzie h Fadaee, Roberto
+Lotufo, Jakub Zavrel, and Rodrigo Nogueira. 2023. InPars-v 2: Large Lan-
+guage Models as Eﬃcient Dataset Generators for Information Retrieval.
+https://doi.org/10.48550/ARXIV.2301.01820
+[19] TomKwiatkowski,JennimariaPalomaki,OliviaRedﬁeld ,MichaelCollins,Ankur
+Parikh, Chris Alberti, Danielle Epstein, Illia Polosukhin , Jacob Devlin, Kenton
+Lee,etal.2019.NaturalQuestions:abenchmarkforquestio nansweringresearch.
+Transactionsof theAssociationfor Computational Linguis tics7(2019), 453–466.
+[20] Phuc H. Le-Khac, Graham Healy, and Alan F. Smeaton. 2020 . Contrastive Rep-
+resentation Learning: A Frameworkand Review. IEEE Access 8 (2020), 193907–
+193934.[21] Jinyu Li, Rui Zhao, Jui-Ting Huang, and Yifan Gong. 2014 . Learning small-
+sizeDNNwithoutput-distribution-basedcriteria.In INTERSPEECH .ISCA,1910–
+1914.
+[22] Minghan Li and Éric Gaussier. 2022. Domain Adaptation f or Dense Retrieval
+through Self-Supervision by Pseudo-Relevance Labeling. CoRRabs/2212.06552
+(2022).
+[23] JimmyLin,Xueguang Ma,Sheng-Chieh Lin,Jheng-Hong Ya ng, RonakPradeep,
+and Rodrigo Nogueira. 2021. Pyserini: A Python toolkit for r eproducible infor-
+mationretrievalresearchwith sparseand dense representa tions.InProceedings
+of the 44th International ACMSIGIR Conference on Research a nd Development in
+Information Retrieval . 2356–2362.
+[24] JimmyLin,RodrigoNogueira,andAndrewYates.2021. Pretrained Transformers
+for TextRanking: BERTand Beyond . Morgan&Claypool Publishers.
+[25] Sheng-ChiehLin,Jheng-Hong Yang,andJimmyLin.2020. DistillingDenseRep-
+resentationsforRankingusingTightly-CoupledTeachers. CoRRabs/2010.11386
+(2020).
+[26] Pengfei Liu, Weizhe Yuan, Jinlan Fu, Zhengbao Jiang, Hi roaki Hayashi, and
+Graham Neubig. 2021. Pre-train, Prompt, and Predict: A Syst ematic Survey
+of Prompting Methods in Natural Language Processing. CoRRabs/2107.13586
+(2021).
+[27] Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Jo shi, Danqi
+Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin S toyanov.
+2019. RoBERTa: A Robustly Optimized BERT Pretraining Appro ach.CoRR
+abs/1907.11692(2019).
+[28] IlyaLoshchilovandFrankHutter.2017. Decoupled weig htdecayregularization.
+arXiv preprintarXiv:1711.05101 (2017).
+[29] SeanMacAvaney,AndrewYates,SergeyFeldman,DougDow ney,ArmanCohan,
+andNazliGoharian.2021. SimpliﬁedDataWranglingwithir_ datasets.In SIGIR.
+[30] Irina Matveeva, Chris Burges, Timo Burkard, Andy Lauci us, and Leon Wong.
+2006. High accuracyretrievalwith multiple nested ranker. InSIGIR.ACM,437–
+444.
+[31] Iurii Mokrii, Leonid Boytsov, and Pavel Braslavski.20 21. A Systematic Evalua-
+tion of TransferLearning and Pseudo-labeling with BERT-ba sed Ranking Mod-
+els. InSIGIR. ACM,2081–2085.
+[32] MariusMosbach,MaksymAndriushchenko, andDietrichK lakow.2020. Onthe
+Stability of Fine-tuning BERT: Misconceptions, Explanati ons, and Strong Base-
+lines.arXiv preprintarXiv:2006.04884 (2020).
+[33] Jianmo Ni, Chen Qu,Jing Lu,Zhuyun Dai,Gustavo Hern’an dez ’Abrego, Ji Ma,
+Vincent Zhao, Yi Luan, Keith B. Hall, Ming-Wei Chang, and Yin fei Yang. 2021.
+LargeDualEncodersAreGeneralizableRetrievers. ArXivabs/2112.07899(2021).
+[34] Rodrigo Nogueira and Kyunghyun Cho. 2019. Passage Re-r anking with BERT.
+arXiv preprintarXiv:1901.04085 (2019).
+[35] Rodrigo Nogueira, Zhiying Jiang, and Jimmy Lin. 2020. D ocument ranking
+with apretrained sequence-to-sequence model. arXiv preprint arXiv:2003.06713
+(2020).
+[36] John M. Prager. 2006. Open-Domain Question-Answering .Found. Trends Inf.
+Retr.1, 2(2006), 91–231.
+[37] Colin Raﬀel, Noam Shazeer, Adam Roberts, Katherine Lee , Sharan Narang,
+MichaelMatena,YanqiZhou,WeiLi,andPeterJ.Liu.2020. Ex ploringtheLimits
+of Transfer Learning with a Uniﬁed Text-to-Text Transforme r.J. Mach. Learn.
+Res.21(2020), 140:1–140:67.
+[38] RevanthGangiReddy,BhavaniIyer,Md.ArafatSultan, R ongZhang,AvirupSil,
+VittorioCastelli,RaduFlorian,andSalimRoukos.2021.Sy ntheticTargetDomain
+SupervisionforOpen RetrievalQA. In SIGIR. ACM,1793–1797.
+[39] Kirk Roberts, Tasmeer Alam, Steven Bedrick, Dina Demne r-Fushman, Kyle Lo,
+Ian Soboroﬀ, Ellen M. Voorhees, Lucy Lu Wang, and William R. H ersh. 2020.
+TREC-COVID: rationale and structure of an information retr ieval shared task
+for COVID-19. J. Am.Medical InformaticsAssoc. 27,9 (2020), 1431–1436.
+[40] Stephen Robertson. 2004. Understanding inverse docum ent frequency: on the-
+oretical arguments for IDF. Journal of Documentation 60, 5 (2004), 503–520.
+https://doi.org/10.1108/00220410410560582
+[41] Adriana Romero, Nicolas Ballas, Samira Ebrahimi Kahou , Antoine Chassang,
+Carlo Gatta, and Yoshua Bengio. 2015. FitNets: Hints for Thi n Deep Nets. In
+ICLR (Poster) .
+[42] Guilherme Rosa, Luiz Bonifacio, Vitor Jeronymo, Hugo A bonizio, Marzieh
+Fadaee, Roberto Lotufo, and Rodrigo Nogueira. 2022. In Defe nse of Cross-
+Encoders forZero-Shot Retrieval. https://doi.org/10.48 550/ARXIV.2212.06121
+[43] Devendra Singh Sachan, Mike Lewis, Mandar Joshi, Armen Aghajanyan, Wen-
+tauYih,JoellePineau,andLukeZettlemoyer.2022. Improvi ngPassageRetrieval
+with Zero-Shot QuestionGeneration. CoRRabs/2204.07496(2022).
+[44] TevenLeScao,Angela Fan,ChristopherAkiki,Ellie Pav lick,SuzanaIlic,Daniel
+Hesslow, Roman Castagné, Alexandra Sasha Luccioni, Franço is Yvon, Matthias
+Gallé, Jonathan Tow, Alexander M. Rush, Stella Biderman, Al bert Webson,
+Pawan Sasanka Ammanamanchi, Thomas Wang, Benoît Sagot, Nik las Muen-
+nighoﬀ, AlbertVillanovadel Moral,OlatunjiRuwase,Rache lBawden,StasBek-
+man, Angelina McMillan-Major, Iz Beltagy, Huu Nguyen, Luci le Saulnier, Sam-
+sonTan,PedroOrtizSuarez,VictorSanh,HugoLaurençon,Ya cineJernite,Julien
+Launay,MargaretMitchell,ColinRaﬀel,AaronGokaslan,Ad iSimhi,AitorSoroa,
+Alham Fikri Aji, Amit Alfassy, Anna Rogers, Ariel Kreisberg Nitzav, Canwen
+Xu, Chenghao Mou, Chris Emezue, Christopher Klamm, Colin Le ong, Daniel
+vanStrien,DavidIfeoluwa Adelani,andetal.2022. BLOOM:A 176B-Parameter
+Open-Access Multilingual LanguageModel. CoRRabs/2211.05100(2022).
+[45] LeslieN.Smith.2017. CyclicalLearningRatesforTrai ningNeuralNetworks.In
+WACV.464–472.
+[46] Yu Sun, Shuohuan Wang, Yu-Kun Li, Shikun Feng, Hao Tian, Hua Wu, and
+Haifeng Wang. 2020. ERNIE 2.0: A Continual Pre-TrainingFra meworkfor Lan-
+guageUnderstanding. In AAAI.AAAI Press,8968–8975.
+[47] NandanThakur,Nils Reimers,Andreas Rücklé, Abhishek Srivastava,and Iryna
+Gurevych.2021. BEIR:AHeterogenousBenchmarkforZero-sh otEvaluationof
+Information RetrievalModels. arXiv preprint arXiv:2104.08663 (2021).
+[48] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszko reit, Llion Jones,
+AidanNGomez,ŁukaszKaiser,and Illia Polosukhin. 2017. At tention isAll you
+Need. InNIPS. 5998–6008.
+[49] Ellen Voorhees. 2004. Overview of the TREC 2004 Robust R etrieval Track. In
+TREC.
+[50] Ben Wang and Aran Komatsuzaki. 2021. GPT-J-6B:
+A 6 Billion Parameter Autoregressive Language Model.https://github.com/kingoﬂolz/mesh-transformer-jax.
+[51] Kexin Wang, Nandan Thakur, Nils Reimers, and Iryna Gure vych. 2022. GPL:
+GenerativePseudo LabelingforUnsupervisedDomainAdapta tion ofDenseRe-
+trieval.In NAACL-HLT .AssociationforComputational Linguistics,2345–2360.
+[52] Lidan Wang, Jimmy Lin, and Donald Metzler. 2011. A casca de ranking model
+for eﬃcient ranked retrieval.In SIGIR. ACM,105–114.
+[53] WenhuiWang,FuruWei,LiDong,HangboBao,NanYang,and MingZhou.2020.
+MiniLM:DeepSelf-AttentionDistillationforTask-Agnost icCompressionofPre-
+TrainedTransformers.In NeurIPS.
+[54] Thomas Wolf, Lysandre Debut, Victor Sanh, Julien Chaum ond, Clement
+Delangue, Anthony Moi, Pierric Cistac, Tim Rault, Remi Louf , Mor-
+gan Funtowicz, Joe Davison, Sam Shleifer, Patrick von Plate n, Clara Ma,
+Yacine Jernite, Julien Plu, Canwen Xu, Teven Le Scao, Sylvai n Gugger,
+Mariama Drame, Quentin Lhoest, and Alexander Rush. 2020. Tr ansform-
+ers: State-of-the-Art Natural Language Processing. In Proceedings of the
+2020 Conference on Empirical Methods in Natural Language Pro cessing: Sys-
+tem Demonstrations . Association for Computational Linguistics, Online, 38–4 5.
+https://doi.org/10.18653/v1/2020.emnlp-demos.6

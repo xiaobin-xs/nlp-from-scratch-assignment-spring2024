@@ -1,0 +1,18 @@
+{
+    "authorId": "7661726",
+    "url": "https://www.semanticscholar.org/author/7661726",
+    "name": "Alexander Hauptmann"
+}
+
+{
+    "paperId": "0fe5c3133ce6eb5edeb13953a79a6b5b1375a1a7",
+    "url": "https://www.semanticscholar.org/paper/0fe5c3133ce6eb5edeb13953a79a6b5b1375a1a7",
+    "title": "Leveraging body pose estimation for gesture recognition in human-robot interaction using synthetic data",
+    "year": 2023
+}
+{
+    "paperId": "72cce47fd053bf916314d89a8174726c58c05e02",
+    "url": "https://www.semanticscholar.org/paper/72cce47fd053bf916314d89a8174726c58c05e02",
+    "title": "Towards Open-Domain Twitter User Profile Inference",
+    "year": 2023
+}

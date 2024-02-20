@@ -1,0 +1,872 @@
+Proceedings of the 20th SIGMORPHON workshop on Computational Research in Phonetics, Phonology, and Morphology , pages 58–67
+July 14, 2023 ©2023 Association for Computational Linguistics
+Generalized Glossing Guidelines: An Explicit, Human- and
+Machine-Readable, Item-and-Process Convention for Morphological
+Annotation
+David R. Mortensen∗†Ela Gulsen∗†Taiqi He†
+Nathaniel Robinson†Jonathan D. Amith‡Lindia Tjuatja†
+Lori Levin†
+†CarnegieMellonUniversity‡GettysburgCollege
+†{dmortens,egulsen,taiqih,nrrobins,lindiat,levin}@andrew.cmu.edu
+‡jonamith@gmail.com
+Abstract
+We introduce a YAML notation for multi-line
+interlinear glossed text (IGT) that represents
+non-concatentative processes such as infixa-
+tion, reduplication, mutation, truncation, and
+tonaloverwritinginaconsistent,formallyrig-
+orous way, on par with affixation, using an
+Item-and-Process (IP) framework. Our new
+notation—Generalized Glossing Guidelines
+(GGG)—ishuman-andmachine-readableand
+easy to edit with general purpose tools. A
+GGGrepresentationhasfourfields: (1)ASur-
+face Representation ( sr) with curly brackets
+to show where non-concatenative morpholog-
+ical processes have applied. (2) A Lexical
+Representation ( lx) that explicitly shows non-
+concatenative processes as insertions, dele-
+tions,andsubstitutionsastheyapplytotheba-
+sicformofmorphemes. (3)Aglossfield( gl)
+that associates glosses with morphemes and
+morphologicalprocessesinthe srandlxlines.
+(4) A metalanguage translation. We demon-
+stratethelinguisticadequacyofGGGandcom-
+pareittotwootherIGTannotationschemes.
+1 Introduction
+As part of the ongoing wav2gloss project, we are
+generating Interlinear Glossed Text (IGT) from
+speech using an end-to-end system. In produc-
+ing IGT for various languages of the Americas,
+weencounteredachallenge: traditionalinterlinear
+glossingschemesarewell-suitedfortherepresen-
+tationofconcatenativemorphology( Comrieetal. ,
+2008) where morphological properties are real-
+izedbyspansofphonologicalmaterial( Goodman
+etal.,2015;MaedaandBird ,2000;BirdandLiber-
+man,1999;Bird et al.,2000;Ide and Suderman ,
+2007). However, the languages that we are work-
+ingwith—Mixtec,Nahuatl,andTotonac—areper-
+meatedbymorphologicaloperationssuchastrun-
+∗Denotesequalcontribution.cation,tonaloverwriting,reduplication,apophony,
+and segmental overwriting, that cannot be ade-
+quatelyexpressedastheconcatenation(orevenin-
+terleaving) of strings. The shortcoming of most
+IGTnotationsisthattheyrepresentthealignment
+of affixes with glosses, but they do not explicitly
+show how non-concatenative processes align to
+glosses.
+The contrast between concatenative and non-
+concatenative “models of grammatical descrip-
+tion” goes back at least to a seminal article by
+CharlesHockett( 1954)inwhichheobservedthat
+morphologycanbeviewedastheconcatenationof
+morphemes(item-and-arrangementorIA)orasthe
+applicationofprocessestomorphemes(item-and-
+process or IP). Whatever their ontological nature
+may be, some morphological operations—for ex-
+ample,apophonyandtruncation—aremoreeasily
+expressedas processes thanmorphemes. Inorder
+toglosstheseoperations(andgivethemthesame
+status as affixation), we needed to develop an an-
+notationschememoregeneralthanthosecurrently
+available. Therefore, we propose Generalized
+GlossingGuidelines(orGGG),thatbuilduponex-
+isting conventions such as the Leipzig Glossing
+Rules (Comrie et al. ,2008) but make the frame-
+workformallyexplicitandaddconsistentandcom-
+prehensivesupportfornon-concatenativemorpho-
+logical alternations such as infixation, reduplica-
+tion, transfixation, apophony, tonal overwriting,
+andtruncation.
+Figure1givesanexampleofGGGfromYoloxó-
+chitl Mixtec. It shows metadata as well as the
+four fields, sr(Surface Representation), lx(Lex-
+ical Representation), gl(gloss), and tr(transla-
+tion). Itshowstonaloverwritingincurlybrackets,
+withcliticizationshownby =.58
+2 Background
+Alargenumberofglossingconventions,fromthe
+very formal (e.g., Xigt; Goodman et al. 2015) to
+the relatively informal (e.g., the Leipzig Glossing
+RulesorLGR; Comrieetal. 2008)havebeenpro-
+posedandemployedincomputationalapplications.
+Forexample,arecentSIGMORPHONsharedtask
+onglossingusedrepresentationsbasedonLGR.1
+These conventions play two roles: (1) They al-
+low linguists and language workers to communi-
+catewithoneanotherwithclarityandminimalam-
+biguity; (2)Theyallowhumansandcomputersto
+communicatewithoneanotherwithrespecttothe
+morphosyntax of human languages. In our use-
+case, they allow neural models to communicate
+thedetailsoftheirmorphosyntacticanalysestolan-
+guageworkers. Assuch,theseannotationconven-
+tionsneedtobebothhumanreadable(whetherdi-
+rectlyorthroughsomekindofuserinterface)and
+expressive,withoutsacrificingexplicitness.
+Although LGR largely satisfies these critera
+whenonlyconcatenativemorphologyoccurs,non-
+concatenative operations are only supported in a
+limited and sometimes inexplicit way in this con-
+vention. The following example shows the LGR
+notationforapophony(umlaut)inGerman:
+(1)Ich
+1.SGhabe
+have. 1.SGvier
+fourBrüder
+brother\PL
+‘Ihavefourbrothers.’
+Thesequence“\PL”indicatesthatpluralismarked
+by a non-concatenative process (in this case,
+apophony),butitdoesnotindexthemorphological
+property to a specific formal change. In the Gen-
+eralized Glossing Guidelines described here, the
+sameexamplewouldbethefollowing:2
+(2)Ich
+1.SGhabe
+have. 1.SGvier
+fourBr{u>ü}der
+brother{PL}
+‘Ihavefourbrothers.’
+LGR also has conventions for annotating redupli-
+cationandinfixation,buteachofthesenotationsis
+different. ComparetheseexamplesfromMotu:
+(3)a.ma~mahuta
+PLsleep
+‘tosleep’
+1https://github.com/sigmorphon/2023GlossingST
+2Weshowonly lxhere,structuringfieldsasinaconven-
+tionalglossedexample,andomit srforthesakeofcompari-
+sontoLGR.b.{>ma}mahuta
+sleep{PL}
+‘tosleep’
+InLGR(3a),reduplicantsaredelimitedwithatilde.
+In the GGG version ( 3b), again showing only lx,
+reduplicationisnotatedwiththesamearrownota-
+tionasallothernon-concatenativeprocesses.
+Comparethefollowingwell-knownexampleof
+infixationinTagalog:
+(4)a.s<um>ulat
+<COMPL>write
+‘write’
+b.s{>um}ulat
+write{COMPL}
+‘write’
+In LGR (4a), infixes are surrounded by angle
+brackets. IntheGGGversion( 4b),infixesareindi-
+cated with the same notation as reduplication and
+all other processes. Maximal empirical coverage
+isachievedwithminimalformalequipment.
+Another important framework for representing
+IGT(andmorphosyntacticannotations,generally)
+isXigt(Goodmanetal. ,2015),anXML-basedfor-
+matthatassociatesannotationswithspans. It,too,
+ishighlygeneral,machine-readable,andformally
+rigorous,butitsopaquestructuremakesitdifficult
+toreadandwritewithoutspecialsoftwaretools.
+We propose GGG to take the best of the both
+frameworks. Ithasthefollowingproperties:
+•Generalandadaptable
+•Humanreadable
+•Machinereadableandunambiguous
+•Editablewithgeneral-purposetools
+•Consistentandformally-rigorousinitsrepre-
+sentationofnon-concatenativeprocesses
+2.1 Lexical Representations
+The core of the GGG format is the lexical or lx
+representation. Tounderstand lx,onemustdistin-
+guishmorphologicalprocessesfromphonological
+processesandimagineapipelineinwhichmorpho-
+logicalprocessesprecedephonologicalprocesses.
+Morphological processes are associated with
+meaning or grammatical features. For example,
+theMixtectonechangesshowninFigure 1mark
+the habitual aspect. Phonological processes, in
+contrast, are not associated with meanings. They
+areprocessesthatapplywhenphonologicalcondi-
+tions are met. For example, tone sandhi in many
+languagesispurelyphonological(doesnotrealize
+anymorphosyntacticproperties).59
+InItem-and-ProcessMorphology,therearetwo
+kindsofconstructsassociatedwithmeaning: mor-
+phemes (items) and processes. The pipeline as-
+sumed by GGG is one in which morphemes are
+first assembled via concatenation (a MORPHEMIC
+REPRESENTATION ). At this level, each instance of
+the same morpheme has the same form (except
+in cases of suppletion). Then, processes apply to
+these strings. Together, the items and processes
+formthelexicalrepresentation( lx)inGGG.This
+representationistheoutputofthemorphologyand
+theinputtothephonology.3
+Phonological rules may apply to the lxrepre-
+sentation, yielding phonologically conditioned al-
+lomorphy. Some cases of nasalization shown in
+thesrfield in Figure 1are phonological. Since
+nasalizationisnotassociatedwithanymeaning,it
+doesnotcorrespondtolabelsinthegloss( gl).
+InGGG,the lxrepresentstheapplicationofpro-
+cesses to morphemes—mapping between a MOR-
+PHEMIC REPRESENTATION and an UNDERLYING REP-
+RESENTATION . The bracket-and-arrow notation
+shown in ( 3b) and (4b) above describes rewrites
+between the morphemic form and the underlying
+form. Thatistosay,themorphemicrepresentation
+is everything outside of the brackets interspersed
+with everything to the left of the arrows (>) and
+theunderlyingrepresentationiseverythingoutside
+ofthebracketsinterspersedwitheverythingtothe
+rightofthearrows. Thesurfacerepresentation,in
+contrast,istheoutputofthephonology.
+2.2 GGG is purely descriptive
+ThegoalofGGGis nottoprovideadeeptheoreti-
+calaccountofmorphologybutrathertobepurely
+descriptive. Thus—for example—even when we
+believe that a morphological process is best ex-
+plained by autosegmental tones being “bumped”
+fromonemoratothefollowingmora,GGGrepre-
+sentsthisprocessasthedeletionofatonefromone
+mora of the morphemic representation and the si-
+multaneousinsertionofanidenticaltoneonthefol-
+lowingmoraintheunderlyingrepresentation(with
+somelossofgenerality). Thisisdonetoexplicitly
+statetheformalrelationshipbetweenamorphemic
+form and underlying form while making a mini-
+3Note that this approach assumes a non-trivial and con-
+troversialassumptionaboutthephonology-morphologyinter-
+face. It excludes interleaving between morphological and
+phonologicalalternations. Thisisdonetomaketheglossing
+formattractableandischaracteristicofglossingformatsgen-
+erally. However,whencyclicphonologyresultsinatwo-step
+change,GGGallowsthistoberepresented.mumoftheory-internalassumptions. Forexample,
+in Yoloxóchitl Mixtec, the habitual is formed by
+overwritinga/4/(high)tonetothefirstmora. Two
+examplesaregivenin( 5):
+(5)a.chio’{1>4}o{>1}4
+cook_boiling{HAB;1,2}
+habituallycookbyboiling’
+b.sa{3>4}ta{>3}4
+sa{3>4}ta{>2}4
+buy{HAB;1,2}
+‘habituallybuy’
+Note that these changes are morphologically
+(not phonologically) conditioned. In ( 5a), GGG
+represents the tonal morphology as /1/ being re-
+placed by /4/ and (the second) /4/ being preceded
+by an inserted /1/, focusing on the superficial (in-
+sertion of /1/ in the second mora) rather than the
+deeprelationship(reassingmentofthesame/1/to
+the second mora) between the morphemic repre-
+sentationandtheunderlyingrepresentation(thein-
+puttothephonologicalrules).
+3 The Guidelines
+GGG attempts to represent IGT examples like
+those in the preceding section in a YAML format,
+4preservingtothedegreepossibletheconventions
+that are present when linguists typeset linguistic
+data for the consumption of other linguists. This
+alliesitwiththeSILShoeboxformatanddifferen-
+tiatesitfromXigt( Goodmanetal. ,2015)andother
+highlyexplicitIGTformats. Thisalsomakesitrel-
+atively easy to edit GGG text using off-the-shelf
+tools(e.g.,texteditorsandtranscriptiontools).
+3.1 General Data Structure
+An illustration of a YAML file for GGG is pre-
+sented in Figure 1. The top level object is a map,
+consisting of metadata fields ( obj_langfor “ob-
+jectlanguage”and meta_lang for“metalanguage”
+arerequired), and segs, whichisanarrayof“dis-
+course segments” (roughly, sentences). The field
+obj_langconsistsofasingleISO639-3code(asa
+string). Thefield meta_lang isanarrayofISO639-
+3codes. Eachdiscoursesegmentisamapwiththe
+followingfields:
+srcTheaudioorvideodocumentfromwhichthe
+segmentderives.
+startThe start time of the interval in the source
+file from which the segment derives (in sec-
+ondssincethebeginningoftherecording).
+4https://yaml.org60
+obj_lang :xty
+meta_lang :eng
+segs :
+-
+src:xty0002.wav
+start :256
+end:265
+speaker :3
+lx:”ja'{3>4}nda2 =nã1 =e1 ka4 nda{3>4}sa3 ba'1a3 =na2 yu'3u4 =run4”
+sr:”ja'{4}nda2 =nã1 =e1 kã4 nda{4}sa3 ba'1a3 =nã2 yu'3u4 =run4”
+gl:”cut{HAB} =3.PL =3.INAM there convert{HAB} good =3.PL mouth =wood”
+tr:”...they cut itand convert itinto abifurcated stick.”
+Figure1: SampleofGGGfromYoloxoćhitMixtecshowingtheuseofbracket-and-arrownotationtoindicatetonal
+overwritinganddifferencesbetweenlexicalandsurfaceformsproducedbyphonologicalrules. Thenumeralsafter
+vowelsrepresenttones(/4/ishigh;/1/islow)associatedwiththeprecedingmora(forourpurposes,vowel).
+endTheendtimeoftheintervalinthesourcefile
+from which the segment derives (in seconds
+sincethebeginningoftherecording).
+speakerIDforspeakerinthisdiscoursesegment.
+lxThe lexical representation of the discourse
+segment—the mapping between a MOR-
+PHEMICrepresentation in which all mor-
+phemes are represented in their canonical
+form (to which all processes have applied)
+and the underlying form that is the input
+to the phonology; consists of tokens (cor-
+responding to morphemes) delimited by
+spaces.
+srThe surface representation of the discourse
+segment—the output of the phonology, con-
+sistingoftokensdelimitedbyspaces.
+glTheglossesofeachofthetokensinthelxand
+srstrings,delimitedbyspaces.
+trAn idiomatic translation of the discourse seg-
+ment(asastring).
+Crucially, when split on white space, the lx,sr,
+andglfieldsmustconsistofexactlythesamenum-
+berofstrings. Analternativeandequivalentrepre-
+sentationwouldbetohavethesefieldsbearraysof
+objects,eachcorrespondingtoaword. Thiswould
+enforcethealignmentbetweenwordsandglosses
+directly. However, it is much less readable than
+the proposed format and would be harder to edit
+withoff-the-shelftools.
+Eachofthetokensinthe lxandsrstringscon-
+sistsofeitheraroot,affix,orcliticandoneormore
+processesthathavebeenappliedtoit,asdescribed
+in §3.2. Each of the tokens in the glossstring
+alsoconsistofroots,affixes,clitics,andprocesses.Eachwordmusthavethesamenumberofeachof
+these categories of items. Except for processes,
+these must occur in the same order in forms and
+glosses. Theroots,affixes,andcliticsthatmakeup
+the words are “morpheme-like units” (or tokens)
+andaredelimitedbyspaces. Eachprocessisasso-
+ciatedwithasinglemorpheme-likeunit.5
+3.2 Space-Delimited Form Tokens
+Formtokensaresequenceswithcomponentsofthe
+typesshowninTable 1.
+TYPE CONN. PREC.
+BASE?EXAMPLE GLOSS
+root n/a n/a Kind child
+prefix-Yun-likely NEG-likely
+suffix - N Kind-er child-PL
+proclitic=Yj’=aime 1.SG=like
+enclitic = N child=’s child=POSS
+Table1: Typesoftokens.
+Whenlexicalglossesconsistofmultiplewords,
+they are joined with the underscore, as in Hmong
+lug‘come_back ’. In this case, an optional rule
+from LGR is made mandatory. The use of a pe-
+riodtocomposecomplexglossesisnottobeused
+forthispurpose. Instead,itisusedstrictlyincases
+of cumulative exponence (that is, where a single
+morpheme realizes and is glossed with more than
+oneproperty)asinEnglish -s‘-3.SG.PRS’.
+5In a few cases, this has proven problematic and has re-
+sulted in redundancy, but in the general case, it has worked
+well.61
+Form tokens may contain annotations for MOR-
+PHOLOGICAL PROCESSES suchasthefollowing:
+•Reduplication
+•Infixation
+•Transfixation
+•Apophony
+•Tonaloverwriting
+•Segmentaloverwriting
+Theseareindicatedwithbracketedexpressions. In
+lexicalforms( lx),theseconsistof {A>B}where A
+andBcanbeanystringincludingtheemptystring.
+These indicate a process in which Ahas been re-
+placed by B. Examples include English t{u>i}θ
+‘tooth{PL}.’ In srs, these consist of {A}, where
+Acan be any string (including the empty string).
+Theseindicatesubstringsthataretheresultofthe
+application of a process. Take, for example, En-
+glish t{i}θ‘tooth{PL}‘. Foracompleteexample,
+see Figure 1. In some cases, there may be a hi-
+erarchical relationship between processes, where
+one process “feeds” another. This is indicated by
+providing additional steps using the bracket-and-
+arrow notation, e.g., {3>1>4}as in the following
+examples from Yoloxóchitl Mixtec. In ( 6a) and
+(6b)theirrealistransitive ta’3bi4andinstransitive
+ta’1bi4arechangedtothehabitual,withtone/4/on
+thefirstmora. Weanalyzetheshiftof/3/>/1/asa
+detransitivising process and thus in example ( 6b)
+both DTR and HAB are represented by {3>1>4}.
+The low tone /1/ is then reassigned to the second
+mora (shown in GGG as the “insertion” of /1/ on
+/i/). Inmanycasesthis“push”offirstmora’sorigi-
+nal tone (/1/ or /3/) onto the second mora occurs,
+forming a contour tones (e.g., /14/ and underly-
+ing/34/(surface/24/byphonologicalruleafterthe
+mora-initialtone4ofthehabitual).
+(6)a.ta’{3>4}bi4
+break{HAB}
+‘habituallybreak(transitive)’
+b.ta’{3>1>4}bi{>1}4
+break{DTR.HAB;1,2}
+‘habituallybreak(intransitive)’
+3.3 Covert elements
+When the absence of an affix is significant, it can
+berepresentedas0-or-0(standinginfor ∅or 𝜖).
+3.4 Distinguishing Morphology from
+Phonology
+The process notations are not meant to represent
+purelyphonologicalalternations. Ifanalternationcanbeaccountedforbyarulethatiswhollycondi-
+tioned by the surrounding phonological segments
+orsyllablestructureandprosodiccontext,itshould
+be treated as phonological and not directly repre-
+sentedinthe lxfield. The lxfieldshouldcontain
+onlyinformationthatisderivablefromthelexical,
+derivational,andinflectionalpropertiesofatoken
+andisnotpredictableonanotherbasis.
+3.5 Space-Delimited Gloss Tokens
+Type Example Glosss
+Infixation s{>um}ulat write{PFV}
+Reduplication {>su}sulat write{PROSP}
+Transfixation k{i>u}t{a>u}b book{PL;1,2}
+Apophony t{u>i}θ tooth{PL}
+Segmental
+overwriting{xi>ku}3xi3 eat{IRR}
+Tonal
+overwritingku{3>14}ni2 want{NEG}
+Table2: Exampleformsandglossesforarangeofmor-
+phologicalprocesses.
+Conventions for associating gloss tokens with
+morpheme tokens (see Table 2) are based on the
+Leipzig glossing conventions with significant ex-
+tensions. When possible, labels for categories
+are derived from the Unimorph schema ( Sylak-
+Glassman,2016).
+Each gloss token consists of a lexical or mor-
+pheme gloss followed by a sequence of process
+glosses(eachenclosedincurlybrackets)andzero
+or one delimiters { =,-} which may be either pre-
+posed or postposed. Process glosses consist of
+lexical glosses or morpheme glosses and an op-
+tionalsemicolonfollowedbyalistofnumberssep-
+arated by commas. The numbers indicate the in-
+dexofspans(startingfrom1)inthecorresponding
+formtheglossappliesto. Forexample, inArabic
+k{i>u}t{aː>u}b ‘book{PL;1,2}’,thePLproperty
+is realized by two changes ({>u} and {>u}) and
+thisisindicatedbythespanindices(1,2)afterthe
+semicolon. Foreaseofannotation,ifthereisonly
+oneprocessinaword,theindexcanbeomitted.
+Some form tokens have more than one as-
+sociated process. The corresponding glosses
+are provided in successive bracketed expres-
+sions after that lexical or morpheme gloss.
+For example, in Arabic k{>a}t{>ː}{>a}b{>a}62
+‘write{PST;1,3}{CAUS;2}{3.SG.M;4}’,thereare
+three processes, indicated by the three properties
+in brackets with their respective indices. The use
+of indices means the alignment between brack-
+etedexpressionsinformsandglossesisdetermin-
+istic. The orders of the processes (bracketed ex-
+pressions) in the gloss can be arbitrary, but—as a
+group—they should appear only at the end of the
+gloss.
+Morpheme glosses are drawn from the Uni-
+morphSchema( Sylak-Glassman ,2016)whenpos-
+sible.6Whenglossesforderivationalmorphology
+are present in the Leipzig Rules but not in Uni-
+morph, the Leipzig gloss should be used. When
+a needed category is not represented in either re-
+source,itwillbeaddedtothestandard.
+Super-categoriesoffeaturesarerepresentatedas
+CATEGORY:: . Thus, first-person plural subject is
+representedas SUBJ::1.PL .
+3.6 Disjunctions
+Disjunctions between properties can indicated
+with the pipe ( |) operator and grouping can
+be indicated with square brackets. The |op-
+erator binds more closely than the .opera-
+tor. Thus, English youmay be glossed (out
+of context) as 2.SG|PL.NOM|ACC (second person,
+singular or plural and nominative or accusative.
+Square brackets can be used for grouping. Ger-
+man siecan be glossed (out of context) as
+3.[SG.FEM]|[PL.NOM|ACC] (third person, either
+feminine singular or unspecified for gender and
+plural and either nominative or accusative). Dis-
+junctionsaretobeusedwhentheexactanalysisof
+a wordform, in context, is not clear to an annota-
+tor. In general, their use should be minimized as
+thequalityoftheannotationsimproves.
+3.7 Translations
+Eachdiscoursesegmentshouldbeaccompaniedby
+anidiomatictranslationintothemetalanguage.
+3.8 Parsing GGG
+Parsing GGG is more complicated than parsing
+XigtbecauseGGGis,effectively,an 𝐴𝑛𝐵𝑛𝐶𝑛lan-
+guage. TovalidateorparseGGG,onemustensure
+that three sequences, lx,sr, and gl, are the same
+length (when split into tokens on white space).
+This means that context-free parsing for GGG is
+not possible. This adds some overhead to writing
+6See,also https://unimorph.github.io/schema/toolsforGGG.However,wehavewrittenparsing,
+generation, and validation tools for GGG without
+excessiveinvestments.7
+4 Linguistic Adequacy
+The adequacy of GGG for annotating concatena-
+tivemorphologyisidenticaltothatofLGR,since
+the mechanism is borrowed from LGR directly.
+Theonlymodificationisthatmorphemeswithina
+wordaredividedbyspacesinadditiontohyphens
+andequalsigns. Thismeansthattheheadednessof
+compounds must be stated explicitly (with depen-
+dentstreatedlikeaffixes).
+TheGGGapproach,however,hasadistinctad-
+vantageinthetreatmentofnon-concatenativemor-
+phology,asitisabletoachievecompleteadequacy
+(thoughnottheoreticalcorrectnessordepthofgen-
+eralization)throughtheuseofasingleannotation
+mechanism: {A?>B?(;C)?}. We show that the
+convention works well for infixation, reduplica-
+tion,truncation,apophony,tonaloverwriting,seg-
+mental overwriting, transfixation, and other simi-
+larprocesses.
+4.1 Infixation
+Infixation involves the inserting of a morpheme
+into a morpheme. Take the following examples
+fromUlwa,aMisumalpanlanguageofNicaragua.
+Possessives are denoted by affixes such as “ka”
+(3.SG)and“ki”(1.SG),whichmayoccuraseither
+suffixesorinfixesdependingonthesyllablestruc-
+ture of the word. Therefore, in all of these cases,
+we are treating the affixes as morphological pro-
+cesses.McCarthyandPrince (1993)
+-
+lx:”wahai{>ki}”
+sr:”wahai{ki}”
+gl:”brother{POSS::1.SG}”
+tr:”my brother”
+-
+lx:”sû{>ki}lu”
+sr:”sû{ki}lu”
+gl:”dog{POSS::1.SG}”
+tr:”my dog”
+UsingLGR,thefirsttwoURswouldbeannotated
+aswahai<ki> and sû<ki>lu. Consider a similar
+examplefromLatin:
+7Seehttps://github.com/cmu-llab/
+generalized-glossing-guidelines .63
+OPERATION GGG LGR XIGT
+prefix un-likely
+NEG-likelyun-likely
+NEG-likely
+suffix Kind-er
+child-PLKind-er
+child-PL
+infix sû{>ki}lu
+dog{1.SG}sû<ki>lu
+dog<1.SG>
+prefixingreduplication {>su}sulat
+write{PROSP}su~sulat
+PROSP~write
+infixingreduplication ma{>m}vit ̪
+lion{PL}? 
+suffixingreduplication kuk{>uk}
+bark{PROG}kuk~uk
+bark~PROG
+subtractivemorphology nyoo{n>}
+lamb{PL} 
+apophony c{ea>i}nn
+head{PL}cinn
+head\PL
+tonaloverwriting xi{3>4}xi3
+eat{HAB} 
+segmentaloverwriting {ki>ka}3{xa>sa}3
+do{IRR;1,2} 
+transfixation k{i>u}t{aː>u}b
+book{PL;1,2} 
+score 11 6.5 7
+Table3: Comparisonoftherepresentationofdifferentmorphologicalprocessesbyglossingconvention.
+-
+lx:”ta{>n}g{>o}”
+sr:”ta{n}g{o}”
+gl:”touch{1.SG.PRS.IND}”
+tr:”Itouch.”
+Bothofthesesystemsareequallyadequateforrep-
+resentinginfixation(atleastofthiskind). Infixing
+reduplication,however,ispossiblyadifferentmat-
+ter,asshownin§ 4.2below.
+4.2 Reduplication
+Reduplication refers to the realization of a mor-
+phological property by repeating material from a
+base. InthisexamplefromMangap-Mbula,aVC-
+sequence is reduplicated after the base, to mark
+progressiveaspect: ( Bugenhagen ,1995)
+-
+lx:”kuk{>uk}”
+sr:”kuk{uk}”gl:”bark{PROG}”
+tr:”be barking”
+GGG can deal with relatively complex types of
+redupulication such as occur in Balsas Nahuatl8,
+in which the repeated material can ultimately be
+realizedasahightoneand/oralengthenedvowel
+(whicharenotnecessarilycontiguous):
+-
+lx:”ti- ne:{>◌ ́}ch- {>te}te:mowa -0”
+sr:”ti- ne:{◌ ́}x- {te}te:mowa -0”
+gl:”SUBJ::2SG- OBJ::1SG- \
+{RED_H;1,2}look\_for -PRS.IND.SG”
+tr:”You look for me.”
+-
+lx:”ni- mi{>:◌ ́}ts- te:mowa -0”
+sr:”ni- mi{:◌ ́}s- te:mowa -0”
+gl:”SUBJ::1SG- OBJ::2SG- \
+8The acute accent indicates a high tone. Unlike other va-
+rietiesofNahuatl,BalsasNahuatlistonal( GuionandAmith ,
+2005;Guionetal. ,2010).64
+{RED_H;1}look\_for -PRS.IND.SG”
+tr:”Ilook for you.”
+GGG is uniquely able to formalize Balsas Nahu-
+atl reduplication with a fixed coda laryngeal
+(RDP_H),areduplicantthatcanberealizedonthe
+the stem in various ways (first, third, and fourth
+examples) or on a prefix (second example). The
+commonality of all four cases is established by
+the common gloss: (RDP_H). Reduplication may
+be prefixing, suffixing, or infixing. The case of
+infixing reduplication is particularly problematic
+for LGR, since it is not clear which convention—
+thetildeconventionforreduplicationortheangle-
+bracketnotationforinfixation—shouldtakeprece-
+dence. In GGG, the notation is the same and this
+decision is not necessary. Take the following ex-
+amplefromPima( Riggle,2006):
+-
+lx:”ma{>m}vit ̪ ”
+sr:”ma{m}vit ̪ ”
+gl:”lion{PL}”
+tr:”lions”
+-
+lx:”tʃɨ{>tʃ}mait ̪ ”
+sr:”tʃɨ{tʃ}mait ̪ ”
+gl:”drum{PL}”
+tr:”drums”
+A similar pattern of infixing reduplication can
+befoundinLatin:
+-
+ur:”s{>po}pond{>ī}”
+sr:”s{po}pond{ī}”
+gl:”perform{1.SG.PRF.IND;1,2}
+4.3 Subtractive morphology
+Subtractivemorphologyinvolvesthedeletionofa
+segmental material from a base. The Murle lan-
+guageintheSurmicfamilysubtractsthelastconso-
+nantofanountochangeitfromsingulartoplural:
+(Arensen,1982)
+lx:”nyoo{n>0}”
+sr:”nyoo{}”
+gl:”lamb{PL}”
+tr:”lambs”
+-
+lx:”wawo{c>0}”
+sr:”wawo{}”
+gl:”white_heron{PL}”
+tr:”white herons”There appears to be no standard way of notating
+this in LGR. In Xigt, we believe that subtractive
+morphology could be notated by aligning a gloss
+withanemptystring,butthiswouldmakeitindis-
+tinguishablefromrealizingamorphologicalprop-
+ertyvianochangetotheform.
+4.4 Apophony
+Apophony refers to a process in which a morpho-
+logical property is realized through an alternation
+in phonemes. Take the following examples from
+Irish,inwhichvowelalternationisusedtoturnsin-
+gularnounsintoplural( FifeandKing ,2017).
+-
+lx:”c{ea>i}nn”
+sr:”c{i}nn”
+gl:”head{PL}”
+tr:”heads”
+-
+lx:”m{ui>a}r{>a}”
+sr:”m{a}r{a}”
+gl:”sea{PL;1,2}”
+tr:”seas”
+Apophony in Totonac often involves consonants
+changes,likechanging/ʃ/to/s/:
+-
+lx:”{ʃ>s}kú'ta'”
+sr:”{s}kú'ta'”
+gl:”sour{DIM}”
+tr:”alittle sour”
+-
+lx:”{ʃ>s}uːni'”
+sr:”{s}uːni'”
+gl:”bitter{DIM}”
+tr:”alittle bitter”
+LGRallowsonetoindicatethatapophononyaf-
+fectsamorpheme,butdoesnotapplyanotationfor
+specifying its locus. Apparently Xigt has no way
+todistinguishapophonyfrominfixation.
+4.5 Tonal overwriting
+Tonal overwriting refers to the class of morpho-
+logical processes in which a tonal “affix” over-
+writestheexistingtonalmelodyonabase. Exam-
+ples from Yoloxóchitl Mixtec—which uses tonal
+overwritingtoindicatedifferentverbalinflections,
+suchashabitualandnegative—follow:
+-
+lx:”ta'{3>1>4}bi{>1}4”65
+sr:”ta'{4}bi{14}”
+gl:”get-broken{HAB;1,2}”
+tr:”habitually get broken”
+In Xigt, there is not a clear way of distinguishing
+these changes from infixation. In LGR, these can
+berepresentedwiththebackslashnotationusedfor
+apophony,withthesamedrawbacks.
+4.6 Segmental overwriting
+Tonal overwriting is fairly common. The analo-
+goussegmentalprocess—inwhichastringofseg-
+ments is overwritten by other segments—is rela-
+tivelyrare,butdoesexist. Thefollowingexample
+fromYoloxóchitlMixtecemployssegmentalover-
+writingtoinflectaclassofverbsasirrealis:
+-
+lx:”{xi>ku}3xi3”
+sr:”{ku}3xi3”
+gl:”eat{IRR}”
+tr:”eat”
+4.7 Transfixation
+Transfixation involves interspersing affixal spans
+into a root morpheme. In Semitic languages such
+as Arabic and Hebrew, words are mostly associ-
+ated with 3-consonant roots. In Arabic, k-t-bis a
+root meaning “write” and d-r-sis a root meaning
+“study”. Theserootsarecombinedwithpatternsof
+vowelstoformwords.
+Transfixation is particularly tricky to represent
+using LGR, and it is unclear which convention
+should be used to do so (the angle-bracket infix
+notation or the backslash non-concatenative nota-
+tion). InGGG,allofthepatternsinsertedintothe
+rootaretreatedasmorphologicalprocesses,using
+thebracketnotation.
+Take the following examples from Arabic,
+which show how different vowel patterns can dis-
+tinguishbetweensingularandpluralnouns,aswell
+asdifferentformsofverbs.
+lx:”q{a>u}l{>uu}b”
+sr:”q{u}l{uu}b”
+gl:”heart{PL;1,2}”
+tr:”hearts”
+-
+lx:”d{>a}r{>a}s{>a}”
+sr:”d{a}r{a}s{a}”
+gl:”study{PST;1,2}{3.SG.M;3}”
+tr:”he studied”Transfixation can be combined with other pro-
+cesses as well. For example, gemination on the
+2nd consonant of the root is used to turn a Form
+I verb into a causative Form II verb ( Haspelmath
+andSims,2010).
+-
+lx:”d{>a}r{>ː}{>a}s{>a}”
+sr:”d{a}r{ː}{a}s{a}”
+gl:”study{PST;1,3}{CAUS;2}{3.SG.M;4}”
+tr:”he taught”
+A scorecard comparing the adequacy of GGG,
+LGR,andXigtisshowninTable 3.
+5 Conclusions
+As should be clear from Table 1, most of the at-
+testedtypesofmorphologicalprocessescanberep-
+resentedinallthreeannotationformats. However,
+GGG has clear advantages in some areas. For ex-
+ample,ifalinguistwantstoknowhownounswith
+a particular singular form are realized in the plu-
+ral, without knowing in advance what processes
+areinvolved,theycoulddiscoverthisthroughrel-
+atively simple processing of GGG—because it is
+completely explicit. It would be immediately ev-
+ident whether the process was a particular kind
+ofapophony,reduplication,tonaloverwriting,etc.
+For the other two annotation formats, this kind
+of research—if non-concatenative processes are
+involved—isconsiderablymorecomplicated.
+One cost, because of its explicitness, is that
+GGG annotation cannot be completed until a lin-
+guist has a thorough (though fundamental) analy-
+sisofalanguage’smorphology. Ourgoalistode-
+velop tools to facilitate this analysis: to go from
+basicrecordingstointerlinearannotationswithre-
+ducedhumanintervention. WehopethatGGGwill
+beanimportantpartofthisongoingwork. Butthe
+benefits are great. We are currently using GGG
+with great success in our ongoing research and
+hope that other investigators will find it similarly
+useful.
+Acknowledgments
+WegratefullyacknowledgethesupportofUSNa-
+tionalScienceFoundation,grantnumber2211951,
+numerous examples Mixtec examples from Rey
+Castillo Garcia, and generous contributions from
+threeanonymousreviewers.66
+References
+JonathanE.Arensen.1982. Murle grammar ,volume2
+ofOccasional Papers in the Study of Sudanese Lan-
+guages. SummerInstituteofLinguisticsandUniver-
+sityofJuba,Juba,Sudan.
+StevenBird,DavidS.Day,JohnS.Garofolo,JohnHen-
+derson, Christophe Laprun, and Mark Y. Liberman.
+2000. Atlas: A flexible and extensible architecture
+forlinguisticannotation. ArXiv,cs.CL/0007022.
+Steven Bird and Mark Y. Liberman. 1999. A for-
+mal framework for linguistic annotation. ArXiv,
+cs.CL/9903003.
+R.D. Bugenhagen. 1995. A Grammar of Mangap-
+Mbula: An Austronesian Language of Papua New
+Guinea. Books Series. Department of Linguistics,
+Research School of Pacific and Asian Studies, Aus-
+tralianNationalUniversity.
+Bernard Comrie, Martin Haspelmath, and Balthasar
+Bickel. 2008. The leipzig glossing rules: Con-
+ventions for interlinear morpheme-by-morpheme
+glosses. Department of Linguistics of the Max
+Planck Institute for Evolutionary Anthropology &
+the Department of Linguistics of the University of
+Leipzig. Retrieved January ,28:2010.
+James Fife and Gareth King. 2017. Celtic (Indo-
+European) ,chapter24.JohnWiley&Sons,Ltd.
+Michael Wayne Goodman, Joshua Crowgey, Fei Xia,
+and Emily M. Bender. 2015. Xigt: extensible inter-
+linear glossed text for natural language processing .
+Language Resources and Evaluation , 49(2):455–
+485.
+SusanGGuionandJonathanDAmith.2005. Theeffect
+of[h]ontonaldevelopmentinnahuatl. The Journal
+of the Acoustical Society of America , 117(4):2490–
+2490.
+SusanGGuion,JonathanDAmith,ChristopherSDoty,
+andIrinaAShport.2010. Word-levelprosodyinbal-
+sas nahuatl: The origin, development, and acoustic
+correlates of tone in a stress accent language. Jour-
+nal of Phonetics ,38(2):137–166.
+M. Haspelmath and A.D. Sims. 2010. Understanding
+Morphology . Understanding language series. Hod-
+derEducation.
+Charles Francis Hockett. 1954. Two models of gram-
+maticaldescription. WORD,10:210–234.
+Nancy Ide and Keith Suderman. 2007. Graf: A
+graph-based format for linguistic annotations. In
+LAW@ACL .
+KazuakiMaedaandStevenBird.2000. Aformalframe-
+work for interlinear text. Paper presented at the
+workshop on Web-Based Language Documentation
+andDescription.John J McCarthy and Alan Prince. 1993. Prosodic
+Morphology: Constraint Interaction and Satisfac-
+tion. LinguisticsDepartmentFacultyPublicationSe-
+ries.14.UniversityofMassachusettesAmherst.
+JasonRiggle.2006. Infixingreduplicationinpimaand
+its theoretical consequences. Natural Language &
+Linguistic Theory ,pages857–891.
+John Sylak-Glassman. 2016. The composition and
+use of the universal morphological feature schema
+(unimorph schema). Ms., Center for Language and
+SpeechProcessing,JohnsHopkinsUniversity.67

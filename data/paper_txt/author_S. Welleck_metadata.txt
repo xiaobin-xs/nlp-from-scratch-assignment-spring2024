@@ -1,0 +1,42 @@
+{
+    "authorId": "2129663",
+    "url": "https://www.semanticscholar.org/author/2129663",
+    "name": "S. Welleck"
+}
+
+{
+    "paperId": "3aaf6a2cbad5850ad81ab5c163599cb3d523436f",
+    "url": "https://www.semanticscholar.org/paper/3aaf6a2cbad5850ad81ab5c163599cb3d523436f",
+    "title": "Self-Refine: Iterative Refinement with Self-Feedback",
+    "year": 2023
+}
+{
+    "paperId": "46b294941c397699fde0ee7e7fc441f6a755f671",
+    "url": "https://www.semanticscholar.org/paper/46b294941c397699fde0ee7e7fc441f6a755f671",
+    "title": "D RAFT , S KETCH , AND P ROVE : G UIDING F ORMAL T HEOREM P ROVERS WITH I NFORMAL P ROOFS",
+    "year": 2023
+}
+{
+    "paperId": "7d97c17a75beb89f938eaac1d3ca60ac2245fb2e",
+    "url": "https://www.semanticscholar.org/paper/7d97c17a75beb89f938eaac1d3ca60ac2245fb2e",
+    "title": "Faith and Fate: Limits of Transformers on Compositionality",
+    "year": 2023
+}
+{
+    "paperId": "896a584885febb21fb4d287fe78984640cee1eb3",
+    "url": "https://www.semanticscholar.org/paper/896a584885febb21fb4d287fe78984640cee1eb3",
+    "title": "STEER: Unified Style Transfer with Expert Reinforcement",
+    "year": 2023
+}
+{
+    "paperId": "b16c7d45183b9d595ab64301be019741b1528860",
+    "url": "https://www.semanticscholar.org/paper/b16c7d45183b9d595ab64301be019741b1528860",
+    "title": "Llemma: An Open Language Model For Mathematics",
+    "year": 2023
+}
+{
+    "paperId": "ca991e0283a1c30a46eb585d9eb499fc0ec8ecc2",
+    "url": "https://www.semanticscholar.org/paper/ca991e0283a1c30a46eb585d9eb499fc0ec8ecc2",
+    "title": "Inference-Time Policy Adapters (IPA): Tailoring Extreme-Scale LMs without Fine-tuning",
+    "year": 2023
+}

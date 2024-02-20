@@ -1,0 +1,60 @@
+{
+    "authorId": "3407646",
+    "url": "https://www.semanticscholar.org/author/3407646",
+    "name": "David R. Mortensen"
+}
+
+{
+    "paperId": "11a571eaab42a6ffb1d938635a093315e392756d",
+    "url": "https://www.semanticscholar.org/paper/11a571eaab42a6ffb1d938635a093315e392756d",
+    "title": "ChatGPT MT: Competitive for High- (but Not Low-) Resource Languages",
+    "year": 2023
+}
+{
+    "paperId": "17fbffb05fa14e21d1c506fd5f0f568b955fe983",
+    "url": "https://www.semanticscholar.org/paper/17fbffb05fa14e21d1c506fd5f0f568b955fe983",
+    "title": "Do All Languages Cost the Same? Tokenization in the Era of Commercial Language Models",
+    "year": 2023
+}
+{
+    "paperId": "377253f69af6699df9114d2819e03f341f83e8d3",
+    "url": "https://www.semanticscholar.org/paper/377253f69af6699df9114d2819e03f341f83e8d3",
+    "title": "African Substrates Rather Than European Lexifiers to Augment African-diaspora Creole Translation",
+    "year": 2023
+}
+{
+    "paperId": "659be1ff350634f50cc066d258ee6a45e697e552",
+    "url": "https://www.semanticscholar.org/paper/659be1ff350634f50cc066d258ee6a45e697e552",
+    "title": "SigMoreFun Submission to the SIGMORPHON Shared Task on Interlinear Glossing",
+    "year": 2023
+}
+{
+    "paperId": "6a0c317f6f18dd3fe86a606cfec4ca33e2bbb726",
+    "url": "https://www.semanticscholar.org/paper/6a0c317f6f18dd3fe86a606cfec4ca33e2bbb726",
+    "title": "Multilingual TTS Accent Impressions for Accented ASR",
+    "year": 2023
+}
+{
+    "paperId": "7a08051aac75a809737096e39820bf836908d4e1",
+    "url": "https://www.semanticscholar.org/paper/7a08051aac75a809737096e39820bf836908d4e1",
+    "title": "Construction Grammar Provides Unique Insight into Neural Language Models",
+    "year": 2023
+}
+{
+    "paperId": "bf42c0462d1415cdde877c90d58da11545407b8a",
+    "url": "https://www.semanticscholar.org/paper/bf42c0462d1415cdde877c90d58da11545407b8a",
+    "title": "Generalized Glossing Guidelines: An Explicit, Human- and Machine-Readable, Item-and-Process Convention for Morphological Annotation",
+    "year": 2023
+}
+{
+    "paperId": "c5c6d006e399386c99068daba138021a62d6cc17",
+    "url": "https://www.semanticscholar.org/paper/c5c6d006e399386c99068daba138021a62d6cc17",
+    "title": "Transformed Protoform Reconstruction",
+    "year": 2023
+}
+{
+    "paperId": "db14d05b18ec852f8afcd6d2d10bbd9eeaef8325",
+    "url": "https://www.semanticscholar.org/paper/db14d05b18ec852f8afcd6d2d10bbd9eeaef8325",
+    "title": "PWESuite: Phonetic Word Embeddings and Tasks They Facilitate",
+    "year": 2023
+}

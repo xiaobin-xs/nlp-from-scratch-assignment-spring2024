@@ -1,0 +1,1904 @@
+Multimodal Learning Without Labeled Multimodal Data:
+Guarantees and Applications
+Paul Pu Liang, Chun Kai Ling, Yun Cheng, Alex Obolenskiy, Yudong Liu,
+Rohan Pandey, Alex Wilf, Louis-Philippe Morency, Ruslan Salakhutdinov
+Carnegie Mellon University
+pliang@cs.cmu.edu
+Abstract
+In many machine learning systems that jointly learn from multiple modalities, a
+core research question is to understand the nature of multimodal interactions : the
+emergence of new task-relevant information during learning from both modalities
+that was not present in either alone. We study this challenge of interaction quantifi-
+cation in a semi-supervised setting with only labeled unimodal data and naturally
+co-occurring multimodal data (e.g., unlabeled images and captions, video and
+corresponding audio) but when labeling them is time-consuming. Using a precise
+information-theoretic definition of interactions, our key contributions are the deriva-
+tions of lower and upper bounds to quantify the amount of multimodal interactions
+in this semi-supervised setting. We propose two lower bounds based on the amount
+ofshared information between modalities and the disagreement between separately
+trained unimodal classifiers, and derive an upper bound through connections to
+approximate algorithms for min-entropy couplings . We validate these estimated
+bounds and show how they accurately track true interactions. Finally, two semi-
+supervised multimodal applications are explored based on these theoretical results:
+(1) analyzing the relationship between multimodal performance and estimated
+interactions, and (2) self-supervised learning that embraces disagreement between
+modalities beyond agreement as is typically done.
+1 Introduction
+A core research question in multimodal learning is to understand the nature of multimodal interactions
+across modalities in the context of a task: the emergence of new task-relevant information during
+learning from both modalities that was not present in either modality alone [ 6,65]. In settings where
+labeled multimodal data is abundant, the study of multimodal interactions has inspired advances in
+theoretical analysis [1, 43, 66, 84, 94] and representation learning [51, 76, 91, 104] in language and
+vision [ 2], multimedia [ 9], healthcare [ 53], and robotics [ 57]. In this paper, we study the problem of
+interaction quantification in a setting where there is only unlabeled multimodal data DM={(x1, x2)}
+but some labeled unimodal data Di={(xi, y)}collected separately for each modality. This
+multimodal semi-supervised paradigm is reminiscent of many real-world settings with the emergence
+of separate unimodal datasets like large-scale visual recognition [ 23] and text classification [ 96], as
+well as the collection of data in multimodal settings (e.g., unlabeled images and captions or video
+and audio [63, 87, 76, 107]) but when labeling them is time-consuming [47, 48].
+Using a precise information-theoretic definition of interactions [ 10,98], our key contributions are
+the derivations of lower and upper bounds to quantify the amount of multimodal interactions in
+this semi-supervised setting with only DiandDM. We propose two lower bounds for interaction
+quantification: our first lower bound relates multimodal interactions with the amount of shared
+information between modalities, and our second lower bound introduces the concept of modality
+disagreement which quantifies the differences of classifiers trained separately on each modality.
+Finally, we propose an upper bound through connections to approximate algorithms for min-entropy
+couplings [16]. To validate our derivations, we experiment on large-scale synthetic and real-world
+datasets with varying amounts of interactions. In addition, these theoretical results naturally yield
+new algorithms for two applications involving semi-supervised multimodal data:
+Preprint. Under review.arXiv:2306.04539v1  [cs.LG]  7 Jun 2023
+1.We first analyze the relationship between interaction estimates and downstream task performance
+when optimal multimodal classifiers are learned access to multimodal data. This analysis can help
+develop new guidelines for deciding when to collect andfuselabeled multimodal data.
+2.As the result of our analysis, we further design a new family of self-supervised learning objectives
+that capture disagreement on unlabeled multimodal data, and show that this learns interactions
+beyond agreement conventionally used in the literature [ 76,81,107]. Our experiments show
+strong results on four datasets: relating cartoon images and captions [ 44], predicting expressions of
+humor and sarcasm from videos [ 14,40], and reasoning about multi-party social interactions [ 105].
+More importantly, these results shed light on the intriguing connections between disagreement, inter-
+actions, and performance. Our code is available at https://github.com/pliang279/PID .
+2 Preliminaries
+2.1 Definitions and setup
+LetXiandYbe finite sample spaces for features and labels. Define ∆to be the set of joint
+distributions over (X1,X2,Y). We are concerned with features X1, X2(with support Xi) and labels
+Y(with support Y) drawn from some distribution p∈∆. We denote the probability mass function by
+p(x1, x2, y), where omitted parameters imply marginalization. In many real-world applications [ 63,
+76, 81, 102, 107], we only have partial datasets from prather than the full distribution:
+•Labeled unimodal dataD1={(x1, y)∶X1×Y},D2={(x2, y)∶X2×Y}.
+•Unlabeled multimodal dataDM={(x1, x2)∶X1×X2}.
+D1,D2andDMfollow the pairwise marginals p(x1, y),p(x2, y)andp(x1, x2). We define ∆p1,2=
+{q∈∆∶q(xi, y)=p(xi, y)∀y∈Y, xi∈Xi, i∈[2]}as the set of joint distributions which agree
+with the labeled unimodal data D1andD2, and ∆p1,2,12={r∈∆∶r(x1, x2)=p(x1, x2), r(xi, y)=
+p(xi, y)}as the set of joint distributions which agree with all D1,D2andDM.
+Despite partial observability, we often still want to understand the degree to which two modalities
+can interact to contribute new information not present in either modality alone, in order to inform our
+decisions on multimodal data collection and modeling [ 51,60,66,104]. We now cover background
+towards a formal information-theoretic definition of interactions and their approximation.
+2.2 Information theory, partial information decomposition, and synergy
+Information theory formalizes the amount of information that a variable ( X1) provides about another
+(X2), and is quantified by Shannon’s mutual information (MI) and conditional MI [80]:
+I(X1;X2)=∫p(x1,x2)logp(x1,x2)
+p(x1)p(x2)dx, I (X1;X2∣Y)=∫p(x1,x2∣y)logp(x1,x2∣y)
+p(x1∣y)p(x2∣y)dxdy.
+The MI of two random variables X1andX2measures the amount of information (in bits) obtained
+about X1by observing X2, and by extension, conditional MI is the expected value of MI given the
+value of a third (e.g., Y). However, the extension of information theory to three or more variables to
+describe the synergy between two modalities for a task remains an open challenge. Among many
+proposed frameworks, Partial information decomposition (PID) [ 98] posits a decomposition of the
+total information 2variables X1, X2provide about a task Yinto 4 quantities: Ip({X1, X2};Y)=
+R+U1+U2+Swhere Ip({X1, X2};Y)is the MI between the joint random variable (X1, X2)andY,
+redundancy Rdescribes task-relevant information shared between X1andX2, uniqueness U1andU2
+studies the task-relevant information present in only X1orX2respectively, and synergy Sinvestigates
+the emergence of new information only when both X1andX2are present [10, 38]:
+Definition 1. (Multimodal interactions) Given X1,X2, and a target Y, we define their redundant
+(R), unique ( U1andU2), and synergistic ( S) interactions as:
+R=max
+q∈∆p1,2Iq(X1;X2;Y), U 1=min
+q∈∆p1,2Iq(X1;Y∣X2), U 2=min
+q∈∆p1,2Iq(X2;Y∣X1),(1)
+S=Ip({X1, X2};Y)−min
+q∈∆p1,2Iq({X1, X2};Y), (2)
+where the notation Ip(⋅)andIq(⋅)disambiguates mutual information (MI) under pandqrespectively.
+I(X1;X2;Y)=I(X1;X2)−I(X1;X2∣Y)is a multivariate extension of information theory [ 8,
+70]. Most importantly, R,U1, and U2can be computed exactly using convex programming over
+distributions q∈∆p1,2with access only to the marginals p(x1, y)andp(x2, y)by solving an
+2
+Agreement
+Disagreement
+Theorem 1Lower boundTheorem 2Lower bound
+Figure 1: We estimate two types of synergy: (1) agreement synergy that arises as a result of Yincreasing
+the agreeing shared information between X1andX2(reminiscent of common cause structures as opposed to
+redundancy in common effect), and (2) disagreement synergy that emerges due to the disagreement between
+unimodal predictors resulting in a new prediction y≠y1≠y2(rather than uniqueness where y=y2≠y1).
+equivalent max-entropy optimization problem q∗=arg maxq∈∆p1,2Hq(Y∣X1, X2)[10,66]. This is
+a convex optimization problem with linear marginal-matching constraints (see Appendix A.2). This
+gives us an elegant interpretation that we need only labeled unimodal data in each feature from D1
+andD2to estimate redundant and unique interactions.
+3 Estimating Synergy Without Multimodal Data
+Unfortunately, Sis impossible to compute via equation (2) when we do not have access to the full
+joint distribution p, since the first term Ip(X1, X2;Y)is unknown. Instead, we will aim to provide
+lower and upper bounds in the form S≤S≤Swhich depend only onD1,D2, andDM.
+3.1 Lower bounds on synergy
+Our first insight is that while labeled multimodal data is unavailable, the output of unimodal classifiers
+may be compared against each other. Let δY={r∈R∣Y∣
++∣ ∣∣r∣∣1=1}be the probability simplex
+over labels Y. Consider the set of unimodal classifiers Fi∋fi∶Xi→δYand multimodal classifiers
+FM∋fM∶X1×X2→δY. The crux of our method is to establish a connection between modality
+disagreement and a lower bound on synergy.
+Definition 2. (Modality disagreement) Given X1,X2, and a target Y, as well as unimodal classifiers
+f1andf2, we define modality disagreement as α(f1, f2)=Ep(x1,x2)[d(f1, f2)]where d∶Y×Y→
+R≥0is a distance function in label space scoring the disagreement of f1andf2’s predictions.
+Quantifying modality disagreement gives rise to two types of synergy as illustrated in Figure 1:
+agreement synergy and disagreement synergy. As their names suggest, agreement synergy happens
+when two modalities agree in predicting the label and synergy arises within this agreeing information.
+On the other hand, disagreement synergy happens when two modalities disagree in predicting the
+label, and synergy arises due to disagreeing information.
+Agreement synergy We first consider the case when two modalities contain shared information
+that leads to agreement in predicting the outcome. In studying these situations, a driving force for
+estimating Sis the amount of shared information I(X1;X2)between modalities, with the intuition
+that more shared information naturally leads to redundancy which gives less opportunity for new
+synergistic interactions. Mathematically, we formalize this by relating StoR[98],
+S=R−Ip(X1;X2;Y)=R−Ip(X1;X2)+Ip(X1;X2∣Y). (3)
+implying that synergy exists when there is high redundancy and low (or even negative) three-way
+MIIp(X1;X2;Y)[7,35]. By comparing the difference in X1, X2dependence with and without the
+task (i.e., Ip(X1;X2)vsIp(X1;X2∣Y)),2cases naturally emerge (see top half of Figure 1):
+1.S>R: When both modalities do not share a lot of information as measured by low I(X1;X2),
+but conditioning on Yincreases their dependence: I(X1;X2∣Y)>I(X1;X2), then there is
+synergy between modalities when combining them for task Y. This setting is reminiscent of
+common cause structures. Examples of these distributions in the real world are multimodal
+question answering, where the image and question are less dependent (some questions like ‘what
+is the color of the car’ or ‘how many people are there’ can be asked for many images), but the
+answer (e.g., ‘blue car’) connects the two modalities, resulting in dependence given the label. As
+expected, S=4.92, R=0.79for the VQA 2.0 dataset [37].
+3
+2.R>S: Both modalities share a lot of information but conditioning on Yreduces their dependence:
+I(X1;X2)>I(X1;X2∣Y), which results in more redundant than synergistic information. This
+setting is reminiscent of common effect structures. A real-world example is in detecting sentiment
+from multimodal videos, where text and video are highly dependent since they are emitted by
+the same speaker, but the sentiment label explains away some of the dependencies between both
+modalities. Indeed, for multimodal sentiment analysis from text, video, and audio of monologue
+videos on MOSEI [59, 106], R=0.26andS=0.04.
+However, Ip(X1;X2∣Y)cannot be computed without access to the full distribution p. In Theorem 1,
+we obtain a lower bound on Ip(X1;X2∣Y), resulting in a lower bound Sagreefor synergy.
+Theorem 1. (Lower-bound on synergy via redundancy) We can relate StoRas follows
+Sagree=R−Ip(X1;X2)+min
+r∈∆p1,2,12Ir(X1;X2∣Y)≤S (4)
+We include the full proof in Appendix A.3, but note that minr∈∆p1,2,12Ir(X1;X2∣Y)is equivalent to
+a max-entropy optimization problem solvable using convex programming. This implies that Sagree
+can be computed efficiently using only unimodal data Diand unlabeled multimodal data DM.
+Disagreement synergy We now consider settings where two modalities disagree in predicting
+the outcome: suppose y1=arg maxyp(y∣x1)is the most likely prediction from the first modality,
+y2=arg maxyp(y∣x2)for the second modality, and y=arg maxyp(y∣x1, x2)the true multimodal
+prediction. During disagreement, there are again 2cases (see bottom half of Figure 1):
+1.U>S: Multimodal prediction y=arg maxyp(y∣x1, x2)is the same as one of the unimodal
+predictions (e.g., y=y2), in which case unique information in modality 2leads to the outcome.
+A real-world dataset that we categorize in this case is MIMIC involving mortality and disease
+prediction from tabular patient data and time-series medical sensors [ 53] which primarily shows
+unique information in the tabular modality. The disagreement on MIMIC is high α=0.13, but
+since disagreement is due to a lot of unique information, there is less synergy S=0.01.
+2.S>U: Multimodal prediction yis different from both y1andy2, then both modalities interact
+synergistically to give rise to a final outcome different from both disagreeing unimodal predictions.
+This type of joint distribution is indicative of real-world examples such as predicting sarcasm
+from language and speech - the presence of sarcasm is typically detected due to a contradiction
+between what is expressed in language and speech, as we observe from the experiments on
+MUS TARD [14] where S=0.44andα=0.12are both relatively large.
+We formalize these intuitions via Theorem 2, yielding a lower bound Sdisagree based on disagreement
+minus the maximum unique information in both modalities:
+Theorem 2. (Lower-bound on synergy via disagreement, informal) We can relate synergy Sand
+uniqueness Uto modality disagreement α(f1, f2)of optimal unimodal classifiers f1, f2as follows:
+Sdisagree=α(f1, f2)⋅c−max(U1, U2)≤S (5)
+for some constant cdepending on the label dimension ∣Y∣and choice of label distance function d.
+Theorem 2 implies that if there is substantial disagreement α(f1, f2)between unimodal classifiers,
+it must be due to the presence of unique or synergistic information. If uniqueness is small, then
+disagreement must be accounted for by synergy, thereby yielding a lower bound Sdisagree . Note that
+the notion of optimality in unimodal classifiers is important: poorly-trained unimodal classifiers could
+show high disagreement but would be uninformative about true interactions. We include the formal
+version of the theorem based on Bayes’ optimality and a full proof in Appendix A.4.
+Hence, agreement and disagreement synergy yield separate lower bounds SagreeandSdisagree . Note
+that these bounds always hold, so we could take S=max{Sagree, Sdisagree}.
+3.2 Upper bound on synergy
+While the lower bounds tell us the least amount of synergy possible in a distribution, we also want to
+obtain an upper bound on the possible synergy, which together with the above lower bounds sandwich
+S. By definition, S=Ip({X1, X2};Y)−max q∈∆p1,2Iq({X1, X2};Y). Thus, upper bounding
+4
+synergy is the same as maximizing the MI Ip(X1, X2;Y), which can be rewritten as
+max
+r∈∆p1,2,12Ir({X1, X2};Y)=max
+r∈∆p1,2,12{Hr(X1, X2)+Hr(Y)−Hr(X1, X2, Y)} (6)
+=Hp(X1, X2)+Hp(Y)−min
+r∈∆p1,2,12Hr(X1, X2, Y), (7)
+where the second line follows from the definition of ∆p1,2,12. Since the first two terms are constant,
+an upper bound on Srequires us to look amongst all multimodal distributions r∈∆which match the
+unimodal Diand unlabeled multimodal data DM, and find the one with minimum entropy.
+Theorem 3. Solving r∗=arg minr∈∆p1,2,12Hr(X1, X2, Y)is NP-hard, even for a fixed ∣Y∣≥4.
+Theorem 3 suggests we cannot tractably find a joint distribution which tightly upper bounds synergy
+when the feature spaces are large. Thus, our proposed upper bound Sis based on a lower bound on
+minr∈∆p1,2,12Hr(X1, X2, Y), which yields
+Theorem 4. (Upper-bound on synergy)
+S≤Hp(X1, X2)+Hp(Y)−min
+r∈∆p12,yHr(X1, X2, Y)−max
+q∈∆p1,2Iq({X1, X2};Y)=S (8)
+where ∆p12,y={r∈∆∶r(x1, x2)=p(x1, x2), r(y)=p(y)}. The second optimization problem is
+solved with convex optimization. The first is the classic min-entropy coupling over(X1, X2)andY,
+which is still NP-hard but admits good approximations [ 16,17,55,78,19,20]. Proofs of Theorem 3,
+4, and approximations for min-entropy couplings are deferred to Appendix A.5 and A.6.
+4 Experiments
+We design comprehensive experiments to validate these estimated bounds and show new relationships
+between disagreement, multimodal interactions, and performance, before describing two applications
+in (1) estimating optimal multimodal performance without multimodal data to prioritize the collection
+andfusion data sources, and (2) a new disagreement-based self-supervised learning method.
+4.1 Verifying predicted guarantees and analysis of multimodal distributions
+Synthetic bitwise datasets : We enumerate joint distributions over X1,X2,Y∈{0,1}by sampling
+100,000vectors in the 8-dimensional probability simplex and assigning them to each p(x1, x2, y). Us-
+ing these distributions, we estimate ˆp(y∣x1)andˆp(y∣x2)to compute disagreement and the marginals
+ˆp(x1, y),ˆp(x2, y), and ˆp(x1, x2)to estimate the lower and upper bounds.
+Figure 2: Our two lower bounds
+Sagree andSdisagree track actual
+synergy Sfrom below, and the up-
+per bound Stracks Sfrom above.
+We find that Sagree,Sdisagree tend
+to approximate Sbetter than S.Large real-world multimodal datasets : We also use the large col-
+lection of real-world datasets in MultiBench [ 61]: (1) MOSI : video-
+based sentiment analysis [ 103], (2) MOSEI : video-based sentiment
+and emotion analysis [ 106], (3) MUS TARD : video-based sarcasm
+detection [ 14], (5) MIMIC : mortality and disease prediction from
+tabular patient data and medical sensors [ 53], and (6) ENRICO : clas-
+sification of mobile user interfaces and screenshots [ 58]. While the
+previous bitwise datasets with small and discrete support yield exact
+lower and upper bounds, this new setting with high-dimensional
+continuous modalities requires the approximation of disagreement
+and information-theoretic quantities: we train unimodal neural net-
+work classifiers ˆfθ(y∣x1)andˆfθ(y∣x2)to estimate disagreement,
+and we cluster representations of Xito approximate the continuous
+modalities by discrete distributions with finite support to compute
+lower and upper bounds. We summarize the following regarding the
+utility of each bound (see details in Appendix B):
+1. Overall trends : For the 100,000bitwise distributions, we com-
+puteS, the true value of synergy assuming oracle knowledge of the
+full multimodal distribution, and compute Sagree−S,Sdisagree−S,
+andS−Sfor each point. Plotting these points as a histogram in
+Figure 2, we find that the two lower bounds track actual synergy
+from below ( Sagree−SandSdisagree−Sapproaching 0from below), and the upper bound tracks
+5
+Table 1: We compute lower and upper bounds on Swithout labeled multimodal data and compare them to the
+trueSassuming knowledge of the full joint distribution p: the bounds track Swell on MUS TARD andMIMIC .
+MOSEI UR-FUNNY MOSI MUS TARD MIMIC ENRICO
+S 0.97 0 .97 0 .92 0 .79 0 .41 2 .09
+S 0.03 0 .18 0 .24 0 .44 0 .02 0 .34
+Sagree 0 0 0 .01 0 .04 0 0 .01
+Sdisagree 0.01 0 .01 0 .03 0 .11 −0.12 −0.55
+x1x2y p
+0 0 0 0
+0 0 1 0 .05
+0 1 0 0 .03
+0 1 1 0 .28
+1 0 0 0 .53
+1 0 1 0 .03
+1 1 0 0 .01
+1 1 1 0 .06
+(a) Disagreement XORx1x2y p
+0 0 0 0 .25
+0 1 1 0 .25
+1 0 1 0 .25
+1 1 0 0 .25
+(b) Agreement XORx1x2y p
+0 0 0 0 .25
+0 1 0 0 .25
+1 0 1 0 .25
+1 1 1 0 .25
+(c)y=x1x1x2y p
+0 0 0 0 .5
+1 1 1 0 .5
+(d)y=x1=x2
+Table 2: Four representative examples: (a) disagreement XOR has high disagreement and high synergy, (b)
+agreement XOR has no disagreement and high synergy, (c) y=x1has high disagreement and uniqueness but no
+synergy, and (d) y=x1=x2has all agreement and redundancy but no synergy.
+synergy from above ( S−Sapproaching 0from above). The two lower bounds are quite tight, as we
+see that for many points Sagree−SandSdisagree−Sare approaching close to 0, with an average gap of
+0.18. The disagreement bound seems to be tighter empirically than the agreement bound: for half the
+points, Sdisagree is within 0.14andSagreeis within 0.2ofS. For the upper bound, there is an average
+gap of 0.62. However, it performs especially well on high synergy data. When S>0.6, the average
+gap is 0.24, with more than half of the points within 0.25ofS.
+On real-world MultiBench datasets, we show the estimated bounds and actual S(assuming knowledge
+of full p) in Table 1. The lower and upper bounds track true S: as estimated SagreeandSdisagree
+increases from MOSEI toUR-FUNNY toMOSI toMUS TARD , true Salso increases. For
+datasets like MIMIC with disagreement but high uniqueness, Sdisagree can be negative, but we
+can rely on Sagree to give a tight estimate on low synergy. Unfortunately, our bounds do not
+track synergy well on ENRICO . We believe this is because ENRICO displays all interactions:
+R=0.73, U1=0.38, U2=0.53, S=0.34, which makes it difficult to distinguish between RandS
+using SagreeorUandSusing Sdisagree since no interaction dominates over others, and Sis also quite
+loose relative to the lower bounds. Given these general observations, we now carefully analyze the
+relationships between interactions, agreement, and disagreement.
+2. The relationship between redundancy and synergy : In Table 2b we show the classic AGREE -
+MENT XOR distribution where X1andX2are independent, but Y=1setsX1≠X2to increase their
+dependence. I(X1;X2;Y)is negative, and Sagree=1≤1=Sis tight. On the other hand, Table 2d is
+an extreme example where the probability mass is distributed uniformly only when y=x1=x2and0
+elsewhere. As a result, X1is always equal to X2(perfect dependence), and yet Yperfectly explains
+away the dependence between X1andX2soI(X1;X2∣Y)=0:Sagree=0≤0=S. A real-world
+example is multimodal sentiment analysis from text, video, and audio on MOSEI ,R=0.26and
+S=0.03, and as expected the lower bound is small Sagree=0≤0.03=S(Table 1).
+3. The relationship between disagreement and synergy : In Table 2a we show an example called
+DISAGREEMENT XOR . There is maximum disagreement between marginals p(y∣x1)andp(y∣x2):
+the likelihood for yis high when yis the opposite bit as x1, but reversed for x2. Given both x1
+andx2:yseems to take a ‘disagreement’ XOR of the individual marginals, i.e. p(y∣x1, x2)=
+arg maxyp(y∣x1)XOR arg maxyp(y∣x2), which indicates synergy (note that an exact XOR would
+imply perfect agreement and high synergy). The actual disagreement is 0.15, synergy is 0.16, and
+uniqueness is 0.02, indicating a very strong lower bound Sdisagree=0.14≤0.16=S. A real-world
+equivalent dataset is MUS TARD , where the presence of sarcasm is often due to a contradiction
+between what is expressed in language and speech, so disagreement α=0.12is the highest out of all
+the video datasets, giving a lower bound Sdisagree=0.11≤0.44=S.
+6
+Table 3: Estimated bounds (Pacc(f∗
+M),Pacc(f∗
+M))on optimal multimodal performance in comparison with the
+best unimodal performance Pacc(fi), best simple fusion Pacc(fMsimple), and best complex fusion Pacc(fMcomplex ).
+MOSEI UR-FUNNY MOSI MUS TARD MIMIC ENRICO
+Pacc(f∗
+M) 1.07 1 .21 1 .29 1 .63 1 .27 0 .88
+Pacc(fMcomplex )0.88 0 .77 0 .86 0 .79 0 .92 0 .51
+Pacc(fMsimple) 0.85 0 .76 0 .84 0 .74 0 .92 0 .49
+Pacc(fi) 0.82 0 .74 0 .83 0 .74 0 .92 0 .47
+Pacc(f∗
+M) 0.52 0 .58 0 .62 0 .78 0 .76 0 .48
+On the contrary, the lower bound is low when all disagreement is explained by uniqueness (e.g.,
+y=x1, Table 2c), which results in Sdisagree=0≤0=S(αandUcancel each other out). A real-world
+equivalent is MIMIC : from Table 1, disagreement is high α=0.13due to unique information
+U1=0.25, so the lower bound informs us about the lack of synergy Sdisagree=−0.12≤0.02=S.
+Finally, the lower bound is loose when there is synergy without disagreement, such as AGREEMENT
+XOR (y=x1XOR x2, Table 2b) where the marginals p(y∣xi)are both uniform, but there is full
+synergy: Sdisagree=0≤1=S. Real-world datasets which fall into agreement synergy include
+UR-FUNNY where there is low disagreement in predicting humor α=0.03, and relatively high
+synergy S=0.18, which results in a loose lower bound Sdisagree=0.01≤0.18=S.
+4. On upper bounds for synergy : Finally, we find that the upper bound for MUS TARD is quite
+close to real synergy, S=0.79≥0.44=S. On MIMIC , the upper bound is the lowest S=0.41,
+matching the lowest S=0.02. Some of the other examples in Table 1 show bounds that are quite
+weak. This could be because (i) there indeed exists high synergy distributions that match DiandDM,
+but these are rare in the real world, or (ii) our approximation used in Theorem 4 is mathematically
+loose. We leave these as open directions for future work.
+4.2 Application 1: Estimating multimodal performance for multimodal fusion
+Now that we have validated the accuracy of these lower and upper bounds, we can apply them towards
+estimating multimodal performance without labeled multimodal data. This serves as a strong signal
+for deciding (1) whether to collect paired and labeled data from a second modality, and (2) whether
+one should use complex fusion techniques on collected multimodal data.
+Method : Our approach for answering these two questions is as follows: given D1,D2, andDM,
+we can estimate synergistic information based on our derived lower and upper bounds SandS.
+Together with redundant and unique information which can be computed exactly, we will use the
+total information to estimate the performance of multimodal models trained optimally on the full
+multimodal distribution. Formally, we estimate optimal performance via a result from Feder and
+Merhav [29] and Fano’s inequality [ 27], which together yield tight bounds of performance as a
+function of total information Ip({X1, X2};Y).
+Theorem 5. LetPacc(f∗
+M)=Ep[1[f∗
+M(x1, x2)=y]]denote the accuracy of the Bayes’ optimal
+multimodal model f∗
+M(i.e.,Pacc(f∗
+M)≥Pacc(f′
+M)for all f′
+M∈FM). We have that
+2Ip({X1,X2};Y)−H(Y)≤Pacc(f∗
+M)≤Ip({X1, X2};Y)+1
+log∣Y∣, (9)
+where we can plug in R+U1, U2+S≤Ip({X1, X2};Y)≤R+U1, U2+Sto obtain lower Pacc(f∗
+M)
+and upper Pacc(f∗
+M)bounds on optimal multimodal performance (refer to Appendix C for full
+proof). Finally, we summarize estimated multimodal performance as the average ˆPM=(Pacc(f∗
+M)+
+Pacc(f∗
+M))/2. A high ˆPMsuggests the presence of important joint information from both modalities
+(not present in each) which could boost accuracy, so it is worthwhile to collect the full distribution p
+and explore multimodal fusion [65] to learn joint information over unimodal methods.
+Results : For each MultiBench dataset, we implement a suite of unimodal and multimodel models
+spanning simple and complex fusion. Unimodal models are trained and evaluated separately on each
+modality. Simple fusion includes ensembling by taking an additive or majority vote between unimodal
+models [ 42]. Complex fusion is designed to learn higher-order interactions as exemplified by bilinear
+pooling [ 32], multiplicative interactions [ 51], tensor fusion [ 104,46,60,68], and cross-modal self-
+attention [ 90,100]. See Appendix C for models and training details. We include unimodal, simple
+and complex multimodal performance, as well as estimated lower and upper bounds on optimal
+multimodal performance in Table 3.
+7
+Estimated performance ˆPMmultimodal-unimodalMUStARD
+UR-FUNNYMOSEI
+MOSI
+MIMICENRICO
+Estimated performance ˆPMcomplex-simpleMUStARD
+UR-FUNNYMOSEI
+MOSI
+MIMICENRICOFigure 3: Datasets with higher estimated multimodal performance
+ˆPMtend to show improvements from unimodal to multimodal (left)
+and from simple to complex multimodal fusion (right).RQ1: Should I collect multimodal
+data? We compare estimated per-
+formance ˆPMwith the actual differ-
+ence between unimodal and best mul-
+timodal performance in Figure 3 (left).
+Higher estimated ˆPMcorrelates with
+a larger gain from unimodal to mul-
+timodal. MUS TARD andENRICO
+show the most opportunity for multi-
+modal modeling, but MIMIC shows
+less improvement.
+RQ2: Should I investigate multimodal
+fusion? From Table 3, synergistic
+datasets like MUS TARD andENRICO show best reported multimodal performance only slightly
+above the estimated lower bound, indicating more work to be done in multimodal fusion. For
+datasets with less synergy like MOSEI andMIMIC , the best multimodal performance is much
+higher than the estimated lower bound, indicating that existing fusion methods may already be quite
+optimal. We compare ˆPMwith the performance gap between complex and simple fusion methods
+in Figure 3 (right). We again observe trends between higher ˆPMand improvements with complex
+fusion, with large gains on MUS TARD andENRICO . We expect new methods to further improve
+the state-of-the-art on these datasets due to their generally high interaction values and low multimodal
+performance relative to estimated lower bound Pacc(f∗
+M).
+4.3 Application 2: Self-supervised multimodal learning via disagreement
+* 
+[monotone] 
+*
+f
+?
+(
+            
+|
+             
+)
+?
+dis
+(   
+,    
+) 
++ 
+Modality 
+Disagreement 
+Losses
+? 
+= 
+?
+pred
+(
+f
+?
+(MASK 
+| 
+all)
+)
+ 
++
+...
+?
+I 
+picture   
+geckos 
+in    
+advertisements
+Audio 
+Encoder 
+(AST)
+Image 
+Encoder 
+(ViT)
+Word 
+Embed 
+(BPE)
+1,1
+H/32,
+W/32
+1,2
+MASK
+picture
+geckos
+in
+1
+2
+3
+...
+W
+t
+v
+t
+a
+t
+Joint 
+Encoder
+f(mask 
+| 
+all 
+)      
+f(mask 
+| 
+pairs 
+of 
+modalities) 
+x3
+d(modality 
+1, 
+modality 
+2) 
+x 
+3
+L_text
+L_disagreement, 
+text     
+=
+=
++
+1
+2
+3
+1
+2
+?
+dis
+(   
+,    
+) 
++ 
+1
+3
+?
+dis
+(   
+,    
+) 
+2
+3
+I
+MASK
+W
+t
+f
+?
+(
+            
+|
+             
+)
+MASK
+a
+t
+MASK
+v
+t
+f
+?
+(
+            
+|
+             
+)
+(face 
+conveys 
+a 
+hint 
+of 
+a 
+smile)
+(text 
+is 
+out 
+of 
+place 
+in 
+context 
+of 
+a 
+conversation 
+with 
+a 
+gecko 
+expert)
+(monotone 
+signals 
+something 
+is 
+afoot)
+Modality 
+predictions 
+can 
+sometimes 
+disagree
+. 
+Modality 
+disagreement 
+losses 
+allow 
+this 
+during 
+training.
+?
+Figure 4: Masked predictions do not always agree across modalities,
+as shown in this example from the Social-IQ dataset [ 105]. Adding a
+slack term enabling pre-training with modality disagreement yields
+strong performance improvement over baselines.Finally, we highlight an application of
+our analysis towards self-supervised
+pre-training, which is generally per-
+formed by encouraging agreement as
+a pre-training signal on large-scale
+unlabeled data [ 76,81] before super-
+vised fine-tuning [ 72]. However, our
+results suggest that there are regimes
+where disagreement can lead to syn-
+ergy that may otherwise be ignored
+when only training for agreement. We
+therefore design a new family of self-
+supervised learning objectives that
+capture disagreement on unlabeled
+multimodal data.
+Method : We build upon masked
+prediction that is popular in self-
+supervised pre-training: given multi-
+modal data of the form (x1, x2)∼p(x1, x2)(e.g., x1=caption and x2=image), first mask out
+some words ( x′
+1) before using the remaining words ( x1/x′
+1) to predict the masked words via learning
+fθ(x′
+1∣x1/x′
+1), as well as the image x2to predict the masked words via learning fθ(x′
+1∣x2)[81,107].
+In other words, maximizing agreement between fθ(x′
+1∣x1/x′
+1)andfθ(x′
+1∣x2)in predicting x′
+1:
+Lagree=d(fθ(x′
+1∣x1/x′
+1), x′
+1)+d(fθ(x′
+1∣x2), x′
+1) (10)
+for a distance dsuch as cross-entropy loss for discrete word tokens. To account for disagreement, we
+allow predictions on the masked tokens x′
+1from two different modalities i, jto disagree by a slack
+variable λij. We modify the objective such that each term only incurs a loss penalty if each distance
+d(x, y)is larger than λas measured by a margin distance dλ(x, y)=max(0, d(x, y)−λ):
+Ldisagree=Lagree+∑
+1≤i<j≤2dλij(fθ(x′
+1∣xi), fθ(x′
+1∣xj)) (11)
+These λterms are hyperparameters, quantifying the amount of disagreement we tolerate between
+each pair of modalities during cross-modal masked pretraining ( λ=0recovers full agreement). We
+show this visually in Figure 4 by applying it to masked pre-training on text, video, and audio using
+8
+Table 4: Allowing for disagreement during self-supervised masked pre-training yields performance improvements
+on these datasets. Over 10runs, improvements that are statistically significant are shown in bold ( p<0.05).
+SOCIAL -IQ UR-FUNNY MUS TARD C ARTOON
+FLA V A [81], MERLOT Reserve [107] 70.6±0.6 80 .0±0.7 77 .4±0.8 38 .6±0.6
++ disagreement 71.1±0.5 80 .7±0.5 78 .1±1.139.3±0.5
+MERLOT Reserve [ 107], and also apply it to FLA V A [ 81] for images and text experiments (see
+extensions to 3modalities and details in Appendix D).
+Setup : We choose four settings with natural disagreement: (1) UR-FUNNY : humor detection
+from 16,000TED talk videos [ 40], (2) MU STARD :690videos for sarcasm detection from TV
+shows [ 14], (3) SOCIAL IQ:1,250multi-party videos testing social intelligence knowledge [ 105],
+and (4) C ARTOON : matching 704cartoon images and captions [44].
+Results : From Table 4, allowing for disagreement yields improvements on these datasets, with
+those on SOCIAL IQ,UR-FUNNY ,MUS TARD being statistically significant (p-value <0.05
+over10runs). By analyzing the value of λresulting in the best validation performance through
+hyperparameter search, we can analyze when disagreement helps for which datasets, datapoints,
+and modalities. On a dataset level, we find that disagreement helps for video/audio and video/text,
+improving accuracy by up to 0.6% but hurts for text/audio, decreasing the accuracy by up to 1%. This
+is in line with intuition, where spoken text is transcribed directly from audio for these monologue and
+dialog videos, but video can have vastly different information. In addition, we find more disagreement
+between text/audio for SOCIAL IQ, which we believe is because it comes from natural videos while
+the others are scripted TV shows with more agreement between speakers and transcripts.
+We further analyze individual datapoints with disagreement. On UR-FUNNY , the moments when the
+camera jumps from the speaker to their presentation slides are followed by an increase in agreement
+since the video aligns better with the speech. In MUS TARD , we observe disagreement between
+vision and text when the speaker’s face expresses the sarcastic nature of a phrase. This changes the
+meaning of the phrase, which cannot be inferred from text only, and leads to synergy. We include more
+qualitative examples including those on the C ARTOON captioning dataset in Appendix D.
+5 Related Work
+Multivariate information theory : The extension of information theory to 3or more variables [ 97,
+33,85,70,86,34] remains on open problem. Partial information decomposition (PID) [ 98] was
+proposed as a potential solution that satisfies several appealing properties [ 10,38,95,98]. Today,
+PID has primarily found applications in cryptography [ 69,50], neuroscience [ 74], physics [ 30],
+complex systems [ 82], and biology [ 18], but its application towards machine learning, in particular
+multimodality, is an exciting but untapped research direction. To the best of our knowledge, our work
+is the first to provide formal estimates of synergy in the context of unlabeled or unpaired multimodal
+data which is common in today’s self-supervised paradigm [64, 76, 81, 107].
+Understanding multimodal models : Information theory is useful for understanding co-training [ 12,
+5,15], multi-view learning [ 89,92,88,84], and feature selection [ 101], where redundancy is an
+important concept. Prior research has also studied multimodal models via additive or non-additive
+interactions [ 31,83,43], gradient-based approaches [ 93], or visualization tools [ 67]. This goal of
+quantifying and modeling multimodal interactions [ 66] has also motivated many successful learning
+algorithms, such as contrastive learning [ 54,76], agreement and alignment [ 24,63], factorized
+representations [91], as well as tensors and multiplicative interactions [104, 60, 51].
+Disagreement-based learning has been used to estimate performance from unlabeled data [ 4,52],
+active learning [ 21,39], and guiding exploration in reinforcement learning [ 73,79]. In multimodal
+learning, however, approaches have been primarily based on encouraging agreement in prediction [ 12,
+24,28,84] or feature space [ 76,72] in order to capture shared information. Our work has arrived
+at similar conclusions regarding the benefits of disagreement-based learning, albeit from different
+mathematical motivations and applications.
+6 Conclusion
+We proposed estimators of multimodal interactions when observing only labeled unimodal data and
+some unlabeled multimodal data , a general setting that encompasses many real-world constraints
+involving partially observable modalities, limited labels, and privacy concerns. Our key results draw
+new connections between multimodal interactions, the disagreement of unimodal classifiers, and min-
+entropy couplings. Future work should investigate more applications of multivariate information
+9
+theory in designing self-supervised models, predicting multimodal performance, and other tasks
+involving feature interactions such as privacy-preserving and fair representation learning.
+Acknowledgements
+This material is based upon work partially supported by Meta, National Science Foundation awards
+1722822 and 1750439, and National Institutes of Health awards R01MH125740, R01MH132225,
+R01MH096951 and R21MH130767. PPL is partially supported by a Facebook PhD Fellowship and a
+Carnegie Mellon University’s Center for Machine Learning and Health Fellowship. RS is supported
+in part by ONR N000141812861, ONR N000142312368 and DARPA/AFRL FA87502321015.
+Any opinions, findings, conclusions, or recommendations expressed in this material are those of the
+author(s) and do not necessarily reflect the views of the NSF, NIH, Meta, Carnegie Mellon University’s
+Center for Machine Learning and Health, ONR, DARPA, or AFRL, and no official endorsement
+should be inferred. Finally, we would also like to acknowledge NVIDIA’s GPU support.
+References
+[1]Armen Aghajanyan, Lili Yu, Alexis Conneau, Wei-Ning Hsu, Karen Hambardzumyan, Susan Zhang,
+Stephen Roller, Naman Goyal, Omer Levy, and Luke Zettlemoyer. Scaling laws for generative mixed-
+modal language models. arXiv preprint arXiv:2301.03728 , 2023.
+[2]Stanislaw Antol, Aishwarya Agrawal, Jiasen Lu, Margaret Mitchell, Dhruv Batra, C Lawrence Zitnick,
+and Devi Parikh. Vqa: Visual question answering. In Proceedings of the IEEE international conference
+on computer vision , pages 2425–2433, 2015.
+[3]MOSEK ApS. MOSEK Optimizer API for Python 10.0.34 , 2022. URL https://docs.mosek.com/
+latest/pythonapi/index.html .
+[4]Christina Baek, Yiding Jiang, Aditi Raghunathan, and J Zico Kolter. Agreement-on-the-line: Predicting
+the performance of neural networks under distribution shift. Advances in Neural Information Processing
+Systems , 35:19274–19289, 2022.
+[5]Maria-Florina Balcan, Avrim Blum, and Ke Yang. Co-training and expansion: Towards bridging theory
+and practice. Advances in neural information processing systems , 17, 2004.
+[6]Tadas Baltrušaitis, Chaitanya Ahuja, and Louis-Philippe Morency. Multimodal machine learning: A
+survey and taxonomy. IEEE transactions on pattern analysis and machine intelligence , 41(2):423–443,
+2018.
+[7]Reuben M Baron and David A Kenny. The moderator–mediator variable distinction in social psycho-
+logical research: Conceptual, strategic, and statistical considerations. Journal of personality and social
+psychology , 51(6):1173, 1986.
+[8]Anthony J Bell. The co-information lattice. In Proceedings of the fifth international workshop on
+independent component analysis and blind signal separation: ICA , volume 2003, 2003.
+[9] Samy Bengio and Hervé Bourlard. Machine learning for multimodal interaction . Springer, 2005.
+[10] Nils Bertschinger, Johannes Rauh, Eckehard Olbrich, Jürgen Jost, and Nihat Ay. Quantifying unique
+information. Entropy , 2014.
+[11] Abeba Birhane, Vinay Uday Prabhu, and Emmanuel Kahembwe. Multimodal datasets: misogyny,
+pornography, and malignant stereotypes. arXiv preprint arXiv:2110.01963 , 2021.
+[12] Avrim Blum and Tom Mitchell. Combining labeled and unlabeled data with co-training. In Proceedings
+of the eleventh annual conference on Computational learning theory , pages 92–100, 1998.
+[13] Tolga Bolukbasi, Kai-Wei Chang, James Y Zou, Venkatesh Saligrama, and Adam T Kalai. Man is to
+computer programmer as woman is to homemaker? debiasing word embeddings. Advances in neural
+information processing systems , 29, 2016.
+[14] Santiago Castro, Devamanyu Hazarika, Verónica Pérez-Rosas, Roger Zimmermann, Rada Mihalcea, and
+Soujanya Poria. Towards multimodal sarcasm detection (an _obviously_ perfect paper). In ACL, pages
+4619–4629, 2019.
+[15] C Mario Christoudias, Raquel Urtasun, and Trevor Darrell. Multi-view learning in the presence of view
+disagreement. In Proceedings of the Twenty-Fourth Conference on Uncertainty in Artificial Intelligence ,
+2008.
+10
+[16] Ferdinando Cicalese and Ugo Vaccaro. Supermodularity and subadditivity properties of the entropy on
+the majorization lattice. IEEE Transactions on Information Theory , 48(4):933–938, 2002.
+[17] Ferdinando Cicalese, Luisa Gargano, and Ugo Vaccaro. How to find a joint probability distribution of
+minimum entropy (almost) given the marginals. In 2017 IEEE International Symposium on Information
+Theory (ISIT) , pages 2173–2177. IEEE, 2017.
+[18] Nigel Colenbier, Frederik Van de Steen, Lucina Q Uddin, Russell A Poldrack, Vince D Calhoun, and
+Daniele Marinazzo. Disambiguating the role of blood flow and global signal with partial information
+decomposition. Neuroimage , 213:116699, 2020.
+[19] Spencer Compton. A tighter approximation guarantee for greedy minimum entropy coupling. In 2022
+IEEE International Symposium on Information Theory (ISIT) , pages 168–173. IEEE, 2022.
+[20] Spencer Compton, Dmitriy Katz, Benjamin Qi, Kristjan Greenewald, and Murat Kocaoglu. Minimum-
+entropy coupling approximation guarantees beyond the majorization barrier. In International Conference
+on Artificial Intelligence and Statistics , pages 10445–10469. PMLR, 2023.
+[21] Corinna Cortes, Giulia DeSalvo, Mehryar Mohri, Ningshan Zhang, and Claudio Gentile. Active learning
+with disagreement graphs. In International Conference on Machine Learning , pages 1379–1387. PMLR,
+2019.
+[22] Jean-Benoit Delbrouck, Noé Tits, Mathilde Brousmiche, and Stéphane Dupont. A transformer-
+based joint-encoding for emotion recognition and sentiment analysis. In Second Grand-Challenge
+and Workshop on Multimodal Language (Challenge-HML) , pages 1–7, Seattle, USA, July 2020. As-
+sociation for Computational Linguistics. doi: 10.18653/v1/2020.challengehml-1.1. URL https:
+//aclanthology.org/2020.challengehml-1.1 .
+[23] Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li Fei-Fei. Imagenet: A large-scale
+hierarchical image database. In 2009 IEEE conference on computer vision and pattern recognition , pages
+248–255. Ieee, 2009.
+[24] Daisy Yi Ding, Shuangning Li, Balasubramanian Narasimhan, and Robert Tibshirani. Cooperative
+learning for multiview analysis. Proceedings of the National Academy of Sciences , 119(38):e2202113119,
+2022.
+[25] Alexander Domahidi, Eric Chu, and Stephen Boyd. Ecos: An socp solver for embedded systems. In 2013
+European Control Conference (ECC) , pages 3071–3076. IEEE, 2013.
+[26] Shimon Even, Alon Itai, and Adi Shamir. On the complexity of time table and multi-commodity flow
+problems. In 16th annual symposium on foundations of computer science (sfcs 1975) , pages 184–193.
+IEEE, 1975.
+[27] Robert M Fano. Transmission of information: a statistical theory of communications . Mit Press, 1968.
+[28] Jason Farquhar, David Hardoon, Hongying Meng, John Shawe-Taylor, and Sandor Szedmak. Two view
+learning: Svm-2k, theory and practice. NeurIPS , 18, 2005.
+[29] Meir Feder and Neri Merhav. Relations between entropy and error probability. IEEE Transactions on
+Information theory , 40(1):259–266, 1994.
+[30] Benjamin Flecker, Wesley Alford, John M Beggs, Paul L Williams, and Randall D Beer. Partial
+information decomposition as a spatiotemporal filter. Chaos: An Interdisciplinary Journal of Nonlinear
+Science , 2011.
+[31] Jerome H Friedman and Bogdan E Popescu. Predictive learning via rule ensembles. The annals of applied
+statistics , 2(3):916–954, 2008.
+[32] Akira Fukui, Dong Huk Park, Daylen Yang, Anna Rohrbach, Trevor Darrell, and Marcus Rohrbach.
+Multimodal compact bilinear pooling for visual question answering and visual grounding. In Conference
+on Empirical Methods in Natural Language Processing . ACL, 2016.
+[33] Wendell R Garner. Uncertainty and structure as psychological concepts. 1962.
+[34] Timothy J Gawne and Barry J Richmond. How independent are the messages carried by adjacent inferior
+temporal cortical neurons? Journal of Neuroscience , 13(7):2758–2771, 1993.
+[35] AmirEmad Ghassami and Negar Kiyavash. Interaction information for causal inference: The case of
+directed triangle. In 2017 IEEE International Symposium on Information Theory (ISIT) , pages 1326–1330.
+IEEE, 2017.
+11
+[36] Amir Globerson and Tommi Jaakkola. Approximate inference using conditional entropy decompositions.
+InArtificial Intelligence and Statistics , pages 131–138. PMLR, 2007.
+[37] Yash Goyal, Tejas Khot, Douglas Summers-Stay, Dhruv Batra, and Devi Parikh. Making the v in vqa
+matter: Elevating the role of image understanding in visual question answering. In Proceedings of the
+IEEE Conference on Computer Vision and Pattern Recognition , pages 6904–6913, 2017.
+[38] Virgil Griffith and Christof Koch. Quantifying synergistic mutual information. In Guided self-organization:
+inception , pages 159–190. Springer, 2014.
+[39] Steve Hanneke et al. Theory of disagreement-based active learning. Foundations and Trends ®in Machine
+Learning , 7(2-3):131–309, 2014.
+[40] Md Kamrul Hasan, Wasifur Rahman, AmirAli Bagher Zadeh, Jianyuan Zhong, Md Iftekhar Tanveer,
+Louis-Philippe Morency, and Mohammed Ehsan Hoque. Ur-funny: A multimodal language dataset
+for understanding humor. In Proceedings of the 2019 Conference on Empirical Methods in Natural
+Language Processing and the 9th International Joint Conference on Natural Language Processing
+(EMNLP-IJCNLP) , pages 2046–2056, 2019.
+[41] Md Kamrul Hasan, Sangwu Lee, Wasifur Rahman, Amir Zadeh, Rada Mihalcea, Louis-Philippe Morency,
+and Ehsan Hoque. Humor knowledge enriched transformer for understanding multimodal humor. Pro-
+ceedings of the AAAI Conference on Artificial Intelligence , 35(14):12972–12980, May 2021. doi: 10.
+1609/aaai.v35i14.17534. URL https://ojs.aaai.org/index.php/AAAI/article/view/17534 .
+[42] Trevor Hastie and Robert Tibshirani. Generalized additive models: some applications. Journal of the
+American Statistical Association , 1987.
+[43] Jack Hessel and Lillian Lee. Does my multimodal model learn cross-modal interactions? it’s harder to
+tell than you might think! In EMNLP , 2020.
+[44] Jack Hessel, Ana Marasovi ´c, Jena D Hwang, Lillian Lee, Jeff Da, Rowan Zellers, Robert Mankoff, and
+Yejin Choi. Do androids laugh at electric sheep? humor" understanding" benchmarks from the new yorker
+caption contest. arXiv preprint arXiv:2209.06293 , 2022.
+[45] Kurt Hornik, Maxwell Stinchcombe, and Halbert White. Multilayer feedforward networks are universal
+approximators. Neural networks , 2(5):359–366, 1989.
+[46] Ming Hou, Jiajia Tang, Jianhai Zhang, Wanzeng Kong, and Qibin Zhao. Deep multimodal multilinear
+fusion with high-order polynomial pooling. Advances in Neural Information Processing Systems , 32:
+12136–12145, 2019.
+[47] Tzu-Ming Harry Hsu, Wei-Hung Weng, Willie Boag, Matthew McDermott, and Peter Szolovits. Un-
+supervised multimodal representation learning across medical images and reports. arXiv preprint
+arXiv:1811.08615 , 2018.
+[48] Di Hu, Feiping Nie, and Xuelong Li. Deep multimodal clustering for unsupervised audiovisual learning. In
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 9248–9257,
+2019.
+[49] Guimin Hu, Ting-En Lin, Yi Zhao, Guangming Lu, Yuchuan Wu, and Yongbin Li. UniMSE: Towards
+unified multimodal sentiment analysis and emotion recognition. In Proceedings of the 2022 Conference
+on Empirical Methods in Natural Language Processing , pages 7837–7851, Abu Dhabi, United Arab
+Emirates, December 2022. Association for Computational Linguistics. URL https://aclanthology.
+org/2022.emnlp-main.534 .
+[50] Ryan G James, Jeffrey Emenheiser, and James P Crutchfield. Unique information and secret key
+agreement. Entropy , 21(1):12, 2018.
+[51] Siddhant M. Jayakumar, Wojciech M. Czarnecki, Jacob Menick, Jonathan Schwarz, Jack Rae, Simon
+Osindero, Yee Whye Teh, Tim Harley, and Razvan Pascanu. Multiplicative interactions and where to find
+them. In International Conference on Learning Representations , 2020.
+[52] Yiding Jiang, Vaishnavh Nagarajan, Christina Baek, and J Zico Kolter. Assessing generalization of sgd
+via disagreement. In International Conference on Learning Representations , 2022.
+[53] Alistair EW Johnson, Tom J Pollard, Lu Shen, Li-wei H Lehman, Mengling Feng, Mohammad Ghassemi,
+Benjamin Moody, Peter Szolovits, Leo Anthony Celi, and Roger G Mark. Mimic-iii, a freely accessible
+critical care database. Scientific data , 3(1):1–9, 2016.
+12
+[54] Wonjae Kim, Bokyung Son, and Ildoo Kim. Vilt: Vision-and-language transformer without convolution
+or region supervision. In International Conference on Machine Learning , pages 5583–5594. PMLR,
+2021.
+[55] Murat Kocaoglu, Alexandros Dimakis, Sriram Vishwanath, and Babak Hassibi. Entropic causal inference.
+InProceedings of the AAAI Conference on Artificial Intelligence , volume 31, 2017.
+[56] Mladen Kova ˇcevi´c, Ivan Stanojevi ´c, and V ojin Šenk. On the entropy of couplings. Information and
+Computation , 242:369–382, 2015.
+[57] Michelle A Lee, Yuke Zhu, Krishnan Srinivasan, Parth Shah, Silvio Savarese, Li Fei-Fei, Animesh
+Garg, and Jeannette Bohg. Making sense of vision and touch: Self-supervised learning of multimodal
+representations for contact-rich tasks. In 2019 International Conference on Robotics and Automation
+(ICRA) , pages 8943–8950. IEEE, 2019.
+[58] Luis A Leiva, Asutosh Hota, and Antti Oulasvirta. Enrico: A dataset for topic modeling of mobile ui
+designs. In 22nd International Conference on Human-Computer Interaction with Mobile Devices and
+Services , pages 1–4, 2020.
+[59] Paul Pu Liang, Ruslan Salakhutdinov, and Louis-Philippe Morency. Computational modeling of human
+multimodal language: The mosei dataset and interpretable dynamic fusion.
+[60] Paul Pu Liang, Zhun Liu, Yao-Hung Hubert Tsai, Qibin Zhao, Ruslan Salakhutdinov, and Louis-Philippe
+Morency. Learning representations from imperfect time series data via tensor rank regularization. In ACL,
+2019.
+[61] Paul Pu Liang, Yiwei Lyu, Xiang Fan, Zetian Wu, Yun Cheng, Jason Wu, Leslie Yufan Chen, Peter Wu,
+Michelle A Lee, Yuke Zhu, et al. Multibench: Multiscale benchmarks for multimodal representation
+learning. In Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks
+Track (Round 1) , 2021.
+[62] Paul Pu Liang, Chiyu Wu, Louis-Philippe Morency, and Ruslan Salakhutdinov. Towards understanding
+and mitigating social biases in language models. In International Conference on Machine Learning ,
+pages 6565–6576. PMLR, 2021.
+[63] Paul Pu Liang, Peter Wu, Liu Ziyin, Louis-Philippe Morency, and Ruslan Salakhutdinov. Cross-modal
+generalization: Learning in low resource modalities via meta-alignment. In Proceedings of the 29th ACM
+International Conference on Multimedia , pages 2680–2689, 2021.
+[64] Paul Pu Liang, Yiwei Lyu, Xiang Fan, Shengtong Mo, Dani Yogatama, Louis-Philippe Morency, and Rus-
+lan Salakhutdinov. Highmmt: Towards modality and task generalization for high-modality representation
+learning. arXiv preprint arXiv:2203.01311 , 2022.
+[65] Paul Pu Liang, Amir Zadeh, and Louis-Philippe Morency. Foundations and recent trends in multimodal
+machine learning: Principles, challenges, and open questions. arXiv preprint arXiv:2209.03430 , 2022.
+[66] Paul Pu Liang, Yun Cheng, Xiang Fan, Chun Kai Ling, Suzanne Nie, Richard Chen, Zihao Deng,
+Faisal Mahmood, Ruslan Salakhutdinov, and Louis-Philippe Morency. Quantifying & modeling feature
+interactions: An information decomposition framework. arXiv preprint arXiv:2302.12247 , 2023.
+[67] Paul Pu Liang, Yiwei Lyu, Gunjan Chhablani, Nihal Jain, Zihao Deng, Xingbo Wang, Louis-Philippe
+Morency, and Ruslan Salakhutdinov. Multiviz: Towards visualizing and understanding multimodal
+models. In International Conference on Learning Representations , 2023. URL https://openreview.
+net/forum?id=i2_TvOFmEml .
+[68] Zhun Liu, Ying Shen, Varun Bharadhwaj Lakshminarasimhan, Paul Pu Liang, AmirAli Bagher Zadeh,
+and Louis-Philippe Morency. Efficient low-rank multimodal fusion with modality-specific factors. In
+Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1:
+Long Papers) , pages 2247–2256, 2018.
+[69] Ueli M Maurer and Stefan Wolf. Unconditionally secure key agreement and the intrinsic conditional
+information. IEEE Transactions on Information Theory , 45(2):499–514, 1999.
+[70] William McGill. Multivariate information transmission. Transactions of the IRE Professional Group on
+Information Theory , 4(4):93–111, 1954.
+[71] Brendan O’Donoghue, Eric Chu, Neal Parikh, and Stephen Boyd. Conic optimization via operator
+splitting and homogeneous self-dual embedding. Journal of Optimization Theory and Applications , June
+2016.
+13
+[72] Aaron van den Oord, Yazhe Li, and Oriol Vinyals. Representation learning with contrastive predictive
+coding. arXiv preprint arXiv:1807.03748 , 2018.
+[73] Deepak Pathak, Dhiraj Gandhi, and Abhinav Gupta. Self-supervised exploration via disagreement. In
+International conference on machine learning , pages 5062–5071. PMLR, 2019.
+[74] Giuseppe Pica, Eugenio Piasini, Houman Safaai, Caroline Runyan, Christopher Harvey, Mathew Diamond,
+Christoph Kayser, Tommaso Fellin, and Stefano Panzeri. Quantifying how much sensory information in a
+neural code is relevant for behavior. Advances in Neural Information Processing Systems , 30, 2017.
+[75] Shraman Pramanick, Aniket Basu Roy, and Vishal M. Patel. Multimodal learning using optimal transport
+for sarcasm and humor detection. 2022 IEEE/CVF Winter Conference on Applications of Computer
+Vision (WACV) , pages 546–556, 2021.
+[76] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish
+Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et al. Learning transferable visual models from
+natural language supervision. In International Conference on Machine Learning , pages 8748–8763.
+PMLR, 2021.
+[77] Wasifur Rahman, Md Kamrul Hasan, Sangwu Lee, AmirAli Bagher Zadeh, Chengfeng Mao, Louis-
+Philippe Morency, and Ehsan Hoque. Integrating multimodal information in large pretrained transformers.
+InProceedings of the 58th Annual Meeting of the Association for Computational Linguistics , pages 2359–
+2369, Online, July 2020. Association for Computational Linguistics. doi: 10.18653/v1/2020.acl-main.214.
+URL https://aclanthology.org/2020.acl-main.214 .
+[78] Massimiliano Rossi. Greedy additive approximation algorithms for minimum-entropy coupling problem.
+In2019 IEEE International Symposium on Information Theory (ISIT) , pages 1127–1131. IEEE, 2019.
+[79] Ramanan Sekar, Oleh Rybkin, Kostas Daniilidis, Pieter Abbeel, Danijar Hafner, and Deepak Pathak.
+Planning to explore via self-supervised world models. In International Conference on Machine Learning ,
+pages 8583–8592. PMLR, 2020.
+[80] Claude Elwood Shannon. A mathematical theory of communication. The Bell system technical journal ,
+27(3):379–423, 1948.
+[81] Amanpreet Singh, Ronghang Hu, Vedanuj Goswami, Guillaume Couairon, Wojciech Galuba, Marcus
+Rohrbach, and Douwe Kiela. Flava: A foundational language and vision alignment model. In Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pages 15638–15650, 2022.
+[82] Sten Sootla, Dirk Oliver Theis, and Raul Vicente. Analyzing information distribution in complex systems.
+Entropy , 19(12):636, 2017.
+[83] Daria Sorokina, Rich Caruana, Mirek Riedewald, and Daniel Fink. Detecting statistical interactions with
+additive groves of trees. In Proceedings of the 25th international conference on Machine learning , pages
+1000–1007, 2008.
+[84] Karthik Sridharan and Sham M Kakade. An information theoretic framework for multi-view learning. In
+Conference on Learning Theory , 2008.
+[85] Milan Studen `y and Jirina Vejnarová. The multiinformation function as a tool for measuring stochastic
+dependence. In Learning in graphical models , pages 261–297. Springer, 1998.
+[86] Han Te Sun. Multiple mutual informations and multiple interactions in frequency data. Inf. Control , 46:
+26–45, 1980.
+[87] Yonglong Tian, Dilip Krishnan, and Phillip Isola. Contrastive multiview coding. In Computer Vision–
+ECCV 2020: 16th European Conference, Glasgow, UK, August 23–28, 2020, Proceedings, Part XI 16 ,
+pages 776–794. Springer, 2020.
+[88] Yonglong Tian, Chen Sun, Ben Poole, Dilip Krishnan, Cordelia Schmid, and Phillip Isola. What makes
+for good views for contrastive learning? Advances in Neural Information Processing Systems , 33, 2020.
+[89] Christopher Tosh, Akshay Krishnamurthy, and Daniel Hsu. Contrastive learning, multi-view redundancy,
+and linear models. In Algorithmic Learning Theory , pages 1179–1206. PMLR, 2021.
+[90] Yao-Hung Hubert Tsai, Shaojie Bai, Paul Pu Liang, J Zico Kolter, Louis-Philippe Morency, and Ruslan
+Salakhutdinov. Multimodal transformer for unaligned multimodal language sequences. In Proceedings of
+the 57th Annual Meeting of the Association for Computational Linguistics , pages 6558–6569, 2019.
+14
+[91] Yao-Hung Hubert Tsai, Paul Pu Liang, Amir Zadeh, Louis-Philippe Morency, and Ruslan Salakhutdinov.
+Learning factorized multimodal representations. In International Conference on Learning Representations ,
+2019.
+[92] Yao-Hung Hubert Tsai, Yue Wu, Ruslan Salakhutdinov, and Louis-Philippe Morency. Self-supervised
+learning from a multi-view perspective. In International Conference on Learning Representations , 2020.
+[93] Michael Tsang, Dehua Cheng, and Yan Liu. Detecting statistical interactions from neural network weights.
+InInternational Conference on Learning Representations , 2018.
+[94] Michael Tsang, Dehua Cheng, Hanpeng Liu, Xue Feng, Eric Zhou, and Yan Liu. Feature interaction
+interpretability: A case for explaining ad-recommendation systems via neural interaction detection. In
+International Conference on Learning Representations , 2019.
+[95] Praveen Venkatesh and Gabriel Schamberg. Partial information decomposition via deficiency for multi-
+variate gaussians. In 2022 IEEE International Symposium on Information Theory (ISIT) , pages 2892–2897.
+IEEE, 2022.
+[96] Alex Wang, Amanpreet Singh, Julian Michael, Felix Hill, Omer Levy, and Samuel R Bowman. Glue:
+A multi-task benchmark and analysis platform for natural language understanding. arXiv preprint
+arXiv:1804.07461 , 2018.
+[97] Satosi Watanabe. Information theoretical analysis of multivariate correlation. IBM Journal of research
+and development , 1960.
+[98] Paul L Williams and Randall D Beer. Nonnegative decomposition of multivariate information. arXiv
+preprint arXiv:1004.2515 , 2010.
+[99] Kaicheng Yang, Hua Xu, and Kai Gao. Cm-bert: Cross-modal bert for text-audio sentiment analysis.
+InProceedings of the 28th ACM International Conference on Multimedia , MM ’20, page 521–528,
+New York, NY , USA, 2020. Association for Computing Machinery. ISBN 9781450379885. doi:
+10.1145/3394171.3413690. URL https://doi.org/10.1145/3394171.3413690 .
+[100] Shaowei Yao and Xiaojun Wan. Multimodal transformer for multimodal machine translation. In
+Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics , Online,
+July 2020. Association for Computational Linguistics. doi: 10.18653/v1/2020.acl-main.400. URL
+https://www.aclweb.org/anthology/2020.acl-main.400 .
+[101] Lei Yu and Huan Liu. Efficiently handling feature redundancy in high-dimensional data. In Proceedings
+of the ninth ACM SIGKDD international conference on Knowledge discovery and data mining , 2003.
+[102] Lei Yu and Huan Liu. Efficient feature selection via analysis of relevance and redundancy. The Journal of
+Machine Learning Research , 5:1205–1224, 2004.
+[103] Amir Zadeh, Rowan Zellers, Eli Pincus, and Louis-Philippe Morency. Mosi: multimodal corpus of
+sentiment intensity and subjectivity analysis in online opinion videos. arXiv preprint arXiv:1606.06259 ,
+2016.
+[104] Amir Zadeh, Minghai Chen, Soujanya Poria, Erik Cambria, and Louis-Philippe Morency. Tensor fusion
+network for multimodal sentiment analysis. In Proceedings of the 2017 Conference on Empirical Methods
+in Natural Language Processing , pages 1103–1114, 2017.
+[105] Amir Zadeh, Michael Chan, Paul Pu Liang, Edmund Tong, and Louis-Philippe Morency. Social-iq:
+A question answering benchmark for artificial social intelligence. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition , pages 8807–8817, 2019.
+[106] AmirAli Bagher Zadeh, Paul Pu Liang, Soujanya Poria, Erik Cambria, and Louis-Philippe Morency.
+Multimodal language analysis in the wild: Cmu-mosei dataset and interpretable dynamic fusion graph.
+InProceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1:
+Long Papers) , pages 2236–2246, 2018.
+[107] Rowan Zellers, Jiasen Lu, Ximing Lu, Youngjae Yu, Yanpeng Zhao, Mohammadreza Salehi, Aditya
+Kusupati, Jack Hessel, Ali Farhadi, and Yejin Choi. Merlot reserve: Neural script knowledge through
+vision and language and sound. In Proceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition , pages 16375–16387, 2022.
+15
+Appendix
+Broader Impact
+Multimodal semi-supervised models are ubiquitous in a range of real-world applications with only
+labeled unimodal data and naturally co-occurring multimodal data (e.g., unlabeled images and
+captions, video and corresponding audio) but when labeling them is time-consuming. This paper
+is our attempt at formalizing the learning setting of multimodal semi-supervised learning, allowing
+us to derive bounds on the information existing in multimodal semi-supervised datasets and what
+can be learned by models trained on these datasets. We do not foresee any negative broad impacts
+of our theoretical results, but we do note the following concerns regarding the potential empirical
+applications of these theoretical results in real-world multimodal datasets:
+Biases : We acknowledge risks of potential biases surrounding gender, race, and ethnicity in large-
+scale multimodal datasets [ 13,62], especially those collected in a semi-supervised setting with
+unlabeled and unfiltered images and captions [ 11]. Formalizing the types of bias in multimodal
+datasets and mitigating them is an important direction for future work.
+Privacy : When making predictions from multimodal datasets with recorded human behaviors and
+medical data, there might be privacy risks of participants. Following best practices in maintaining
+the privacy and safety of these datasets, (1) these datasets have only been collected from public data
+that are consented for public release (creative commons license and following fair use guidelines
+of YouTube) [ 14,40,106], or collected from hospitals under strict IRB and restricted access guide-
+lines [ 53], and (2) have been rigorously de-identified in accordance with Health Insurance Portability
+and Accountability Act such that all possible personal and protected information has been removed
+from the dataset [ 53]. Finally, we only use these datasets for research purposes and emphasize that
+any multimodal models trained to perform prediction should only be used for scientific study and
+should not in any way be used for real-world harm.
+A Detailed proofs
+A.1 Information decomposition
+Partial information decomposition (PID) [ 98] decomposes of the total information 2 variables
+provide about a task I({X1, X2};Y)into 4 quantities: redundancy Rbetween X1andX2, unique
+information U1inX1andU2inX2, and synergy S. Williams and Beer [98], who first proposed
+PIDs, showed that they should satisfy the following consistency equations:
+R+U1=I(X1;Y), (12)
+R+U2=I(X2;Y), (13)
+U1+S=I(X1;Y∣X2), (14)
+U2+S=I(X2;Y∣X1), (15)
+R−S=I(X1;X2;Y). (16)
+We choose the PID definition by Bertschinger et al. [10], where redundancy, uniqueness, and synergy
+are defined by the solution to the following optimization problems:
+R=max
+q∈∆pIq(X1;X2;Y) (17)
+U1=min
+q∈∆pIq(X1;Y∣X2) (18)
+U2=min
+q∈∆pIq(X2;Y∣X1) (19)
+S=Ip({X1, X2};Y)−min
+q∈∆pIq({X1, X2};Y) (20)
+where ∆p={q∈∆∶q(xi, y)=p(xi, y)∀y, xi, i∈{1,2}},∆is the set of all joint distributions
+overX1, X2, Y, and the notation Ip(⋅)andIq(⋅)disambiguates MI under joint distributions pand
+qrespectively. The key difference in this definition of PID lies in optimizing q∈∆pto satisfy the
+marginals q(xi, y)=p(xi, y), but relaxing the coupling between x1andx2:q(x1, x2)need not be
+equal to p(x1, x2). The intuition behind this is that one should be able to infer redundancy and
+uniqueness given only access to separate marginals p(x1, y)andp(x2, y), and therefore they should
+only depend on q∈∆pwhich match these marginals. Synergy, however, requires knowing the
+coupling p(x1, x2), and this is reflected in equation (20) depending on the full pdistribution.
+16
+A.2 Computing q∗, redundancy, and uniqueness
+According to Bertschinger et al. [10], it suffices to solve for qusing the following max-entropy
+optimization problem q∗=arg maxq∈∆pHq(Y∣X1, X2), the same q∗equivalently solves any of the
+remaining problems defined for redundancy, uniqueness, and synergy. This is a concave maximization
+problem with linear constraints. When XiandYare small and discrete, we can represent all valid
+distributions q(x1, x2, y)as a set of tensors Qof shape ∣X1∣×∣X2∣×∣Y∣with each entry representing
+Q[i, j, k]=p(X1=i, X2=j, Y=k). The problem then boils down to optimizing over valid
+tensors Q∈∆pthat match the marginals p(xi, y)for the objective function Hq(Y∣X1, X2). We
+rewrite conditional entropy as a KL-divergence [ 36],Hq(Y∣X1, X2)=log∣Y∣−KL(q∣∣˜q), where
+˜qis an auxiliary product density of q(x1, x2)⋅1
+∣Y∣enforced using linear constraints: ˜q(x1, x2, y)=
+q(x1, x2)/∣Y∣. The KL-divergence objective is recognized as convex, allowing the use of conic
+solvers such as SCS [71], ECOS [25], and MOSEK [3].
+Finally, optimizing over Q∈∆pthat match the marginals can also be enforced through linear
+constraints: the 3D-tensor Qsummed over the second dimension gives q(x1, y)and summed over
+the first dimension gives q(x2, y), yielding the final optimization problem:
+arg max
+Q,˜QKL(Q∣∣˜Q),s.t. ˜Q(x1, x2, y)=Q(x1, x2)/∣Y∣, (21)
+∑
+x2Q=p(x1, y),∑
+x1Q=p(x2, y), Q≥0,∑
+x1,x2,yQ=1. (22)
+After solving this optimization problem, plugging q∗into (17)-(19) yields the desired estimators for
+redundancy and uniqueness: R=Iq∗(X1;X2;Y), U1=Iq∗(X1;Y∣X2), U2=Iq∗(X2;Y∣X1), and
+more importantly, can be inferred from access to only labeled unimodal data p(x1, y)andp(x2, y).
+Unfortunately, Sis impossible to compute via equation (20) when we do not have access to the full
+joint distribution p, since the first term Ip(X1, X2;Y)is unknown. Instead, we will aim to provide
+lower and upper bounds in the form S≤S≤Sso that we can have a minimum and maximum
+estimate on what synergy could be. Crucially, SandSshould depend only onD1,D2, andDMin
+the multimodal semi-supervised setting.
+A.3 Lower bound on synergy via redundancy (Theorem 1)
+We first restate Theorem 1 from the main text to obtain our first lower bound Sagreelinking synergy to
+redundancy:
+Theorem 6. (Lower-bound on synergy via redundancy, same as Theorem 1) We can relate StoRas
+follows
+Sagree=R−Ip(X1;X2)+min
+r∈∆p1,2,12Ir(X1;X2∣Y)≤S (23)
+where ∆p1,2,12={r∈∆∶r(x1, x2)=p(x1, x2), r(xi, y)=p(xi, y)}.minr∈∆p1,2,12Ir(X1;X2∣Y)
+is a max-entropy convex optimization problem which can be solved exactly using linear programming.
+Proof. By consistency equation (16) S=R−Ip(X1;X2;Y)=R−Ip(X1;X2)+Ip(X1;X2∣Y).
+This means that lower bounding the synergy is the same as obtaining a lower bound on the mutual
+information Ip(X1, X2∣Y), since RandIp(X1;X2)can be computed exactly based on p(x1, y),
+p(x2, y), and p(x1, x2). To lower bound Ip(X1, X2∣Y), we consider minimizing it subject to the
+marginal constraints with p, which gives
+min
+r∈∆p1,2,12Ir(X1;X2∣Y)=min
+r∈∆p1,2,12Hr(X1)−Ir(X1;Y)−Hr(X1∣X2, Y) (24)
+=Hp(X1)−Ip(X1;Y)−max
+r∈∆p1,12Hr(X1∣X2, Y) (25)
+where in the last line the p2constraint is removed since Hr(X1∣X2, Y)is fixed with respect to
+p(x2, y). To solve max r∈∆p1,12Hr(X1∣X2, Y), we observe that it is also a concave maximization
+problem with linear constraints. When XiandYare small and discrete, we can represent all valid
+distributions r(x1, x2, y)as a set of tensors Rof shape ∣X1∣×∣X2∣×∣Y∣with each entry representing
+R[i, j, k]=p(X1=i, X2=j, Y=k). The problem then boils down to optimizing over valid
+tensors R∈∆p1,12that match the marginals p(x1, y)andp(x1, x2). Given a tensor Rrepresenting
+17
+r, our objective is the concave function Hr(X1∣X2, Y)which we rewrite as a KL-divergence
+log∣X1∣−KL(r∣∣˜r)using an auxiliary distribution ˜r=r(x2, y)⋅1
+∣X1∣and solve it exactly using convex
+programming with linear constraints:
+arg max
+R,˜RKL(R∣∣˜R),s.t. ˜R(x1, x2, y)=R(x2, y)/∣Y∣, (26)
+∑
+x2R=p(x1, y),∑
+yR=p(x1, x2), R≥0,∑
+x1,x2,yR=1. (27)
+with marginal constraints R∈∆p1,12enforced through linear constraints on tensor R. Plugging the
+optimized r∗into (23) yields the desired lower bound Sagree=R−Ip(X1;X2)+Ir∗(X1;X2∣Y).
+A.4 Lower bound on synergy via disagreement (Theorem 2)
+We first restate some notation and definitions from the main text for completeness. The key insight
+behind Theorem 2, a relationship between disagreement and synergy, is that while labeled multimodal
+data is unavailable, the output of unimodal classifiers may be compared against each other. Let
+δY={r∈R∣Y∣
++∣ ∣∣r∣∣1=1}be the probability simplex over labels Y. Consider the set of unimodal
+classifiers Fi∋fi∶Xi→δYand multimodal classifiers FM∋fM∶X1×X2→δY.
+Definition 3. (Unimodal and multimodal loss) The loss of a given unimodal classifier fi∈Fiis
+given by L(fi)=Ep(xi,y)[ℓ(fi(xi), y)]for a loss function over the label space ℓ∶Y×Y→R≥0.
+We denote the same for multimodal classifier fM∈FM, with a slight abuse of notation L(fM)=
+Ep(x1,x2,y)[ℓ(fM(x1, x2), y)]for a loss function over the label space ℓ.
+Definition 4. (Unimodal and multimodal accuracy) The accuracy of a given unimodal classifier
+fi∈Fiis given by Pacc(fi)=Ep[1[fi(xi)=y]]. We denote the same for multimodal classifier
+fM∈FM, with a slight abuse of notation Pacc(fM)=Ep[1[fM(x1, x2)=y]].
+An unimodal classifier f∗
+iis Bayes-optimal (or simply optimal) with respect to a loss function Lif
+L(f∗
+i)≤L(f′
+i)for all f′
+i∈Fi. Similarly, a multimodal classifier f∗
+Mis optimal with respect to loss
+LifL(f∗
+M)≤L(f′
+M)for all f′
+M∈FM.
+Bayes optimality can also be defined with respect to accuracy, if Pacc(f∗
+i)≥Pacc(f′
+i)for all f′
+i∈Fifor
+unimodal classifiers, or if Pacc(f∗
+M)≥Pacc(f′
+M)for all f′
+M∈FMfor multimodal classifiers.
+The crux of our method is to establish a connection between modality disagreement and a lower
+bound on synergy.
+Definition 5. (Modality disagreement) Given X1,X2, and a target Y, as well as unimodal classifiers
+f1andf2, we define modality disagreement as α(f1, f2)=Ep(x1,x2)[d(f1, f2)]where d∶Y×Y→
+R≥0is a distance function in label space scoring the disagreement of f1andf2’s predictions,
+where the distance function dmust satisfy some common distance properties, following Sridharan
+and Kakade [84]:
+Assumption 1. (Relaxed triangle inequality) For the distance function d∶Y×Y→R≥0in label
+space scoring the disagreement of f1andf2’s predictions, there exists cd≥1such that
+∀ˆy1,ˆy2,ˆy3∈ˆY, d(ˆy1,ˆy2)≤cd(d(ˆy1,ˆy3)+d(ˆy3,ˆy2)). (28)
+Assumption 2. (Inverse Lipschitz condition) For the function d, it holds that for all f,
+E[d(f(x1, x2), f∗(x1, x2))]≤∣L(f)−L(f∗)∣ (29)
+where f∗is the Bayes optimal multimodal classifier with respect to loss L, and
+E[d(fi(xi), f∗
+i(xi))]≤∣L(fi)−L(f∗
+i)∣ (30)
+where f∗
+iis the Bayes optimal unimodal classifier with respect to loss L.
+Assumption 3. (Classifier optimality) For any unimodal classifiers f1, f2in comparison to the Bayes’
+optimal unimodal classifiers f∗
+1, f∗
+2, there exists constants ϵ1, ϵ2>0such that
+∣L(f1)−L(f∗
+1)∣2≤ϵ1,∣L(f2)−L(f∗
+2)∣2≤ϵ2 (31)
+18
+We now restate Theorem 2 from the main text obtaining Sdisagree , our second lower bound on synergy
+linking synergy to disagreement:
+Theorem 7. (Lower-bound on synergy via disagreement, same as Theorem 2) We can relate synergy
+Sand uniqueness Uto modality disagreement α(f1, f2)of optimal unimodal classifiers f1, f2as
+follows:
+Sdisagree=α(f1, f2)⋅c−max(U1, U2)≤S (32)
+for some constant cdepending on the label dimension ∣Y∣and choice of label distance function d.
+Theorem 7 implies that if there is substantial disagreement between the unimodal classifiers f1and
+f2, it must be due to the presence of unique or synergistic information. If uniqueness is small, then
+disagreement must be accounted for by the presence of synergy, which yields a lower bound.
+Proof. The first part of the proof is due to an intermediate result by Sridharan and Kakade [84],
+which studies how multi-view agreement can help train better multiview classifiers. We restate the
+key proof ideas here for completeness. The first step is to relate Ip(X2;Y∣X1)to∣L(f∗
+1)−L(f∗)∣2,
+the difference in errors between the Bayes’ optimal unimodal classifier f∗
+1with the Bayes’ optimal
+multimodal classifier f∗for some appropriate loss function Lon the label space:
+∣L(f∗
+1)−L(f∗)∣2=∣EXEY∣X1,X2ℓ(f∗(x1, x2), y)−EXEY∣X1ℓ(f∗(x1, x2), y)∣2(33)
+≤∣EY∣X1,X2ℓ(f∗(x1, x2), y)−EY∣X1ℓ(f∗(x1, x2), y)∣2(34)
+≤KL(p(y∣x1, x2), p(y∣x1)) (35)
+≤EXKL(p(y∣x1, x2), p(y∣x1)) (36)
+=Ip(X2;Y∣X1), (37)
+where we used Pinsker’s inequality in (35) and Jensen’s inequality in (36). Symmetrically, ∣L(f∗
+2)−
+L(f∗)∣2≤Ip(X1;Y∣X2), and via the triangle inequality through the Bayes’ optimal multimodal
+classifier f∗and the inverse Lipschitz condition we obtain
+Ep(x1,x2)[d(f∗
+1, f∗
+2)]≤Ep(x1,x2)[d(f∗
+1, f∗)]+Ep(x1,x2)[d(f∗, f∗
+2)] (38)
+≤∣L(f∗
+1)−L(f∗)∣2+∣L(f∗
+2)−L(f∗)∣2(39)
+≤Ip(X2;Y∣X1)+Ip(X1;Y∣X2). (40)
+Next, we relate disagreement α(f1, f2)toIp(X2;Y∣X1)andIp(X1;Y∣X2)via the triangle inequal-
+ity through the Bayes’ optimal unimodal classifiers f∗
+1andf∗
+2:
+α(f1, f2)=Ep(x1,x2)[d(f1, f2)] (41)
+≤cd(Ep(x1,x2)[d(f1, f∗
+1)]+Ep(x1,x2)[d(f∗
+1, f∗
+2)]+Ep(x1,x2)[d(f∗
+2, f2)]) (42)
+≤cd(ϵ′
+1+Ip(X2;Y∣X1)+Ip(X1;Y∣X2)+ϵ′
+2) (43)
+≤2cd(max(Ip(X1;Y∣X2), Ip(X2;Y∣X1))+max(ϵ′
+1, ϵ′
+2)) (44)
+where used classifier optimality assumption for unimodal classifiers f1, f2in (43). Finally, we use
+consistency equations of PID relating UandSin (14)-(15): to complete the proof:
+α(f1, f2)≤2cd(max(Ip(X1;Y∣X2), Ip(X2;Y∣X1))+max(ϵ′
+1, ϵ′
+2)) (45)
+=2cd(max(U1+S, U 2+S)+max(ϵ′
+1, ϵ′
+2)) (46)
+=2cd(S+max(U1, U2)+max(ϵ′
+1, ϵ′
+2)), (47)
+In practice, setting f1andf2as neural network function approximators that can achieve the Bayes’
+optimal risk [45] results in max(ϵ′
+1, ϵ′
+2)=0, and rearranging gives us the desired inequality.
+A.5 Proof of NP-hardness (Theorem 3)
+Our proof is based on a reduction from the restricted timetable problem, a well-known scheduling
+problem closely related to constrained edge coloring in bipartite graphs. Our proof description
+proceeds along 4 steps.
+1. Description of our problem.
+19
+2.How the minimum entropy objective can engineer “classification” problems using a tech-
+nique from Kova ˇcevi´c et al. [56].
+3.Description of the RTT problem of Even et al. [26], how to visualize RTT as a bipartite edge
+coloring problem, and a simple variant we call Q-RTT which RTT reduces to.
+4. Polynomial reduction of Q-RTT to our problem.
+A.5.1 Formal description of our problem
+Recall that our problem was
+min
+r∈∆p1,2,12Hr(X1, X2, Y)
+where ∆p1,2,12={r∈∆∶r(x1, x2)=p(x1, x2), r(xi, y)=p(xi, y)}.1Our goal is to find the
+minimum-entropy distribution over X1×X2×Ywhere the pairwise marginals over (X1, X2),(X1, Y)
+and(X2, Y)are specified as part of the problem. Observe that this description is symmetrical, Xi
+andYcould be swapped without loss of generality.
+A.5.2 Warm up: using the min-entropy objective to mimic multiclass classification
+We first note the strong similarity of our min-entropy problem to the classic min-entropy coupling
+problem in two variables. There where the goal is to find the min-entropy joint distribution over X×Y
+given fixed marginal distributions of p(x)andp(y). This was shown to be an NP-hard problem
+which has found many practical applications in recent years. An approximate solution up to 1bit
+can be found in polynomial time (and is in fact the same approximation we give to our problem).
+Our NP-hardness proof involves has a similar flavor as [ 56], which is based on a reduction from the
+classic subset sum problem, exploiting the min-entropy objective to enforce discrete choices.
+Subset sum There are ditems with value c1. . . cd≥0, which we assume WLOG to be normalized
+such that ∑d
+ici=1. Our target sum is 0≤T≤1. The goal is to find if some subset S⊆[d]exists
+such that ∑i∈Sci=T.
+Reduction from subset sum to min-entropy coupling [ 56]LetXbe the ditems and Ybe binary,
+indicating whether the item was chosen. Our joint distribution is of size ∣X∣×∣Y∣. We set the following
+constraints on marginals.
+(i)p(xi)=cifor all i, (row constraints)
+(ii)p(include)=T,p(omit)=1−T, (column constraints)
+Constraints (i) split the value of each item additively into nonnegative components to be included and
+not included from our chosen subset, while (ii) enforces that the items included sum to T. Observe
+that the min-entropy objective H(X, Y)=H(Y∣X)+H(X), which is solely dependent on H(Y∣X)
+since H(X)is a constant given marginal constraints on X. Thus, H(Y∣X)is nonnegative and is
+only equal to 0 if and only if Yis deterministic given X, i.e., r(xi,include)=0orr(xi,omit)=0.
+If our subset sum problem has a solution, then this instantiation of the min-entropy coupling problem
+would return a deterministic solution with H(Y∣X)=0, which in turn corresponds to a solution
+in subset sum. Conversely, if subset sum has no solution, then our min-entropy coupling problem
+is either infeasible OR gives solutions where H(Y∣X)>0strictly, i.e., Y∣Xis non-deterministic,
+which we can detect and report.
+Relationship to our problem Observe that our joint entropy objective may be decomposed
+Hr(X1, X2, Y)=Hr(Y∣X1, X2)+Hr(X1, X2).
+Given that p(x1, x2)is fixed under ∆p1,2,12, our objective is equivalent to minimizing Hr(Y∣X1, X2).
+Similar to before, we know that Hr(Y∣X1, X2)is nonnegative and equal to zero if and only if Yis
+deterministic given (X1, X2).
+Intuitively, we can use X1,X2to represent vertices in a bipartite graph, such that (X1, X2)are edges
+(which may or may not exist), and Yas colors for the edges. Then, the marginal constraints for
+p(x1, x2)could be used alongside the min-entropy objective to ensure that each edge has exactly one
+color. The marginal constraints p(x1, y)andp(x2, y)tell us (roughly speaking) the number of edges
+of each color that is adjacent to vertices in X1andX2.
+1Strictly speaking, the marginals p(x1,x2)andp(xi,y)ought to be rational. This is not overly restrictive,
+since in practice these marginals often correspond to empirical distributions which would naturally be rational.
+20
+However, this insight alone is not enough; first, edge coloring problems in bipartite graphs (e.g.,
+colorings in regular bipartite graphs) can be solved in polynomial time, so we need a more difficult
+problem. Second, we need an appropriate choice of marginals for p(xi, y)that does not immediately
+‘reveal’ the solution. Our proof uses a reduction from the restricted timetable problem , one of the most
+primitive scheduling problems available (and closely related to edge coloring or multicommodity
+network flow).
+A.5.3 Restricted Timetable Problem (RTT)
+The restricted timetable (RTT) problem was introduced by Even et al. [26], and has to do with how to
+schedule teachers to classes they must teach. It comprises the following
+•A collection of {T1, . . . , T n}, where Ti⊆[3]. These represent nteachers, each of which is
+available for the hours given in Ti.
+•mstudents, each of which is available at any of the 3hours
+•An binary matrix {0,1}n×m.Rij=1if teacher iis required to teach class j, and0otherwise.
+Since Rijis binary, each class is taught by a teacher at most once .
+•Each teacher is tight, i.e.,∣Ti∣=∑m
+j=1Rij. That is, every teacher must teach whenever they
+are available.
+Suppose there are exactly 3 hours a day. The problem is to determine if there exists a meeting
+function
+f∶[n]×[m]×[3]→{0,1},
+where our goal is to have f(i, j, h)=1if and only if teacher iteaches class jat the h-th hour. We
+require the following conditions in our meeting function:
+1.f(i, j, h)=1/Leftr⫯g⊸tl⫯ne⇒ h∈Ti. This implies that teachers are only teaching in the hours they
+are available.
+2.∑h∈[3]f(i, j, h)=Rijfor all i∈[n], j∈[m]. This ensures that every class gets the teaching
+they are required, as specified by R.
+3.∑i∈[n]f(i, j, h)≤1for all j∈[m]andh∈[3]. This ensures no class is taught by more
+than one teachers at once.
+4.∑j∈[m]f(i, j, h)≤1for all i∈[n]andh∈[3]. This ensures no teacher is teaching more
+than one class simultaneously.
+Even et al. [26] showed that RTT is NP-hard via a clever reduction from 3-SAT. Our strategy is to
+reduce RTT to our problem.
+1
+2
+31
+2
+(a) Valid coloring1
+2
+31
+2
+(b) Invalid: class 1 used
+repeated color (blue)1
+2
+31
+2
+(c) Invalid: teacher
+1 used repeated color
+(green)1
+2
+31
+2
+(d) Invalid: teacher
+2 used invalid color
+(green)
+Figure 5: Examples of valid and invalid colorings. Left vertices are teachers 1, 2, 3. Right vertices are classes 1,
+2. The colors red, green, blue are for hours 1, 2, 3 respectively, color of teacher vertices are the hours where
+the teachers are available (by definition of RTT, the number of distinct colors per teacher vertex is equal to
+its degree). The color of an edge (red, green or blue) says that a teacher is assigned to that class at that hour.
+Figure 5a shows a valid coloring (or timetabling), since (i) all edges are colored, (ii) no edge of the same colors
+are adjacent, and (iii) edges adjacent to teachers correspond to the vertex’s color. Figures 5b, 5c, 5d are invalid
+colorings because of same-colored edges being adjacent, or teacher vertex colors differing to adjacent edges.
+Viewing RTT through the lens of bipartite edge coloring RTT can be visualized as a variant of
+constrained edge coloring in bipartite graphs (Figure 5). The teachers and classes are the two different
+sets of vertices, while Rgives the adjacency structure. There are 3 colors available, corresponding to
+hours in a day. The task is to color the edges of the graph with these 3colors such that
+21
+1.No two edges of the same color are adjacent. This ensures students and classes are at most
+teaching/taking one session at any given hour (condition 3 and 4)
+2.Edges adjacent to teacher iare only allowed colors in Ti. This ensures teachers are only
+teaching in available hours (condition 1)
+If every edge is colored while obeying the above conditions, then it follows from the tightness of
+teachers (in the definition of RTT) that every class is assigned their required lessons (condition 2).
+The decision version of the problem is to return if such a coloring is possible.
+Time Constrained RTT ( Q-RTT) A variant of RTT that will be useful is when we impose
+restrictions on the number of classes being taught at any each hour. We call this Q-RTT, where
+Q=(q1, q2, q3)∈Z3.Q-RTT returns true if, in addition to the usual RTT conditions, we require the
+meeting function to satisfy
+∑
+i∈[n],j∈[m]f(i, j, h)=qh.
+That is, the total number of hours taught by teachers in hour his exactly qh. From the perspective of
+edge coloring, Q-RTT simply imposes an additional restriction on the total number of edges of each
+color, i.e., there are qkedges of color kfor each k∈[3].
+Obviously, RTT can be Cook reduced to Q-RTT: since there are only 3hours and a total of g=
+∑i∈[n],j∈[m]Rijtotal lessons to be taught, there are at most O(g2)ways of splitting the required
+number of lessons up amongst the 3 hours. Thus, we can solve RTT by making at most O(g2)calls
+toQ-RTT. This is polynomial in the size of RTT, and we conclude Q-RTT is NP-hard.
+A.5.4 Reduction of Q-RTT to our problem
+We will reduce Q-RTT to our problem. Let α=1/(∑i,jRij+3m), where 1/αshould be seen as a
+normalizing constant given by the number of edges in a bipartite graph. One should think of αas an
+indicator of the boolean TRUE and 0as FALSE. We use the following construction
+1.LetX1=[n]∪Z, where Z={Z1, Z2, Z3}. From a bipartite graph interpretation, these
+form one set of vertices that we will match to classes. Z1, Z2, Z3are “holding rooms”, one
+for each of the 3 hours. Holding rooms are like teachers whose classes can be assigned in
+order to pass the time. They will not fulfill any constraints on R, but they canaccommodate
+multiple classes at once. We will explain the importance of these holding rooms later.
+2. Let X2=[m]. These form the other set of vertices, one for each class.
+3.LetY=[3]∪{0}. 1, 2, and 3 are the 3 distinct hours, corresponding to edge colors. 0 is a
+special “null” color which will only be used when coloring edges adjacent to the holding
+rooms.
+4.Letp(i, j,⋅)=α⋅Rijandp(i, j)=αfor all i∈Z,j∈[m]. Essentially, there is an edge
+between a teacher and class if Rdictates it. There are also always edges from every holding
+room to each class.
+5. For i∈[n], setp(i,⋅, h)=αifh∈Ti,0otherwise. For Zi∈Z, we set
+p(Zi,⋅, h)=⎧⎪⎪⎪⎪⎨⎪⎪⎪⎪⎩α⋅qi h=0
+α⋅(m−qi)h=i
+0 otherwise
+In order words, at hour h, when a class is not assigned to some teacher (which would to
+contribute to qh), they must be placed in holding room Zh.
+6.Letp(⋅, j, h)=αforh∈[3], and p(⋅, j, h)=α⋅∑i∈[n]Ri,j. The former constraint means
+that for each of the 3 hours, the class must be taking some lesson with a teacher OR in the
+holding room. The second constraint assigns the special “null” value to the holding rooms
+which were not used by that class.
+A solution to our construction with 0 conditional entropy implies a valid solution to Q-RTT
+Suppose that our construction returns a distribution rsuch that every entry r(x1, x2, y)is either
+αor0. We claim that the meeting function f(i, j, h)=1ifr(i, j, h)=αand0otherwise solves
+Q-RTT.
+22
+1
+2
+3
+Z1
+Z2
+Z31
+2
+(a) Valid coloring1
+2
+3
+Z1
+Z2
+Z31
+2
+(b) Invalid: class 1 used
+repeated color (blue)1
+2
+3
+Z1
+Z2
+Z31
+2
+(c) Invalid: teacher
+1 used repeated color
+(green)1
+2
+3
+Z1
+Z2
+Z31
+2
+(d) Invalid: teacher
+2 used invalid color
+(green)
+Figure 6: Examples of valid and invalid colorings when holding rooms are included. For simplicity, we illustrate
+all constraints except those on Q. Left vertices are teachers 1, 2, 3 and holding rooms Z1,Z2,Z3. Right vertices
+are classes 1, 2. The colors red, green, blue are for hours 1, 2, 3 respectively, color of teacher vertices are the
+hours where the teachers are available (by definition of RTT, the number of distinct colors per teacher vertex is
+equal to its degree). Border color of holding room vertices are the hour that the holding room is available. The
+color of an edge (red, green or blue) says that a teacher (or holding room) is assigned to that class at that hour.
+Gray edges are the “null” color, meaning that that waiting room is not used by that class. Figure 6a shows a valid
+coloring (or timetabling), since all edges are colored, no edge of the same colors are adjacent (other than the gray
+ones), and edges adjacent to teachers correspond to the vertex’s color. Figures 6b, 6c, 6d are invalid colorings
+because of non-gray edges being adjacent, or teacher vertices being adjacent to colors different from itself.
+•Teachers are only teaching in the hours they are available, because of our marginal constraint
+onp(i,⋅, h).
+•Every class gets the teaching they need. This follows from the fact that teachers are tight
+and the marginal constraint p(i,⋅, h), which forces teachers to be teaching whenever they
+can. The students are getting the lessons from the right teachers because of the marginal
+constraint on p(i, j,⋅), since teachers who are not supposed to teach a class have those
+marginal values set to 0.
+•No class is taught by more than one teacher at once. This follows from marginal constraint
+p(⋅, j, h). For each of the hours, a class is with either a single teacher or the holding room.
+•No teacher is teaching more than one class simultaneously. This holds again from our
+marginal constraint on p(i,⋅, h).
+•Lastly, the total number of lessons (not in holding rooms) held in each hour is qhas required
+byQ-RTT. To see why, we consider each color (hour). Each color (excluding the null color)
+is used exactly mtimes by virtue of p(⋅, j, h). Some of these are in holding rooms, other are
+with teachers. The former (over all classes) is given by m−qhbecause of our constraint on
+p(i,⋅, h), which means that exactly qhlessons in hour has required.
+A valid solution to Q-RTT implies a solution to our construction with 0 conditional entropy
+Given a solution to Q-RTT, we recover a candidate solution to our construction in a natural way.
+If teacher iis teaching class jin hour h, then color edge ijwith color h, i.e., r(i, j, h)=αand
+r(i, j, h′)=0ifh′≠h. Since in RTT each teacher and class can be assigned one lesson per hour at
+most, there will be no clashes with this assignment. For all other i∈[3], j∈[m]where Rij=0, we
+assign r(i, j,⋅)=0. Now, we will also need to assign students to holding rooms. For h∈[3], we set
+r(Zh, j, h)=αif class jwas not assigned to any teacher in hour h. If class jwas assigned some
+teacher in hour h, then r(Zh, j,0)=α, i.e., we give it the special null color. All other entries are
+given a value of 0. We can verify
+23
+•ris a valid probability distribution. The nonnegativity of rfollows from the fact that α>0
+strictly. We need to check that rsums to 1. We break this down into two cases based on
+whether the first argument of ris some Zhori. In Case 1, we have
+∑
+i∈[n],h∈[3]∪{0},j∈[m]r(i, j, h)=∑
+i∈[n],h∈[3],j∈[m]r(i, j, h)
+=α⋅∑
+i∈[n],j∈[m]Rij,
+where the first line follows from the fact that we never color a teacher-class edge with the
+null color, and the second line is because every class gets its teaching requirements satisfied.
+In Case 2, we know that by definition every class is matched to every holding room and
+assigned either the null color or that room’s color, hence
+∑
+i∈{Z1,Z2,Z3},h∈[3]∪{0},j∈[m]r(i, j, h)=3m
+Summing them up, we have α⋅(3m+∑i∈[n],j∈[m]Rij)=1(by our definition of α.
+• This rdistribution has only entries in αor0. This follows by definition.
+•Thisrdistribution has minimum conditional entropy. For a fixed i, j,r(i, j,⋅)is either αor
+0. That is, Yis deterministic given X1, X2, hence H(Y∣X1, X2)=0.
+• All 3 marginal constraints in our construction are obeyed. We check them in turn.
+–Marginal constraint r(i, j)=p(i, j). When i∈[3]: (i) when Rij=1exactly one time
+his assigned to teacher iand class j, hence r(i, j)=α=p(i, j)as required, (ii)when
+Rij=0as specified. Now when i∈{Z1, Z2, Z3}, we have r(i, j,⋅)=α=p(i, j)since
+every holding room is either assigned it’s color to a class, or assigned the special null
+color.
+–Marginal constraint r(i, h)=p(i, h). When i∈[3], this follows directly from tightness.
+Similarly, when i∈{Z1, Z2, Z3}, we have by definition of Q-RTT the assignments to
+holding rooms equal to m−qhfor hour h, and consequently, qhnull colors adjacent to
+Zhas required.
+–Marginal constraint r(j, h)=p(j, h). For every h∈[3], the class is assigned either
+to a teacher or a holding room, so this is equal to αas required. For h=0, i.e., the
+null color, this is used exactly ∑i∈[n]Rijtimes (since these were the number hours
+that were notassigned to teachers), as required, making its marginal ∑i∈[n]Rijand
+r(j, h)=α⋅∑i∈[n]Rijas required.
+Thus, if RTT returns TRUE , our construction will also return a solution with entries in {0, α}, and
+vice versa.
+Corollary The decision problem of whether there exists a distribution in r∈∆p1,2,12such that
+H(Y∣X1, X2)=0is NP-complete. This follows because the problem is in NP since checking if Yis
+deterministic (i.e., H(Y∣X1, X2)=0) can be done in polynomial time, while NP-hardness follows
+from the same argument as above.
+A.6 Upper bound on synergy (Theorem 4)
+We begin by restating Theorem 4 from the main text:
+Theorem 8. (Upper-bound on synergy, same as Theorem 4).
+S≤Hp(X1, X2)+Hp(Y)−min
+r∈∆p12,yHr(X1, X2, Y)−max
+q∈∆p1,2Iq({X1, X2};Y)=S (48)
+where ∆p12,y={r∈∆∶r(x1, x2)=p(x1, x2), r(y)=p(y)}.
+24
+Proof. Recall that this upper bound boils down to finding max r∈∆p1,2,12Ir({X1, X2};Y). We have
+max
+r∈∆p1,2,12Ir({X1, X2};Y)=max
+r∈∆p1,2,12{Hr(X1, X2)+Hr(Y)−Hr(X1, X2, Y)} (49)
+=Hp(X1, X2)+Hp(Y)−min
+r∈∆p1,2,12Hr(X1, X2, Y), (50)
+≤Hp(X1, X2)+Hp(Y)−min
+r∈∆p12,yHr(X1, X2, Y) (51)
+where the first two lines are by definition. The last line follows since ∆p12,yis a superset of
+r∈∆p1,2,12, which implies that minimizing over it would yield a a no larger objective.
+In practice, we use the slightly tighter bound which maximizes over all the pairwise marginals,
+max
+r∈∆p1,2,12Ir(X1, X2;Y)≤Hp(X1, X2)+Hp(Y)−max⎧⎪⎪⎪⎨⎪⎪⎪⎩minr∈∆p12,yHr(X1, X2, Y)
+minr∈∆p1,x2Hr(X1, X2, Y)
+minr∈∆p2,x1Hr(X1, X2, Y)⎫⎪⎪⎪⎬⎪⎪⎪⎭.(52)
+Estimating Susing min-entropy couplings We only show how to compute
+minr∈∆p12,yHr(X1, X2, Y), since the other variants can be computed in the same manner
+via symmetry. We recognize that by treating (X1, X2)=Xas a single variable, we recover
+the classic min-entropy coupling over XandY, which is still NP-hard but admits good
+approximations [16, 17, 55, 78, 19, 20].
+There are many methods to estimate such a coupling, for example Kocaoglu et al. [55] give a greedy
+algorithm running in linear-logarithmic time, which was further proven by Rossi [78], Compton
+[19] to be a 1-bit approximation of the minimum coupling2. Another line of work was by [ 17],
+which constructs an appropriate coupling and shows that it is optimal to 1-bit to a lower bound
+H(p(x1, x2)∧p(y)), where∧is the greatest-lower-bound operator, which they showed in [ 16] can
+be computed in linear-logarithmic time. We very briefly describe this method; more details may be
+found in [17, 16] directly.
+Remark A very recent paper by Compton et al. [20] show that one can get an approximation tighter
+than 1-bit. We leave the incorporation of these more advanced methods as future work.
+Without loss of generality, suppose that XandYare ordered and indexed such that p(x)andp(y)
+are sorted in non-increasing order of the marginal constraints, i.e., p(X=xi)≥p(X=xj)for all
+i≤j. We also assume WLOG that the supports of XandYare of the same size n, if they are not,
+then pad the smaller one with dummy values and introduce marginals that constrain these values to
+never occur (and set naccordingly if needed). For simplicity, we will just refer to piandqjfor the
+distributions of p(X=xi)andp(Y=yj)respectively.
+Given 2distributions p, qwe say that pis majorized by q, written as p⪯qif and only if
+k
+∑
+i=1pi≤k
+∑
+i=1qi for all k∈1. . . n (53)
+As Cicalese and Vaccaro [16] point out, there is a strong link between majorization and Schur-convex
+functions; in particular, if p⪯q, then we have H(p)≥H(q). Indeed, if we treat ⪰as a partial order
+and consider the set
+Pn={p=(p1, . . . , p n)∶pi∈[0,1],n
+∑
+ipi=1, pi≥pi+1}
+as the set of finite (ordered) distributions with support size nwith non-increasing probabilities, then
+we obtain a lattice with a unique greatest lower bound (∧)and least upper bound (∨). Then, Cicalese
+and Vaccaro [16] show that that p∧qcan be computed recursively as p∧q=α(p, q)=(a1, . . . , a n)
+where
+ai=min{i
+∑
+j=1pj,i
+∑
+j=1qj}+i−1
+∑
+j=1aj−1
+2This a special case when there are 2 modalities. For more modalities, the bounds will depend on the sizes
+and number of signals.
+25
+0.00 0.05 0.10 0.15 0.20 0.25 0.30
+Lower Bound on S0.00.10.20.30.40.50.60.7Actual Synergybest fit: y= 1.095x
+y=x(a)SvsSagree
+0.00 0.05 0.10 0.15 0.20 0.25 0.30
+Lower Bound on S0.00.10.20.30.40.50.60.7Actual Synergybest fit: y=1.098x
+y=x (b)SvsSdisagree
+0.0 0.2 0.4 0.6 0.8 1.0
+Upper Bound on S0.00.20.40.60.81.0Actual Synergybest fit: y=x-0.2
+y=x (c)SvsS
+Figure 7: Plots of actual synergy against our estimated (a) lower bound on disagreement synergy, (b) lower
+bound on agreement synergy, and (c) upper bound. The bounds closely track true synergy, which we show via
+three lines of best fit that almost exactly track true synergy: y=1.095x,y=1.098x, andy=x−0.2.
+It was shown by Cicalese et al. [17] thatanycoupling satisfying the marginal constraints given by p
+andq, i.e.,
+M∈C(p, q)=⎧⎪⎪⎨⎪⎪⎩M=mij∶∑
+jmij=pi,∑
+imij=pj⎫⎪⎪⎬⎪⎪⎭
+has entropy H(M)≥H(p∧q). In particular, this includes the min-entropy one. Since we
+only need the optimal value of such a coupling and not the actual coupling per-se, we can use
+plug the value of H(p∧q)into the minimization term (51), which yields an upper bound for
+max r∈∆p1,2,12Ir({X1, X2};Y), which would form an upper bound on Sitself.
+B Experimental Details
+B.1 Verifying lower and upper bounds
+Synthetically generated datasets : To test our derived bounds on synthetic data, We randomly
+sampled 100,000distributions of {X1, X2, Y}to calculate their bounds and compare with their
+actual synergy values. We set X1, X2, and Yas random binary values, so each distribution can be
+represented as a size 8vector of randomly sampled entries that sum up to 1.
+Results : We calculated the lower bound via redundancy, lower bound via disagreement, and upper
+bound of all distributions and plotted them with actual synergy value (Figure 7). We define a
+distribution to be on the boundary if its lower/upper bound is within 10% difference from its actual
+synergy value. We conducted the least mean-square-error fitting on these distributions close to the
+boundary. We plot actual synergy against Sagreein Figure 7 (left), and find that it again tracks a lower
+bound of synergy. In fact, we can do better and fit a linear trend y=1.095xon the distributions along
+the margin (RMSE =0.0013 ).
+We also plot actual synergy against computed Sdisagree in Figure 7 (middle). As expected, the lower
+bound closely tracks actual synergy. Similarly, we can again fit a linear model on the points along the
+boundary, obtaining y=1.098xwith a RMSE of 0.0075 (see this line in Figure 7 (middle)).
+Finally, we plot actual synergy against estimated Sin Figure 7 (right). Again, we find that the upper
+bound consistently tracks the highest attainable synergy - we can fit a single constant y=x−0.2to
+obtain an RMSE of 0.0022 (see this line in Figure 7 (right)). This implies that our bound enables both
+accurate comparative analysis of relative synergy across different datasets, and precise estimation of
+absolute synergy.
+Real-world datasets : We also use the large collection of real-world datasets in MultiBench [ 61]:
+(1)MOSI : video-based sentiment analysis [ 103], (2) MOSEI : video-based sentiment and emotion
+analysis [ 106], (3) MUS TARD : video-based sarcasm detection [ 14], (5) MIMIC : mortality and
+disease prediction from tabular patient data and medical sensors [ 53], and (6) ENRICO : classification
+of mobile user interfaces and screenshots [ 58]. While the previous bitwise datasets with small and
+discrete support yield exact lower and upper bounds, this new setting with high-dimensional continu-
+ous modalities requires the approximation of disagreement and information-theoretic quantities: we
+train unimodal neural network classifiers ˆfθ(y∣x1)andˆfθ(y∣x2)to estimate disagreement, and we
+cluster representations of Xito approximate the continuous modalities by discrete distributions with
+finite support to compute lower and upper bounds.
+26
+Implementation details : We first apply PCA to reduce the dimension of multimodal data. For the
+test split, we use unsupervised clustering to generate 20clusters. We obtain a clustered version of the
+original dataset D={(x1, x2, y)}asDcluster={(c1, c2, y)}where ci∈{1, . . . ,20}is the ID of the
+cluster that xibelongs to. In our experiments, where Yis typically a classification task, we set the
+unimodal classifiers f1=ˆp(y∣x1)andf2=ˆp(y∣x2)as the Bayes optimal classifiers for multiclass
+classification tasks.
+For classification, Yis the set of k-dimensional 1-hot vectors. Given two logits ˆy1,ˆy2obtained from
+x1, x2respectively, define d(ˆy1,ˆy2)=(ˆy1−ˆy2)2. We have that cd=1, andϵ1=∣L(f1)−L(f∗
+1)∣2=0
+andϵ2=∣L(f2)−L(f∗
+2)∣2=0for well-trained neural network unimodal classifiers f1andf2for
+Theorem 2. For datasets with 3modalities, we perform the experiments separately for each of the
+3modality pairs, before taking an average over the 3modality pairs. Extending the definitions
+of redundancy, uniqueness, and synergy, as well as our derived bounds on synergy for 3 or more
+modalities is an important open question for future work.
+B.2 Relationships between agreement, disagreement, and interactions
+1. The relationship between redundancy and synergy : We give some example distributions to
+analyze when the lower bound based on redundancy Sagreeis high or low. The bound is high for
+distributions where X1andX2are independent, but Y=1setsX1≠X2to increase their dependence
+(i.e., AGREEMENT XOR distribution in Table 2b). Since X1andX2are independent but become
+dependent given Y,I(X1;X2;Y)is negative, and the bound is tight Sagree=1≤1=S. Visual
+Question Answering 2.0 [ 37] falls under this category, with S=4.92, R=0.79, where the image and
+question are independent (some questions like ‘what is the color of the object’ or ‘how many people
+are there’ can be asked for many images), but the answer connects the two modalities, resulting
+in dependence given the label. As expected, the estimated lower bound for agreement synergy:
+Sagree=4.03≤4.92=S.
+Conversely, the bound is low for Table 2d with the probability mass distributed uniformly only when
+y=x1=x2and0elsewhere. As a result, X1is always equal to X2(perfect dependence), and yet Y
+perfectly explains away the dependence between X1andX2soI(X1;X2∣Y)=0:Sagree=0≤0=S.
+Note that this is an example of perfect redundancy and zero synergy - for an example with synergy,
+refer back to DISAGREEMENT XOR in Table 2a - due to disagreement there is non-zero I(X1;X2)
+but the label explains some of the relationships between X1andX2soI(X1;X2∣Y)<I(X1;X2):
+Sagree=−0.3≤1=S. A real-world example is multimodal sentiment analysis from text, video, and
+audio of monologue videos on MOSEI, R=0.26andS=0.04, and as expected the lower bound is
+small Sagree=0.01≤0.04=S.
+2. The relationship between disagreement and synergy : To give an intuition of the relationship
+between disagreement, uniqueness, and synergy, we use one illustrative example shown in Table 2a,
+which we call DISAGREEMENT XOR . We observe that there is maximum disagreement between
+marginals p(y∣x1)andp(y∣x2): the likelihood for yis high when yis the same bit as x1, but reversed
+forx2. Given both x1andx2:yseems to take a ‘disagreement’ XOR of the individual marginals,
+i.e.p(y∣x1, x2)=p(y∣x1)XOR p(y∣x2), which indicates synergy (note that an exact XOR would
+imply perfect agreement and high synergy). The actual disagreement is 0.15, synergy is 0.16, and
+uniqueness is 0.02, indicating a very strong lower bound Sdisagree=0.13≤0.16=S. A real-world
+equivalent dataset is MUS TARD for sarcasm detection from video, audio, and text [ 14], where
+the presence of sarcasm is often due to a contradiction between what is expressed in language and
+speech, so disagreement α=0.12is the highest out of all the video datasets, giving a lower bound
+Sdisagree=0.11≤0.44=S.
+On the contrary, the lower bound is low when all disagreement is explained by uniqueness (e.g.,
+y=x1, Table 2c), which results in Sdisagree=0≤0=S(αandUcancel each other out). A real-world
+equivalent is MIMIC involving mortality and disease prediction from tabular patient data and time-
+series medical sensors [ 53]. Disagreement is high α=0.13due to unique information U1=0.25, so
+the lower bound informs us about the lack of synergy Sdisagree=−0.12≤0.02=S.
+Finally, the lower bound is loose when there is synergy without disagreement, such as AGREEMENT
+XOR (y=x1XOR x2, Table 2b) where the marginals p(y∣xi)are both uniform, but there is full
+synergy: Sdisagree=0≤1=S. Real-world datasets which fall into agreement synergy include
+27
+Table 5: We show the full list of computed lower and upper bounds on Swithout labeled multimodal data and
+compare them to the true Sassuming knowledge of the full joint distribution p: the bounds track Swell on
+MUS TARD andMIMIC , and also show general trends on the other datasets except ENRICO where estimating
+synergy is difficult. V = video, T = text, A = audio modalities.
+MOSEI V+TMOSEI V+AMOSEI A+TUR-FUNNY V+TUR-FUNNY V+AUR-FUNNY A+T
+S 0.96 0 .98 0 .97 0 .96 0 .96 0 .99
+S 0.04 0 .03 0 .03 0 .21 0 .24 0 .08
+Sagree 0.01 0 .0 0 .0 0 .0 0 .0 0 .0
+Sdisagree 0.01 0 .01 0 .0 0 .0 0 .0 0 .01
+MOSI V,TMOSI V,AMOSI A,TMUS TARD V,TMUS TARD V,AMUS TARD A,TMIMIC ENRICO
+S 0.92 0 .92 0 .93 0 .79 0 .78 0 .79 0 .41 2 .09
+S 0.31 0 .28 0 .14 0 .49 0 .31 0 .51 0 .02 1 .02
+Sagree 0.01 0 .01 0 .0 0 .04 0 .01 0 .06 0 .0 0 .01
+Sdisagree 0.03 0 .03 0 .02 0 .07 0 .06 0 .11 −0.12 −0.55
+UR-FUNNY where there is low disagreement in predicting humor α=0.03, and relatively high
+synergy S=0.18, which results in a loose lower bound Sdisagree=0.01≤0.18=S.
+Upper bound
+Lower bound
+Agreement XORDisagreement XOR
+Figure 8: Comparing the qualities
+of the bounds when there is agree-
+ment and disagreement synergy.
+During agreement synergy, Sagree
+is tight, Sdisagree is loose, and S
+is tight. For disagreement syn-
+ergy, Sagree is loose, Sdisagree is
+tight, and Sis loose with respect
+to true S.3. On upper bounds for synergy : We also run experiments to
+obtain estimated upper bounds on synthetic and MultiBench datasets.
+The quality of the upper bound shows some intriguing relationships
+with that of lower bounds. For distributions with perfect agreement
+synergy such as y=x1XOR x2(Table 2b), S=1≥1=Sis really
+close to true synergy, Sagree=1≤1=Sis also tight, but Sdisagree=
+0≤1=Sis loose. For distributions with disagreement synergy
+(Table 2a), S=0.52≥0.13=Sfar exceeds actual synergy, Sagree=
+−0.3≤1=Sis much lower than actual synergy, but Sdisagree=
+0.13≤0.16=Sis tight (see relationships in Figure 8).
+Finally, while some upper bounds (e.g., MUS TARD ,MIMIC ) are
+close to true S, some of the other examples in Table 1 show bounds
+that are quite weak. This could be because (i) there indeed exists
+high synergy distributions that match DiandDM, but these are rare
+in the real world, or (ii) our approximation used in Theorem 4 is
+mathematically loose. We leave these as open directions for future
+work.
+C Application 1: Estimating multimodal performance for fusion
+Formally, we estimate performance via a combination of Feder and Merhav [29] and Fano’s inequal-
+ity [27] together yield tight bounds of performance as a function of total information Ip({X1, X2};Y).
+We restate Theorem 5 from the main text:
+Theorem 9. LetPacc(f∗
+M)=Ep[1[f∗
+M(x1, x2)=y]]denote the accuracy of the Bayes’ optimal
+multimodal model f∗
+M(i.e.,Pacc(f∗
+M)≥Pacc(f′
+M)for all f′
+M∈FM). We have that
+2Ip({X1,X2};Y)−H(Y)≤Pacc(f∗
+M)≤Ip({X1, X2};Y)+1
+log∣Y∣, (54)
+where we can plug in R+U1, U2+S≤Ip({X1, X2};Y)≤R+U1, U2+Sto obtain lower Pacc(f∗
+M)
+and upper Pacc(f∗
+M)bounds on optimal multimodal performance.
+Proof. We use the bound from Feder and Merhav [29], where we define the Bayes’ optimal classifier
+f∗
+Mis the one where given x1, x2outputs ysuch that p(Y=y∣x1, x2)is maximized over all y∈Y.
+The probability that this classifier succeeds is max yp(Y=y∣x1, x2), which is 2−H∞(Y∣X1=x1,X2=x2))
+where−H∞(Y∣X1, X2)is the min-entropy of the random variable Yconditioned on X1, X2. Over
+28
+Table 6: Full list of best unimodal performance Pacc(fi), best simple fusion Pacc(fMsimple), and best complex
+fusion Pacc(fMcomplex )as obtained from the most recent state-of-the-art models. We also include our estimated
+bounds (Pacc(f∗
+M),Pacc(f∗
+M))on optimal multimodal performance.
+MOSEI UR-FUNNY MOSI MUS TARD MIMIC ENRICO
+Pacc(f∗
+M) 1.07 1 .21 1 .29 1 .63 1 .27 0 .88
+Pacc(fMcomplex )0.88[49] 0.77[41] 0.86[49] 0.79[41] 0.92[61]0.51[61]
+Pacc(fMsimple)0.85[77] 0.76[41] 0.84[77] 0.74[75] 0.92[61]0.49[61]
+Pacc(fi) 0.82[22] 0.74[41] 0.83[99] 0.74[41] 0.92[61]0.47[61]
+Pacc(f∗
+M) 0.52 0 .58 0 .62 0 .78 0 .76 0 .48
+all inputs (x1, x2), the probability of accuracy is
+Pacc(f∗
+M)=Ex1,x2[2−H∞(Y∣X1=x1,X2=x2))]≥2−Ex1,x2[H∞(Y∣X1=x1,X2=x2))](55)
+≥2−Ex1,x2[Hp(Y∣X1=x1,X2=x2))]≥2−Hp(Y∣X1,X2)=2Ip({X1,X2};Y)−H(Y).(56)
+The upper bound is based on Fano’s inequality [ 27]. Starting with Hp(Y∣X1, X2)≤H(Perr)+
+Perr(log∣Y∣−1)and assuming that Yis uniform over ∣Y∣, we rearrange the inequality to obtain
+Pacc(f∗
+M)≤H(Y)−Hp(Y∣X1, X2)+log 2
+log∣Y∣=Ip({X1, X2};Y)+1
+log∣Y∣. (57)
+Finally, we summarize estimated multimodal performance as the average between estimated lower
+and upper bounds on performance: ˆPM=(Pacc(f∗
+M)+Pacc(f∗
+M))/2.
+Unimodal and multimodal performance : Table 6 summarizes all final performance results for each
+dataset, spanning unimodal models and simple or complex multimodal fusion paradigms, where each
+type of model is represented by the most recent state-of-the-art method found in the literature.
+DApplication 2: Self-supervised multimodal learning via disagreement
+D.1 Training procedure
+We continuously pretrain MERLOT Reserve Base on the datasets before finetuning. The continuous
+pretraining procedure is similar to Contrastive Span Training, with the difference that we add extra
+loss terms that correspond to modality disagreement. The pretraining procedure of MERLOT Reserve
+minimizes a sum of 3 component losses,
+L=Ltext+Laudio+Lframe
+where each of the component losses is a contrastive objective. Each of the objectives aims to match
+an independent encoding of masked tokens of the corresponding modality with the output of a Joint
+Encoder, which takes as input the other modalities and, possibly, unmasked tokens of the target
+modality.
+We modify the procedure by adding disagreement losses between modalities to the objective. This
+is done by replacing the tokens of a modality with padding tokens before passing them to the Joint
+Encoder, and then calculating the disagreement between representations obtained when replacing
+different modalities. For example, Lframe uses a representation of video frames found by passing
+audio and text into the Joint Encoder. Excluding one of the modalities and passing the other one into
+the Encoder separately leads to two different representations, ˆftfor prediction using only text and ˆfa
+for prediction using only audio. The distance between the representations is added to the loss. Thus,
+the modified component loss is
+Ldisagreement, frame =Lframe+dλtext, audio(ˆft,ˆfa)
+where dλtext, audio(x,y)=max(0, d(x,y)−λtext, audio), and d(x,y)is the cosine difference:
+d(x,y)=1−x⋅y
+∣x∣∣y∣
+29
+Figure 9: Impact of modality disagreement on model performance. Lower tmeans we train with higher
+disagreement between modalities: we find that disagreement between text and vision, as well as audio and
+vision, are more helpful during self-supervised masking with performance improvements, whereas disagreement
+between text and audio is less suitable and can even hurt performance.
+Similarly, we modify the other component losses by removing one modality at a time, and obtain the
+new training objective
+Ldisagreement=Ldisagreement, text +Ldisagreement, audio +Ldisagreement, frame
+D.2 Training details
+We continuously pretrain and then finetune a pretrained MERLOT Reserve Base model on the datasets
+with a batch size of 8. During pretraining, we train the model for 960 steps with a learning rate of
+0.0001, and no warm-up steps, and use the defaults for other hyperparameters. For every dataset, we
+fix two of {λtext, audio , λvision, audio , λtext, vision}to be+∞and change the third one, which characterizes
+the most meaningful disagreement. This allows us to reduce the number of masked modalities
+required from 3 to 2 and thus reduce the memory overhead of the method. For SOCIAL -IQ, we set
+λtext, vision to be 0. For UR-FUNNY , we set λtext, vision to be 0.5. For MUS TARD , we set λvision, audio
+to be 0. All training is done on TPU v2-8 accelerators, with continuous pretraining taking 30 minutes
+and using up to 9GB of memory.
+D.3 Dataset level analysis
+We visualize the impact of pairwise modality disagreement on model performance by fixing two
+modalities M1, M2and a threshold t, and setting the modality pair-specific disagreement slack terms
+λaccording to the rule
+λa,b={t, a=M1, b=M2
++∞,else
+This allows us to isolate dλM1,M2while ensuring that the other disagreement loss terms are 0. We
+also modify the algorithm to subtract dλM1,M2from the loss rather than adding it (see Section D.5).
+By decreasing t, we encourage higher disagreement between the target modalities. In Figure 9,
+we plot the relationship between model accuracy and tfor the MUStARD dataset to visualize how
+pairwise disagreement between modalities impacts model performance.
+D.4 Datapoint level analysis
+After continuously pretraining the model, we fix a pair of modalities (text and video) and find the
+disagreement in these modalities for each datapoint. We show examples of disagreement due to
+uniqueness and synergy in Figure 10. The first example shows a speaker using descriptive slides,
+leading to less unique information being present in the text and higher agreement between modalities.
+In the second example, the facial expression of the person shown does not match the text being
+spoken, indicating sarcasm and leading to disagreement synergy.
+30
+Figure 10: Examples of disagreement due to uniqueness (up) and synergy (down)
+D.5 Alternative training procedure
+We also explore an alternative training procedure, which involves subtracting the disagreements dλa,b
+from the loss rather than adding them. This achieves the opposite effect of pushing modalities further
+away from each other if they disagree significantly. The reasoning behind this is that in some settings,
+such as sarcasm prediction in MUS TARD , we expect modalities not just to disagree, but to store
+contradicting information, and disagreement between them should be encouraged. However, we find
+that the results obtained using this method are not as good as the ones obtained using the procedure
+outlined in Section D.1.
+31
