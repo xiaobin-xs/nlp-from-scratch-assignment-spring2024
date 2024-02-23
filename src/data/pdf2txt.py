@@ -42,7 +42,7 @@ def convert_pdf_to_txt(pdf_path, txt_path=None):
 
 pdf_urls = ["https://enr-apps.as.cmu.edu/assets/SOC/sched_layout_spring.pdf", "https://enr-apps.as.cmu.edu/assets/SOC/sched_layout_summer_1.pdf",
 "https://enr-apps.as.cmu.edu/assets/SOC/sched_layout_summer_2.pdf", "https://enr-apps.as.cmu.edu/assets/SOC/sched_layout_fall.pdf","https://www.cmu.edu/hub/calendar/docs/2324-academic-calendar-list-view.pdf"
-,"https://www.cmu.edu/hub/calendar/docs/2324-doctoral-academic-calendar-list-view.pdf"]
+,"https://www.cmu.edu/hub/calendar/docs/2324-doctoral-academic-calendar-list-view.pdf","https://www.cmu.edu/hub/calendar/docs/2425-academic-calendar-list-view.pdf"]
 
 pdf_filenames = [extract_filename_from_url(url) for url in pdf_urls]
 
