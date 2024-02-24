@@ -104,3 +104,136 @@ Rehearsals for the Kiltie Band during football season are held at the CUC Studio
 No, auditions are not required to join the Kiltie Band.
 The first rehearsal for the Kiltie Band is on the first day of class (Monday) at 5:30 p.m. in the CUC Studio Theater.
 One can join the Kiltie Band by emailing the required information to the Kiltie Band Director, Jeremy Olisar.
+1900
+Bringing groundbreaking ideas to market and creating successful startups.
+Andrew Carnegie.
+35% U.S., 65% International.
+76%.
+126 countries.
+School of Computer Science.
+Ranked #4.
+49.8%.
+Java computer programming language.
+1982, by Professor Scott Fahlman.
+Stephanie Kwolek, Master of Science in Chemistry, 1946.
+Randy Pausch (SCS 1988) and Jeffrey Zaslow (DC 1980).
+1919, to Mao Yisheng.
+Duolingo, named Apple’s 2013 app of the year.
+Leading university center with support to over 110 centers worldwide.
+Andy Warhol (CFA 1949).
+29 universities.
+A competition where teams race specially designed vehicles.
+99 years.
+A vehicle raced and a nickname for the competition.
+A sharp right-hand turn in the course.
+Signals drivers for the right-hand turn.
+Person controlling the buggy's steering and braking.
+Structure for pushing the buggy forward.
+Person propelling the buggy along the course.
+The buggy's outer aerodynamic structure.
+Changing of pushers during the race.
+Six people.
+Body, pushbar, wheels, safety harness, driving and braking mechanisms.
+Housing around wheels to reduce drag.
+Known for having quiet buggies.
+Four different vehicles.
+Fringe uses 'B' names; others use themes like fire.
+Noon to 2 p.m. at Weigand Gymnasium.
+Must log practice runs and control the buggy.
+Often less than 5 feet 3 inches.
+Social chair and former mechanic.
+Developing the next generation of scientific and entrepreneurial leaders.
+96 units of graduate-level courses.
+LTI courses, SCS courses, lab courses, and research.
+Similar to the MLT program, focused on coursework and initial research.
+December 13, 2023, at 3 p.m. EST.
+Standard Timing (16 months) and Extended Timing (20 months).
+A minimum of 144 units.
+Introduction to Computer Systems course.
+Recognizing and extracting meaning from text, spoken language, and video.
+16 months.
+Software development, summer internship, and a capstone project.
+Human Language, Language Technology Application, Machine Learning.
+Combines AI and machine learning curriculum with real-world team experience.
+Four semesters.
+Core Curriculum, Knowledge Requirements, Electives, and Capstone Project.
+A GPA of 3.0 or higher.
+GRE is required.
+Official copy of an English proficiency score report.
+Undergraduate degrees in computer science, software engineering, bioinformatics, or bioengineering.
+Amber Vivis.
+Master of Science in Artificial Intelligence and Innovation.
+Michael I. Shamos.
+At least 195 units.
+AI & Future Markets, AI Engineering, LTI Practicum, AI Innovation, Capstone Project.
+72 units.
+Completion of "AI & Future Markets" with a grade of "B" or better.
+36 units.
+Completion of a preparatory course.
+Yes, during the summer between the first and second years.
+A minimum of 3.0 GPA.
+Amber Vivis.
+Only elective courses, with approval.
+Completion of course work by the end of the following academic semester.
+No transfer credits are accepted for courses taken prior to matriculation at CMU.
+A minimum of 36 units.
+Yes, for personal, medical, or academic reasons.
+A minimum of 36 units per semester.
+Contact the course instructor and process a Change of Grade Form.
+Yes, with the permission of the instructor and completion of the Course Audit Approval Form.
+Consequences range from academic probation to termination from the program, depending on the severity and number of violations.
+Master of Computational Data Science.
+Carolyn Penstein Rosé.
+Three semesters (16 months).
+Professional Preparation Track (16 months) and Research Preparation Track (20 months).
+Analytics, Systems, and Human-Centered Data Science.
+144 units.
+36 units (three 12-unit courses).
+Yes, typically in the summer.
+A minimum QPA of 3.0.
+Pass/fail and audit grades are not permitted for courses used to satisfy degree requirements.
+Incomplete grades must be completed by the end of the following academic semester.
+None required, but students can apply for teaching assistant positions.
+Non-native English speakers are encouraged to take advantage of language support services.
+Zero tolerance policy; one serious violation or two violations can lead to dismissal.
+A minimum of 36 units.
+No thesis or dissertation required.
+Transfer credit must be approved by the Director and satisfy specific program requirements.
+No double counting of courses for multiple degree requirements or programs.
+Electives must be graduate-level courses (600 or above) from the School of Computer Science.
+Discuss the issue with the course instructor and process a Change of Grade Form.
+Master of Science in Intelligent Information Systems.
+Teruko Mitamura.
+Standard MIIS degree (16 months) and MIIS: Advanced Study degree (21 months).
+150 units for the standard MIIS degree.
+Minimum QPA of 3.0.
+Yes, typically in the summer.
+36 units for the Capstone project.
+Graduate-level courses (600-level or higher) from the School of Computer Science.
+Maximum of seven years from original matriculation.
+Transfer credits must be approved and satisfy specific program requirements.
+Pass/fail grades are not permitted for courses used to satisfy degree requirements.
+Human Language, Language Technology Applications, and Machine Learning.
+Yes, part-time options are available.
+Final grades are changed only in exceptional circumstances with the instructor's approval.
+Zero tolerance policy; consequences include probation or dismissal.
+A minimum of 36 units per semester.
+International students must maintain full-time status for visa compliance.
+Evaluated each semester, based on academic progress and faculty assessment.
+The Office of Disability Resources provides accommodations and support.
+Written request to the Program Director and advisor's consent, up to 1 year.
+Master of Language Technologies.
+Kate Schaich (Program Manager) and Robert Frederking (Program Director).
+Two calendar years (24 months).
+120 or more course units.
+At least 72 units of LTI courses and 24 units of SCS courses.
+Optional, but recommended for those intending to apply for PhD programs.
+Minimum grade of C (2.0) or higher for degree requirement courses.
+Oral presentation in the second year, focusing on student research.
+Permitted with advance approval from the MLT Program Director.
+External courses may be transferred with approval by the Program Director.
+Possible with advisor recommendation, considering the 24-month program duration.
+Transfers not permitted in the first semester; subsequent requests require written application.
+First violation may lead to dismissal or probation; second violation results in dismissal.
+Full funding (tuition plus stipend) is guaranteed for the first year, subject to satisfactory progress.
+Students must carry adequate medical insurance, either through the University plan or an external plan.
