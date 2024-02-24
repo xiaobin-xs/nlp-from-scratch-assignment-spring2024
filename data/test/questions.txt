@@ -237,3 +237,22 @@ What is the policy for students wishing to transfer into the MLT program?
 What is the policy regarding academic integrity in the MLT program?
 What support is provided for graduate student funding in the MLT program?
 What are the health insurance requirements for MLT students?
+When does the Fall 2023 Semester begin at Carnegie Mellon University?
+What is the deadline for Mini-1 add, audit & tuition adjustment drop for the Fall 2023 Semester?
+On what date does the Labor Day holiday occur, when the university is closed?
+When is the Spring 2024 registration week scheduled?
+What is the last day of classes for the Spring 2024 Semester?
+When is the commencement ceremony for the 2023-2024 academic year?
+What date marks the beginning of the Summer Semester (Mini-5) in 2024?
+When is Memorial Day observed during the Summer Semester 2024?
+What is the deadline for adding, auditing, or tuition adjustment drop for Summer Semester Two?
+On what date are the final grades due for Summer Semester Two?
+How many units are awarded for the course "Architecture Design Studio: Poiesis Studio 2" at Carnegie Mellon University for Spring 2024?
+What days of the week and time is the course "Digital Fabrication Skills" scheduled for in Spring 2024?
+Who is the instructor for the course "History of Modern Architecture" offered in Spring 2024?
+What are the days and times for the "Architecture Options Studios" course in Spring 2024?
+What is the location of the course "Introduction to Structures" for Section A3?
+Who are the authors of the paper "UTOPIA: Unconstrained Tracking Objects without Preliminary Examination via Cross-Domain Adaptation"?
+What is the main focus of the UTOPIA approach in Multiple Object Tracking (MOT)?
+How does UTOPIA address the challenges in cross-domain adaptation for MOT?
+What experimental settings are used to validate the UTOPIA approach?

@@ -237,3 +237,22 @@ Transfers not permitted in the first semester; subsequent requests require writt
 First violation may lead to dismissal or probation; second violation results in dismissal.
 Full funding (tuition plus stipend) is guaranteed for the first year, subject to satisfactory progress.
 Students must carry adequate medical insurance, either through the University plan or an external plan.
+The Fall 2023 Semester begins on August 28, 2023.
+The deadline is September 1, 2023.
+Labor Day occurs on September 4, 2023.
+It is scheduled for November 13 - November 17, 2023.
+The last day of classes is on April 26, 2024.
+Commencement is on May 12, 2024.
+It begins on May 13, 2024.
+Memorial Day is observed on May 27, 2024.
+The deadline is June 28, 2024.
+Final grades are due by August 6, 2024.
+The course awards 15.0 units.
+It is scheduled on Tuesdays and Thursdays from 02:00 PM to 03:20 PM.
+The instructor is Gutschow.
+It is scheduled on Mondays, Wednesdays, and Fridays from 02:00 PM to 04:50 PM.
+The location is MM 303.
+The authors are Pha Nguyen, Kha Gia Quach, John Gauch, Samee U. Khan, Bhiksha Raj, and Khoa Luu.
+UTOPIA focuses on self-supervised cross-domain learning for MOT, addressing the challenge of tracking objects in varying domains without preliminary examination.
+UTOPIA introduces a novel self-supervised learning approach for MOT, emphasizing domain discrepancy minimization and leveraging unsupervised data augmentation.
+The experiments are conducted on four challenging settings, including cross-domain scenarios from MOTSynth to MOT17, MOT17 to MOT20, MOT17 to VisDrone, and MOT17 to DanceTrack.
