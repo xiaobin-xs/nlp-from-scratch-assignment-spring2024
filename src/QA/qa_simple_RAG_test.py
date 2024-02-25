@@ -6,12 +6,14 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnablePick
 from langchain import hub
-import random
-import os
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_community.embeddings.sentence_transformer import (
     SentenceTransformerEmbeddings,
 )
+from langchain_community.llms import GPT4All
+import random
+import os
+import argparse
 
 
 def load_random_question(file_path):
@@ -19,18 +21,28 @@ def load_random_question(file_path):
         questions = file.readlines()
     return random.choice(questions).strip()
 
-question_file_path = "/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/questions.txt"
+
+parser= argparse.ArgumentParser(description="RAG QA system for Anlp hw2")
+parser.add_argument('--question_folder',type=str, default="/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/questions.txt")
+parser.add_argument('--document_folder', type=str, default='/home/ubuntu/nlp-from-scratch-assignment-spring2024/tmp_doc')
+parser.add_argument('--model',type=str, default='llama')
+parser.add_argument('--model_path',type=str, default='/home/ubuntu/llama-2-13b-chat.Q4_0.gguf')
+args = parser.parse_args()
+
+question_file_path = args.question_folder
 question = load_random_question(question_file_path)
 print(f'Question: {question}')
 
 
-loader = DirectoryLoader('/home/ubuntu/nlp-from-scratch-assignment-spring2024/tmp_doc')
+loader = DirectoryLoader(args.document_folder)
 documents = loader.load()
 print(f'Total Document Size: {len(documents)}')
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
 all_splits = text_splitter.split_documents(documents)
+# There is another choice of embedding is to use GPT4ALL: GPT4AllEmbeddings
 embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+# vectorstore = Chroma.from_documents(documents=all_splits, embedding=GPT4AllEmbeddings())
 vectorstore = Chroma.from_documents(documents=all_splits, embedding=embedding_function)
 
 docs = vectorstore.similarity_search(question)
@@ -41,14 +53,23 @@ for doc in docs:
 n_gpu_layers = -1  # Adjust based on your hardware
 n_batch = 512     # Adjust based on your hardware and memory requirements
 
-llm = LlamaCpp(
-    model_path="/home/ubuntu/llama-2-13b-chat.Q4_0.gguf",
+
+if args.model=="llama":
+    llm = LlamaCpp(
+    model_path=args.model_path,
     n_gpu_layers=n_gpu_layers,
     n_batch=n_batch,
     n_ctx=2048,
     f16_kv=True,  # MUST set to True for efficiency
     verbose=True,
 )
+elif args.model=="gpt4all":
+    # Currently cannot be called due to OS version
+    llm = GPT4All(
+        model="/home/ubuntu/gpt4all-falcon-newbpe-q4_0.gguf",
+        max_tokens=2048,
+    )
+
 
 def format_docs(docs):
     for doc in docs:
