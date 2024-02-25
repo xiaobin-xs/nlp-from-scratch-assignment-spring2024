@@ -43,3 +43,29 @@ What,What are the research areas of Louis-Philippe Morency?,"Machine Learning, M
 ,What is the main focus of the UTOPIA approach in Multiple Object Tracking (MOT)?,"Self-supervised cross-domain learning for MOT, addressing the challenge of tracking objects in varying domains without preliminary examination.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,
 ,How does UTOPIA address the challenges in cross-domain adaptation for MOT?,"UTOPIA introduces a novel self-supervised learning approach for MOT, emphasizing domain discrepancy minimization and leveraging unsupervised data augmentation.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,
 ,What experimental settings are used to validate the UTOPIA approach?,"The experiments are conducted on four challenging settings, including cross-domain scenarios from MOTSynth to MOT17, MOT17 to MOT20, MOT17 to VisDrone, and MOT17 to DanceTrack.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,
+when,When is the Diploma Ceremonies for Architecture?, May 10,commencement_schedule_data.txt
+when,When is the Diploma Ceremonies for Art?, May 11,commencement_schedule_data.txt
+where,Where is the Diploma Ceremonies for Architecture?,"Philip Chosky Theater, Purnell Center",commencement_schedule_data.txt
+where,Where is the Diploma Ceremonies for Art?,"Philip Chosky Theater, Purnell Center",commencement_schedule_data.txt
+who,Who is the contact for Diploma Ceremonies for Architecture?,Heather Workinger,commencement_schedule_data.txt
+who,Who is the contact for Diploma Ceremonies for Art?,Mark Cato,commencement_schedule_data.txt
+when,When is CMU Spring Carnival 2024,"April 11-14, 2024",spring_carnival.txt
+when,"When is the Booth, Rides, and Dog Houses event scheduled to begin on Thursday?",3:30-11 p.m.,spring_carnival.txt
+what,"What special event is scheduled for April 10, 2024, at 8:00 AM?",Here to Stay: Celebrating 40 Years at the Architecture Archives,spring_carnival.txt
+what,"What is happening at 3:00 PM on April 10, 2024?",WRCT Radio Buggy Preview,spring_carnival.txt
+what,What are the primary areas of focus for the Ph.D. in Language and Information Technology at Carnegie Mellon University?,Developing the next generation of scientific and entrepreneurial leaders.,LTI_programs.txt
+what,What are the course unit requirements for a Ph.D. in Language and Information Technologies at CMU?,96 units of graduate-level courses,LTI_programs.txt
+what,What is the final application deadline for Fall 2024 admission to LTI's graduate programs?,"December 13, 2023, at 3 p.m. EST.",LTI_programs.txt
+what,What are the two options available for completing the Master of Computational Data Science program?,Standard Timing (16 months) and Extended Timing (20 months),LTI_programs.txt
+what,What is the minimum number of course credits required for the MCDS program?,A minimum of 144 units,LTI_programs.txt
+how,How long is the standard track for the MIIS-16 program?,16 months,LTI_programs.txt
+how,How many semesters does the MSAII degree typically take to complete?,Four semesters,Handbook-MSAII-2022-2023.txt
+what,What GPA is required for applying to the MSAII program?,A GPA of 3.0 or higher,Handbook-MSAII-2022-2023.txt
+who,Who should be contacted for specific application or admissions questions related to the MSAII program?,Amber Vivis,Handbook-MSAII-2022-2023.txt
+who,Who is the Director of the MSAII program?,Michael I. Shamos,Handbook-MSAII-2022-2023.txt
+what,What are the three areas of concentration in the MCDS program?,"Analytics, Systems, and Human-Centered Data Science",MCDS Handbook 23-24 AY.txt
+T/F,Is there a thesis or dissertation requirement in the MCDS program?,No,MCDS Handbook 23-24 AY.txt
+who,Who is the Program Director of the MIIS program?,Teruko Mitamura,MIIS Handbook_2023 - 2024.txt
+T/F,Are part-time study options available in the MIIS program?,Yes,MIIS Handbook_2023 - 2024.txt
+what,What is the policy for grade appeals in the MIIS program?,Final grades are changed only in exceptional circumstances with the instructor's approval,MIIS Handbook_2023 - 2024.txt
+what,What support is provided for graduate student funding in the MLT program?"Full funding (tuition plus stipend) is guaranteed for the first year, subject to satisfactory progress.",MLT Student Handbook 2023 - 2024.txt

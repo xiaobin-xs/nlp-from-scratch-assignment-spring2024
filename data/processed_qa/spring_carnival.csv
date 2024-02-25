@@ -1,0 +1,11 @@
+type,question,answer,file
+when,When is CMU Spring Carnival 2024,"April 11-14, 2024",spring_carnival.txt
+when,"When is the Booth, Rides, and Dog Houses event scheduled to begin on Thursday?",3:30-11 p.m.,spring_carnival.txt
+what,What are the Carnival Headquarters Tent hours on Thursday?,8 a.m.-7 p.m.,spring_carnival.txt
+what,What time do Friday's Preliminary Sweepstakes Races start?,8 a.m.,spring_carnival.txt
+what,What are the Scotch'n'Soda Performance times for Thursday?,7-9 p.m.,spring_carnival.txt
+what,"What event starts on February 5, 2024, and continues until April 15, 2024?",Faces of Carnival Photo Mosaic,spring_carnival.txt
+what,"What event starts on April 5, 2024, and continues through April 14, 2024?",Booth Build & Midway Cam,spring_carnival.txt
+what,"What special event is scheduled for April 10, 2024, at 8:00 AM?",Here to Stay: Celebrating 40 Years at the Architecture Archives,spring_carnival.txt
+what,"What is happening at 3:00 PM on April 10, 2024?",WRCT Radio Buggy Preview,spring_carnival.txt
+
