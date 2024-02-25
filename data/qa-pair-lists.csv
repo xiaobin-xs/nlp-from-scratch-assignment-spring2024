@@ -17,3 +17,29 @@ What,What courses does the instructor Gutschow teach in Spring 2024?,48241 Histo
 What,What are the course number and course name of the courses offered at Los Angeles in Spring 2024?,93854 Film Acquisition; 93855 Intellectual Property; 93856 Business Development; 93858 Market Research in the Entertainment Industry; 93859 Fandom in Music and Media; 93860 What Makes Us Play:  The Craft of the Video Game; 93866 Creative Producing; 93869 Television Economics; 93873 Film Exhibition; 93878 Branded Entertainment; 93888 Practicum II; 93890 Capstone Management Project II,sched_layout_spring.txt,need to collect and combine info
 What,"In Biological Sciences Department, what are the courses by instructor Lee in Spring 2024?",03231 Honors Biochemistry; 03445 Undergraduate Research; 03545 Honors Research; 03741 Advanced Cell Biology; 03744 Membrane Trafficking,sched_layout_spring.txt,need to identify the department; need to distinguish instructors with the same name
 What,"Within the course with course number starts with ""03"" , what are the courses by instructor Lee in Spring 2024?",03231 Honors Biochemistry; 03445 Undergraduate Research; 03545 Honors Research; 03741 Advanced Cell Biology; 03744 Membrane Trafficking,sched_layout_spring.txt,need to identify the department; need to distinguish instructors with the same name
+Who,Who founded Carnegie Mellon University?,Andrew Carnegie,athletics.txt,
+When,When is Carnegie Mellon University founded?,1900,athletics.txt,
+What,What is a Tartan?,A Tartan is a twilled woolen fabric with a plaid design,athletics.txt,
+When,When did Carnegie Technical Schools become known as the Carnegie Institute of Technology?,"In 1912, twelve years after it is founded.",athletics.txt,need to calculate
+When,When was the Scottish terrier officially welcomed as the university's first mascot?,2007,athletics.txt,
+What,What is the official name of the mascot?,Scottish terrier; Scotty,athletics.txt,multiple correct answers
+Who,Who lead the Mascot Identity Task Force?,Director of Athletics Susan Bassett and Dean of Student Affairs Jennifer Church.,athletics.txt,
+When,In which year did the official mascot debut?,2007,athletics.txt,need to simplify the answer - only the year
+What,"What breed is the official mascot, Scotty?",Scottish terrier,athletics.txt,
+What,What are the Kiltie Band's rehearsal schedules?,Football season: Mondays and Thursdays from 5:30 p.m.-7:30 p.m. and Game Day 9:30-11:00a.m. Concert Season: Mondays and Thursdays from 5:30-6:30 p.m. Location is the CUC Studio Theater. ,athletics.txt,
+When,When are the Kiltie Band's performances?,"The Kiltie Band performs at all home football games, a holiday concert, and two spring concerts. Times and dates for all performances are announced at the first practice.",athletics.txt,
+T/F,Are there auditions for the Kiltie Band?,"No, any member of the campus community with music experience is able to join the Kiltie Band!",athletics.txt,
+Who,Who can join the Kiltie Band?,any member of the campus community with music experience is able to join the Kiltie Band!,athletics.txt,
+When,When is the first rehearsal for the Kiltie Band?,On the first day of class (Monday) at 5:30 p.m..,athletics.txt,
+Where,Where are the rehearsals held for the Kiltie Band?,CUC Studio Theater.,athletics.txt,
+How,How can one see and hear the Kiltie Band in action?,visit their YouTube channel,athletics.txt,
+Who,Who is a Principal Systems Scientist at LTI?,Ralf Brownis; Robert Frederking,lti_department_data.txt,need to combine infomation; multiple answer
+What,What is the email address of Jamie Callan?,callan@cs.cmu.edu,lti_department_data.txt,
+Where,Where is Justine Cassell's office located?,5107 Gates & Hillman Centers,lti_department_data.txt,
+What,What is the phone number of Fernando Diaz?,412-268-4229,lti_department_data.txt,
+Who,Who's phone number of 412-268-4229?,Fernando Diaz,lti_department_data.txt,
+What,What are the research areas of Louis-Philippe Morency?,"Machine Learning, Multimodal Computing and Interaction, Spoken Interfaces and Dialogue Processing",lti_department_data.txt,
+,"Who are the authors of the paper ""UTOPIA: Unconstrained Tracking Objects without Preliminary Examination via Cross-Domain Adaptation""?","Pha Nguyen, Kha Gia Quach, John Gauch, Samee U. Khan, Bhiksha Raj, and Khoa Luu",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,
+,What is the main focus of the UTOPIA approach in Multiple Object Tracking (MOT)?,"Self-supervised cross-domain learning for MOT, addressing the challenge of tracking objects in varying domains without preliminary examination.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,
+,How does UTOPIA address the challenges in cross-domain adaptation for MOT?,"UTOPIA introduces a novel self-supervised learning approach for MOT, emphasizing domain discrepancy minimization and leveraging unsupervised data augmentation.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,
+,What experimental settings are used to validate the UTOPIA approach?,"The experiments are conducted on four challenging settings, including cross-domain scenarios from MOTSynth to MOT17, MOT17 to MOT20, MOT17 to VisDrone, and MOT17 to DanceTrack.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,
