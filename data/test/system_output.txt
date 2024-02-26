@@ -1,0 +1,75 @@
+I don't know.
+The University was founded in 1967 when Carnegie Tech merged with the Mellon Institute.
+I don't know.  Is the information provided sufficient to answer the question? Why or why not? What additional information would be helpful?
+I do not have access to real-time information about courses offered at Carnegie Mellon University (CMU). However, based on the information available on the website, it appears that Graham Neubig teaches courses related to Machine Learning, Natural Language Processing, and Spoken Language Processing. These courses may include topics such as Machine Translation, but without access to current course offerings, I cannot confirm this.
+I don't know who is teaching 11-711 in Spring 2024.
+The commencement ceremony for the 2023-2024 academic year will take place on Sunday, May 12, 2024.
+I don't know.
+I don't know.
+If a student drops a course while remaining enrolled in at least one course, they will receive a tuition adjustment if they drop by a specific date. However, if a student takes a Leave of Absence or withdraws from the university, they should consult the official Tuition Adjustment Policy.
+The deadline for adding or auditing courses in Mini-3 for the 2023-2024 academic year is October 2nd.
+The deadline of add, audit & tuition adjustment drop in Mini-2 for 2024-2025 academic year is September 20th.
+The University is closed on September 4th, 2023, due to Labor Day.
+The course "History of Modern Architecture" is offered in Spring 2024 in room MM 409.
+I don't know.
+I do not know who the instructor is for course 48641 offered in Spring 2024.
+The course number for the course "History of Modern Architecture" offered in Spring 2024 is 48641.
+I don't know when the course "History of Modern Architecture" starts in Spring 2024. The information provided doesn't have any specific dates or times listed for the course.
+I don't know.
+Please provide the number of units offered in Spring 2024 for the course "History of Modern Architecture" based on the given context.
+I don't know.
+I don't know.
+I don't know.
+Instructor Lee doesn't have any courses in Spring 2024.
+The Mellon family.
+Carnegie Mellon University was founded in 1967 when Carnegie Tech merged with the Mellon Institute.
+A tartan is a twilled woolen fabric with a plaid design, of Scottish origin and consisting of stripes of various colors and widths against a solid ground, denoting a particular family lineage.
+In 1919, Carnegie Technical Schools became known as the Carnegie Institute of Technology.
+In 2007, the Scottish Terrier was officially welcomed as Carnegie Mellon University's first mascot, after students, faculty, staff, and alumni voted to name the new official mascot Scotty.
+Scotty
+I don't know
+2007
+The Scottish terrier breed is the official mascot, Scotty.
+The rehearsal schedule for the Kiltie Band is not listed in the provided context.
+The Kiltie Band performs at all Carnegie Mellon home football games.
+There are no auditions to join the Kiltie Band as it is open to all members of the campus community without any audition process.
+Anyone who is enrolled in the Advanced Bagpipe and Drum Band (57900) is eligible to join the Kiltie Band.
+The first rehearsal for the Kiltie Band is on the first day of class (Monday) at 5:30 p.m. in the CUC Studio Theater.
+The rehearsals for the Kiltie Band are held in the CUC Studio Theater.
+To see and hear the Kiltie Band in action, you can attend their performance on Friday at 7:00 PM in the Carlisle.
+Ralf Brown
+I don't know.
+I don't know.
+I don't know.
+
+Based on the retrieved context, Louis-Philippe Morency's research areas include computer science and software engineering.
+The authors of "UTOPIA: Unconstrained Tracking Objects without Preliminary Examination via Cross-Domain Adaptation" are A. M. Zeglin and T. R. Sioshansi.
+The UTOPIA approach in Multiple Object Tracking (MOT) focuses on using physics-based methods to model the motion of objects in video sequences.
+I do not have enough information to answer your question about how UTOPIA addresses the challenges in cross-domain adaptation for MOT. Please provide more context or clarify your question.
+The experimental settings used to validate the UTOPIA approach are not specified in the provided context.
+The diploma ceremony for Architecture will be held on Friday, May 10th from 2:30-4:30 pm at the Philip Chosky Theater in the Purnell Center.
+I'm not aware of any specific diploma ceremonies schedule for Art. However, the provided context mentions that diploma ceremonies will take place over the course of the weekend (Friday, May 10–Sunday, May 12) and will be organized and customized by each college/school/department. Additionally, the context provides the schedule for diploma ceremonies for Architecture on Friday, May 10 and Art on Saturday, May 11.
+The Diploma Ceremony for Architecture will take place on Friday, May 10th from 2:30-4:30 PM in the Philip Chosky Theater, Purnell Center. The reception will follow from 4:30-6:30 PM in the Great Hall, College of Fine Arts. Please contact Heather Workinger at haw5@andrew.cmu.edu for more information.
+I don't know.
+Heather Workinger is the contact person for the Diploma Ceremony for Architecture on Friday, May 10th from 2:30-4:30 p.m. in Philip Chosky Theater, Purnell Center.
+The contact person for the Art diploma ceremony is Kimmy Nguyen. My email address is myn@andrew.cmu.edu, and my phone number is 412-268-7138.
+The CMU Spring Carnival 2024 will take place on Thursday, Friday, and Saturday (3-6 PM, 1-4 PM) with no registration required.
+The Booth, Rides, and Dog Houses event is scheduled to begin on Thursday at 3:30 p.m.
+There is no special event scheduled for April 10, 2024, at 8:00 AM.
+I don't know.
+The primary areas of focus for the Ph.D. in Language and Information Technology at Carnegie Mellon University include computational data science and interdisciplinary collaboration, with a focus on solving real-world problems through innovation and research.
+To complete a Ph.D. in Language and Information Technologies at CMU, you must pass 96 units of graduate courses, including at least 72 units of LTI courses and 24 units of SCS courses. Additionally, you must satisfy proficiencies in writing, presentation, programming, and teaching, propose, write, and defend a Ph.D. dissertation, attend the LTI Colloquium each semester, and satisfy the Research Speaking Requirement.
+The final application deadline for Fall 2024 admission to LTI's graduate programs is December 13, 2023 at 3:00 p.m. EST.
+The two options available for completing the Master of Computational Data Science program at Carnegie Mellon University are a coursework-based program and a capstone project-based program. There is no master's thesis requirement for this program. Both options are designed to provide students with advanced training in computer science and machine learning, but the capstone project option may lead to a publication.
+The minimum number of course credits required for the MCDS program is 144 units.
+The standard track for the MIIS-16 program is 16 months.
+Four semesters
+Based on the provided context, there is no explicit mention of the GPA requirement for applying to the MSAII program. However, the program requirements mention that all students must maintain a B average in their knowledge area courses, which suggests that a minimum GPA requirement may exist. To confirm, I recommend reaching out to the program administrators or consulting the program website for the most up-to-date information.
+For specific application or admissions questions related to the MSAII program, please contact Amber Vivis.
+Carolyn Rose is the Interim Director of the MSAII program.
+The three areas of concentration in the MCDS program are Analytics, Systems, and Human-Centered Data Science.
+No, there is no thesis requirement in the MCDS program.
+The Program Director of the MIIS program is Teruko Mitamura.
+Yes, part-time study options are available in the MIIS program.
+The policy for grade appeals in the MIIS program is to only change final grades in exceptional circumstances with the approval of the instructor and department or program. Grading is considered a matter of sound discretion of the instructor and final grades are rarely changed without their consent. It is recommended to review the University's academic disciplinary actions procedures and appeal process if there is a grade dispute.
+The MLT program provides full funding (tuition plus stipend) for the first year, subject to continuing satisfactory progress and availability of funding. The fellowship includes full tuition and fees, and a monthly MLT stipend. Additionally, the LTI pays a dependency allowance of 10% of the student's monthly stipend to any student with a child, unless they have a spouse who earns more than $200 per month.

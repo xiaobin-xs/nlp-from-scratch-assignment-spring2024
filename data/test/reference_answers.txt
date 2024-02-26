@@ -3,245 +3,73 @@ Graham Neubig
 Farnam Jahanian
 11711 Advanced Natural Language Processing; 11925 Independent Study: Area; 11920 Independent Study: Breadth
 Graham Neubig
-Ralf Brown.
-callan@cs.cmu.edu.
-5107 Gates & Hillman Centers.
-412-268-4229.
-Machine Learning, Multimodal Computing, Spoken Interfaces.
-5707 Gates & Hillman Centers.
-Information Extraction, Summarization, Question Answering.
-swelleck@andrew.cmu.edu.
-Scott Fahlman.
-8101 Gates & Hillman Centers.
-Herb Simon, Allen Newell, and Cliff Shaw
-1955-56
-Logic Theorist.
-By manipulating index cards on a kitchen table.
-In 1971.
-They addressed the need for faster processing in speech and graphics programs.
-They adapt to students' progress, unlike drill-based methods.
-Raj Reddy and his students.
-In 1976.
-Scott Fahlman.
-To clear up misunderstandings on computer message boards.
-It aimed to provide workstations in every home and office.
-It made Carnegie Mellon University the most-wired campus globally.
-Andrew Carnegie was a self-educated immigrant who became an industrialist and philanthropist.
-Andrew Carnegie settled in Pittsburgh, Pennsylvania, after emigrating from Scotland in 1848.
-Andrew Carnegie donated $1 million for the creation of a technical institute in Pittsburgh in 1900.
-Carnegie Technical Schools began offering bachelor's degrees during the early 20th century.
-Key developments during the early years of Carnegie Tech included campus expansion, pioneering conservatory degree programs, and the initiation of graduate degrees and interdisciplinary research.
-Carnegie Tech merged with the Mellon Institute in 1967.
-The merger established the Mellon College of Science and the College of Humanities and Social Sciences.
-Carnegie Mellon University expanded globally by offering programs outside Pittsburgh, establishing campuses in Qatar and Silicon Valley, and forming research partnerships worldwide.
-Carnegie Mellon University alumni have achieved success in various fields, including winning Tony Awards, Nobel Prizes, Turing Awards, and becoming CEOs, entrepreneurs, professors, and artists.
-The future plans outlined in the Strategic Plan 2025 for Carnegie Mellon University focus on enhancing the student experience, community engagement, and global social impact.
-In 2014.
-Herb Simon (H’90) and Alan Perlis (S’42).
-Approximately 60 instructions per second.
-Perlis, Simon, and Newell.
-In 1958.
-In 1965.
-Alan Perlis.
-C.mmp and Cm*.
-In 1975.
-Herbert Simon.
-Raj Reddy.
-Tom Murrin, Jordan, and Reddy.
-A high-speed computer network and GUI-based computing environment.
-A. Nico Habermann and Angel Jordan.
-In the fall of 1988.
-A. Nico Habermann.
-On Dec. 22, 1988.
-Mary Shaw (CS’72).
-During the 1989-90 academic year.
-Another 73 undergraduates.
-Andrew Carnegie founded Carnegie Mellon University.
-A tartan is a twilled woolen fabric with a plaid design.
-Twelve years later, in 1912.
-It wasn't until 2007.
-The official mascot is named Scotty.
-Susan Bassett and Jennifer Church.
-The official mascot debuted at the Nov. 10, 2007 home football game.
-The graphic features a profile of a distinguished, bold Scottish terrier sporting a plaid scarf around his neck.
-The Scottish terrier breed.
-The Kiltie Band began in 1908.
-Rehearsals during football season are on Mondays and Thursdays from 5:30 p.m. to 7:30 p.m., with Game Day rehearsals from 9:30 a.m. to 11:00 a.m. Concert season rehearsals are also on Mondays and Thursdays from 5:30 p.m. to 6:30 p.m.
-Rehearsals are held at the CUC Studio Theater.
-The Kiltie Band performs at all home football games, a holiday concert, and two spring concerts.
-No, auditions are not required to join the Kiltie Band.
-Yes, several Kiltie-owned instruments are available for use.
-Name, High School, Address at Carnegie Mellon (if known), Home address, Cell number, Home number, Whether you plan on being in the band or colorguard, If in the band, what instrument(s) you play, Whether you need to borrow an instrument or equipment.
-To see and hear the Kiltie Band in action, visit their YouTube channel.
-Saturday, May 11.
-Gesling Stadium on CMU’s campus.
-Approximately 1.5 hours long.
-Seating is open in the stadium, including bleachers and seating on the field.
-Each ceremony is organized and customized by their college/school/department.
-To initiate new members into the Phi Beta Kappa honor society.
-Location TBD; registration required.
-Mike Danko.
-8 a.m.
-9 a.m.
-Prithu Pareek.
-Sunday afternoon diploma ceremonies will start at their scheduled time regardless of weather.
-Simulcast locations are in the Cohon University Center.
-Fred Eversley.
-Doctor of Fine Arts.
-Electrical and Computer Engineering.
-Philip Chosky Theater, Purnell Center.
-Heather Workinger's email is haw5@andrew.cmu.edu.
-Saturday, May 11.
-Kresge Theatre.
+May 12, 2024
+October 23, 2023
+October 23, 2023 by 4 pm
+Drop by the tuition adjustment drop deadline
+January 22, 2024
+October 25, 2024
+September 4 M Labor Day; December 23 -January 2 Sa-Tu Winter Break; May 27 M Memorial Day; June 19 W Juneteenth; July 4 Th Independence Day;
+MM A14
+Gutschow
+Gutschow
+48641; 48241
+10:00AM on Monday, Wednesday, Friday
+10:00AM to 10:50AM on Monday, Wednesday, Friday
+9.0 units for 48241; VAR units for 48641
+48241 History of Modern Architecture; 48641 History of Modern Architecture; 48792 Ph.D. Independent Study; 48793 Ph.D. Thesis
+93854 Film Acquisition; 93855 Intellectual Property; 93856 Business Development; 93858 Market Research in the Entertainment Industry; 93859 Fandom in Music and Media; 93860 What Makes Us Play:  The Craft of the Video Game; 93866 Creative Producing; 93869 Television Economics; 93873 Film Exhibition; 93878 Branded Entertainment; 93888 Practicum II; 93890 Capstone Management Project II
+03231 Honors Biochemistry; 03445 Undergraduate Research; 03545 Honors Research; 03741 Advanced Cell Biology; 03744 Membrane Trafficking
+03231 Honors Biochemistry; 03445 Undergraduate Research; 03545 Honors Research; 03741 Advanced Cell Biology; 03744 Membrane Trafficking
+Andrew Carnegie
 1900
-Bringing groundbreaking ideas to market and creating successful startups.
-Andrew Carnegie.
-35% U.S., 65% International.
-76%.
-126 countries.
-School of Computer Science.
-Ranked #4.
-49.8%.
-Java computer programming language.
-1982, by Professor Scott Fahlman.
-Stephanie Kwolek, Master of Science in Chemistry, 1946.
-Randy Pausch (SCS 1988) and Jeffrey Zaslow (DC 1980).
-1919, to Mao Yisheng.
-Duolingo, named Apple’s 2013 app of the year.
-Leading university center with support to over 110 centers worldwide.
-Andy Warhol (CFA 1949).
-29 universities.
-A competition where teams race specially designed vehicles.
-99 years.
-A vehicle raced and a nickname for the competition.
-A sharp right-hand turn in the course.
-Signals drivers for the right-hand turn.
-Person controlling the buggy's steering and braking.
-Structure for pushing the buggy forward.
-Person propelling the buggy along the course.
-The buggy's outer aerodynamic structure.
-Changing of pushers during the race.
-Six people.
-Body, pushbar, wheels, safety harness, driving and braking mechanisms.
-Housing around wheels to reduce drag.
-Known for having quiet buggies.
-Four different vehicles.
-Fringe uses 'B' names; others use themes like fire.
-Noon to 2 p.m. at Weigand Gymnasium.
-Must log practice runs and control the buggy.
-Often less than 5 feet 3 inches.
-Social chair and former mechanic.
-Developing the next generation of scientific and entrepreneurial leaders.
-96 units of graduate-level courses.
-LTI courses, SCS courses, lab courses, and research.
-Similar to the MLT program, focused on coursework and initial research.
-December 13, 2023, at 3 p.m. EST.
-Standard Timing (16 months) and Extended Timing (20 months).
-A minimum of 144 units.
-Introduction to Computer Systems course.
-Recognizing and extracting meaning from text, spoken language, and video.
-16 months.
-Software development, summer internship, and a capstone project.
-Human Language, Language Technology Application, Machine Learning.
-Combines AI and machine learning curriculum with real-world team experience.
-Four semesters.
-Core Curriculum, Knowledge Requirements, Electives, and Capstone Project.
-A GPA of 3.0 or higher.
-GRE is required.
-Official copy of an English proficiency score report.
-Undergraduate degrees in computer science, software engineering, bioinformatics, or bioengineering.
-Amber Vivis.
-Master of Science in Artificial Intelligence and Innovation.
-Michael I. Shamos.
-At least 195 units.
-AI & Future Markets, AI Engineering, LTI Practicum, AI Innovation, Capstone Project.
-72 units.
-Completion of "AI & Future Markets" with a grade of "B" or better.
-36 units.
-Completion of a preparatory course.
-Yes, during the summer between the first and second years.
-A minimum of 3.0 GPA.
-Amber Vivis.
-Only elective courses, with approval.
-Completion of course work by the end of the following academic semester.
-No transfer credits are accepted for courses taken prior to matriculation at CMU.
-A minimum of 36 units.
-Yes, for personal, medical, or academic reasons.
-A minimum of 36 units per semester.
-Contact the course instructor and process a Change of Grade Form.
-Yes, with the permission of the instructor and completion of the Course Audit Approval Form.
-Consequences range from academic probation to termination from the program, depending on the severity and number of violations.
-Master of Computational Data Science.
-Carolyn Penstein Rosé.
-Three semesters (16 months).
-Professional Preparation Track (16 months) and Research Preparation Track (20 months).
-Analytics, Systems, and Human-Centered Data Science.
-144 units.
-36 units (three 12-unit courses).
-Yes, typically in the summer.
-A minimum QPA of 3.0.
-Pass/fail and audit grades are not permitted for courses used to satisfy degree requirements.
-Incomplete grades must be completed by the end of the following academic semester.
-None required, but students can apply for teaching assistant positions.
-Non-native English speakers are encouraged to take advantage of language support services.
-Zero tolerance policy; one serious violation or two violations can lead to dismissal.
-A minimum of 36 units.
-No thesis or dissertation required.
-Transfer credit must be approved by the Director and satisfy specific program requirements.
-No double counting of courses for multiple degree requirements or programs.
-Electives must be graduate-level courses (600 or above) from the School of Computer Science.
-Discuss the issue with the course instructor and process a Change of Grade Form.
-Master of Science in Intelligent Information Systems.
-Teruko Mitamura.
-Standard MIIS degree (16 months) and MIIS: Advanced Study degree (21 months).
-150 units for the standard MIIS degree.
-Minimum QPA of 3.0.
-Yes, typically in the summer.
-36 units for the Capstone project.
-Graduate-level courses (600-level or higher) from the School of Computer Science.
-Maximum of seven years from original matriculation.
-Transfer credits must be approved and satisfy specific program requirements.
-Pass/fail grades are not permitted for courses used to satisfy degree requirements.
-Human Language, Language Technology Applications, and Machine Learning.
-Yes, part-time options are available.
-Final grades are changed only in exceptional circumstances with the instructor's approval.
-Zero tolerance policy; consequences include probation or dismissal.
-A minimum of 36 units per semester.
-International students must maintain full-time status for visa compliance.
-Evaluated each semester, based on academic progress and faculty assessment.
-The Office of Disability Resources provides accommodations and support.
-Written request to the Program Director and advisor's consent, up to 1 year.
-Master of Language Technologies.
-Kate Schaich (Program Manager) and Robert Frederking (Program Director).
-Two calendar years (24 months).
-120 or more course units.
-At least 72 units of LTI courses and 24 units of SCS courses.
-Optional, but recommended for those intending to apply for PhD programs.
-Minimum grade of C (2.0) or higher for degree requirement courses.
-Oral presentation in the second year, focusing on student research.
-Permitted with advance approval from the MLT Program Director.
-External courses may be transferred with approval by the Program Director.
-Possible with advisor recommendation, considering the 24-month program duration.
-Transfers not permitted in the first semester; subsequent requests require written application.
-First violation may lead to dismissal or probation; second violation results in dismissal.
-Full funding (tuition plus stipend) is guaranteed for the first year, subject to satisfactory progress.
-Students must carry adequate medical insurance, either through the University plan or an external plan.
-The Fall 2023 Semester begins on August 28, 2023.
-The deadline is September 1, 2023.
-Labor Day occurs on September 4, 2023.
-It is scheduled for November 13 - November 17, 2023.
-The last day of classes is on April 26, 2024.
-Commencement is on May 12, 2024.
-It begins on May 13, 2024.
-Memorial Day is observed on May 27, 2024.
-The deadline is June 28, 2024.
-Final grades are due by August 6, 2024.
-The course awards 15.0 units.
-It is scheduled on Tuesdays and Thursdays from 02:00 PM to 03:20 PM.
-The instructor is Gutschow.
-It is scheduled on Mondays, Wednesdays, and Fridays from 02:00 PM to 04:50 PM.
-The location is MM 303.
-The authors are Pha Nguyen, Kha Gia Quach, John Gauch, Samee U. Khan, Bhiksha Raj, and Khoa Luu.
-UTOPIA focuses on self-supervised cross-domain learning for MOT, addressing the challenge of tracking objects in varying domains without preliminary examination.
+A Tartan is a twilled woolen fabric with a plaid design
+In 1912, twelve years after it is founded.
+2007
+Scottish terrier; Scotty
+Director of Athletics Susan Bassett and Dean of Student Affairs Jennifer Church.
+2007
+Scottish terrier
+Football season: Mondays and Thursdays from 5:30 p.m.-7:30 p.m. and Game Day 9:30-11:00a.m. Concert Season: Mondays and Thursdays from 5:30-6:30 p.m. Location is the CUC Studio Theater.
+The Kiltie Band performs at all home football games, a holiday concert, and two spring concerts. Times and dates for all performances are announced at the first practice.
+No, any member of the campus community with music experience is able to join the Kiltie Band!
+any member of the campus community with music experience is able to join the Kiltie Band!
+On the first day of class (Monday) at 5:30 p.m..
+CUC Studio Theater.
+visit their YouTube channel
+Ralf Brownis; Robert Frederking
+callan@cs.cmu.edu
+5107 Gates & Hillman Centers
+412-268-4229
+Fernando Diaz
+Machine Learning, Multimodal Computing and Interaction, Spoken Interfaces and Dialogue Processing
+Pha Nguyen, Kha Gia Quach, John Gauch, Samee U. Khan, Bhiksha Raj, and Khoa Luu
+Self-supervised cross-domain learning for MOT, addressing the challenge of tracking objects in varying domains without preliminary examination.
 UTOPIA introduces a novel self-supervised learning approach for MOT, emphasizing domain discrepancy minimization and leveraging unsupervised data augmentation.
 The experiments are conducted on four challenging settings, including cross-domain scenarios from MOTSynth to MOT17, MOT17 to MOT20, MOT17 to VisDrone, and MOT17 to DanceTrack.
+May 10
+May 11
+Philip Chosky Theater, Purnell Center
+Philip Chosky Theater, Purnell Center
+Heather Workinger
+Mark Cato
+April 11-14, 2024
+3:30-11 p.m.
+Here to Stay: Celebrating 40 Years at the Architecture Archives
+WRCT Radio Buggy Preview
+Developing the next generation of scientific and entrepreneurial leaders.
+96 units of graduate-level courses
+December 13, 2023, at 3 p.m. EST.
+Standard Timing (16 months) and Extended Timing (20 months)
+A minimum of 144 units
+16 months
+Four semesters
+A GPA of 3.0 or higher
+Amber Vivis
+Michael I. Shamos
+Analytics, Systems, and Human-Centered Data Science
+No
+Teruko Mitamura
+Yes
+Final grades are changed only in exceptional circumstances with the instructor's approval
+Full funding (tuition plus stipend) is guaranteed for the first year, subject to satisfactory progress.
