@@ -37,7 +37,7 @@ Who,Who is a Principal Systems Scientist at LTI?,Ralf Brownis; Robert Frederking
 What,What is the email address of Jamie Callan?,callan@cs.cmu.edu,lti_department_data.txt,
 Where,Where is Justine Cassell's office located?,5107 Gates & Hillman Centers,lti_department_data.txt,
 What,What is the phone number of Fernando Diaz?,412-268-4229,lti_department_data.txt,
-Who,Who's phone number of 412-268-4229?,Fernando Diaz,lti_department_data.txt,
+Who,Who's phone number is 412-268-4229?,Fernando Diaz,lti_department_data.txt,
 What,What are the research areas of Louis-Philippe Morency?,"Machine Learning, Multimodal Computing and Interaction, Spoken Interfaces and Dialogue Processing",lti_department_data.txt,
 ,"Who are the authors of the paper ""UTOPIA: Unconstrained Tracking Objects without Preliminary Examination via Cross-Domain Adaptation""?","Pha Nguyen, Kha Gia Quach, John Gauch, Samee U. Khan, Bhiksha Raj, and Khoa Luu",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,
 ,What is the main focus of the UTOPIA approach in Multiple Object Tracking (MOT)?,"Self-supervised cross-domain learning for MOT, addressing the challenge of tracking objects in varying domains without preliminary examination.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,

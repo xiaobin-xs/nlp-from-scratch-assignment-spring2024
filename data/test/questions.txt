@@ -41,7 +41,7 @@ Who is a Principal Systems Scientist at LTI?
 What is the email address of Jamie Callan?
 Where is Justine Cassell's office located?
 What is the phone number of Fernando Diaz?
-Who's phone number of 412-268-4229?
+Who's phone number is 412-268-4229?
 What are the research areas of Louis-Philippe Morency?
 Who are the authors of the paper "UTOPIA: Unconstrained Tracking Objects without Preliminary Examination via Cross-Domain Adaptation"?
 What is the main focus of the UTOPIA approach in Multiple Object Tracking (MOT)?
