@@ -9,7 +9,7 @@ def load_random_question(file_path):
         questions = file.readlines()
     return random.choice(questions).strip()
 
-def load_questions(file_path):
+def load_txt_file_all_rows(file_path):
     with open(file_path, "r") as file:
         questions = file.readlines()
     return [q.strip() for q in questions]

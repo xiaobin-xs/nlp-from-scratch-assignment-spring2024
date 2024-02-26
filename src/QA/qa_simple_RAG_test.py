@@ -17,7 +17,7 @@ import os, sys
 import argparse
 from tqdm import tqdm
 
-from utils import load_random_question, load_questions, generate_answer
+from utils import load_random_question, load_txt_file_all_rows, generate_answer
 
 
 # def load_random_question(file_path):
@@ -36,7 +36,7 @@ args = parser.parse_args()
 
 question_file_path = args.question_path
 question = load_random_question(question_file_path)
-question_list = load_questions(question_file_path)
+question_list = load_txt_file_all_rows(question_file_path)
 print('lenght of question list:', len(question_list))
 print(f'A random question: {question}')
 
