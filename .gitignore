@@ -1,3 +1,4 @@
 .DS_Store
 *-chatgpt.txt
 *test*.ipynb
+*__pycache__/
