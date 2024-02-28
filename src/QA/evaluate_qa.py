@@ -1,6 +1,6 @@
 import argparse
 
-from utils_eval import f1_score, exact_match_score, rouge_score
+from utils_eval import normalize_answer, f1_score, exact_match_score, rouge_score
 from utils import load_txt_file_all_rows
 
 
@@ -12,8 +12,12 @@ args = parser.parse_args()
 reference_ans_path = args.reference_ans_path
 output_path = args.output_path
 
+## load system output and reference answers
 system_output = load_txt_file_all_rows(output_path)
 reference_ans = load_txt_file_all_rows(reference_ans_path)
+## normalize text
+system_output = [normalize_answer(ans) for ans in system_output]
+reference_ans = [normalize_answer(ans) for ans in reference_ans]
 
 precision_recall_f1_list = [f1_score(system_output[i], [reference_ans[i]], return_precision_recall=True) for i in range(len(system_output))]
 em_list = [exact_match_score(system_output[i], [reference_ans[i]]) for i in range(len(system_output))]
