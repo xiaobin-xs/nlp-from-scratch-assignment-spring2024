@@ -15,8 +15,8 @@ def load_txt_file_all_rows(file_path):
         questions = file.readlines()
     return [q.strip() for q in questions]
 
-def format_docs(docs):
-    with open("/home/ubuntu/nlp-from-scratch-assignment-spring2024/src/data/test/retrieval_result.txt","a") as f:
+def format_docs(docs, retrieve_result_path='/home/ubuntu/nlp-from-scratch-assignment-spring2024/src/data/test/'):
+    with open(retrieve_result_path, "a") as f:
         for doc in docs:
             f.write(f"\tDocument Name: {doc.page_content}\n")
     for doc in docs:
@@ -27,11 +27,11 @@ def custom_rag_prompt(context, question):
     formatted_input = f"""You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. 
     If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
     Here is some example Question and Answer, you should answer the question in a similar way:
-    Question: Who is offering the Advanced NLP course in Spring 2024?
-    Answer: Graham Neubig
+    Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
+    Answer: Torello
 
-    Question: On what date are the Mid-Semester & Mini-1 grades due for 2023-2024 academic year?
-    Answer: October 23, 2023
+    Question: For Fall 2023, When is Mini-1 Last Day of Classes?
+    Answer: October 13, 2023
 
     Question: {question} 
     Context: {context} 
