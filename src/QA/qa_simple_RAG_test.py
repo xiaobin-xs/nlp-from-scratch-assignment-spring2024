@@ -75,7 +75,7 @@ if args.model=="llama":
 elif args.model=="gpt4all":
     # Currently cannot be called due to OS version
     llm = GPT4All(
-        model="/home/ubuntu/gpt4all-falcon-newbpe-q4_0.gguf",
+        model="/home/ubuntu/nlp-from-scratch-assignment-spring2024/model/gpt4all-13b-snoozy-q4_0.gguf",
         max_tokens=2048,
     )
 
