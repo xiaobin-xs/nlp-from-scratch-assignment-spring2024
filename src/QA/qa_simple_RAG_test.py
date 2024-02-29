@@ -31,6 +31,7 @@ parser.add_argument('--question_path',type=str, default="/home/ubuntu/nlp-from-s
 parser.add_argument('--document_folder', type=str, default='/home/ubuntu/nlp-from-scratch-assignment-spring2024/tmp_doc')
 parser.add_argument('--output_path', type=str, default='/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/system_output.txt')
 parser.add_argument('--model',type=str, default='llama')
+parser.add_argument('--chunk_size',type=int, default=500)
 parser.add_argument('--model_path',type=str, default='/home/ubuntu/llama-2-13b-chat.Q4_0.gguf')
 args = parser.parse_args()
 
@@ -46,7 +47,7 @@ loader = DirectoryLoader(args.document_folder, glob="*.txt", recursive=True, sho
 documents = loader.load()
 print(f'Total Document Size: {len(documents)}')
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=args.chunk_size, chunk_overlap=0)
 all_splits = text_splitter.split_documents(documents)
 # There is another choice of embedding is to use GPT4ALL: GPT4AllEmbeddings
 embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
@@ -100,7 +101,7 @@ elif args.model=="gpt4all":
 
 res = []
 for q in tqdm(question_list):
-    result = generate_answer(q, vectorstore, llm)
+    result = generate_answer(q, vectorstore, llm, verbose=True)
     res.append(result)
 
 

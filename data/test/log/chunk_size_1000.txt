@@ -1,0 +1,7 @@
+Average Precision: 0.15021041807280355
+Average Recall: 0.41927417397417394
+Average F1: 0.17323643082862603
+Average Exact Match: 0.0
+Average Rouge-1: 0.18335704993229224
+Average Rouge-2: 0.09149445677713298
+Average Rouge-L: 0.1748217640050558

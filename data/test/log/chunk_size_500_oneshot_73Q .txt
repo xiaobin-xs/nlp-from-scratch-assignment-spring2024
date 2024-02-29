@@ -1,0 +1,16 @@
+template = """You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. 
+If you don't know the answer, just say that you don't know.Here are 1 example Question and Answer, you should answer the question in a similar way:
+Question: Who is offering the Advanced NLP course in Spring 2024?
+Answer: Graham Neubig
+
+Context: {context} 
+Question: {question} 
+Answer: """
+
+Average Precision: 0.22944115057084138
+Average Recall: 0.3916593501404138
+Average F1: 0.24023448786426765
+Average Exact Match: 0.0821917808219178
+Average Rouge-1: 0.24674559799148507
+Average Rouge-2: 0.12024060987671255
+Average Rouge-L: 0.23559569563372929
