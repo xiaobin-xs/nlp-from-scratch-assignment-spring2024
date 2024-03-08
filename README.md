@@ -1,5 +1,16 @@
 # CMU Advanced NLP Assignment 2: End-to-end NLP System Building
 
+Steps:
+
+0. **Install required packages** [ToDo: update requirements.txt]
+1. **Prepare the dataset**: scrape from websites or obtain data from APIs using code in `src/data/`
+2. **Download LLM model to local**: e.g. run `wget "https://gpt4all.io/models/gguf/gpt4all-13b-snoozy-q4_0.gguf"` to get the gpt4all model, make sure to save the model to `model/`
+2. **Test**: 
+
+
+Below is the original homework instruction.
+---
+
 Large language models (LLMs) such as Llama2 have been shown effective for question-answering ([Touvron et al., 2023](https://arxiv.org/abs/2307.09288)), however, they are often limited by their knowledge in certain domains. A common technique here is to augment LLM's knowledge with documents that are relevant to the question. In this assignment, you will *develop a retrieval augmented generation system (RAG)* ([Lewis et al., 2021](https://arxiv.org/abs/2005.11401)) that's capable of answering questions about the [Language Technology Institute](https://lti.cs.cmu.edu) (LTI) and [Carnegie Mellon University](https://www.cmu.edu) (CMU).
 
 ```

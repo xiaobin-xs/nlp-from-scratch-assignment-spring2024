@@ -2,3 +2,5 @@
 *-chatgpt.txt
 *test*.ipynb
 *__pycache__/
+data/test/retrieval_result_*.txt
+model/*gguf
