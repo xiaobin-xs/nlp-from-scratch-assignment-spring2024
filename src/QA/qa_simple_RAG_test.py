@@ -30,7 +30,7 @@ dt_string = now.strftime("%Y%m%d_%H%M%S")
 ## default hyperparams
 chunk_size = 500 # e.g. 300, 500, 1000
 chunk_overlap = 0
-retriever = "chroma" # 'faiss' or 'chroma'
+vecstore = "chroma" # 'faiss' or 'chroma'
 retrieve_k_docs = 5
 embed_model = 'gpt4all' # 'gpt4all', 'llama', or 'sentence-transformer'
 llm = "gpt4all" # 'gpt4all' or 'llama'
@@ -48,7 +48,7 @@ parser.add_argument('--document_folder', type=str, default='/home/ubuntu/nlp-fro
 parser.add_argument('--output_folder', type=str, default='/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/')
 parser.add_argument('--chunk_size', type=int, default=chunk_size)
 parser.add_argument('--chunk_overlap', type=int, default=chunk_overlap)
-parser.add_argument('--retriever', type=str, default=retriever)
+parser.add_argument('--vecstore', type=str, default=vecstore)
 parser.add_argument('--retrieve_k_docs', type=int, default=retrieve_k_docs)
 parser.add_argument('--emb_model', type=str, default=embed_model)
 parser.add_argument('--gen_model', type=str, default=llm)
@@ -56,7 +56,7 @@ parser.add_argument('--model_path', type=str, default=model_path)
 
 args = parser.parse_args()
 
-exp_name = f'{args.chunk_size}_{args.chunk_overlap}_{args.retriever}_{args.embed_model}_{args.gen_model}_{dt_string}'
+exp_name = f'{args.chunk_size}_{args.chunk_overlap}_{args.vecstore}_{args.embed_model}_{args.gen_model}_{dt_string}'
 
 question_file_path = args.question_path
 question = load_random_question(question_file_path)
@@ -82,8 +82,8 @@ elif args.emb_model == 'sentence-transformer':
 else:
     raise ValueError(f'embedding method {args.emb_model} not defined')
 
-vecdb_path = args.output_folder + f'log/{args.retriever}_{args.chunk_size}_{args.chunk_overlap}_{args.emb_model}.vecdb'
-if args.retriever == 'faiss':
+vecdb_path = args.output_folder + f'log/{args.vecstore}_{args.chunk_size}_{args.chunk_overlap}_{args.emb_model}.vecdb'
+if args.vecstore == 'faiss':
     # vectorstore = FAISS.from_documents(documents=all_splits, embedding=embedding_function)
     if os.path.exists(vecdb_path):
         print(f'Loading vectorstore from {vecdb_path} ...')
@@ -92,7 +92,7 @@ if args.retriever == 'faiss':
         print(f'Creating vectorstore and saving to {vecdb_path} ...')
         vectorstore = FAISS.from_documents(documents=all_splits, embedding=embedding_function)
         vectorstore.save_local(folder_path=vecdb_path)
-elif args.retriever == 'chroma':
+elif args.vecstore == 'chroma':
     # vectorstore = Chroma.from_documents(documents=all_splits, embedding=embedding_function)
     if os.path.exists(vecdb_path):
         print(f'Loading vectorstore from {vecdb_path} ...')
@@ -101,7 +101,7 @@ elif args.retriever == 'chroma':
         print(f'Creating vectorstore and saving to {vecdb_path} ...')
         vectorstore = Chroma.from_documents(documents=all_splits, embedding=embedding_function, persist_directory=vecdb_path)
 else:
-    raise ValueError(f'retriever method {args.retriever} not defined') 
+    raise ValueError(f'vector store {args.vecstore} not defined') 
 
 n_gpu_layers = -1  # Adjust based on your hardware
 n_batch = 512     # Adjust based on your hardware and memory requirements
