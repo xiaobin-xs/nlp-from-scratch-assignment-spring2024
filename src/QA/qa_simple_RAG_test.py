@@ -82,10 +82,24 @@ elif args.emb_model == 'sentence-transformer':
 else:
     raise ValueError(f'embedding method {args.emb_model} not defined')
 
+vecdb_path = args.output_folder + f'log/{args.retriever}_{args.chunk_size}_{args.chunk_overlap}_{args.emb_model}.vecdb'
 if args.retriever == 'faiss':
-    vectorstore = FAISS.from_documents(documents=all_splits, embedding=embedding_function)
+    # vectorstore = FAISS.from_documents(documents=all_splits, embedding=embedding_function)
+    if os.path.exists(vecdb_path):
+        print(f'Loading vectorstore from {vecdb_path} ...')
+        vectorstore = FAISS.load_local(vecdb_path, embeddings=embedding_function)
+    else:
+        print(f'Creating vectorstore and saving to {vecdb_path} ...')
+        vectorstore = FAISS.from_documents(documents=all_splits, embedding=embedding_function)
+        vectorstore.save_local(folder_path=vecdb_path)
 elif args.retriever == 'chroma':
-    vectorstore = Chroma.from_documents(documents=all_splits, embedding=embedding_function)
+    # vectorstore = Chroma.from_documents(documents=all_splits, embedding=embedding_function)
+    if os.path.exists(vecdb_path):
+        print(f'Loading vectorstore from {vecdb_path} ...')
+        vectorstore = Chroma(persist_directory=vecdb_path, embedding_function=embedding_function)
+    else:
+        print(f'Creating vectorstore and saving to {vecdb_path} ...')
+        vectorstore = Chroma.from_documents(documents=all_splits, embedding=embedding_function, persist_directory=vecdb_path)
 else:
     raise ValueError(f'retriever method {args.retriever} not defined') 
 
