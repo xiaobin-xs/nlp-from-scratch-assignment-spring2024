@@ -1,4 +1,10 @@
 type,question,answer,file,notes,annotator
+When,On what date are the Mid-Semester & Mini-1 grades due for 2023-2024 academic year?,"October 23, 2023",2324-academic-calendar-list-view.txt,"different ways to ask ""When""",xiaobin
+When,When is the Mid-Semester grades due for 2023-2024 academic year?,"October 23, 2023 by 4 pm",2324-academic-calendar-list-view.txt,"different ways to ask ""When"", more fine-grained",xiaobin
+How,How can students receive tuition adjustment when they drop a course?,Drop by the tuition adjustment drop deadline,2324-academic-calendar-list-view.txt,,xiaobin
+When,"What is the deadline of add, audit & tuition adjustment drop in Mini-3 for 2023-2024 academic year?","January 22, 2024",2324-academic-calendar-list-view.txt,,xiaobin
+When,"What is the deadline of add, audit & tuition adjustment drop in Mini-2 for 2024-2025 academic year?","October 25, 2024",2425-academic-calendar-list-view.txt,"same question, retrieve from a different document",xiaobin
+When,When is university closed during the 2023-2024 academic year?,September 4 M Labor Day; December 23 -January 2 Sa-Tu Winter Break; May 27 M Memorial Day; June 19 W Juneteenth; July 4 Th Independence Day;,2324-academic-calendar-list-view.txt,need to collect and combine info,xiaobin
 when,"For Fall 2023, When is Semester & Mini-1 Classes Begin?",August 28,2324-academic-calendar-list-view.txt,,jialu
 when,"For Fall 2023, When is Mini-1 add, audit & tuition adjustment drop deadline?",September 01,2324-academic-calendar-list-view.txt,,jialu
 when,"For Fall 2023, When is Labor Day?",September 04,2324-academic-calendar-list-view.txt,,jialu
@@ -110,12 +116,6 @@ when,"For Summer 2 2024, When is Summer Semester  Two Final Exams***?",August 02
 when,"For Summer 2 2024, When is Summer Semester  Two Faculty Course Evaluations close?",August 02,2324-academic-calendar-list-view.txt, ,jialu
 when,"For Summer 2 2024, When is Summer Semester  Two Final Grades Due by 4 pm?",August 06,2324-academic-calendar-list-view.txt,,jialu
 When,When is the commencement ceremony for the 2023-2024 academic year?,"May 12, 2024",2324-academic-calendar-list-view.txt,,jialu
-When,On what date are the Mid-Semester & Mini-1 grades due for 2023-2024 academic year?,"October 23, 2023",2324-academic-calendar-list-view.txt,"different ways to ask ""When""",xiaobin
-When,When is the Mid-Semester grades due for 2023-2024 academic year?,"October 23, 2023 by 4 pm",2324-academic-calendar-list-view.txt,"different ways to ask ""When"", more fine-grained",xiaobin
-How,How can students receive tuition adjustment when they drop a course?,Drop by the tuition adjustment drop deadline,2324-academic-calendar-list-view.txt,,xiaobin
-When,"What is the deadline of add, audit & tuition adjustment drop in Mini-3 for 2023-2024 academic year?","January 22, 2024",2324-academic-calendar-list-view.txt,,xiaobin
-When,"What is the deadline of add, audit & tuition adjustment drop in Mini-2 for 2024-2025 academic year?","October 25, 2024",2425-academic-calendar-list-view.txt,"same question, retrieve from a different document",xiaobin
-When,When is university closed during the 2023-2024 academic year?,September 4 M Labor Day; December 23 -January 2 Sa-Tu Winter Break; May 27 M Memorial Day; June 19 W Juneteenth; July 4 Th Independence Day;,2324-academic-calendar-list-view.txt,need to collect and combine info,xiaobin
 Where,"Which room is the course ""History of Modern Architecture"" offered in Spring 2024?",MM A14,sched_layout_spring.txt,,xiaobin
 Who,"Who is the instructor for the course ""History of Modern Architecture"" offered in Spring 2024?",Gutschow,sched_layout_spring.txt,,xiaobin
 Who,Who is the instructor for the course 48641 offered in Spring 2024?,Gutschow,sched_layout_spring.txt,,xiaobin
