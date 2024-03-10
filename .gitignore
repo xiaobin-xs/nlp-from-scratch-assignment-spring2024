@@ -4,3 +4,4 @@
 *__pycache__/
 data/test/retrieval_result_*.txt
 model/*gguf
+data/test/

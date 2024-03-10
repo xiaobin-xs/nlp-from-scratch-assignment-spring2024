@@ -64,6 +64,25 @@ def generate_answer(question, vectorstore, llm, retrieve_k_docs=4,
     Context: {context} 
     Answer: """
 
+    # Does not work at all
+    # template = """
+    # You are a knowledgeable assistant specializing in question-answering tasks, with a focus on providing accurate and succinct responses based on provided context. When answering, draw directly from the given context to ensure accuracy. If the answer is not contained within the context, respond with "I don't know." Below are examples illustrating how to use context to answer questions accurately:
+
+    # Example 1:
+    # Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
+    # Answer: Torello
+
+    # Example 2:
+    # Question: For Fall 2023, when is the Mini-1 last day of classes?
+    # Answer: October 13, 2023
+
+    # Given the above examples, please answer the following question using the provided context. Ensure your answer is clear and directly supported by the context.
+
+    # Question: {question}
+    # Context: {context}
+    # Answer:
+    # """
+
     rag_prompt = hub.pull("rlm/rag-prompt")
     rag_prompt_custom = PromptTemplate.from_template(template)
 
