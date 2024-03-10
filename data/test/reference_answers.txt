@@ -1,15 +1,123 @@
-Graham Neubig
-1900
-Farnam Jahanian
-11711 Advanced Natural Language Processing; 11925 Independent Study: Area; 11920 Independent Study: Breadth
-Graham Neubig
-May 12, 2024
 October 23, 2023
 October 23, 2023 by 4 pm
 Drop by the tuition adjustment drop deadline
 January 22, 2024
 October 25, 2024
 September 4 M Labor Day; December 23 -January 2 Sa-Tu Winter Break; May 27 M Memorial Day; June 19 W Juneteenth; July 4 Th Independence Day;
+August 28
+September 01
+September 04
+September 11
+September 20
+October 02
+October 02
+October 09
+October 13
+October 13
+October 13
+October 14
+October 14
+October 16
+October 23
+October 23
+October 27
+November 07
+November 11
+November 13
+November 13
+November 15
+November 22
+November 27
+November 27
+December 08
+December 08
+December 11
+December 13
+December 14
+December 16
+December 17
+December 18
+December 18
+December 20
+December 23
+January 08
+January 15
+January 16
+January 22
+January 29
+February 07
+February 19
+February 19
+February 26
+March 01
+March 01
+March 02
+March 02
+March 04
+March 11
+March 11
+March 12
+March 15
+April 01
+April 03
+April 11
+April 15
+April 15
+April 15
+April 26
+April 26
+April 29
+May 01
+May 02
+May 04
+May 06
+May 06
+May 07
+May 08
+May 12
+May 14
+May 21
+May 13
+May 17
+May 24
+May 27
+May 28
+June 07
+June 14
+June 18
+June 19
+June 20
+June 20
+June 21
+June 21
+June 24
+June 25
+June 28
+July 04
+July 05
+July 08
+July 22
+July 29
+August 01
+August 01
+August 02
+August 02
+August 06
+June 24
+June 28
+July 04
+July 08
+July 22
+July 29
+August 01
+August 01
+August 02
+August 02
+August 06
+May 12, 2024
+Neubig
+11711 Advanced Natural Language Processing; 11925 Independent Study: Area; 11920 Independent Study: Breadth
+Neubig
 MM A14
 Gutschow
 Gutschow
@@ -49,12 +157,98 @@ UTOPIA introduces a novel self-supervised learning approach for MOT, emphasizing
 The experiments are conducted on four challenging settings, including cross-domain scenarios from MOTSynth to MOT17, MOT17 to MOT20, MOT17 to VisDrone, and MOT17 to DanceTrack.
 May 10
 May 11
+May 12
+May 10
+May 11
+May 10
+May 12
+May 10
+May 6
+May 11
+May 12
+May 12
+May 11
+May 11
+May 12
+May 11
+May 10
+May 10
+May 11
+May 11
+May 11
+May 12
+May 10
+May 11
+May 12
+May 10
+May 10
+May 11
+May 10
 Philip Chosky Theater, Purnell Center
 Philip Chosky Theater, Purnell Center
+Alumni Concert Hall
+Auditorium Mellon Institute
+Auditorium, Mellon Institute
+McConomy Auditorium, Cohon University Center
+Auditorium, Soldiers & Sailors Memorial Hall & Museum
+Kresge Theatre
+Qatar Foundation
+Wiegand Gym, Cohon University Center
+Social and Conference Rooms, Mellon Institute
+Wiegand Gym, Cohon University Center
+Rangos Ballroom, Cohon University Center
+Philip Chosky Theater & Lobby, Purnell Center
+Auditorium, Soldiers & Sailors Memorial Hall & Museum
+Wiegand Gym, Cohon University Center
+Soldiers & Sailors Memorial Hall & Museum
+Studio Theater, Cohon University Center
+Bosch/Spark Conference Room, Scott Hall
+McConomy Auditorium, Cohon University Center
+McConomy Auditorium, Cohon University Center
+Rodef Shalom Congregation
+Auditorium, Soldiers & Sailors Memorial Hall & Museum
+McConomy Auditorium, Cohon University Center
+Music Hall and Foyer, Carnegie Museum
+Rangos Ballroom, Cohon University Center
+Philip Chosky Theater & Lobby, Purnell Center
+Auditorium, Sailors & Soldiers Memorial Hall & Museum
+Simmons Auditorium
 Heather Workinger
 Mark Cato
+Emily Syes
+Ena Miceli and Krystalyn Kovacs
+Ena Miceli and Krystalyn Kovacs
+Kristin Kropf
+Jennifer Wegner
+Jacquelyn Hopkins and Emily Half
+Jarrin Nevel
+Samantha Wessel
+Karen Stump and Umi Davis
+Geena Provenza
+Stephanie Lange
+Amy Nichols
+Jennifer Wegner
+Kimmy Nguyen
+Kimmy Nguyen
+Kimmy Nguyen
+Nicole Rihn
+Debbie Scappatura and Victoria Finney
+Julie Mull
+Jessica Becker
+Catherine Copetas
+Catherine Copetas
+Catherine Copetas
+Connie Angermeier
+Teraya White and Danielle Hamilton
+Wendy Hermann
+Lawrence Rapp
 April 11-14, 2024
 3:30-11 p.m.
+8 a.m.-7 p.m.
+8 a.m.
+7-9 p.m.
+Faces of Carnival Photo Mosaic
+Booth Build & Midway Cam
 Here to Stay: Celebrating 40 Years at the Architecture Archives
 WRCT Radio Buggy Preview
 Developing the next generation of scientific and entrepreneurial leaders.
@@ -62,6 +256,7 @@ Developing the next generation of scientific and entrepreneurial leaders.
 December 13, 2023, at 3 p.m. EST.
 Standard Timing (16 months) and Extended Timing (20 months)
 A minimum of 144 units
+Recognizing and extracting meaning from text, spoken language, and video.
 16 months
 Four semesters
 A GPA of 3.0 or higher
@@ -72,4 +267,5 @@ No
 Teruko Mitamura
 Yes
 Final grades are changed only in exceptional circumstances with the instructor's approval
-Full funding (tuition plus stipend) is guaranteed for the first year, subject to satisfactory progress.
+Two calendar years (24 months)
+Full funding (tuition plus stipend) is guaranteed for the first year

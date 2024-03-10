@@ -1,15 +1,123 @@
-Who is offering the Advanced NLP course in Spring 2024?
-When was Carnegie Mellon University founded?
-Who is the president of CMU?
-What courses are offered by Graham Neubig at CMU in Spring 2024?
-Who is teaching 11711 in Spring 2024?
-When is the commencement ceremony for the 2023-2024 academic year?
 On what date are the Mid-Semester & Mini-1 grades due for 2023-2024 academic year?
-When is the Mid-Semester & Mini-1 grades due for 2023-2024 academic year?
+When is the Mid-Semester grades due for 2023-2024 academic year?
 How can students receive tuition adjustment when they drop a course?
 What is the deadline of add, audit & tuition adjustment drop in Mini-3 for 2023-2024 academic year?
 What is the deadline of add, audit & tuition adjustment drop in Mini-2 for 2024-2025 academic year?
 When is university closed during the 2023-2024 academic year?
+For Fall 2023, When is Semester & Mini-1 Classes Begin?
+For Fall 2023, When is Mini-1 add, audit & tuition adjustment drop deadline?
+For Fall 2023, When is Labor Day?
+For Fall 2023, When is Semester add, audit & tuition adjustment drop deadline?
+For Fall 2023, When is Mini-1 drop deadline?
+For Fall 2023, When is Mini-1 Pass/no pass & withdrawal deadline?
+For Fall 2023, When is Mini-1 Faculty Course Evaluations open?
+For Fall 2023, When is Semester drop deadline?
+For Fall 2023, When is Mini-1 Last Day of Classes?
+For Fall 2023, When is Mini-1 voucher election deadline?
+For Fall 2023, When is Family Weekend?
+For Fall 2023, When is Mini-1 Exams?
+For Fall 2023, When is Mini-1 Faculty Course Evaluations close?
+For Fall 2023, When is Fall Break?
+For Fall 2023, When is Mini-2 Classes Begin?
+For Fall 2023, When is Mid-Semester & Mini-1 grades due by 4 pm?
+For Fall 2023, When is Mini-2 add, audit & tuition adjustment drop deadline?
+For Fall 2023, When is Democracy Day?
+For Fall 2023, When is Homecoming?
+For Fall 2023, When is Spring 2024 Registration Week?
+For Fall 2023, When is Semester pass/no pass & withdrawal deadline?
+For Fall 2023, When is Mini-2 drop deadline?
+For Fall 2023, When is Thanksgiving Break?
+For Fall 2023, When is Mini-2 pass/no pass & withdrawal deadline?
+For Fall 2023, When is Semester & Mini-2 Faculty Course Evaluations open?
+For Fall 2023, When is Semester & Mini-2 Last Day of Classes?
+For Fall 2023, When is Semester & Mini-2 voucher deadline?
+For Fall 2023, When is Final Exams?
+For Fall 2023, When is Reading Day?
+For Fall 2023, When is Final Exams?
+For Fall 2023, When is Reading Day?
+For Fall 2023, When is Final Exams?
+For Fall 2023, When is Make-Up Final Exams?
+For Fall 2023, When is Semester & Mini-2 Faculty Course Evaluations close?
+For Fall 2023, When is Final Grades Due by 4 pm?
+For Fall 2023, When is Winter Break?
+For Fall 2023, When is Fall Deans' Lists Posted?
+For Spring 2024, When is Martin Luther King Day?
+For Spring 2024, When is First Day of Class?
+For Spring 2024, When is Mini-3 add, audit & tuition adjustment drop deadline?
+For Spring 2024, When is Semester add, audit & tuition adjustment drop deadline?
+For Spring 2024, When is Mini-3 course drop deadline?
+For Spring 2024, When is Mini-3 pass/no pass & withdrawal deadline?
+For Spring 2024, When is Mini-3 Faculty Course Evaluations open?
+For Spring 2024, When is Semester course drop deadline?
+For Spring 2024, When is Mini-3 Last Day of Classes?
+For Spring 2024, When is Mini-3 voucher deadline?
+For Spring 2024, When is Mini-3 Exams?
+For Spring 2024, When is Mini-3 Faculty Course Evaluations close?
+For Spring 2024, When is Spring Break?
+For Spring 2024, When is First day of Mini-4 Classes?
+For Spring 2024, When is Mid-Semester & Mini-3 grades due by 4 pm?
+For Spring 2024, When is Summer 2024 Registration Opens?
+For Spring 2024, When is Mini-4 add, audit & tuition adjustment drop deadline?
+For Spring 2024, When is Semester pass/no pass & withdrawal deadline?
+For Spring 2024, When is Mini-4 course drop deadline?
+For Spring 2024, When is Spring Carnival?
+For Spring 2024, When is Fall 2024 Registration Week?
+For Spring 2024, When is Mini-4 pass/no pass & withdrawal deadline?
+For Spring 2024, When is Semester & Mini-4 Faculty Course Evaluations open?
+For Spring 2024, When is Last Day of Classes?
+For Spring 2024, When is Semester & Mini-4 voucher deadline?
+For Spring 2024, When is Final Examinations?
+For Spring 2024, When is Reading Day?
+For Spring 2024, When is Final Examinations?
+For Spring 2024, When is Reading Days?
+For Spring 2024, When is Final Examinations?
+For Spring 2024, When is Semester & Mini-4 Faculty Course Evaluations close?
+For Spring 2024, When is Make-Up Final Examinations?
+For Spring 2024, When is Graduating Final Grades Due by 4 pm?
+For Spring 2024, When is Commencement?
+For Spring 2024, When is Final Grades Due by 4 pm?
+For Spring 2024, When is Spring Deans' Lists Posted?
+For Summer 2024, When is Semester & Mini-5 Classes Begin?
+For Summer 2024, When is Mini-5 add, audit, & tuition adjustment drop deadline?
+For Summer 2024, When is Semester add, audit, & tuition adjustment drop deadline?
+For Summer 2024, When is Memorial Day?
+For Summer 2024, When is Mini-5 course drop deadline?
+For Summer 2024, When is Mini-5 pass/no pass & withdrawal deadline?
+For Summer 2024, When is Mini-5 Faculty Course Evaluations open?
+For Summer 2024, When is Semester course drop deadline?
+For Summer 2024, When is Juneteenth?
+For Summer 2024, When is Mini-5 Last Day of Classes?
+For Summer 2024, When is Mini-5 voucher deadline?
+For Summer 2024, When is Mini-5 Final Exams?
+For Summer 2024, When is Mini-5 Faculty Course Evaluations close?
+For Summer 2024, When is Mini-6 First Day of Classes?
+For Summer 2024, When is Mini-5 Final Grades Due by 4 pm?
+For Summer 2024, When is Mini-6 add, audit, & tuition adjustment drop deadline?
+For Summer 2024, When is Independence Day?
+For Summer 2024, When is Semester pass/no pass & withdrawal deadline?
+For Summer 2024, When is Mini-6 drop deadline?
+For Summer 2024, When is Mini-6 pass/no pass & withdrawal deadline?
+For Summer 2024, When is Semester & Mini-6 Faculty Course Evalutations open?
+For Summer 2024, When is Semester & Mini-6 Last Day of Classes?
+For Summer 2024, When is Semester & Mini-6 voucher deadline?
+For Summer 2024, When is Semester & Mini-6 Final Exams?
+For Summer 2024, When is Semester & Mini-6 Faculty Course Evaluations close?
+For Summer 2024, When is Semester & Mini-6 Final Grades Due by 4 pm?
+For Summer 2 2024, When is Summer Semester Two Classes Begin?
+For Summer 2 2024, When is Summer Semester  Two add, audit & tuition adjustment drop deadline?
+For Summer 2 2024, When is Independence Day?
+For Summer 2 2024, When is Summer Semester  Two drop deadline?
+For Summer 2 2024, When is Summer Semester  Two pass/no pass & withdrawal deadline?
+For Summer 2 2024, When is Summer Semester  Two Faculty Course Evaulations open?
+For Summer 2 2024, When is Summer Semester  Two Last Day of Classes?
+For Summer 2 2024, When is Summer Semester  Two voucher deadline?
+For Summer 2 2024, When is Summer Semester  Two Final Exams***?
+For Summer 2 2024, When is Summer Semester  Two Faculty Course Evaluations close?
+For Summer 2 2024, When is Summer Semester  Two Final Grades Due by 4 pm?
+When is the commencement ceremony for the 2023-2024 academic year?
+Who is offering the Advanced NLP course in Spring 2024?
+What courses are offered by Graham Neubig at CMU in Spring 2024?
+Who is teaching 11711 in Spring 2024?
 Which room is the course "History of Modern Architecture" offered in Spring 2024?
 Who is the instructor for the course "History of Modern Architecture" offered in Spring 2024?
 Who is the instructor for the course 48641 offered in Spring 2024?
@@ -18,11 +126,11 @@ When does the course "History of Modern Architecture" start in Spring 2024?
 When is the course "History of Modern Architecture" offered in Spring 2024?
 How many units is the course "History of Modern Architecture" offered in Spring 2024?
 What courses does the instructor Gutschow teach in Spring 2024?
-What are the course number and course title of the courses offered at Los Angeles in Spring 2024?
+What are the course number and course name of the courses offered at Los Angeles in Spring 2024?
 In Biological Sciences Department, what are the courses by instructor Lee in Spring 2024?
 Within the course with course number starts with "03" , what are the courses by instructor Lee in Spring 2024?
 Who founded Carnegie Mellon University?
-When is Carnegie Mellon University founded?
+When was Carnegie Mellon University founded?
 What is a Tartan?
 When did Carnegie Technical Schools become known as the Carnegie Institute of Technology?
 When was the Scottish terrier officially welcomed as the university's first mascot?
@@ -49,12 +157,98 @@ How does UTOPIA address the challenges in cross-domain adaptation for MOT?
 What experimental settings are used to validate the UTOPIA approach?
 When is the Diploma Ceremonies for Architecture?
 When is the Diploma Ceremonies for Art?
+When is the Diploma Ceremonies for BXA Intercollege Degree Programs?
+When is the Diploma Ceremonies for Biological Sciences (Master's)?
+When is the Diploma Ceremonies for Biological Sciences (Bachelor's and Doctor's)?
+When is the Diploma Ceremonies for Biomedical Engineering?
+When is the Diploma Ceremonies for Business Administration & Economics (Bachelor's)?
+When is the Diploma Ceremonies for Carnegie Mellon Institute for Strategy and Technology?
+When is the Diploma Ceremonies for Carnegie Mellon University in Qatar Graduation Ceremony?
+When is the Diploma Ceremonies for Chemical Engineering?
+When is the Diploma Ceremonies for Chemistry?
+When is the Diploma Ceremonies for Civil & Environmental Engineering?
+When is the Diploma Ceremonies for Design?
+When is the Diploma Ceremonies for Drama?
+When is the Diploma Ceremonies for Economics and Business Administration (Bachelor's)?
+When is the Diploma Ceremonies for Electrical & Computer Engineering (Bachelor's)?
+When is the Diploma Ceremonies for Electrical & Computer Engineering (Master's)?
+When is the Diploma Ceremonies for Electrical & Computer Engineering (Doctor's)?
+When is the Diploma Ceremonies for Energy Science Technology & Policy?
+When is the Diploma Ceremonies for Engineering & Public Policy?
+When is the Diploma Ceremonies for Engineering & Technology Innovation Management?
+When is the Diploma Ceremonies for Information Networking Institute?
+When is the Diploma Ceremonies for School of Computer Science (Master's)?
+When is the Diploma Ceremonies for School of Computer Science (Doctor's)?
+When is the Diploma Ceremonies for School of Computer Science (Bachelor's)?
+When is the Diploma Ceremonies for Social & Decision Sciences?
+When is the Diploma Ceremonies for Statistics & Data Science (Master's and Doctor's)?
+When is the Diploma Ceremonies for Tepper School of Business (Master's)?
+When is the Diploma Ceremonies for Tepper School of Business (Doctor's)?
 Where is the Diploma Ceremonies for Architecture?
 Where is the Diploma Ceremonies for Art?
+Where is the Diploma Ceremonies for BXA Intercollege Degree Programs?
+Where is the Diploma Ceremonies for Biological Sciences (Master's)?
+Where is the Diploma Ceremonies for Biological Sciences (Bachelor's and Doctor's)?
+Where is the Diploma Ceremonies for Biomedical Engineering?
+Where is the Diploma Ceremonies for Business Administration & Economics (Bachelor's)?
+Where is the Diploma Ceremonies for Carnegie Mellon Institute for Strategy and Technology?
+Where is the Diploma Ceremonies for Carnegie Mellon University in Qatar Graduation Ceremony?
+Where is the Diploma Ceremonies for Chemical Engineering?
+Where is the Diploma Ceremonies for Chemistry?
+Where is the Diploma Ceremonies for Civil & Environmental Engineering?
+Where is the Diploma Ceremonies for Design?
+Where is the Diploma Ceremonies for Drama?
+Where is the Diploma Ceremonies for Economics and Business Administration (Bachelor's)?
+Where is the Diploma Ceremonies for Electrical & Computer Engineering (Bachelor's)?
+Where is the Diploma Ceremonies for Electrical & Computer Engineering (Master's)?
+Where is the Diploma Ceremonies for Electrical & Computer Engineering (Doctor's)?
+Where is the Diploma Ceremonies for Energy Science Technology & Policy?
+Where is the Diploma Ceremonies for Engineering & Public Policy?
+Where is the Diploma Ceremonies for Engineering & Technology Innovation Management?
+Where is the Diploma Ceremonies for Information Networking Institute?
+Where is the Diploma Ceremonies for School of Computer Science (Master's)?
+Where is the Diploma Ceremonies for School of Computer Science (Doctor's)?
+Where is the Diploma Ceremonies for School of Computer Science (Bachelor's)?
+Where is the Diploma Ceremonies for Social & Decision Sciences?
+Where is the Diploma Ceremonies for Statistics & Data Science (Master's and Doctor's)?
+Where is the Diploma Ceremonies for Tepper School of Business (Master's)?
+Where is the Diploma Ceremonies for Tepper School of Business (Doctor's)?
 Who is the contact for Diploma Ceremonies for Architecture?
 Who is the contact for Diploma Ceremonies for Art?
+Who is the contact for Diploma Ceremonies for BXA Intercollege Degree Programs?
+Who is the contact for Diploma Ceremonies for Biological Sciences (Master's)?
+Who is the contact for Diploma Ceremonies for Biological Sciences (Bachelor's and Doctor's)?
+Who is the contact for Diploma Ceremonies for Biomedical Engineering?
+Who is the contact for Diploma Ceremonies for Business Administration & Economics (Bachelor's)?
+Who is the contact for Diploma Ceremonies for Carnegie Mellon Institute for Strategy and Technology?
+Who is the contact for Diploma Ceremonies for Carnegie Mellon University in Qatar Graduation Ceremony?
+Who is the contact for Diploma Ceremonies for Chemical Engineering?
+Who is the contact for Diploma Ceremonies for Chemistry?
+Who is the contact for Diploma Ceremonies for Civil & Environmental Engineering?
+Who is the contact for Diploma Ceremonies for Design?
+Who is the contact for Diploma Ceremonies for Drama?
+Who is the contact for Diploma Ceremonies for Economics and Business Administration (Bachelor's)?
+Who is the contact for Diploma Ceremonies for Electrical & Computer Engineering (Bachelor's)?
+Who is the contact for Diploma Ceremonies for Electrical & Computer Engineering (Master's)?
+Who is the contact for Diploma Ceremonies for Electrical & Computer Engineering (Doctor's)?
+Who is the contact for Diploma Ceremonies for Energy Science Technology & Policy?
+Who is the contact for Diploma Ceremonies for Engineering & Public Policy?
+Who is the contact for Diploma Ceremonies for Engineering & Technology Innovation Management?
+Who is the contact for Diploma Ceremonies for Information Networking Institute?
+Who is the contact for Diploma Ceremonies for School of Computer Science (Master's)?
+Who is the contact for Diploma Ceremonies for School of Computer Science (Doctor's)?
+Who is the contact for Diploma Ceremonies for School of Computer Science (Bachelor's)?
+Who is the contact for Diploma Ceremonies for Social & Decision Sciences?
+Who is the contact for Diploma Ceremonies for Statistics & Data Science (Master's and Doctor's)?
+Who is the contact for Diploma Ceremonies for Tepper School of Business (Master's)?
+Who is the contact for Diploma Ceremonies for Tepper School of Business (Doctor's)?
 When is CMU Spring Carnival 2024
 When is the Booth, Rides, and Dog Houses event scheduled to begin on Thursday?
+What are the Carnival Headquarters Tent hours on Thursday?
+What time do Friday's Preliminary Sweepstakes Races start?
+What are the Scotch'n'Soda Performance times for Thursday?
+What event starts on February 5, 2024, and continues until April 15, 2024?
+What event starts on April 5, 2024, and continues through April 14, 2024?
 What special event is scheduled for April 10, 2024, at 8:00 AM?
 What is happening at 3:00 PM on April 10, 2024?
 What are the primary areas of focus for the Ph.D. in Language and Information Technology at Carnegie Mellon University?
@@ -62,6 +256,7 @@ What are the course unit requirements for a Ph.D. in Language and Information Te
 What is the final application deadline for Fall 2024 admission to LTI's graduate programs?
 What are the two options available for completing the Master of Computational Data Science program?
 What is the minimum number of course credits required for the MCDS program?
+What is the focus of the Master of Science in Intelligent Information Systems degree?
 How long is the standard track for the MIIS-16 program?
 How many semesters does the MSAII degree typically take to complete?
 What GPA is required for applying to the MSAII program?
@@ -72,4 +267,5 @@ Is there a thesis or dissertation requirement in the MCDS program?
 Who is the Program Director of the MIIS program?
 Are part-time study options available in the MIIS program?
 What is the policy for grade appeals in the MIIS program?
+What is the duration of the MLT program?
 What support is provided for graduate student funding in the MLT program?
