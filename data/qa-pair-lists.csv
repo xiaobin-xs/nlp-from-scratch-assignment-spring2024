@@ -241,11 +241,11 @@ Who,Who is the contact for Diploma Ceremonies for Statistics & Data Science (Mas
 Who,Who is the contact for Diploma Ceremonies for Tepper School of Business (Master's)?,Wendy Hermann,commencement_schedule_data.txt,,jialu
 Who,Who is the contact for Diploma Ceremonies for Tepper School of Business (Doctor's)?,Lawrence Rapp,commencement_schedule_data.txt,,jialu
 What,When is CMU Spring Carnival 2024,"April 11-14, 2024",spring_carnival.txt,,jialu
-What,"When is the Booth, Rides, and Dog Houses event scheduled to begin on Thursday?",3:30-11 p.m.,spring_carnival.txt,,jialu
+What,"When is the Booth, Rides, and Dog Houses event scheduled on Thursday?",3:30-11 p.m.,spring_carnival.txt,,jialu
 What,What are the Carnival Headquarters Tent hours on Thursday?,8 a.m.-7 p.m.,spring_carnival.txt,,jialu
 What,What time do Friday's Preliminary Sweepstakes Races start?,8 a.m.,spring_carnival.txt,,jialu
 What,What are the Scotch'n'Soda Performance times for Thursday?,7-9 p.m.,spring_carnival.txt,,jialu
-What,"What event starts on February 5, 2024, and continues until April 15, 2024?",Faces of Carnival Photo Mosaic,spring_carnival.txt,,jialu
+When,"What dates are Faces of Carnival Photo Mosaic scheduled?",2/5/24 – 4/15/24,spring_carnival.txt,,jialu
 What,"What event starts on April 5, 2024, and continues through April 14, 2024?",Booth Build & Midway Cam,spring_carnival.txt,,jialu
 What,"What special event is scheduled for April 10, 2024, at 8:00 AM?",Here to Stay: Celebrating 40 Years at the Architecture Archives,spring_carnival.txt,,jialu
 What,"What is happening at 3:00 PM on April 10, 2024?",WRCT Radio Buggy Preview,spring_carnival.txt,,jialu
@@ -257,7 +257,7 @@ What,What is the focus of the Master of Science in Intelligent Information Syste
 How,How long is the standard track for the MIIS-16 program?,16 months,LTI_programs.txt,,jialu
 How,How many semesters does the MSAII degree typically take to complete?,Five consecutive semesters,Handbook-MSAII-2022-2023.txt,,jialu
 What,What GPA is required for applying to the MSAII program?,A GPA of 3.0 or higher,Handbook-MSAII-2022-2023.txt,,jialu
-Who,Who should be contacted for specific application or admissions questions related to the MSAII program?,"Michael I. Shamos, Amber Vivis  Carolyn Penstein Rosé",Handbook-MSAII-2022-2023.txt,,jialu
+Who,Who should be contacted for specific application or admissions questions related to the MSAII program?,"Michael I. Shamos, Amber Vivis, Carolyn Penstein Rosé",Handbook-MSAII-2022-2023.txt,,jialu
 Who,Who is the Director of the MSAII program?,Michael I. Shamos,Handbook-MSAII-2022-2023.txt,,jialu
 What,What are the three areas of concentration in the MCDS program?,"Analytics, Systems, and Human-Centered Data Science",MCDS Handbook 23-24 AY.txt,,jialu
 T/F,Is there a thesis or dissertation requirement in the MCDS program?,No,MCDS Handbook 23-24 AY.txt,,jialu
