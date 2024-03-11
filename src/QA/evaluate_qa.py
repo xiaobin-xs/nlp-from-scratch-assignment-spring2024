@@ -6,7 +6,7 @@ from utils import load_txt_file_all_rows
 
 parser= argparse.ArgumentParser(description="Evaluation RAG output for Anlp hw2")
 parser.add_argument('--reference_ans_path',type=str, default="/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/reference_answers.txt")
-parser.add_argument('--output_path', type=str, default='/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/system_output.txt')
+parser.add_argument('--output_path', type=str, default='/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/system_output_500_0_faiss_sentence-transformer_llama_20240311_013706.txt')
 args = parser.parse_args()
 
 reference_ans_path = args.reference_ans_path
@@ -39,3 +39,5 @@ print(f'Average Exact Match: {avg_em}')
 print(f'Average Rouge-1: {ave_rouge_1}')
 print(f'Average Rouge-2: {ave_rouge_2}')
 print(f'Average Rouge-L: {ave_rouge_l}')
+
+# python3 evaluate_by_type_qa.py --output_path /home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/system_output_500_0_chroma_sentence-transformer_llama_20240311_000912.txt
