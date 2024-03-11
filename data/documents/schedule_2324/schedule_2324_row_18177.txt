@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17645; Title: Machine Learning in Production; Units: 12.0; Lec/Sec: E; Days: F; Begin: 02:00PM; End: 03:20PM; Bldg/Room/Where: PH 226C; Location: Pittsburgh, Pennsylvania; Instructor(s): Kaestner, Le Goues;

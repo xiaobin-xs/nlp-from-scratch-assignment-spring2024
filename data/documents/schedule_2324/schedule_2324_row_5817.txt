@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 10606; Title: Mathematical Foundations for Machine Learning; Units: 6.0; Lec/Sec: A1; Days: MWF; Begin: 02:00PM; End: 03:20PM; Bldg/Room/Where: WEH 2302; Location: Pittsburgh, Pennsylvania; Instructor(s): Wilder;

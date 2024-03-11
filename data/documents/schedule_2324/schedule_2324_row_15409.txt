@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 21266; Title: Vector Calculus for Computer Scientists; Units: 10.0; Lec/Sec: F; Days: R; Begin: 02:00PM; End: 02:50PM; Bldg/Room/Where: BH 235B; Location: Pittsburgh, Pennsylvania; Instructor(s): Staudinger;

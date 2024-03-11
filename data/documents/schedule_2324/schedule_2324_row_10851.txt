@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15151; Title: Mathematical Foundations for Computer Science; Units: 12.0; Lec/Sec: A; Days: TR; Begin: 01:00PM; End: 01:50PM; Bldg/Room/Where: GHC 4301; Location: Pittsburgh, Pennsylvania; Instructor(s): Peng;

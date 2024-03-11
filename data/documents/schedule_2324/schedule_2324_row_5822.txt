@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 10680; Title: Mathematical Foundations for Machine Learning; Units: 6.0; Lec/Sec: A1; Days: MW; Begin: 07:30PM; End: 08:20PM; Bldg/Room/Where: CMU REMOTE; Location: Pittsburgh, Pennsylvania; Instructor(s): Wilder;

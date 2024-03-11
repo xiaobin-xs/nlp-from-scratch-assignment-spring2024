@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 17214; Title: Principles of Software Construction: Objects, Design, and Concurrency; Units: 12.0; Lec/Sec: B; Days: W; Begin: 10:00AM; End: 10:50AM; Bldg/Room/Where: PH 225B; Location: Pittsburgh, Pennsylvania; Instructor(s): Kaestner, Lacomis;

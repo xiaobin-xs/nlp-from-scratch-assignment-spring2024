@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 18730; Title: Introduction to Computer Security; Units: 12.0; Lec/Sec: SV; Days: F; Begin: 08:00AM; End: 08:50AM; Bldg/Room/Where: B23 212; Location: San Jose, California; Instructor(s): Gligor;

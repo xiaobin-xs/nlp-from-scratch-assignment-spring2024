@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 18661; Title: Introduction to Machine Learning for Engineers; Units: 12.0; Lec/Sec: ; Days: F; Begin: 08:00AM; End: 09:20AM; Bldg/Room/Where: B23 118; Location: San Jose, California; Instructor(s): ;

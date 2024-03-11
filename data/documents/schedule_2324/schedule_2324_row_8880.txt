@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 17627; Title: Requirements for Embedded Systems; Units: 6.0; Lec/Sec: A2; Days: MW; Begin: 02:00PM; End: 03:20PM; Bldg/Room/Where: 3SC 265; Location: Pittsburgh, Pennsylvania; Instructor(s): Pavetti;

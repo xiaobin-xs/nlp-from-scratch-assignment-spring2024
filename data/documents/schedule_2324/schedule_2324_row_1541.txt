@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15122; Title: Principles of Imperative Computation; Units: 12.0; Lec/Sec: S; Days: M; Begin: 05:00PM; End: 05:50PM; Bldg/Room/Where: GHC CLSTR; Location: Pittsburgh, Pennsylvania; Instructor(s): Cervesato, Kaynar;

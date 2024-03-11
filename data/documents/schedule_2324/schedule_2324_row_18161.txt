@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17635; Title: Software Architectures; Units: 6.0; Lec/Sec: 13; Days: MW; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: 3SC 265; Location: Pittsburgh, Pennsylvania; Instructor(s): Ashok, Pavetti;

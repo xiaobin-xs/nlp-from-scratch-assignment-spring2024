@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 95888; Title: Data Focused Python; Units: 6.0; Lec/Sec: D2; Days: MW; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: HBH 2008; Location: Pittsburgh, Pennsylvania; Instructor(s): Ostlund;

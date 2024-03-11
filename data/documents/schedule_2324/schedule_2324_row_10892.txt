@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15251; Title: Great Ideas in Theoretical Computer Science; Units: 12.0; Lec/Sec: M; Days: F; Begin: 03:00PM; End: 03:50PM; Bldg/Room/Where: WEH 4708; Location: Pittsburgh, Pennsylvania; Instructor(s): Ada, Saad;

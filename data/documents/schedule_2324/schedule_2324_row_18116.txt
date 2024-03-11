@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17423; Title: Designing Large-scale Software Systems; Units: 12.0; Lec/Sec: Lec; Days: MW; Begin: 09:30AM; End: 10:50AM; Bldg/Room/Where: SH 236; Location: Pittsburgh, Pennsylvania; Instructor(s): Durschmid, Kang;

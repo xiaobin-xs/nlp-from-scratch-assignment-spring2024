@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 11891; Title: Neural Code Generation; Units: VAR; Lec/Sec: A; Days: TR; Begin: 03:30PM; End: 04:50PM; Bldg/Room/Where: WEH 4625; Location: Pittsburgh, Pennsylvania; Instructor(s): Fried, Welleck;

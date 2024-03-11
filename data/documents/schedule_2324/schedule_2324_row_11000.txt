@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15651; Title: Algorithm Design and Analysis; Units: 12.0; Lec/Sec: H; Days: F; Begin: 01:00PM; End: 01:50PM; Bldg/Room/Where: POS 152; Location: Pittsburgh, Pennsylvania; Instructor(s): Woodruff, Anderson;

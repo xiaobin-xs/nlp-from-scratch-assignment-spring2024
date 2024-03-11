@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 21266; Title: Vector Calculus for Computer Scientists; Units: 10.0; Lec/Sec: C; Days: R; Begin: 02:00PM; End: 02:50PM; Bldg/Room/Where: WEH 5310; Location: Pittsburgh, Pennsylvania; Instructor(s): Ageitos;

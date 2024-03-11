@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 06643; Title: Creating Scientific Research Software; Units: 6.0; Lec/Sec: A4; Days: MW; Begin: 02:00PM; End: 03:50PM; Bldg/Room/Where: CMU REMOTE; Location: Pittsburgh, Pennsylvania; Instructor(s): Kitchin;

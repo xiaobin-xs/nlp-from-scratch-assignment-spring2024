@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 10601; Title: Introduction to Machine Learning (Master's); Units: 12.0; Lec/Sec: B; Days: MWF; Begin: 12:30PM; End: 01:50PM; Bldg/Room/Where: GHC 4401; Location: Pittsburgh, Pennsylvania; Instructor(s): Chai, Gormley, Heidari;

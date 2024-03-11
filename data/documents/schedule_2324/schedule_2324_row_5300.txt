@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 95865; Title: Unstructured Data Analytics; Units: 6.0; Lec/Sec: B2; Days: TR; Begin: 02:00PM; End: 03:20PM; Bldg/Room/Where: HBH 1004; Location: Pittsburgh, Pennsylvania; Instructor(s): Chen;

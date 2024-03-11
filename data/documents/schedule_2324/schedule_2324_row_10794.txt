@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15122; Title: Principles of Imperative Computation; Units: 12.0; Lec/Sec: C; Days: M; Begin: 11:00AM; End: 11:50AM; Bldg/Room/Where: GHC CLSTR; Location: Pittsburgh, Pennsylvania; Instructor(s): Cervesato, Kohlbrenner;

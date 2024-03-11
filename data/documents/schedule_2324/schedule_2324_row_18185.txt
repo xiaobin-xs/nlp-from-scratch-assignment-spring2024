@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17683; Title: Data Structures for Application Programmers; Units: 6.0; Lec/Sec: A4; Days: TR; Begin: 05:00PM; End: 06:20PM; Bldg/Room/Where: DH 2210; Location: Pittsburgh, Pennsylvania; Instructor(s): Lee;

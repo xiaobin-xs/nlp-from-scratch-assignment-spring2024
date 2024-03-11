@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 67262; Title: Database Design and Development; Units: 9.0; Lec/Sec: Lec 5; Days: TR; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: WEH 5415; Location: Pittsburgh, Pennsylvania; Instructor(s): Tu;

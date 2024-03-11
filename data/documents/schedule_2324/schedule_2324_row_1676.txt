@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15451; Title: Algorithm Design and Analysis; Units: 12.0; Lec/Sec: B; Days: F; Begin: 10:00AM; End: 10:50AM; Bldg/Room/Where: GHC 4307; Location: Pittsburgh, Pennsylvania; Instructor(s): Anderson, Sleator;

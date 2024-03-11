@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 18733; Title: Applied Cryptography; Units: 12.0; Lec/Sec: SA; Days: F; Begin: 09:00AM; End: 09:50AM; Bldg/Room/Where: B23 211; Location: San Jose, California; Instructor(s): Gligor;

@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15355; Title: Modern Computer Algebra; Units: 9.0; Lec/Sec: A; Days: TR; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: WEH 3203; Location: Pittsburgh, Pennsylvania; Instructor(s): Sutner;

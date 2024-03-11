@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 36218; Title: Probability Theory for Computer Scientists; Units: 9.0; Lec/Sec: Lec; Days: TR; Begin: 09:30AM; End: 10:50AM; Bldg/Room/Where: DH 2315; Location: Pittsburgh, Pennsylvania; Instructor(s): Genovese;

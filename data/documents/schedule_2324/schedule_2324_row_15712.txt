@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 24789; Title: Intermediate Deep Learning for Engineers; Units: 6.0; Lec/Sec: A4; Days: TR; Begin: 04:00PM; End: 05:50PM; Bldg/Room/Where: POS 152; Location: Pittsburgh, Pennsylvania; Instructor(s): Barati Farimani;

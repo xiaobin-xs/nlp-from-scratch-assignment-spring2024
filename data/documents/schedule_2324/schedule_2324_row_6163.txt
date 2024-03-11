@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 21670; Title: Linear Algebra for Data Science; Units: 6.0; Lec/Sec: A1; Days: MWF; Begin: 09:00AM; End: 09:50AM; Bldg/Room/Where: DH 2122; Location: Pittsburgh, Pennsylvania; Instructor(s): Sarantis;

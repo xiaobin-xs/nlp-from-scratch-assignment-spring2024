@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 18652; Title: Foundations of Software Engineering; Units: 12.0; Lec/Sec: RW; Days: MW; Begin: 08:00AM; End: 09:50AM; Bldg/Room/Where: CMU REMOTE; Location: Kigali, Rwanda; Instructor(s): Bishop;

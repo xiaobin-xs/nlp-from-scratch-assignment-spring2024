@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 17636; Title: Applied Distributed Systems; Units: 12.0; Lec/Sec: A1; Days: MW; Begin: 08:00AM; End: 09:20AM; Bldg/Room/Where: 3SC 265; Location: Pittsburgh, Pennsylvania; Instructor(s): Yasar, Bass;

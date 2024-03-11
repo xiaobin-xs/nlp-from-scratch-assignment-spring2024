@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 18847; Title: Data Center Computing; Units: 12.0; Lec/Sec: C; Days: MW; Begin: 02:00PM; End: 03:20PM; Bldg/Room/Where: PH 225B; Location: Pittsburgh, Pennsylvania; Instructor(s): Sriraman;

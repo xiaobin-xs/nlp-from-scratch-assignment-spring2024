@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 21254; Title: Linear Algebra and Vector Calculus for Engineers; Units: 11.0; Lec/Sec: Lec 1; Days: MWF; Begin: 09:00AM; End: 09:50AM; Bldg/Room/Where: WEH 7500; Location: Pittsburgh, Pennsylvania; Instructor(s): Quintana;

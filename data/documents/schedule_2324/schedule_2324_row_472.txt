@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 42783; Title: Neural Engineering Laboratory; Units: 12.0; Lec/Sec: Lec; Days: M; Begin: 12:00PM; End: 12:50PM; Bldg/Room/Where: MI 130; Location: Pittsburgh, Pennsylvania; Instructor(s): Smith, Weber;

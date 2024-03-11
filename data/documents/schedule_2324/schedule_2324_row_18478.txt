@@ -1,0 +1,1 @@
+Semester: Summer One/All 2024; Course: Course; Title: Title; Units: Units; Lec/Sec: Lec/Sec; Days: Days; Begin: Begin; End: End; Bldg/Room/Where: Bldg/Room; Location: Location; Instructor(s): Instructor(s);

@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 11411; Title: Natural Language Processing; Units: 12.0; Lec/Sec: B; Days: TR; Begin: 02:00PM; End: 03:20PM; Bldg/Room/Where: CMU REMOTE; Location: Pittsburgh, Pennsylvania; Instructor(s): Mortensen, Oflazer;

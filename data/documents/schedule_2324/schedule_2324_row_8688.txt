@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 16385; Title: Computer Vision; Units: 12.0; Lec/Sec: A; Days: MW; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: TEP 1403; Location: Pittsburgh, Pennsylvania; Instructor(s): O'Toole;

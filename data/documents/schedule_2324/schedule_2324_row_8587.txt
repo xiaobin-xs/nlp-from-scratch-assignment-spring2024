@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 90800; Title: Exploratory Data Analysis and Visualization with Python; Units: 6.0; Lec/Sec: ; Days: F; Begin: 09:30AM; End: 10:50AM; Bldg/Room/Where: HBH 1204; Location: Pittsburgh, Pennsylvania;

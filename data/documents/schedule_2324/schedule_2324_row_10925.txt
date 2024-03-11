@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15356; Title: Introduction to Cryptography; Units: 12.0; Lec/Sec: W; Days: MW; Begin: 10:00AM; End: 11:15AM; Bldg/Room/Where: CMB 2049; Location: Doha, Qatar; Instructor(s): Kapoutsis;

@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 46881; Title: Programming in R and Python; Units: 6.0; Lec/Sec: A1; Days: MW; Begin: 08:00AM; End: 09:45AM; Bldg/Room/Where: TEP 2111; Location: Pittsburgh, Pennsylvania; Instructor(s): Ciollaro;

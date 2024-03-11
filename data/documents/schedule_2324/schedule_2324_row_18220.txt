@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17765; Title: Autonomous Self-Adaptive Systems Using Reinforcement Learning; Units: 6.0; Lec/Sec: M4; Days: R; Begin: 04:00PM; End: 05:50PM; Bldg/Room/Where: GHC 4101; Location: Pittsburgh, Pennsylvania; Instructor(s): Al-Shaer;

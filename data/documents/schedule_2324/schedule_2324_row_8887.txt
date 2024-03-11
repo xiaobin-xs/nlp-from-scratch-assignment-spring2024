@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 17638; Title: Engineering Embedded Systems; Units: 6.0; Lec/Sec: A1; Days: MW; Begin: 07:00PM; End: 08:20PM; Bldg/Room/Where: 3SC 265; Location: Pittsburgh, Pennsylvania; Instructor(s): Riley, Pavetti;

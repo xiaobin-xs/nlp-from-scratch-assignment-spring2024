@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 94842; Title: Programming R for Analytics; Units: 6.0; Lec/Sec: A1; Days: R; Begin: 06:30PM; End: 09:20PM; Bldg/Room/Where: HBH 2009; Location: Pittsburgh, Pennsylvania; Instructor(s): Simko;

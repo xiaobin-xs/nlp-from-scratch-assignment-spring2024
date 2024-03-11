@@ -1,0 +1,1 @@
+Semester: Summer One/All 2024; Course: 15150; Title: Principles of Functional Programming; Units: 12.0; Lec/Sec: ; Days: MTWRF; Begin: 02:00PM; End: 03:20PM; Bldg/Room/Where: TEP 1403; Location: Pittsburgh, Pennsylvania;

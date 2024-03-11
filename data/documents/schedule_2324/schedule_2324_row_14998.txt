@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 11860; Title: Quantum Computing, Cryptography and Machine Learning Lab; Units: 12.0; Lec/Sec: A; Days: TR; Begin: 05:00PM; End: 06:20PM; Bldg/Room/Where: DH 1211; Location: Pittsburgh, Pennsylvania; Instructor(s): Justice, Singh, Ramakrishnan;

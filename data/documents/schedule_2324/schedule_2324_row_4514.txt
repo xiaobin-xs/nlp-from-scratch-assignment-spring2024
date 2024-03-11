@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 94489; Title: Machine Learning for Public Policy Lab; Units: 12.0; Lec/Sec: Lec; Days: TR; Begin: 05:00PM; End: 06:20PM; Bldg/Room/Where: HBH 2008; Location: Pittsburgh, Pennsylvania; Instructor(s): Ghani;

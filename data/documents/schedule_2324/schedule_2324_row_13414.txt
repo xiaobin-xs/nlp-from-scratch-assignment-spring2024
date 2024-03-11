@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 18732; Title: Secure Software Systems; Units: 12.0; Lec/Sec: SV; Days: F; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: B23 107; Location: San Jose, California; Instructor(s): Parno;

@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15852; Title: Parallel and Concurrent Algorithms; Units: 12.0; Lec/Sec: A; Days: TR; Begin: 03:30PM; End: 04:50PM; Bldg/Room/Where: DH 2122; Location: Pittsburgh, Pennsylvania; Instructor(s): Blelloch;

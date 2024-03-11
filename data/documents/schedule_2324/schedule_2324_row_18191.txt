@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17691; Title: Machine Learning in Practice; Units: 6.0; Lec/Sec: D4; Days: F; Begin: 07:00PM; End: 08:20PM; Bldg/Room/Where: CMU REMOTE; Location: Pittsburgh, Pennsylvania; Instructor(s): Faber;

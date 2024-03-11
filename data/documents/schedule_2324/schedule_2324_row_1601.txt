@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15251; Title: Great Ideas in Theoretical Computer Science; Units: 12.0; Lec/Sec: Lec; Days: TR; Begin: 09:30AM; End: 10:50AM; Bldg/Room/Where: GHC 4401; Location: Pittsburgh, Pennsylvania; Instructor(s): Kothari, Ada;

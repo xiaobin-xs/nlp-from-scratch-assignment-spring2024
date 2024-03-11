@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 46926; Title: Machine Learning I; Units: 6.0; Lec/Sec: R2; Days: TR; Begin: 01:00PM; End: 02:30PM; Bldg/Room/Where: TCS 250; Location: Pittsburgh, Pennsylvania; Instructor(s): Yurko;

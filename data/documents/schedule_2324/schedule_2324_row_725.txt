@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 46923; Title: Financial Data Science II; Units: 6.0; Lec/Sec: M2; Days: TR; Begin: 10:00AM; End: 11:30AM; Bldg/Room/Where: BRD 507; Location: New York, New York; Instructor(s): Schafer;

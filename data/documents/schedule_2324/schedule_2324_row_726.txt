@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 46923; Title: Financial Data Science II; Units: 6.0; Lec/Sec: R2; Days: TR; Begin: 10:00AM; End: 11:30AM; Bldg/Room/Where: TCS 250; Location: Pittsburgh, Pennsylvania; Instructor(s): Schafer;

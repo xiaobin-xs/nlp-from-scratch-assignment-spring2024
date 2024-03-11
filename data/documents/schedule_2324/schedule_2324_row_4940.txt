@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 04801; Title: Deep Learning Systems: Hardware, Compilers, and Algorithms; Units: 6.0; Lec/Sec: A1; Days: MW; Begin: 04:00PM; End: 05:50PM; Bldg/Room/Where: CMR F309; Location: Kigali, Rwanda; Instructor(s): Rodriguez-Perez;

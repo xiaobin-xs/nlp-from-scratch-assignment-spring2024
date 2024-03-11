@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 95737; Title: NoSQL Database Management; Units: 6.0; Lec/Sec: A1; Days: M; Begin: 06:30PM; End: 09:20PM; Bldg/Room/Where: HBH 1206; Location: Pittsburgh, Pennsylvania; Instructor(s): Spooner;

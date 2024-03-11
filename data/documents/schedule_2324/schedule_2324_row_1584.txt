@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15210; Title: Parallel and Sequential Data Structures and Algorithms; Units: 12.0; Lec/Sec: J; Days: T; Begin: 05:00PM; End: 05:50PM; Bldg/Room/Where: WEH 4708; Location: Pittsburgh, Pennsylvania; Instructor(s): Garrod, Blelloch;

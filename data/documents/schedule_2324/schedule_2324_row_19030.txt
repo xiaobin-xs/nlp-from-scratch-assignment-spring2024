@@ -1,0 +1,1 @@
+Semester: Summer Two 2024; Course: 15122; Title: Principles of Imperative Computation; Units: 12.0; Lec/Sec: V; Days: MTWRF; Begin: 09:30AM; End: 10:50AM; Bldg/Room/Where: TEP 1403; Location: Pittsburgh, Pennsylvania; Instructor(s): Kohlbrenner;

@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 21254; Title: Linear Algebra and Vector Calculus for Engineers; Units: 11.0; Lec/Sec: C; Days: T; Begin: 02:00PM; End: 02:50PM; Bldg/Room/Where: BH 140A; Location: Pittsburgh, Pennsylvania; Instructor(s): Hofstad;

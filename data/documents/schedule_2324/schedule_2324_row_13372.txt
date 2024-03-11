@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 18656; Title: Functional Programming in Practice; Units: 12.0; Lec/Sec: SV; Days: TR; Begin: 01:00PM; End: 02:50PM; Bldg/Room/Where: B23 227; Location: San Jose, California; Instructor(s): Wlodarski;

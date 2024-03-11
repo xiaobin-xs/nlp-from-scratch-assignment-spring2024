@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 95712; Title: Object Oriented Programming in JAVA; Units: 12.0; Lec/Sec: D; Days: MW; Begin: 06:30PM; End: 07:50PM; Bldg/Room/Where: HBH 1002; Location: Pittsburgh, Pennsylvania; Instructor(s): Yucel;

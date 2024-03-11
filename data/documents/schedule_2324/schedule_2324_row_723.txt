@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 46921; Title: Financial Data Science I; Units: 6.0; Lec/Sec: R1; Days: MW; Begin: 03:00PM; End: 04:30PM; Bldg/Room/Where: TCS 250; Location: Pittsburgh, Pennsylvania; Instructor(s): Schafer;

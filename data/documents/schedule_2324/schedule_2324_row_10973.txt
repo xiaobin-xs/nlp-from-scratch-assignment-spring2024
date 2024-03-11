@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15611; Title: Compiler Design; Units: 15.0; Lec/Sec: C; Days: F; Begin: 04:00PM; End: 04:50PM; Bldg/Room/Where: WEH 2302; Location: Pittsburgh, Pennsylvania; Instructor(s): Hoffmann;

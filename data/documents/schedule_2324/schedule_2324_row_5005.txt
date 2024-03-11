@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 14763; Title: Systems and Tool Chains for AI Engineers; Units: 12.0; Lec/Sec: B; Days: TR; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: CIC 1201; Location: Pittsburgh, Pennsylvania; Instructor(s): Farag, Qu;

@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15195; Title: Competition Programming I; Units: 5.0; Lec/Sec: A; Days: W; Begin: 07:00PM; End: 09:50PM; Bldg/Room/Where: GHC 4307; Location: Pittsburgh, Pennsylvania; Instructor(s): Sleator;

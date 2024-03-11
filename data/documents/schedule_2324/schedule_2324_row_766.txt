@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 46983; Title: Machine Learning Capstone Project; Units: 12.0; Lec/Sec: M; Days: MW; Begin: 10:00AM; End: 11:30AM; Bldg/Room/Where: DNM DNM; Location: New York, New York; Instructor(s): Schafer;

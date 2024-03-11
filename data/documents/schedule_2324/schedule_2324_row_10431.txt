@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 99355; Title: IDeATe: Introduction to Arduino; Units: 1.0; Lec/Sec: A3; Days: F; Begin: 10:00AM; End: 02:50PM; Bldg/Room/Where: HL A10; Location: Pittsburgh, Pennsylvania; Instructor(s): Zacharias;

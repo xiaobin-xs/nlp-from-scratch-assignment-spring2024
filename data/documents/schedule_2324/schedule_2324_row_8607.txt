@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 90872; Title: Using R for Policy Data Analysis; Units: 6.0; Lec/Sec: W1; Days: T; Begin: 06:00PM; End: 08:50PM; Bldg/Room/Where: CMU REMOTE; Location: Washington, District of Columbia; Instructor(s): Sermons;

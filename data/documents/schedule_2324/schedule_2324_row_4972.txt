@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 14642; Title: Introduction to Embedded Systems; Units: 12.0; Lec/Sec: SV; Days: MW; Begin: 09:30AM; End: 10:50AM; Bldg/Room/Where: B23 118; Location: San Jose, California; Instructor(s): Tague;

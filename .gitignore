@@ -8,3 +8,4 @@ data/test/
 data/test/log/*.txt
 model/*gguf
 config.ini
+data/qa-pair-lists_271.csv

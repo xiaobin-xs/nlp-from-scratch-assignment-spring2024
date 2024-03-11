@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 49781; Title: Introduction to Machine Learning; Units: 6.0; Lec/Sec: R3; Days: M; Begin: 05:30PM; End: 07:20PM; Bldg/Room/Where: TBA; Location: San Jose, California; Instructor(s): Shaikh;

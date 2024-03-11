@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 24787; Title: Machine Learning and Artificial Intelligence for Engineers; Units: 12.0; Lec/Sec: Lec; Days: TR; Begin: 05:30PM; End: 07:20PM; Bldg/Room/Where: WEH 7500; Location: Pittsburgh, Pennsylvania; Instructor(s): Kara;

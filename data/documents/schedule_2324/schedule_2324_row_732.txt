@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 46926; Title: Machine Learning I; Units: 6.0; Lec/Sec: M2; Days: TR; Begin: 01:00PM; End: 02:30PM; Bldg/Room/Where: BRD 507; Location: New York, New York; Instructor(s): Yurko;

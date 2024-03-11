@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 18743; Title: Neuromorphic Computer Architecture & Processor Design; Units: 12.0; Lec/Sec: SV; Days: TR; Begin: 12:30PM; End: 01:50PM; Bldg/Room/Where: B23 211; Location: San Jose, California; Instructor(s): Shen;

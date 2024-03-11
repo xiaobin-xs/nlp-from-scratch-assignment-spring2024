@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 18790; Title: Introduction to Deep Learning and Pattern Recognition for Computer Vision Part I; Units: 6.0; Lec/Sec: A1; Days: M; Begin: 04:00PM; End: 04:50PM; Bldg/Room/Where: SH 236; Location: Pittsburgh, Pennsylvania; Instructor(s): Savvides;

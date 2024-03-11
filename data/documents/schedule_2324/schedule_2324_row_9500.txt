@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 60453; Title: Advanced DP3: Painting - Lump, Clump, Nestle, Merge: Drawing Complexity; Units: 10.0; Lec/Sec: A; Days: MW; Begin: 07:00PM; End: 09:50PM; Bldg/Room/Where: CFA 415; Location: Pittsburgh, Pennsylvania; Instructor(s): Johnson;

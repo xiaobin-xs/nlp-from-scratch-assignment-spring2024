@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 17646; Title: DevOps and Continuous Integration; Units: 6.0; Lec/Sec: A2; Days: MW; Begin: 08:00AM; End: 09:20AM; Bldg/Room/Where: 3SC 265; Location: Pittsburgh, Pennsylvania; Instructor(s): Bass, Yasar;

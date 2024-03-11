@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15440; Title: Distributed Systems; Units: 12.0; Lec/Sec: D; Days: F; Begin: 02:00PM; End: 02:50PM; Bldg/Room/Where: BH A36; Location: Pittsburgh, Pennsylvania; Instructor(s): Miller, Zheng;

@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 85419; Title: Introduction to Parallel Distributed Processing; Units: 9.0; Lec/Sec: A; Days: TR; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: BH 336B; Location: Pittsburgh, Pennsylvania; Instructor(s): Plaut;

@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15386; Title: Neural Computation; Units: 9.0; Lec/Sec: A; Days: MWF; Begin: 02:00PM; End: 03:20PM; Bldg/Room/Where: HH B131; Location: Pittsburgh, Pennsylvania; Instructor(s): Lee;

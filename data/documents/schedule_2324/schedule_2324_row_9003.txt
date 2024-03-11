@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 36218; Title: Probability Theory for Computer Scientists; Units: 9.0; Lec/Sec: A; Days: R; Begin: 07:00PM; End: 07:50PM; Bldg/Room/Where: CMU REMOTE; Location: Pittsburgh, Pennsylvania; Instructor(s): Genovese;

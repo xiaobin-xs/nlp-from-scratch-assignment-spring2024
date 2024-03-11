@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 18788; Title: Big Data Science; Units: 6.0; Lec/Sec: A4; Days: TR; Begin: 08:00AM; End: 09:20AM; Bldg/Room/Where: HH 1107; Location: Pittsburgh, Pennsylvania; Instructor(s): McSharry;

@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15150; Title: Principles of Functional Programming; Units: 12.0; Lec/Sec: H; Days: W; Begin: 09:30AM; End: 10:50AM; Bldg/Room/Where: GHC 5210; Location: Pittsburgh, Pennsylvania; Instructor(s): Brookes;

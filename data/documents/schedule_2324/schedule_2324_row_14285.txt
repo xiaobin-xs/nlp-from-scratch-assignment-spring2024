@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 04622; Title: Applied Cryptography; Units: 6.0; Lec/Sec: Q4; Days: MW; Begin: 06:00PM; End: 07:50PM; Bldg/Room/Where: CMR F203; Location: Kigali, Rwanda; Instructor(s): Perkins;

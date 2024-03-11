@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17514; Title: Principles of Software Construction: Objects, Design, and Concurrency; Units: 12.0; Lec/Sec: G; Days: W; Begin: 07:00PM; End: 07:50PM; Bldg/Room/Where: SH 238; Location: Pittsburgh, Pennsylvania; Instructor(s): Aldrich, Garrod, Lacomis;

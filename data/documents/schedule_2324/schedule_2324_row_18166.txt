@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17639; Title: Applied Distributed Systems; Units: 6.0; Lec/Sec: D3; Days: TR; Begin: 03:30PM; End: 04:50PM; Bldg/Room/Where: CMU REMOTE; Location: Pittsburgh, Pennsylvania; Instructor(s): Yasar;

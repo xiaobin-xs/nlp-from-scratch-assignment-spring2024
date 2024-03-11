@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 05631; Title: Software Structures for User Interfaces; Units: 12.0; Lec/Sec: Lec; Days: MW; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: 4SC 104; Location: Pittsburgh, Pennsylvania; Instructor(s): Hudson;

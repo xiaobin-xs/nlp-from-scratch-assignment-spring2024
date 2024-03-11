@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15312; Title: Foundations of Programming Languages; Units: 12.0; Lec/Sec: Lec 1; Days: TR; Begin: 12:30PM; End: 01:50PM; Bldg/Room/Where: GHC 4307; Location: Pittsburgh, Pennsylvania; Instructor(s): Harper;

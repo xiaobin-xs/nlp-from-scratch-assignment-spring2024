@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 18749; Title: Building Reliable Distributed Systems; Units: 12.0; Lec/Sec: Lec; Days: MW; Begin: 05:00PM; End: 05:50PM; Bldg/Room/Where: BH A51; Location: Pittsburgh, Pennsylvania; Instructor(s): Narasimhan;

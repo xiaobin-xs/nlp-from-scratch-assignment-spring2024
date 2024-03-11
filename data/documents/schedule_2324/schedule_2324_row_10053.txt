@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 46927; Title: Machine Learning II; Units: 6.0; Lec/Sec: I3; Days: MW; Begin: 03:30PM; End: 05:00PM; Bldg/Room/Where: TCS 250; Location: Pittsburgh, Pennsylvania; Instructor(s): Reinhart;

@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15346; Title: Computer Architecture: Design and Simulation; Units: 12.0; Lec/Sec: A; Days: F; Begin: 10:00AM; End: 10:50AM; Bldg/Room/Where: WEH 8427; Location: Pittsburgh, Pennsylvania; Instructor(s): Railing;

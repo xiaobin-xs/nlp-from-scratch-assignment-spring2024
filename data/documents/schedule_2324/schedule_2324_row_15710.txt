@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 24788; Title: Introduction to Deep Learning; Units: 6.0; Lec/Sec: A3; Days: TR; Begin: 04:00PM; End: 05:50PM; Bldg/Room/Where: POS 152; Location: Pittsburgh, Pennsylvania; Instructor(s): Barati Farimani;

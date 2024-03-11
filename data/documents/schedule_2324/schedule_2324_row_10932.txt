@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15411; Title: Compiler Design; Units: 15.0; Lec/Sec: B; Days: F; Begin: 02:00PM; End: 02:50PM; Bldg/Room/Where: BH 235A; Location: Pittsburgh, Pennsylvania; Instructor(s): Hoffmann;

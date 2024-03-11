@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 03701; Title: Statistical Computing for Biological Sciences; Units: 6.0; Lec/Sec: A1; Days: MF; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: HH B131; Location: Pittsburgh, Pennsylvania; Instructor(s): Cai;

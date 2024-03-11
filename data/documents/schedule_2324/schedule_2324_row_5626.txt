@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 11785; Title: Introduction to Deep Learning; Units: 12.0; Lec/Sec: B; Days: TBA; Begin: ; End: ; Bldg/Room/Where: DNM DNM; Location: Pittsburgh, Pennsylvania; Instructor(s): Ramakrishnan, Singh;

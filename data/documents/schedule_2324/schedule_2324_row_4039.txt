@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 18785; Title: Data, Inference, and Applied Machine Learning; Units: 12.0; Lec/Sec: A; Days: TR; Begin: 08:00AM; End: 09:20AM; Bldg/Room/Where: HOA 160; Location: Pittsburgh, Pennsylvania; Instructor(s): McSharry;

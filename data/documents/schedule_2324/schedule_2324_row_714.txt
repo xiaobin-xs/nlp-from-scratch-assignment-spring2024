@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 46912; Title: Blockchain and SQL Fundamentals; Units: 6.0; Lec/Sec: I2; Days: W; Begin: 05:00PM; End: 08:00PM; Bldg/Room/Where: TCS 251; Location: Pittsburgh, Pennsylvania; Instructor(s): Mccarthy, Sooriamurthi;

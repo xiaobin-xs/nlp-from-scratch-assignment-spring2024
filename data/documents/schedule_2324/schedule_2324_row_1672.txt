@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15445; Title: Database Systems; Units: 12.0; Lec/Sec: W; Days: MW; Begin: 10:00AM; End: 11:20AM; Bldg/Room/Where: DNM DNM; Location: Pittsburgh, Pennsylvania; Instructor(s): Pavlo, Patel;

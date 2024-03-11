@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 14821; Title: ST:  Fundamentals of Software-Defined Networking; Units: 6.0; Lec/Sec: S2; Days: MW; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: B23 211; Location: San Jose, California; Instructor(s): Bustamante;

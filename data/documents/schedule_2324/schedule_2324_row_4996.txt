@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 14735; Title: Secure Coding; Units: 12.0; Lec/Sec: SV; Days: F; Begin: 09:00AM; End: 09:50AM; Bldg/Room/Where: B23 227; Location: San Jose, California; Instructor(s): Hibshi;

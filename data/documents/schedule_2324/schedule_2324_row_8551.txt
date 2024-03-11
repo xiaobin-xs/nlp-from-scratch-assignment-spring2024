@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 90711; Title: Statistical Reasoning with R; Units: 12.0; Lec/Sec: B; Days: MWF; Begin: 03:30PM; End: 04:50PM; Bldg/Room/Where: HBH 1002; Location: Pittsburgh, Pennsylvania; Instructor(s): Haviland;

@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 12746; Title: Special Topics: Intro to Python Prototyping for Infrastructure Systems; Units: 6.0; Lec/Sec: A1; Days: TR; Begin: 03:30PM; End: 04:50PM; Bldg/Room/Where: SH 236; Location: Pittsburgh, Pennsylvania; Instructor(s): Finger;

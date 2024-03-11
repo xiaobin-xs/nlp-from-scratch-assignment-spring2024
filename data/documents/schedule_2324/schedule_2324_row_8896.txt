@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 17681; Title: Java for Application Programmers; Units: 6.0; Lec/Sec: A1; Days: TR; Begin: 03:30PM; End: 04:50PM; Bldg/Room/Where: WEH 7500; Location: Pittsburgh, Pennsylvania; Instructor(s): Lee;

@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15210; Title: Parallel and Sequential Data Structures and Algorithms; Units: 12.0; Lec/Sec: G; Days: T; Begin: 01:00PM; End: 01:50PM; Bldg/Room/Where: GHC 5207; Location: Pittsburgh, Pennsylvania; Instructor(s): Acar, Sleator;

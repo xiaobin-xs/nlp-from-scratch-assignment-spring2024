@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 12234; Title: Sensing and Data Acquisition for Engineering Systems; Units: 4.0; Lec/Sec: B; Days: T; Begin: 09:30AM; End: 10:50AM; Bldg/Room/Where: PH 107E; Location: Pittsburgh, Pennsylvania; Instructor(s): Christian;

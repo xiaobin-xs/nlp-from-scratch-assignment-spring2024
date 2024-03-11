@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17634; Title: Applied Machine Learning; Units: 6.0; Lec/Sec: 43; Days: MW; Begin: 03:30PM; End: 04:50PM; Bldg/Room/Where: CMU REMOTE; Location: Pittsburgh, Pennsylvania; Instructor(s): Worrell, Scanlon;

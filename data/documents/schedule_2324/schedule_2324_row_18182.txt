@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17647; Title: Engineering Data Intensive Scalable Systems; Units: 6.0; Lec/Sec: D4; Days: MW; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: CMU REMOTE; Location: Pittsburgh, Pennsylvania; Instructor(s): Ashok, Merson;

@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 18661; Title: Introduction to Machine Learning for Engineers; Units: 12.0; Lec/Sec: Lec 3; Days: MW; Begin: 09:00AM; End: 10:50AM; Bldg/Room/Where: B23 118; Location: San Jose, California; Instructor(s): Joshi, Joe-Wong;

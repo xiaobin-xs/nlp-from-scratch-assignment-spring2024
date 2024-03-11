@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15989; Title: Advanced/Special Topics in AI/ML DATA MINING RECIPES; Units: 6.0; Lec/Sec: A; Days: F; Begin: 02:00PM; End: 04:50PM; Bldg/Room/Where: WEH 5302; Location: Pittsburgh, Pennsylvania; Instructor(s): Faloutsos;

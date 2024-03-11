@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 18654; Title: Software Verification and Testing; Units: 12.0; Lec/Sec: SV; Days: TR; Begin: 01:00PM; End: 02:50PM; Bldg/Room/Where: B23 118; Location: San Jose, California; Instructor(s): Erdogmus;

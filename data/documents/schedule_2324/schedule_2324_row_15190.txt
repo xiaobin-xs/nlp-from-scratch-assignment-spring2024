@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 10718; Title: Machine Learning in Practice; Units: 12.0; Lec/Sec: A; Days: TR; Begin: 09:30AM; End: 10:50AM; Bldg/Room/Where: GHC 4307; Location: Pittsburgh, Pennsylvania; Instructor(s): Smith;

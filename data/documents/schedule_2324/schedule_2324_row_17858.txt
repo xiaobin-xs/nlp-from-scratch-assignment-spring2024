@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 90753; Title: Spatial Data Science with ArcGIS Pro; Units: 6.0; Lec/Sec: A4; Days: MW; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: HBH 2008; Location: Pittsburgh, Pennsylvania; Instructor(s): Goranson;

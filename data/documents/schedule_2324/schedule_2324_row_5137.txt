@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 67728; Title: Full-Stack Application Development; Units: 9.0; Lec/Sec: A; Days: MW; Begin: 11:00AM; End: 12:20PM; Bldg/Room/Where: WEH 5312; Location: Pittsburgh, Pennsylvania; Instructor(s): Dobson, Hershberger;

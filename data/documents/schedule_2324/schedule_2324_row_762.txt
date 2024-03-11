@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 46982; Title: Market Microstructure and Algorithmic Trading; Units: 6.0; Lec/Sec: I2; Days: TR; Begin: 05:00PM; End: 06:30PM; Bldg/Room/Where: TCS 250; Location: Pittsburgh, Pennsylvania; Instructor(s): Psaris, Spatt;

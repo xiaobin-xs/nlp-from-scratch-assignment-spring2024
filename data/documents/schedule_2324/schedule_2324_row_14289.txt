@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 04630; Title: Data Structures and Algorithms for Engineers; Units: 12.0; Lec/Sec: A; Days: MW; Begin: 02:00PM; End: 03:50PM; Bldg/Room/Where: CMR F205; Location: Kigali, Rwanda; Instructor(s): Benson, Okeyo;

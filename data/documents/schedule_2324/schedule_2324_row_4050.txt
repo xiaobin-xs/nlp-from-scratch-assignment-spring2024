@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 18797; Title: Machine Learning for Signal Processing; Units: 12.0; Lec/Sec: RW; Days: TR; Begin: 08:00PM; End: 09:20PM; Bldg/Room/Where: CMU REMOTE; Location: Kigali, Rwanda; Instructor(s): Ramakrishnan;

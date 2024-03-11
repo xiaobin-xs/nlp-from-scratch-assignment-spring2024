@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 17716; Title: AI Governance: Identifying & Mitigating Risks in Design & Dev of AI Solutions; Units: 6.0; Lec/Sec: B; Days: W; Begin: 10:00AM; End: 11:50AM; Bldg/Room/Where: CMU REMOTE; Location: Pittsburgh, Pennsylvania; Instructor(s): Sadeh;

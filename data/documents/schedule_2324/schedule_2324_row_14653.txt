@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 95835; Title: Time Series Forecasting in Python; Units: 6.0; Lec/Sec: B4; Days: W; Begin: 06:30PM; End: 09:20PM; Bldg/Room/Where: HBH 2003; Location: Pittsburgh, Pennsylvania; Instructor(s): Shaikh;

@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 04800; Title: AIOps: Continuous and Automated IT and AI Monitoring; Units: 12.0; Lec/Sec: K; Days: TR; Begin: 07:00PM; End: 08:50PM; Bldg/Room/Where: CMU REMOTE; Location: Kigali, Rwanda; Instructor(s): Wiecha;

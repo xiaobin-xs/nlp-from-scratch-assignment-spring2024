@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 15121; Title: Introduction to Data Structures; Units: 10.0; Lec/Sec: A; Days: W; Begin: 09:00AM; End: 09:50AM; Bldg/Room/Where: PH A18A; Location: Pittsburgh, Pennsylvania; Instructor(s): Xhakaj;

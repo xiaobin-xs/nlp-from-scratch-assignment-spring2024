@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 67364; Title: Practical Data Science; Units: 9.0; Lec/Sec: W; Days: MW; Begin: 08:30AM; End: 09:45AM; Bldg/Room/Where: CMB 3046; Location: Doha, Qatar; Instructor(s): Bouamor;

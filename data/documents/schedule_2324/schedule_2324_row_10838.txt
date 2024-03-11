@@ -1,0 +1,1 @@
+Semester: Spring 2024; Course: 15150; Title: Principles of Functional Programming; Units: 12.0; Lec/Sec: J; Days: W; Begin: 02:00PM; End: 03:20PM; Bldg/Room/Where: GHC 5210; Location: Pittsburgh, Pennsylvania; Instructor(s): Erdmann, Kaynar;

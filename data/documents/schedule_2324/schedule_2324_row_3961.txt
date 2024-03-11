@@ -1,0 +1,1 @@
+Semester: Fall 2023; Course: 18636; Title: Browser Security; Units: 12.0; Lec/Sec: SV; Days: MW; Begin: 12:30PM; End: 01:50PM; Bldg/Room/Where: CMU REMOTE; Location: San Jose, California; Instructor(s): Jia;
