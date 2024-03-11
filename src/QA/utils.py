@@ -23,6 +23,9 @@ def format_docs(docs, retrieve_result_path='/home/ubuntu/nlp-from-scratch-assign
     #     print(f"Document Name: {doc.metadata['source']}")
     return "\n\n".join(doc.page_content for doc in docs)
 
+def clean_output_answer(text):
+    return text.replace('\n', ' ').strip()
+
 def custom_rag_prompt(context, question):
     formatted_input = f"""You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. 
     If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.

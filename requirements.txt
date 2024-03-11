@@ -6,4 +6,5 @@ langchain
 langchain-community
 langchainhub
 gpt4all
-chromadb 
+chromadb
+faiss-cpu

@@ -5,3 +5,6 @@
 data/test/retrieval_result_*.txt
 model/*gguf
 data/test/
+data/test/log/*.txt
+model/*gguf
+config.ini

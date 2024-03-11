@@ -16,7 +16,8 @@ import os, sys
 import argparse
 from tqdm import tqdm
 
-from utils import load_random_question, load_txt_file_all_rows, generate_answer
+from utils import load_random_question, load_txt_file_all_rows, generate_answer, clean_output_answer
+
 from datetime import datetime
 
 def clean_output_answer(text):
@@ -136,6 +137,7 @@ else:
 
 qa_log_file_path = args.output_folder + f'qa_log_{exp_name}.txt'  # New code
 
+<<<<<<< Updated upstream
 res = []
 with open(qa_log_file_path, 'w') as qa_log_file:  # New code
     for q in tqdm(question_list):
@@ -146,6 +148,10 @@ with open(qa_log_file_path, 'w') as qa_log_file:  # New code
         res.append(result)
         clean_result = clean_output_answer(result)
         qa_log_file.write(f"Question: {q}\nAnswer: {clean_result}\n\n")  # New code
+=======
+# def clean_output_answer(text):
+#     return text.replace('\n', ' ').strip()
+>>>>>>> Stashed changes
 
 res = [clean_output_answer(r) for r in res]
 

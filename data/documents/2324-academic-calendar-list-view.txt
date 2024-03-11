@@ -1,130 +1,130 @@
  2023-2024 OFFICIAL Academic Calendar Carnegie Mellon University
 Revised: 28 July 2023 Page 1 of 3Semester : (M-13, T-13, W-13, Th-13, F-13) Total=65
-2023-2024 Academic year: Mini-1: (M-6, T-7, W-7, Th-7, F-7) Total=34 
-2023-2024 Academic year: Mini-2: (M-7, T-6, W-6, Th-6, F-65) Total=31
-2023-2024 Academic year: Date Day Event
-2023-2024 Academic year: August 28 M Semester & Mini-1 Classes Begin
-2023-2024 Academic year: September 1 F Mini-1 add, audit & tuition adjustment drop deadline  (1)
-2023-2024 Academic year: September 4 M Labor Day; No Classes & University Closed
-2023-2024 Academic year: September 11 M Semester add, audit & tuition adjustment drop deadline (1)
-2023-2024 Academic year: September 20 W Mini-1 drop deadline; withdrawal grade assigned after this date (2)
-2023-2024 Academic year: October 2 M Mini-1 Pass/no pass & withdrawal deadline (3)
-2023-2024 Academic year: October 2 M Mini-1 Faculty Course Evaluations open
-2023-2024 Academic year: October 9 M Semester drop deadline; withdrawal grade assigned after this date
-2023-2024 Academic year: October 13 F Mini-1 Last Day of Classes
-2023-2024 Academic year: October 13 F Mini-1 voucher election deadline (4)
-2023-2024 Academic year: October 13 -October 14 F-Sa Family Weekend
-2023-2024 Academic year: October 14 Sa Mini-1 Exams
-2023-2024 Academic year: October 14 Sa Mini-1 Faculty Course Evaluations close
-2023-2024 Academic year: October 16 -October 20 M-F Fall Break; No Classes
-2023-2024 Academic year: October 23 M Mini-2 Classes Begin 
-2023-2024 Academic year: October 23 M Mid-Semester & Mini-1 grades due by 4 pm
-2023-2024 Academic year: October 27 F Mini-2 add, audit & tuition adjustment drop deadline (1)
-2023-2024 Academic year: November 7 T Democracy Day; No Classes, except Evening classes after 5 pm will still meet
-2023-2024 Academic year: November 11 Sa Homecoming
-2023-2024 Academic year: November 13 -November 17 M-F Spring 2024 Registration Week
-2023-2024 Academic year: November 13 M Semester pass/no pass & withdrawal deadline (3)
-2023-2024 Academic year: November 15 W Mini-2 drop deadline; withdrawal grade assigned after this date (2)
-2023-2024 Academic year: November 22 -November 24 W-F Thanksgiving Break; No Classes
-2023-2024 Academic year: November 27 M Mini-2 pass/no pass & withdrawal deadline (2)
-2023-2024 Academic year: November 27 M Semester & Mini-2 Faculty Course Evaluations open
-2023-2024 Academic year: December 8 F Semester & Mini-2 Last Day of Classes 
-2023-2024 Academic year: December 8 F Semester & Mini-2 voucher deadline (4)
-2023-2024 Academic year: December 11 -December 12 M-Tu Final Exams 
-2023-2024 Academic year: December 13 W Reading Day 
-2023-2024 Academic year: December 14 -December 15 Th-F Final Exams 
-2023-2024 Academic year: December 16 Sa Reading Day 
-2023-2024 Academic year: December 17 Su Final Exams 
-2023-2024 Academic year: December 18 M Make-Up Final Exams
-2023-2024 Academic year: December 18 M Semester & Mini-2 Faculty Course Evaluations close
-2023-2024 Academic year: December 20 W Final Grades Due by 4 pm 
-2023-2024 Academic year: December 23 -January 2 Sa-Tu Winter Break; University Closed
-2023-2024 Academic year: January 8 M Fall Deans' Lists Posted
-2023-2024 Academic year: Semester : (M-13, T-14, W-14, Th-13, F-13) Total=67
-2023-2024 Academic year: Mini-3: (M-6, T-7, W-7, Th-7, F-7) Total=34 
-2023-2024 Academic year: Mini-4: (M-7, T-7, W-7, Th-6, F-6) Total=33
-2023-2024 Academic year: Date Day Event
-2023-2024 Academic year: January 15 M Martin Luther King Day; No Classes
-2023-2024 Academic year: January 16 Tu First Day of Class
-2023-2024 Academic year: January 22 M Mini-3 add, audit & tuition adjustment drop deadline (1)
-2023-2024 Academic year: January 29 M Semester add, audit & tuition adjustment drop deadline (1)
-2023-2024 Academic year: February 7 W Mini-3 course drop deadline; withdrawal grade assigned after this date (2)
-2023-2024 Academic year: February 19 M Mini-3 pass/no pass & withdrawal deadline (3)
-2023-2024 Academic year: February 19 M Mini-3 Faculty Course Evaluations open
-2023-2024 Academic year: February 26 M Semester course drop deadline; withdrawal grade assigned after this date (2)Spring 2024 Semester (S24)Fall 2023 Semester (F23)
-2023-2024 Academic year:  2023-2024 OFFICIAL Academic Calendar Carnegie Mellon University
-2023-2024 Academic year: Revised: 28 July 2023 Page 2 of 3March 1 F Mini-3 Last Day of Classes 
-2023-2024 Academic year: March 1 F Mini-3 voucher deadline (4)
-2023-2024 Academic year: March 2 Sa Mini-3 Exams
-2023-2024 Academic year: March 2 Sa Mini-3 Faculty Course Evaluations close
-2023-2024 Academic year: March 4 -March 8 M-F Spring Break; No Classes
-2023-2024 Academic year: March 11 M First day of Mini-4 Classes
-2023-2024 Academic year: March 11 M Mid-Semester & Mini-3 grades due by 4 pm
-2023-2024 Academic year: March 12 T Summer 2024 Registration Opens 
-2023-2024 Academic year: March 15 F Mini-4 add, audit & tuition adjustment drop deadline (1)
-2023-2024 Academic year: April 1 M Semester pass/no pass & withdrawal deadline (3)
-2023-2024 Academic year: April 3 W Mini-4 course drop deadline; withdrawal grade assigned after this date (2)
-2023-2024 Academic year: April 11 -April 13 Th-Sa Spring Carnival; No Classes
-2023-2024 Academic year: April 15 -April 19 M-F Fall 2024 Registration Week
-2023-2024 Academic year: April 15 M Mini-4 pass/no pass & withdrawal deadline (3)
-2023-2024 Academic year: April 15 M Semester & Mini-4 Faculty Course Evaluations open 
-2023-2024 Academic year: April 26 F Last Day of Classes
-2023-2024 Academic year: April 26 F Semester & Mini-4 voucher deadline (4)
-2023-2024 Academic year: April 29 -April 30 M-Tu Final Examinations 
-2023-2024 Academic year: May 1 W Reading Day
-2023-2024 Academic year: May 2 -May 3 Th-F Final Examinations 
-2023-2024 Academic year: May 4 -May 5 Sa-Su Reading Days
-2023-2024 Academic year: May 6 M Final Examinations
-2023-2024 Academic year: May 6 M Semester & Mini-4 Faculty Course Evaluations close 
-2023-2024 Academic year: May 7 Tu Make-Up Final Examinations
-2023-2024 Academic year: May 8 W Graduating Final Grades Due by 4 pm
-2023-2024 Academic year: May 12 Su Commencement
-2023-2024 Academic year: May 14 Tu Final Grades Due by 4 pm
-2023-2024 Academic year: May 21 Tu Spring Deans' Lists Posted
-2023-2024 Academic year: Semester : (M-10, T-11, W-12, Th-12, F-10) Total=55
-2023-2024 Academic year: Mini-5: (M-5, T-6, W-5, Th-6, F-5) Total=27 [Note:  formerly Summer Session One ]
-2023-2024 Academic year: Mini-6: (M-6, T-6, W-6, Th-5, F-5) Total=28
-2023-2024 Academic year: Date Day Event
-2023-2024 Academic year: May 13 M Semester & Mini-5 Classes Begin
-2023-2024 Academic year: May 17 F Mini-5 add, audit, & tuition adjustment drop deadline (1)
-2023-2024 Academic year: May 24 F Semester add, audit, & tuition adjustment drop deadline (1)
-2023-2024 Academic year: May 27 M Memorial Day; University Closed & No Classes
-2023-2024 Academic year: May 28 T Mini-5 course drop deadline; withdrawal grade assigned after this date (2)
-2023-2024 Academic year: June 7 F Mini-5 pass/no pass & withdrawal deadline (3)
-2023-2024 Academic year: June 14 F Mini-5 Faculty Course Evaluations open
-2023-2024 Academic year: June 18 T Semester course drop deadline; withdrawal grade assigned after this date (2)
-2023-2024 Academic year: June 19 W Juneteenth; University Closed & No Classes
-2023-2024 Academic year: June 20 Th Mini-5 Last Day of Classes
-2023-2024 Academic year: June 20 Th Mini-5 voucher deadline (4)
-2023-2024 Academic year: June 21 F Mini-5 Final Exams
-2023-2024 Academic year: June 21 F Mini-5 Faculty Course Evaluations close 
-2023-2024 Academic year: June 24 M Mini-6 First Day of Classes
-2023-2024 Academic year: June 25 T Mini-5 Final Grades Due by 4 pm
-2023-2024 Academic year: June 28 F Mini-6 add, audit, & tuition adjustment drop deadline (1)
-2023-2024 Academic year: July 4 Th Independence Day; University Closed & No Classes
-2023-2024 Academic year: July 5 F Semester pass/no pass & withdrawal deadline (3)
-2023-2024 Academic year: July 8 M Mini-6 drop deadline; withdrawal grade assigned after this date (2)
-2023-2024 Academic year: July 22 F Mini-6 pass/no pass & withdrawal deadline (3)
-2023-2024 Academic year: July 29 M Semester & Mini-6 Faculty Course Evalutations open 
-2023-2024 Academic year: August 1 Th Semester & Mini-6 Last Day of ClassesSummer Semester 2024 (M24)**
-2023-2024 Academic year:  2023-2024 OFFICIAL Academic Calendar Carnegie Mellon University
-2023-2024 Academic year: Revised: 28 July 2023 Page 3 of 3August 1 Th Semester & Mini-6 voucher deadline (4)
-2023-2024 Academic year: August 2 F Semester & Mini-6 Final Exams***
-2023-2024 Academic year: August 2 F Semester & Mini-6 Faculty Course Evaluations close
-2023-2024 Academic year: August 6 T Semester & Mini-6 Final Grades Due by 4 pm
-2023-2024 Academic year: Semester (6 weeks): (M-6, T-6, W-6, Th-5, F-5) Total=28
-2023-2024 Academic year: Date Day Event
-2023-2024 Academic year: June 24 M Summer Semester Two Classes Begin
-2023-2024 Academic year: June 28 F Summer Semester  Two add, audit & tuition adjustment drop deadline (1)
-2023-2024 Academic year: July 4 Th Independence Day; University Closed & No Classes
-2023-2024 Academic year: July 8 M Summer Semester  Two drop deadline; withdrawal grade assigned after this date (2)
-2023-2024 Academic year: July 22 F Summer Semester  Two pass/no pass & withdrawal deadline (3)
-2023-2024 Academic year: July 29 M Summer Semester  Two Faculty Course Evaulations open
-2023-2024 Academic year: August 1 Th Summer Semester  Two Last Day of Classes
-2023-2024 Academic year: August 1 Th Summer Semester  Two voucher deadline (4)
-2023-2024 Academic year: August 2 F Summer Semester  Two Final Exams***
-2023-2024 Academic year: August 2 F Summer Semester  Two Faculty Course Evaluations close 
-2023-2024 Academic year: August 6 T Summer Semester  Two Final Grades Due by 4 pm
+2023-2024 Academic year, Fall 2023: Mini-1: (M-6, T-7, W-7, Th-7, F-7) Total=34 
+2023-2024 Academic year, Fall 2023: Mini-2: (M-7, T-6, W-6, Th-6, F-65) Total=31
+2023-2024 Academic year, Fall 2023: Date Day Event
+2023-2024 Academic year, Fall 2023: August 28 M Semester & Mini-1 Classes Begin
+2023-2024 Academic year, Fall 2023: September 1 F Mini-1 add, audit & tuition adjustment drop deadline  (1)
+2023-2024 Academic year, Fall 2023: September 4 M Labor Day; No Classes & University Closed
+2023-2024 Academic year, Fall 2023: September 11 M Semester add, audit & tuition adjustment drop deadline (1)
+2023-2024 Academic year, Fall 2023: September 20 W Mini-1 drop deadline; withdrawal grade assigned after this date (2)
+2023-2024 Academic year, Fall 2023: October 2 M Mini-1 Pass/no pass & withdrawal deadline (3)
+2023-2024 Academic year, Fall 2023: October 2 M Mini-1 Faculty Course Evaluations open
+2023-2024 Academic year, Fall 2023: October 9 M Semester drop deadline; withdrawal grade assigned after this date
+2023-2024 Academic year, Fall 2023: October 13 F Mini-1 Last Day of Classes
+2023-2024 Academic year, Fall 2023: October 13 F Mini-1 voucher election deadline (4)
+2023-2024 Academic year, Fall 2023: October 13 -October 14 F-Sa Family Weekend
+2023-2024 Academic year, Fall 2023: October 14 Sa Mini-1 Exams
+2023-2024 Academic year, Fall 2023: October 14 Sa Mini-1 Faculty Course Evaluations close
+2023-2024 Academic year, Fall 2023: October 16 -October 20 M-F Fall Break; No Classes
+2023-2024 Academic year, Fall 2023: October 23 M Mini-2 Classes Begin 
+2023-2024 Academic year, Fall 2023: October 23 M Mid-Semester & Mini-1 grades due by 4 pm
+2023-2024 Academic year, Fall 2023: October 27 F Mini-2 add, audit & tuition adjustment drop deadline (1)
+2023-2024 Academic year, Fall 2023: November 7 T Democracy Day; No Classes, except Evening classes after 5 pm will still meet
+2023-2024 Academic year, Fall 2023: November 11 Sa Homecoming
+2023-2024 Academic year, Fall 2023: November 13 -November 17 M-F Spring 2024 Registration Week
+2023-2024 Academic year, Fall 2023: November 13 M Semester pass/no pass & withdrawal deadline (3)
+2023-2024 Academic year, Fall 2023: November 15 W Mini-2 drop deadline; withdrawal grade assigned after this date (2)
+2023-2024 Academic year, Fall 2023: November 22 -November 24 W-F Thanksgiving Break; No Classes
+2023-2024 Academic year, Fall 2023: November 27 M Mini-2 pass/no pass & withdrawal deadline (2)
+2023-2024 Academic year, Fall 2023: November 27 M Semester & Mini-2 Faculty Course Evaluations open
+2023-2024 Academic year, Fall 2023: December 8 F Semester & Mini-2 Last Day of Classes 
+2023-2024 Academic year, Fall 2023: December 8 F Semester & Mini-2 voucher deadline (4)
+2023-2024 Academic year, Fall 2023: December 11 -December 12 M-Tu Final Exams 
+2023-2024 Academic year, Fall 2023: December 13 W Reading Day 
+2023-2024 Academic year, Fall 2023: December 14 -December 15 Th-F Final Exams 
+2023-2024 Academic year, Fall 2023: December 16 Sa Reading Day 
+2023-2024 Academic year, Fall 2023: December 17 Su Final Exams 
+2023-2024 Academic year, Fall 2023: December 18 M Make-Up Final Exams
+2023-2024 Academic year, Fall 2023: December 18 M Semester & Mini-2 Faculty Course Evaluations close
+2023-2024 Academic year, Fall 2023: December 20 W Final Grades Due by 4 pm 
+2023-2024 Academic year, Fall 2023: December 23 -January 2 Sa-Tu Winter Break; University Closed
+2023-2024 Academic year, Fall 2023: January 8 M Fall Deans' Lists Posted
+2023-2024 Academic year, Spring 2024: Semester : (M-13, T-14, W-14, Th-13, F-13) Total=67
+2023-2024 Academic year, Spring 2024: Mini-3: (M-6, T-7, W-7, Th-7, F-7) Total=34 
+2023-2024 Academic year, Spring 2024: Mini-4: (M-7, T-7, W-7, Th-6, F-6) Total=33
+2023-2024 Academic year, Spring 2024: Date Day Event
+2023-2024 Academic year, Spring 2024: January 15 M Martin Luther King Day; No Classes
+2023-2024 Academic year, Spring 2024: January 16 Tu First Day of Class
+2023-2024 Academic year, Spring 2024: January 22 M Mini-3 add, audit & tuition adjustment drop deadline (1)
+2023-2024 Academic year, Spring 2024: January 29 M Semester add, audit & tuition adjustment drop deadline (1)
+2023-2024 Academic year, Spring 2024: February 7 W Mini-3 course drop deadline; withdrawal grade assigned after this date (2)
+2023-2024 Academic year, Spring 2024: February 19 M Mini-3 pass/no pass & withdrawal deadline (3)
+2023-2024 Academic year, Spring 2024: February 19 M Mini-3 Faculty Course Evaluations open
+2023-2024 Academic year, Spring 2024: February 26 M Semester course drop deadline; withdrawal grade assigned after this date (2)Spring 2024 Semester (S24)Fall 2023 Semester (F23)
+2023-2024 Academic year, Spring 2024:  2023-2024 OFFICIAL Academic Calendar Carnegie Mellon University
+2023-2024 Academic year, Spring 2024: Revised: 28 July 2023 Page 2 of 3March 1 F Mini-3 Last Day of Classes 
+2023-2024 Academic year, Spring 2024: March 1 F Mini-3 voucher deadline (4)
+2023-2024 Academic year, Spring 2024: March 2 Sa Mini-3 Exams
+2023-2024 Academic year, Spring 2024: March 2 Sa Mini-3 Faculty Course Evaluations close
+2023-2024 Academic year, Spring 2024: March 4 -March 8 M-F Spring Break; No Classes
+2023-2024 Academic year, Spring 2024: March 11 M First day of Mini-4 Classes
+2023-2024 Academic year, Spring 2024: March 11 M Mid-Semester & Mini-3 grades due by 4 pm
+2023-2024 Academic year, Spring 2024: March 12 T Summer 2024 Registration Opens 
+2023-2024 Academic year, Spring 2024: March 15 F Mini-4 add, audit & tuition adjustment drop deadline (1)
+2023-2024 Academic year, Spring 2024: April 1 M Semester pass/no pass & withdrawal deadline (3)
+2023-2024 Academic year, Spring 2024: April 3 W Mini-4 course drop deadline; withdrawal grade assigned after this date (2)
+2023-2024 Academic year, Spring 2024: April 11 -April 13 Th-Sa Spring Carnival; No Classes
+2023-2024 Academic year, Spring 2024: April 15 -April 19 M-F Fall 2024 Registration Week
+2023-2024 Academic year, Spring 2024: April 15 M Mini-4 pass/no pass & withdrawal deadline (3)
+2023-2024 Academic year, Spring 2024: April 15 M Semester & Mini-4 Faculty Course Evaluations open 
+2023-2024 Academic year, Spring 2024: April 26 F Last Day of Classes
+2023-2024 Academic year, Spring 2024: April 26 F Semester & Mini-4 voucher deadline (4)
+2023-2024 Academic year, Spring 2024: April 29 -April 30 M-Tu Final Examinations 
+2023-2024 Academic year, Spring 2024: May 1 W Reading Day
+2023-2024 Academic year, Spring 2024: May 2 -May 3 Th-F Final Examinations 
+2023-2024 Academic year, Spring 2024: May 4 -May 5 Sa-Su Reading Days
+2023-2024 Academic year, Spring 2024: May 6 M Final Examinations
+2023-2024 Academic year, Spring 2024: May 6 M Semester & Mini-4 Faculty Course Evaluations close 
+2023-2024 Academic year, Spring 2024: May 7 Tu Make-Up Final Examinations
+2023-2024 Academic year, Spring 2024: May 8 W Graduating Final Grades Due by 4 pm
+2023-2024 Academic year, Spring 2024: May 12 Su Commencement
+2023-2024 Academic year, Spring 2024: May 14 Tu Final Grades Due by 4 pm
+2023-2024 Academic year, Spring 2024: May 21 Tu Spring Deans' Lists Posted
+2023-2024 Academic year, Summer 2024: Semester : (M-10, T-11, W-12, Th-12, F-10) Total=55
+2023-2024 Academic year, Summer 2024: Mini-5: (M-5, T-6, W-5, Th-6, F-5) Total=27 [Note:  formerly Summer Session One ]
+2023-2024 Academic year, Summer 2024: Mini-6: (M-6, T-6, W-6, Th-5, F-5) Total=28
+2023-2024 Academic year, Summer 2024: Date Day Event
+2023-2024 Academic year, Summer 2024: May 13 M Semester & Mini-5 Classes Begin
+2023-2024 Academic year, Summer 2024: May 17 F Mini-5 add, audit, & tuition adjustment drop deadline (1)
+2023-2024 Academic year, Summer 2024: May 24 F Semester add, audit, & tuition adjustment drop deadline (1)
+2023-2024 Academic year, Summer 2024: May 27 M Memorial Day; University Closed & No Classes
+2023-2024 Academic year, Summer 2024: May 28 T Mini-5 course drop deadline; withdrawal grade assigned after this date (2)
+2023-2024 Academic year, Summer 2024: June 7 F Mini-5 pass/no pass & withdrawal deadline (3)
+2023-2024 Academic year, Summer 2024: June 14 F Mini-5 Faculty Course Evaluations open
+2023-2024 Academic year, Summer 2024: June 18 T Semester course drop deadline; withdrawal grade assigned after this date (2)
+2023-2024 Academic year, Summer 2024: June 19 W Juneteenth; University Closed & No Classes
+2023-2024 Academic year, Summer 2024: June 20 Th Mini-5 Last Day of Classes
+2023-2024 Academic year, Summer 2024: June 20 Th Mini-5 voucher deadline (4)
+2023-2024 Academic year, Summer 2024: June 21 F Mini-5 Final Exams
+2023-2024 Academic year, Summer 2024: June 21 F Mini-5 Faculty Course Evaluations close 
+2023-2024 Academic year, Summer 2024: June 24 M Mini-6 First Day of Classes
+2023-2024 Academic year, Summer 2024: June 25 T Mini-5 Final Grades Due by 4 pm
+2023-2024 Academic year, Summer 2024: June 28 F Mini-6 add, audit, & tuition adjustment drop deadline (1)
+2023-2024 Academic year, Summer 2024: July 4 Th Independence Day; University Closed & No Classes
+2023-2024 Academic year, Summer 2024: July 5 F Semester pass/no pass & withdrawal deadline (3)
+2023-2024 Academic year, Summer 2024: July 8 M Mini-6 drop deadline; withdrawal grade assigned after this date (2)
+2023-2024 Academic year, Summer 2024: July 22 F Mini-6 pass/no pass & withdrawal deadline (3)
+2023-2024 Academic year, Summer 2024: July 29 M Semester & Mini-6 Faculty Course Evalutations open 
+2023-2024 Academic year, Summer 2024: August 1 Th Semester & Mini-6 Last Day of ClassesSummer Semester 2024 (M24)**
+2023-2024 Academic year, Summer 2024:  2023-2024 OFFICIAL Academic Calendar Carnegie Mellon University
+2023-2024 Academic year, Summer 2024: Revised: 28 July 2023 Page 3 of 3August 1 Th Semester & Mini-6 voucher deadline (4)
+2023-2024 Academic year, Summer 2024: August 2 F Semester & Mini-6 Final Exams***
+2023-2024 Academic year, Summer 2024: August 2 F Semester & Mini-6 Faculty Course Evaluations close
+2023-2024 Academic year, Summer 2024: August 6 T Semester & Mini-6 Final Grades Due by 4 pm
+2023-2024 Academic year, Summer 2024: Semester (6 weeks): (M-6, T-6, W-6, Th-5, F-5) Total=28
+2023-2024 Academic year, Summer 2024: Date Day Event
+2023-2024 Academic year, Summer 2024: June 24 M Summer Semester Two Classes Begin
+2023-2024 Academic year, Summer 2024: June 28 F Summer Semester  Two add, audit & tuition adjustment drop deadline (1)
+2023-2024 Academic year, Summer 2024: July 4 Th Independence Day; University Closed & No Classes
+2023-2024 Academic year, Summer 2024: July 8 M Summer Semester  Two drop deadline; withdrawal grade assigned after this date (2)
+2023-2024 Academic year, Summer 2024: July 22 F Summer Semester  Two pass/no pass & withdrawal deadline (3)
+2023-2024 Academic year, Summer 2024: July 29 M Summer Semester  Two Faculty Course Evaulations open
+2023-2024 Academic year, Summer 2024: August 1 Th Summer Semester  Two Last Day of Classes
+2023-2024 Academic year, Summer 2024: August 1 Th Summer Semester  Two voucher deadline (4)
+2023-2024 Academic year, Summer 2024: August 2 F Summer Semester  Two Final Exams***
+2023-2024 Academic year, Summer 2024: August 2 F Summer Semester  Two Faculty Course Evaluations close 
+2023-2024 Academic year, Summer 2024: August 6 T Summer Semester  Two Final Grades Due by 4 pm
 2023-2024 Academic year: Notes:
 2023-2024 Academic year: *Students taking courses in Heinz College and Tepper School of Business (MBA and 
 2023-2024 Academic year: Computational Finance programs) must review and follow separate academic calendars; 
