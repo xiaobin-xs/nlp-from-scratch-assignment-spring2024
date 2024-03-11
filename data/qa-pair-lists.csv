@@ -1,272 +1,268 @@
-type,question,answer,file,notes,annotator
-When,On what date are the Mid-Semester & Mini-1 grades due for 2023-2024 academic year?,"October 23, 2023",2324-academic-calendar-list-view.txt,"different ways to ask ""When""",xiaobin
-When,When is the Mid-Semester grades due for 2023-2024 academic year?,"October 23, 2023 by 4 pm",2324-academic-calendar-list-view.txt,"different ways to ask ""When"", more fine-grained",xiaobin
-How,How can students receive tuition adjustment when they drop a course?,Drop by the tuition adjustment drop deadline,2324-academic-calendar-list-view.txt,,xiaobin
-When,"What is the deadline of add, audit & tuition adjustment drop in Mini-3 for 2023-2024 academic year?","January 22, 2024",2324-academic-calendar-list-view.txt,,xiaobin
-When,"What is the deadline of add, audit & tuition adjustment drop in Mini-2 for 2024-2025 academic year?","October 25, 2024",2425-academic-calendar-list-view.txt,"same question, retrieve from a different document",xiaobin
-When,When is university closed during the 2023-2024 academic year?,September 4 M Labor Day; December 23 -January 2 Sa-Tu Winter Break; May 27 M Memorial Day; June 19 W Juneteenth; July 4 Th Independence Day;,2324-academic-calendar-list-view.txt,need to collect and combine info,xiaobin
-When,"For Fall 2023, When is Semester & Mini-1 Classes Begin?",August 28,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-1 add, audit & tuition adjustment drop deadline?",September 01,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Labor Day?",September 04,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Semester add, audit & tuition adjustment drop deadline?",September 11,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-1 drop deadline?",September 20,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-1 Pass/no pass & withdrawal deadline?",October 02,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-1 Faculty Course Evaluations open?",October 02,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Semester drop deadline?",October 09,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-1 Last Day of Classes?",October 13,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-1 voucher election deadline?",October 13,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Family Weekend?",October 13,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-1 Exams?",October 14,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-1 Faculty Course Evaluations close?",October 14,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Fall Break?",October 16,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-2 Classes Begin?",October 23,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mid-Semester & Mini-1 grades due by 4 pm?",October 23,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-2 add, audit & tuition adjustment drop deadline?",October 27,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Democracy Day?",November 07,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Homecoming?",November 11,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Spring 2024 Registration Week?",November 13,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Semester pass/no pass & withdrawal deadline?",November 13,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-2 drop deadline?",November 15,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Thanksgiving Break?",November 22,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Mini-2 pass/no pass & withdrawal deadline?",November 27,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Semester & Mini-2 Faculty Course Evaluations open?",November 27,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Semester & Mini-2 Last Day of Classes?",December 08,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Semester & Mini-2 voucher deadline?",December 08,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Final Exams?",December 11,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Reading Day?",December 13,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Final Exams?",December 14,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Reading Day?",December 16,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Final Exams?",December 17,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Make-Up Final Exams?",December 18,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Semester & Mini-2 Faculty Course Evaluations close?",December 18,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Final Grades Due by 4 pm?",December 20,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Winter Break?",December 23,2324-academic-calendar-list-view.txt,,jialu
-When,"For Fall 2023, When is Fall Deans' Lists Posted?",January 08,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Martin Luther King Day?",January 15,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is First Day of Class?",January 16,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-3 add, audit & tuition adjustment drop deadline?",January 22,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Semester add, audit & tuition adjustment drop deadline?",January 29,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-3 course drop deadline?",February 07,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-3 pass/no pass & withdrawal deadline?",February 19,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-3 Faculty Course Evaluations open?",February 19,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Semester course drop deadline?",February 26,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-3 Last Day of Classes?",March 01,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-3 voucher deadline?",March 01,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-3 Exams?",March 02,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-3 Faculty Course Evaluations close?",March 02,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Spring Break?",March 04,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is First day of Mini-4 Classes?",March 11,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mid-Semester & Mini-3 grades due by 4 pm?",March 11,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Summer 2024 Registration Opens?",March 12,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-4 add, audit & tuition adjustment drop deadline?",March 15,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Semester pass/no pass & withdrawal deadline?",April 01,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-4 course drop deadline?",April 03,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Spring Carnival?",April 11,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Fall 2024 Registration Week?",April 15,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Mini-4 pass/no pass & withdrawal deadline?",April 15,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Semester & Mini-4 Faculty Course Evaluations open?",April 15,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Last Day of Classes?",April 26,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Semester & Mini-4 voucher deadline?",April 26,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Final Examinations?",April 29,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Reading Day?",May 01,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Final Examinations?",May 02,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Reading Days?",May 04,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Final Examinations?",May 06,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Semester & Mini-4 Faculty Course Evaluations close?",May 06,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Make-Up Final Examinations?",May 07,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Graduating Final Grades Due by 4 pm?",May 08,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Commencement?",May 12,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Final Grades Due by 4 pm?",May 14,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Spring Deans' Lists Posted?",May 21,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester & Mini-5 Classes Begin?",May 13,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-5 add, audit, & tuition adjustment drop deadline?",May 17,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester add, audit, & tuition adjustment drop deadline?",May 24,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Memorial Day?",May 27,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-5 course drop deadline?",May 28,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-5 pass/no pass & withdrawal deadline?",June 07,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-5 Faculty Course Evaluations open?",June 14,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester course drop deadline?",June 18,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Juneteenth?",June 19,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-5 Last Day of Classes?",June 20,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-5 voucher deadline?",June 20,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-5 Final Exams?",June 21,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-5 Faculty Course Evaluations close?",June 21,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-6 First Day of Classes?",June 24,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-5 Final Grades Due by 4 pm?",June 25,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-6 add, audit, & tuition adjustment drop deadline?",June 28,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Independence Day?",July 04,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester pass/no pass & withdrawal deadline?",July 05,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-6 drop deadline?",July 08,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Mini-6 pass/no pass & withdrawal deadline?",July 22,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester & Mini-6 Faculty Course Evalutations open?",July 29,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester & Mini-6 Last Day of Classes?",August 01,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester & Mini-6 voucher deadline?",August 01,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester & Mini-6 Final Exams?",August 02,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester & Mini-6 Faculty Course Evaluations close?",August 02,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2024, When is Semester & Mini-6 Final Grades Due by 4 pm?",August 06,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2 2024, When is Summer Semester Two Classes Begin?",June 24,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2 2024, When is Summer Semester  Two add, audit & tuition adjustment drop deadline?",June 28,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2 2024, When is Independence Day?",July 04,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2 2024, When is Summer Semester  Two drop deadline?",July 08,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2 2024, When is Summer Semester  Two pass/no pass & withdrawal deadline?",July 22,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2 2024, When is Summer Semester  Two Faculty Course Evaulations open?",July 29,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2 2024, When is Summer Semester  Two Last Day of Classes?",August 01,2324-academic-calendar-list-view.txt,,jialu
-When,"For Summer 2 2024, When is Summer Semester  Two voucher deadline?",August 01,2324-academic-calendar-list-view.txt, ,jialu
-When,"For Summer 2 2024, When is Summer Semester  Two Final Exams***?",August 02,2324-academic-calendar-list-view.txt, ,jialu
-When,"For Summer 2 2024, When is Summer Semester  Two Faculty Course Evaluations close?",August 02,2324-academic-calendar-list-view.txt, ,jialu
-When,"For Summer 2 2024, When is Summer Semester  Two Final Grades Due by 4 pm?",August 06,2324-academic-calendar-list-view.txt,,jialu
-When,When is the commencement ceremony for the 2023-2024 academic year?,"May 12, 2024",2324-academic-calendar-list-view.txt,,jialu
-Who,Who is offering the Advanced NLP course in Spring 2024?,Neubig,schedule_2324,,xiaobin
-What,What courses are offered by Graham Neubig at CMU in Spring 2024?,11711 Advanced Natural Language Processing; 11925 Independent Study: Area; 11920 Independent Study: Breadth,schedule_2324,,xiaobin
-Who,Who is teaching 11711 in Spring 2024?,Neubig,schedule_2324,,xiaobin
-Where,"Which room is the course ""History of Modern Architecture"" offered in Spring 2024?",MM A14,schedule_2324,,xiaobin
-Who,"Who is the instructor for the course ""History of Modern Architecture"" offered in Spring 2024?",Gutschow,schedule_2324,,xiaobin
-Who,Who is the instructor for the course 48641 offered in Spring 2024?,Gutschow,schedule_2324,,xiaobin
-What,"What is the course number for the course ""History of Modern Architecture"" offered in Spring 2024?",48641; 48241,schedule_2324,need to collect and combine info,xiaobin
-When,"When does the course ""History of Modern Architecture"" start in Spring 2024?","10:00AM on Monday, Wednesday, Friday",schedule_2324,,xiaobin
-When,"When is the course ""History of Modern Architecture"" offered in Spring 2024?","10:00AM to 10:50AM on Monday, Wednesday, Friday",schedule_2324,,xiaobin
-What,"How many units is the course ""History of Modern Architecture"" offered in Spring 2024?",9.0 units for 48241; VAR units for 48641,schedule_2324,need to collect and combine info,xiaobin
-What,What courses does the instructor Gutschow teach in Spring 2024?,48241 History of Modern Architecture; 48641 History of Modern Architecture; 48792 Ph.D. Independent Study; 48793 Ph.D. Thesis,schedule_2324,need to collect and combine info,xiaobin
-What,What are the course number and course name of the courses offered at Los Angeles in Spring 2024?,93854 Film Acquisition; 93855 Intellectual Property; 93856 Business Development; 93858 Market Research in the Entertainment Industry; 93859 Fandom in Music and Media; 93860 What Makes Us Play:  The Craft of the Video Game; 93866 Creative Producing; 93869 Television Economics; 93873 Film Exhibition; 93878 Branded Entertainment; 93888 Practicum II; 93890 Capstone Management Project II,schedule_2324,need to collect and combine info,xiaobin
-What,"In Biological Sciences Department, what are the courses by instructor Lee in Spring 2024?",03231 Honors Biochemistry; 03445 Undergraduate Research; 03545 Honors Research; 03741 Advanced Cell Biology; 03744 Membrane Trafficking,schedule_2324,need to identify the department; need to distinguish instructors with the same name,xiaobin
-What,"Within the course with course number starts with ""03"" , what are the courses by instructor Lee in Spring 2024?",03231 Honors Biochemistry; 03445 Undergraduate Research; 03545 Honors Research; 03741 Advanced Cell Biology; 03744 Membrane Trafficking,schedule_2324,need to identify the department; need to distinguish instructors with the same name,xiaobin
-Who,Who founded Carnegie Mellon University?,Andrew Carnegie,athletics.txt,,xiaobin
-When,When was Carnegie Mellon University founded?,1900,athletics.txt,,xiaobin
-What,What is a Tartan?,A Tartan is a twilled woolen fabric with a plaid design,athletics.txt,,xiaobin
-When,When did Carnegie Technical Schools become known as the Carnegie Institute of Technology?,"In 1912, twelve years after it is founded.",athletics.txt,need to calculate,xiaobin
-When,When was the Scottish terrier officially welcomed as the university's first mascot?,2007,athletics.txt,,xiaobin
-What,What is the official name of the mascot?,Scottish terrier; Scotty,athletics.txt,multiple correct answers,xiaobin
-Who,Who lead the Mascot Identity Task Force?,Director of Athletics Susan Bassett and Dean of Student Affairs Jennifer Church.,athletics.txt,,xiaobin
-When,In which year did the official mascot debut?,2007,athletics.txt,need to simplify the answer - only the year,xiaobin
-What,"What breed is the official mascot, Scotty?",Scottish terrier,athletics.txt,,xiaobin
-What,What are the Kiltie Band's rehearsal schedules?,Football season: Mondays and Thursdays from 5:30 p.m.-7:30 p.m. and Game Day 9:30-11:00a.m. Concert Season: Mondays and Thursdays from 5:30-6:30 p.m. Location is the CUC Studio Theater.,athletics.txt,,xiaobin
-When,When are the Kiltie Band's performances?,"The Kiltie Band performs at all home football games, a holiday concert, and two spring concerts. Times and dates for all performances are announced at the first practice.",athletics.txt,,xiaobin
-T/F,Are there auditions for the Kiltie Band?,"No, any member of the campus community with music experience is able to join the Kiltie Band!",athletics.txt,,xiaobin
-Who,Who can join the Kiltie Band?,any member of the campus community with music experience is able to join the Kiltie Band!,athletics.txt,,xiaobin
-When,When is the first rehearsal for the Kiltie Band?,On the first day of class (Monday) at 5:30 p.m..,athletics.txt,,xiaobin
-Where,Where are the rehearsals held for the Kiltie Band?,CUC Studio Theater.,athletics.txt,,xiaobin
-How,How can one see and hear the Kiltie Band in action?,visit their YouTube channel,athletics.txt,,xiaobin
-Who,Who is a Principal Systems Scientist at LTI?,Ralf Brownis; Robert Frederking,lti_department_data.txt,need to combine infomation; multiple answer,xiaobin
-What,What is the email address of Jamie Callan?,callan@cs.cmu.edu,lti_department_data.txt,,xiaobin
-Where,Where is Justine Cassell's office located?,5107 Gates & Hillman Centers,lti_department_data.txt,,xiaobin
-What,What is the phone number of Fernando Diaz?,412-268-4229,lti_department_data.txt,,xiaobin
-Who,Who's phone number is 412-268-4229?,Fernando Diaz,lti_department_data.txt,,xiaobin
-What,What are the research areas of Louis-Philippe Morency?,"Machine Learning, Multimodal Computing and Interaction, Spoken Interfaces and Dialogue Processing",lti_department_data.txt,,xiaobin
-Who,"Who are the authors of the paper ""UTOPIA: Unconstrained Tracking Objects without Preliminary Examination via Cross-Domain Adaptation""?","Pha Nguyen, Kha Gia Quach, John Gauch, Samee U. Khan, Bhiksha Raj, and Khoa Luu",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,,xiaobin
-What,What is the main focus of the UTOPIA approach in Multiple Object Tracking (MOT)?,"Self-supervised cross-domain learning for MOT, addressing the challenge of tracking objects in varying domains without preliminary examination.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,,xiaobin
-How,How does UTOPIA address the challenges in cross-domain adaptation for MOT?,"UTOPIA introduces a novel self-supervised learning approach for MOT, emphasizing domain discrepancy minimization and leveraging unsupervised data augmentation.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,,xiaobin
-What,What experimental settings are used to validate the UTOPIA approach?,"The experiments are conducted on four challenging settings, including cross-domain scenarios from MOTSynth to MOT17, MOT17 to MOT20, MOT17 to VisDrone, and MOT17 to DanceTrack.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,,xiaobin
-What,When is the Diploma Ceremonies for Architecture?,May 10,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Art?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for BXA Intercollege Degree Programs?,May 12,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Biological Sciences (Master's)?,May 10,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Biological Sciences (Bachelor's and Doctor's)?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Biomedical Engineering?,May 10,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Business Administration & Economics (Bachelor's)?,May 12,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Carnegie Mellon Institute for Strategy and Technology?,May 10,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Carnegie Mellon University in Qatar Graduation Ceremony?,May 6,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Chemical Engineering?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Chemistry?,May 12,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Civil & Environmental Engineering?,May 12,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Design?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Drama?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Economics and Business Administration (Bachelor's)?,May 12,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Electrical & Computer Engineering (Bachelor's)?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Electrical & Computer Engineering (Master's)?,May 10,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Electrical & Computer Engineering (Doctor's)?,May 10,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Energy Science Technology & Policy?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Engineering & Public Policy?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Engineering & Technology Innovation Management?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Information Networking Institute?,May 12,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for School of Computer Science (Master's)?,May 10,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for School of Computer Science (Doctor's)?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for School of Computer Science (Bachelor's)?,May 12,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Social & Decision Sciences?,May 10,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Statistics & Data Science (Master's and Doctor's)?,May 10,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Tepper School of Business (Master's)?,May 11,commencement_schedule_data.txt,,jialu
-What,When is the Diploma Ceremonies for Tepper School of Business (Doctor's)?,May 10,commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Architecture?,"Philip Chosky Theater, Purnell Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Art?,"Philip Chosky Theater, Purnell Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for BXA Intercollege Degree Programs?,Alumni Concert Hall,commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Biological Sciences (Master's)?,Auditorium Mellon Institute,commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Biological Sciences (Bachelor's and Doctor's)?,"Auditorium, Mellon Institute",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Biomedical Engineering?,"McConomy Auditorium, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Business Administration & Economics (Bachelor's)?,"Auditorium, Soldiers & Sailors Memorial Hall & Museum",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Carnegie Mellon Institute for Strategy and Technology?,Kresge Theatre,commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Carnegie Mellon University in Qatar Graduation Ceremony?,Qatar Foundation,commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Chemical Engineering?,"Wiegand Gym, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Chemistry?,"Social and Conference Rooms, Mellon Institute",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Civil & Environmental Engineering?,"Wiegand Gym, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Design?,"Rangos Ballroom, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Drama?,"Philip Chosky Theater & Lobby, Purnell Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Economics and Business Administration (Bachelor's)?,"Auditorium, Soldiers & Sailors Memorial Hall & Museum",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Electrical & Computer Engineering (Bachelor's)?,"Wiegand Gym, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Electrical & Computer Engineering (Master's)?,Soldiers & Sailors Memorial Hall & Museum,commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Electrical & Computer Engineering (Doctor's)?,"Studio Theater, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Energy Science Technology & Policy?,"Bosch/Spark Conference Room, Scott Hall",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Engineering & Public Policy?,"McConomy Auditorium, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Engineering & Technology Innovation Management?,"McConomy Auditorium, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Information Networking Institute?,Rodef Shalom Congregation,commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for School of Computer Science (Master's)?,"Auditorium, Soldiers & Sailors Memorial Hall & Museum",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for School of Computer Science (Doctor's)?,"McConomy Auditorium, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for School of Computer Science (Bachelor's)?,"Music Hall and Foyer, Carnegie Museum",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Social & Decision Sciences?,"Rangos Ballroom, Cohon University Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Statistics & Data Science (Master's and Doctor's)?,"Philip Chosky Theater & Lobby, Purnell Center",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Tepper School of Business (Master's)?,"Auditorium, Sailors & Soldiers Memorial Hall & Museum",commencement_schedule_data.txt,,jialu
-Where,Where is the Diploma Ceremonies for Tepper School of Business (Doctor's)?,Simmons Auditorium,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Architecture?,Heather Workinger,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Art?,Mark Cato,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for BXA Intercollege Degree Programs?,Emily Syes,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Biological Sciences (Master's)?,Ena Miceli and Krystalyn Kovacs,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Biological Sciences (Bachelor's and Doctor's)?,Ena Miceli and Krystalyn Kovacs,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Biomedical Engineering?,Kristin Kropf,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Business Administration & Economics (Bachelor's)?,Jennifer Wegner,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Carnegie Mellon Institute for Strategy and Technology?,Jacquelyn Hopkins and Emily Half,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Carnegie Mellon University in Qatar Graduation Ceremony?,Jarrin Nevel,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Chemical Engineering?,Samantha Wessel,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Chemistry?,Karen Stump and Umi Davis,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Civil & Environmental Engineering?,Geena Provenza,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Design?,Stephanie Lange,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Drama?,Amy Nichols,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Economics and Business Administration (Bachelor's)?,Jennifer Wegner,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Electrical & Computer Engineering (Bachelor's)?,Kimmy Nguyen,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Electrical & Computer Engineering (Master's)?,Kimmy Nguyen,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Electrical & Computer Engineering (Doctor's)?,Kimmy Nguyen,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Energy Science Technology & Policy?,Nicole Rihn,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Engineering & Public Policy?,Debbie Scappatura and Victoria Finney,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Engineering & Technology Innovation Management?,Julie Mull,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Information Networking Institute?,Jessica Becker,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for School of Computer Science (Master's)?,Catherine Copetas,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for School of Computer Science (Doctor's)?,Catherine Copetas,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for School of Computer Science (Bachelor's)?,Catherine Copetas,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Social & Decision Sciences?,Connie Angermeier,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Statistics & Data Science (Master's and Doctor's)?,Teraya White and Danielle Hamilton,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Tepper School of Business (Master's)?,Wendy Hermann,commencement_schedule_data.txt,,jialu
-Who,Who is the contact for Diploma Ceremonies for Tepper School of Business (Doctor's)?,Lawrence Rapp,commencement_schedule_data.txt,,jialu
-What,When is CMU Spring Carnival 2024,"April 11-14, 2024",spring_carnival.txt,,jialu
-What,"When is the Booth, Rides, and Dog Houses event scheduled to begin on Thursday?",3:30-11 p.m.,spring_carnival.txt,,jialu
-What,What are the Carnival Headquarters Tent hours on Thursday?,8 a.m.-7 p.m.,spring_carnival.txt,,jialu
-What,What time do Friday's Preliminary Sweepstakes Races start?,8 a.m.,spring_carnival.txt,,jialu
-What,What are the Scotch'n'Soda Performance times for Thursday?,7-9 p.m.,spring_carnival.txt,,jialu
-What,"What event starts on February 5, 2024, and continues until April 15, 2024?",Faces of Carnival Photo Mosaic,spring_carnival.txt,,jialu
-What,"What event starts on April 5, 2024, and continues through April 14, 2024?",Booth Build & Midway Cam,spring_carnival.txt,,jialu
-What,"What special event is scheduled for April 10, 2024, at 8:00 AM?",Here to Stay: Celebrating 40 Years at the Architecture Archives,spring_carnival.txt,,jialu
-What,"What is happening at 3:00 PM on April 10, 2024?",WRCT Radio Buggy Preview,spring_carnival.txt,,jialu
-What,What are the primary areas of focus for the Ph.D. in Language and Information Technology at Carnegie Mellon University?,Developing the next generation of scientific and entrepreneurial leaders.,LTI_programs.txt,,jialu
-What,What are the course unit requirements for a Ph.D. in Language and Information Technologies at CMU?,96 units of graduate-level courses,LTI_programs.txt,,jialu
-What,What is the final application deadline for Fall 2024 admission to LTI's graduate programs?,"December 13, 2023, at 3 p.m. EST.",LTI_programs.txt,,jialu
-What,What are the two options available for completing the Master of Computational Data Science program?,Standard Timing (16 months) and Extended Timing (20 months),LTI_programs.txt,,jialu
-What,What is the minimum number of course credits required for the MCDS program?,A minimum of 144 units,LTI_programs.txt,,jialu
-What,What is the focus of the Master of Science in Intelligent Information Systems degree?,"Recognizing and extracting meaning from text, spoken language, and video.",LTI_programs.txt,,jialu
-How,How long is the standard track for the MIIS-16 program?,16 months,LTI_programs.txt,,jialu
-How,How many semesters does the MSAII degree typically take to complete?,Four semesters,Handbook-MSAII-2022-2023.txt,,jialu
-What,What GPA is required for applying to the MSAII program?,A GPA of 3.0 or higher,Handbook-MSAII-2022-2023.txt,,jialu
-Who,Who should be contacted for specific application or admissions questions related to the MSAII program?,Amber Vivis,Handbook-MSAII-2022-2023.txt,,jialu
-Who,Who is the Director of the MSAII program?,Michael I. Shamos,Handbook-MSAII-2022-2023.txt,,jialu
-What,What are the three areas of concentration in the MCDS program?,"Analytics, Systems, and Human-Centered Data Science",MCDS Handbook 23-24 AY.txt,,jialu
-T/F,Is there a thesis or dissertation requirement in the MCDS program?,No,MCDS Handbook 23-24 AY.txt,,jialu
-Who,Who is the Program Director of the MIIS program?,Teruko Mitamura,MIIS Handbook_2023 - 2024.txt,,jialu
-T/F,Are part-time study options available in the MIIS program?,Yes,MIIS Handbook_2023 - 2024.txt,,jialu
-What,What is the policy for grade appeals in the MIIS program?,Final grades are changed only in exceptional circumstances with the instructor's approval,MIIS Handbook_2023 - 2024.txt,,jialu
-What,What is the duration of the MLT program?,Two calendar years (24 months),MLT Student Handbook 2023 - 2024.txt,,jialu
-What,What support is provided for graduate student funding in the MLT program?,Full funding (tuition plus stipend) is guaranteed for the first year,MLT Student Handbook 2023 - 2024.txt,,jialu
+type,question,answer,file,notes,annotator,jialu_annotation,xiaobin_annotation
+When,On what date are the Mid-Semester & Mini-1 grades due for 2023-2024 academic year?,"October 23, 2023",2324-academic-calendar-list-view.txt,"different ways to ask ""When""",xiaobin,October 23,
+When,When is the Mid-Semester grades due for 2023-2024 academic year?,"October 23, 2023 by 4 pm",2324-academic-calendar-list-view.txt,"different ways to ask ""When"", more fine-grained",xiaobin,October 23 by 4 pm,
+How,How can students receive tuition adjustment when they drop a course?,Drop by the tuition adjustment drop deadline,2324-academic-calendar-list-view.txt,,xiaobin,Drop courses before tuition adjustment drop deadline,
+When,"What is the deadline of add, audit & tuition adjustment drop in Mini-3 for 2023-2024 academic year?","January 22, 2024",2324-academic-calendar-list-view.txt,,xiaobin,January 22,
+When,"What is the deadline of add, audit & tuition adjustment drop in Mini-2 for 2024-2025 academic year?","October 25, 2024",2425-academic-calendar-list-view.txt,"same question, retrieve from a different document",xiaobin,October 25,
+When,When is university closed during the 2023-2024 academic year?,September 4 M Labor Day; December 23 -January 2 Sa-Tu Winter Break; May 27 M Memorial Day; June 19 W Juneteenth; July 4 Th Independence Day;,2324-academic-calendar-list-view.txt,need to collect and combine info,xiaobin,"September 4,  December 23 -January 2, May 27, June 19, July 4",
+When,"For Fall 2023, When is Semester & Mini-1 Classes Begin?",August 28,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-1 add, audit & tuition adjustment drop deadline?",September 01,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Labor Day?",September 04,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Semester add, audit & tuition adjustment drop deadline?",September 11,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-1 drop deadline?",September 20,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-1 Pass/no pass & withdrawal deadline?",October 02,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-1 Faculty Course Evaluations open?",October 02,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Semester drop deadline?",October 09,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-1 Last Day of Classes?",October 13,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-1 voucher election deadline?",October 13,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Family Weekend?",October 13,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-1 Exams?",October 14,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-1 Faculty Course Evaluations close?",October 14,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Fall Break?",October 16,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-2 Classes Begin?",October 23,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mid-Semester & Mini-1 grades due by 4 pm?",October 23,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-2 add, audit & tuition adjustment drop deadline?",October 27,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Democracy Day?",November 07,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Homecoming?",November 11,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Spring 2024 Registration Week?",November 13,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Semester pass/no pass & withdrawal deadline?",November 13,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-2 drop deadline?",November 15,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Thanksgiving Break?",November 22,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Mini-2 pass/no pass & withdrawal deadline?",November 27,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Semester & Mini-2 Faculty Course Evaluations open?",November 27,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Semester & Mini-2 Last Day of Classes?",December 08,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Semester & Mini-2 voucher deadline?",December 08,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Final Exams?",December 11,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Reading Day?",December 13,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Final Exams?",December 14,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Reading Day?",December 16,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Final Exams?",December 17,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Make-Up Final Exams?",December 18,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Semester & Mini-2 Faculty Course Evaluations close?",December 18,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Final Grades Due by 4 pm?",December 20,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Winter Break?",December 23,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Fall 2023, When is Fall Deans' Lists Posted?",January 08,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Martin Luther King Day?",January 15,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is First Day of Class?",January 16,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-3 add, audit & tuition adjustment drop deadline?",January 22,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Semester add, audit & tuition adjustment drop deadline?",January 29,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-3 course drop deadline?",February 07,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-3 pass/no pass & withdrawal deadline?",February 19,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-3 Faculty Course Evaluations open?",February 19,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Semester course drop deadline?",February 26,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-3 Last Day of Classes?",March 01,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-3 voucher deadline?",March 01,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-3 Exams?",March 02,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-3 Faculty Course Evaluations close?",March 02,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Spring Break?",March 04,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is First day of Mini-4 Classes?",March 11,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mid-Semester & Mini-3 grades due by 4 pm?",March 11,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Summer 2024 Registration Opens?",March 12,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-4 add, audit & tuition adjustment drop deadline?",March 15,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Semester pass/no pass & withdrawal deadline?",April 01,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-4 course drop deadline?",April 03,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Spring Carnival?",April 11,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Fall 2024 Registration Week?",April 15,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Mini-4 pass/no pass & withdrawal deadline?",April 15,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Semester & Mini-4 Faculty Course Evaluations open?",April 15,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Last Day of Classes?",April 26,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Semester & Mini-4 voucher deadline?",April 26,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Final Examinations?","April 29 - April 30, May 2 - May 3, May 6",2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Reading Day?","May 01, May 4 -May 5",2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Semester & Mini-4 Faculty Course Evaluations close?",May 06,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Make-Up Final Examinations?",May 07,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Graduating Final Grades Due by 4 pm?",May 08,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Commencement?",May 12,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Final Grades Due by 4 pm?",May 14,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Spring 2024, When is Spring Deans' Lists Posted?",May 21,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester & Mini-5 Classes Begin?",May 13,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-5 add, audit, & tuition adjustment drop deadline?",May 17,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester add, audit, & tuition adjustment drop deadline?",May 24,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Memorial Day?",May 27,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-5 course drop deadline?",May 28,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-5 pass/no pass & withdrawal deadline?",June 07,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-5 Faculty Course Evaluations open?",June 14,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester course drop deadline?",June 18,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Juneteenth?",June 19,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-5 Last Day of Classes?",June 20,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-5 voucher deadline?",June 20,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-5 Final Exams?",June 21,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-5 Faculty Course Evaluations close?",June 21,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-6 First Day of Classes?",June 24,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-5 Final Grades Due by 4 pm?",June 25,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-6 add, audit, & tuition adjustment drop deadline?",June 28,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Independence Day?",July 04,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester pass/no pass & withdrawal deadline?",July 05,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-6 drop deadline?",July 08,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Mini-6 pass/no pass & withdrawal deadline?",July 22,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester & Mini-6 Faculty Course Evalutations open?",July 29,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester & Mini-6 Last Day of Classes?",August 01,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester & Mini-6 voucher deadline?",August 01,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester & Mini-6 Final Exams?",August 02,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester & Mini-6 Faculty Course Evaluations close?",August 02,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2024, When is Semester & Mini-6 Final Grades Due by 4 pm?",August 06,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2 2024, When is Summer Semester Two Classes Begin?",June 24,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2 2024, When is Summer Semester  Two add, audit & tuition adjustment drop deadline?",June 28,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2 2024, When is Independence Day?",July 04,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2 2024, When is Summer Semester  Two drop deadline?",July 08,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2 2024, When is Summer Semester  Two pass/no pass & withdrawal deadline?",July 22,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2 2024, When is Summer Semester  Two Faculty Course Evaulations open?",July 29,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2 2024, When is Summer Semester  Two Last Day of Classes?",August 01,2324-academic-calendar-list-view.txt,,jialu,,
+When,"For Summer 2 2024, When is Summer Semester  Two voucher deadline?",August 01,2324-academic-calendar-list-view.txt, ,jialu,,
+When,"For Summer 2 2024, When is Summer Semester  Two Final Exams***?",August 02,2324-academic-calendar-list-view.txt, ,jialu,,
+When,"For Summer 2 2024, When is Summer Semester  Two Faculty Course Evaluations close?",August 02,2324-academic-calendar-list-view.txt, ,jialu,,
+When,"For Summer 2 2024, When is Summer Semester  Two Final Grades Due by 4 pm?",August 06,2324-academic-calendar-list-view.txt,,jialu,,
+When,When is the commencement ceremony for the 2023-2024 academic year?,"May 12, 2024",2324-academic-calendar-list-view.txt,,jialu,,
+Who,Who is offering the Advanced NLP course in Spring 2024?,Neubig,schedule_2324,,xiaobin,,
+What,What courses are offered by Graham Neubig at CMU in Spring 2024?,11711 Advanced Natural Language Processing; 11925 Independent Study: Area; 11920 Independent Study: Breadth,schedule_2324,,xiaobin,"11920 Independent Study: Breadth, 11711 Advanced Natural Language Processing, 11925 Independent Study: Area",
+Who,Who is teaching 11711 in Spring 2024?,Neubig,schedule_2324,,xiaobin,Neubig,
+Where,"Which room is the course ""History of Modern Architecture"" offered in Spring 2024?",MM A14,schedule_2324,,xiaobin,MM A14,
+Who,"Who is the instructor for the course ""History of Modern Architecture"" offered in Spring 2024?",Gutschow,schedule_2324,,xiaobin,Gutschow,
+Who,Who is the instructor for the course 48641 offered in Spring 2024?,Gutschow,schedule_2324,,xiaobin,Gutschow,
+What,"What is the course number for the course ""History of Modern Architecture"" offered in Spring 2024?",48641; 48241,schedule_2324,need to collect and combine info,xiaobin,48241/48641,
+When,"When does the course ""History of Modern Architecture"" start in Spring 2024?","10:00AM on Monday, Wednesday, Friday",schedule_2324,,xiaobin,10:00AM,
+When,"When is the course ""History of Modern Architecture"" offered in Spring 2024?","10:00AM to 10:50AM on Monday, Wednesday, Friday",schedule_2324,,xiaobin,"MWF, 10:00AM to 10:50AM",
+What,"How many units is the course ""History of Modern Architecture"" offered in Spring 2024?",9.0 units for 48241; VAR units for 48641,schedule_2324,need to collect and combine info,xiaobin,9.0 units,
+What,What courses does the instructor Gutschow teach in Spring 2024?,48241 History of Modern Architecture; 48641 History of Modern Architecture; 48792 Ph.D. Independent Study; 48793 Ph.D. Thesis,schedule_2324,need to collect and combine info,xiaobin,"48241 History of Modern Architecture, 48641 Title: History of Modern Architecture, 48792 Ph.D. Independent Study, 48793 Ph.D. Thesis, 48695 Master of Architecture",
+What,What are the course number and course name of the courses offered at Los Angeles in Spring 2024?,93854 Film Acquisition; 93855 Intellectual Property; 93856 Business Development; 93858 Market Research in the Entertainment Industry; 93859 Fandom in Music and Media; 93860 What Makes Us Play:  The Craft of the Video Game; 93866 Creative Producing; 93869 Television Economics; 93873 Film Exhibition; 93878 Branded Entertainment; 93888 Practicum II; 93890 Capstone Management Project II,schedule_2324,need to collect and combine info,xiaobin,"93854 Film Acquisition, 93855 Intellectual Property, 93856 Business Development, 3858 Market Research in the Entertainment Industry, 93859 Fandom in Music and Media, 93860 What Makes Us Play, 93866 Creative Producing, 93869 Television Economics, 93873 Film Exhibition, 93878 Branded Entertainment, 93888 Practicum II, 93890 Capstone Management Project II",
+What,"In Biological Sciences Department, what are the courses by instructor Lee in Spring 2024?",03231 Honors Biochemistry; 03445 Undergraduate Research; 03545 Honors Research; 03741 Advanced Cell Biology; 03744 Membrane Trafficking,schedule_2324,need to identify the department; need to distinguish instructors with the same name,xiaobin,"03231 Honors Biochemistry, 03445 Undergraduate Research, 03545 Honors Research, 03741 Advanced Cell Biology, 03744 Membrane Trafficking",
+What,"Within the course with course number starts with ""03"" , what are the courses by instructor Lee in Spring 2024?",03231 Honors Biochemistry; 03445 Undergraduate Research; 03545 Honors Research; 03741 Advanced Cell Biology; 03744 Membrane Trafficking,schedule_2324,need to identify the department; need to distinguish instructors with the same name,xiaobin,"03231 Honors Biochemistry, 03445 Undergraduate Research, 03545 Honors Research, 03741 Advanced Cell Biology, 03744 Membrane Trafficking",
+Who,Who founded Carnegie Mellon University?,Andrew Carnegie,athletics.txt,,xiaobin,Andrew Carnegie,
+When,When was Carnegie Mellon University founded?,1900,athletics.txt,,xiaobin,1900,
+What,What is a Tartan?,A Tartan is a twilled woolen fabric with a plaid design,athletics.txt,,xiaobin,a Tartan is a twilled woolen fabric with a plaid design,
+When,When did Carnegie Technical Schools become known as the Carnegie Institute of Technology?,"In 1912, twelve years after it is founded.",athletics.txt,need to calculate,xiaobin,1912,
+When,When was the Scottish terrier officially welcomed as the university's first mascot?,2007,athletics.txt,,xiaobin,2007,
+What,What is the official name of the mascot?,Scottish terrier; Scotty,athletics.txt,multiple correct answers,xiaobin,Scotty,
+Who,Who lead the Mascot Identity Task Force?,Director of Athletics Susan Bassett and Dean of Student Affairs Jennifer Church.,athletics.txt,,xiaobin,Director of Athletics Susan Bassett and Dean of Student Affairs Jennifer Church,
+When,In which year did the official mascot debut?,2007,athletics.txt,need to simplify the answer - only the year,xiaobin,2007,
+What,"What breed is the official mascot, Scotty?",Scottish terrier,athletics.txt,,xiaobin,Scottish terrier,
+What,What are the Kiltie Band's rehearsal schedules?,Football season: Mondays and Thursdays from 5:30 p.m.-7:30 p.m. and Game Day 9:30-11:00a.m. Concert Season: Mondays and Thursdays from 5:30-6:30 p.m. Location is the CUC Studio Theater.,athletics.txt,,xiaobin,Football season: Mondays and Thursdays from 5:30 p.m.-7:30 p.m. and Game Day 9:30-11:00a.m. Concert Season: Mondays and Thursdays from 5:30-6:30 p.m. Location is the CUC Studio Theater,
+When,When are the Kiltie Band's performances?,"The Kiltie Band performs at all home football games, a holiday concert, and two spring concerts. Times and dates for all performances are announced at the first practice.",athletics.txt,,xiaobin,"The Kiltie Band performs at all home football games, a holiday concert, and two spring concerts. Times and dates for all performances are announced at the first practice.",
+T/F,Are there auditions for the Kiltie Band?,"No, any member of the campus community with music experience is able to join the Kiltie Band!",athletics.txt,,xiaobin,"No, any member of the campus community with music experience is able to join the Kiltie Band",
+Who,Who can join the Kiltie Band?,any member of the campus community with music experience is able to join the Kiltie Band!,athletics.txt,,xiaobin,any member of the campus community with music experience is able to join the Kiltie Band,
+When,When is the first rehearsal for the Kiltie Band?,On the first day of class (Monday) at 5:30 p.m..,athletics.txt,,xiaobin,On the first day of class (Monday) at 5:30 p.m. in the CUC Studio Theater,
+Where,Where are the rehearsals held for the Kiltie Band?,CUC Studio Theater.,athletics.txt,,xiaobin,in the CUC Studio Theater,
+How,How can one see and hear the Kiltie Band in action?,visit their YouTube channel,athletics.txt,,xiaobin,visit our YouTube channel,
+Who,Who is a Principal Systems Scientist at LTI?,Ralf Brownis; Robert Frederking,lti_department_data.txt,need to combine infomation; multiple answer,xiaobin,Ralf Brownis and Robert Frederkingis,
+What,What is the email address of Jamie Callan?,callan@cs.cmu.edu,lti_department_data.txt,,xiaobin,callan@cs.cmu.edu,
+Where,Where is Justine Cassell's office located?,5107 Gates & Hillman Centers,lti_department_data.txt,,xiaobin,5107 Gates & Hillman Centers,
+What,What is the phone number of Fernando Diaz?,412-268-4229,lti_department_data.txt,,xiaobin,412-268-4229,
+Who,Who's phone number is 412-268-4229?,Fernando Diaz,lti_department_data.txt,,xiaobin,Fernando Diaz,
+What,What are the research areas of Louis-Philippe Morency?,"Machine Learning, Multimodal Computing and Interaction, Spoken Interfaces and Dialogue Processing",lti_department_data.txt,,xiaobin,"Machine Learning, Multimodal Computing and Interaction, Spoken Interfaces and Dialogue Processing",
+Who,"Who are the authors of the paper ""UTOPIA: Unconstrained Tracking Objects without Preliminary Examination via Cross-Domain Adaptation""?","Pha Nguyen, Kha Gia Quach, John Gauch, Samee U. Khan, Bhiksha Raj, and Khoa Luu",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,,xiaobin,"Pha Nguyen, Kha Gia Quach, John Gauch, Samee U. Khan, Bhiksha Raj, Khoa Luu",
+What,What is the main focus of the UTOPIA approach in Multiple Object Tracking (MOT)?,"Self-supervised cross-domain learning for MOT, addressing the challenge of tracking objects in varying domains without preliminary examination.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,,xiaobin,,
+How,How does UTOPIA address the challenges in cross-domain adaptation for MOT?,"UTOPIA introduces a novel self-supervised learning approach for MOT, emphasizing domain discrepancy minimization and leveraging unsupervised data augmentation.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,,xiaobin,,
+What,What experimental settings are used to validate the UTOPIA approach?,"The experiments are conducted on four challenging settings, including cross-domain scenarios from MOTSynth to MOT17, MOT17 to MOT20, MOT17 to VisDrone, and MOT17 to DanceTrack.",0a8d38686b18f28aae1222529e6b9e8a60cab1c2.txt,,xiaobin,,
+What,When is the Diploma Ceremonies for Architecture?,May 10,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Art?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for BXA Intercollege Degree Programs?,May 12,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Biological Sciences (Master's)?,May 10,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Biological Sciences (Bachelor's and Doctor's)?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Biomedical Engineering?,May 10,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Business Administration & Economics (Bachelor's)?,May 12,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Carnegie Mellon Institute for Strategy and Technology?,May 10,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Carnegie Mellon University in Qatar Graduation Ceremony?,May 6,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Chemical Engineering?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Chemistry?,May 12,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Civil & Environmental Engineering?,May 12,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Design?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Drama?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Economics and Business Administration (Bachelor's)?,May 12,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Electrical & Computer Engineering (Bachelor's)?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Electrical & Computer Engineering (Master's)?,May 10,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Electrical & Computer Engineering (Doctor's)?,May 10,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Energy Science Technology & Policy?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Engineering & Public Policy?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Engineering & Technology Innovation Management?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Information Networking Institute?,May 12,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for School of Computer Science (Master's)?,May 10,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for School of Computer Science (Doctor's)?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for School of Computer Science (Bachelor's)?,May 12,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Social & Decision Sciences?,May 10,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Statistics & Data Science (Master's and Doctor's)?,May 10,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Tepper School of Business (Master's)?,May 11,commencement_schedule_data.txt,,jialu,,
+What,When is the Diploma Ceremonies for Tepper School of Business (Doctor's)?,May 10,commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Architecture?,"Philip Chosky Theater, Purnell Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Art?,"Philip Chosky Theater, Purnell Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for BXA Intercollege Degree Programs?,Alumni Concert Hall,commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Biological Sciences (Master's)?,Auditorium Mellon Institute,commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Biological Sciences (Bachelor's and Doctor's)?,"Auditorium, Mellon Institute",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Biomedical Engineering?,"McConomy Auditorium, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Business Administration & Economics (Bachelor's)?,"Auditorium, Soldiers & Sailors Memorial Hall & Museum",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Carnegie Mellon Institute for Strategy and Technology?,Kresge Theatre,commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Carnegie Mellon University in Qatar Graduation Ceremony?,Qatar Foundation,commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Chemical Engineering?,"Wiegand Gym, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Chemistry?,"Social and Conference Rooms, Mellon Institute",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Civil & Environmental Engineering?,"Wiegand Gym, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Design?,"Rangos Ballroom, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Drama?,"Philip Chosky Theater & Lobby, Purnell Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Economics and Business Administration (Bachelor's)?,"Auditorium, Soldiers & Sailors Memorial Hall & Museum",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Electrical & Computer Engineering (Bachelor's)?,"Wiegand Gym, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Electrical & Computer Engineering (Master's)?,Soldiers & Sailors Memorial Hall & Museum,commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Electrical & Computer Engineering (Doctor's)?,"Studio Theater, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Energy Science Technology & Policy?,"Bosch/Spark Conference Room, Scott Hall",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Engineering & Public Policy?,"McConomy Auditorium, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Engineering & Technology Innovation Management?,"McConomy Auditorium, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Information Networking Institute?,Rodef Shalom Congregation,commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for School of Computer Science (Master's)?,"Auditorium, Soldiers & Sailors Memorial Hall & Museum",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for School of Computer Science (Doctor's)?,"McConomy Auditorium, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for School of Computer Science (Bachelor's)?,"Music Hall and Foyer, Carnegie Museum",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Social & Decision Sciences?,"Rangos Ballroom, Cohon University Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Statistics & Data Science (Master's and Doctor's)?,"Philip Chosky Theater & Lobby, Purnell Center",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Tepper School of Business (Master's)?,"Auditorium, Sailors & Soldiers Memorial Hall & Museum",commencement_schedule_data.txt,,jialu,,
+Where,Where is the Diploma Ceremonies for Tepper School of Business (Doctor's)?,Simmons Auditorium,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Architecture?,Heather Workinger,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Art?,Mark Cato,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for BXA Intercollege Degree Programs?,Emily Syes,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Biological Sciences (Master's)?,Ena Miceli and Krystalyn Kovacs,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Biological Sciences (Bachelor's and Doctor's)?,Ena Miceli and Krystalyn Kovacs,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Biomedical Engineering?,Kristin Kropf,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Business Administration & Economics (Bachelor's)?,Jennifer Wegner,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Carnegie Mellon Institute for Strategy and Technology?,Jacquelyn Hopkins and Emily Half,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Carnegie Mellon University in Qatar Graduation Ceremony?,Jarrin Nevel,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Chemical Engineering?,Samantha Wessel,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Chemistry?,Karen Stump and Umi Davis,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Civil & Environmental Engineering?,Geena Provenza,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Design?,Stephanie Lange,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Drama?,Amy Nichols,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Economics and Business Administration (Bachelor's)?,Jennifer Wegner,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Electrical & Computer Engineering (Bachelor's)?,Kimmy Nguyen,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Electrical & Computer Engineering (Master's)?,Kimmy Nguyen,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Electrical & Computer Engineering (Doctor's)?,Kimmy Nguyen,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Energy Science Technology & Policy?,Nicole Rihn,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Engineering & Public Policy?,Debbie Scappatura and Victoria Finney,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Engineering & Technology Innovation Management?,Julie Mull,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Information Networking Institute?,Jessica Becker,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for School of Computer Science (Master's)?,Catherine Copetas,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for School of Computer Science (Doctor's)?,Catherine Copetas,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for School of Computer Science (Bachelor's)?,Catherine Copetas,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Social & Decision Sciences?,Connie Angermeier,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Statistics & Data Science (Master's and Doctor's)?,Teraya White and Danielle Hamilton,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Tepper School of Business (Master's)?,Wendy Hermann,commencement_schedule_data.txt,,jialu,,
+Who,Who is the contact for Diploma Ceremonies for Tepper School of Business (Doctor's)?,Lawrence Rapp,commencement_schedule_data.txt,,jialu,,
+What,When is CMU Spring Carnival 2024,"April 11-14, 2024",spring_carnival.txt,,jialu,,
+What,"When is the Booth, Rides, and Dog Houses event scheduled on Thursday?",3:30-11 p.m.,spring_carnival.txt,,jialu,,
+What,What are the Carnival Headquarters Tent hours on Thursday?,8 a.m.-7 p.m.,spring_carnival.txt,,jialu,,
+What,What time do Friday's Preliminary Sweepstakes Races start?,8 a.m.,spring_carnival.txt,,jialu,,
+What,What are the Scotch'n'Soda Performance times for Thursday?,7-9 p.m.,spring_carnival.txt,,jialu,,
+When,What dates are Faces of Carnival Photo Mosaic scheduled?,2/5/24 – 4/15/24,spring_carnival.txt,,jialu,,
+What,"What event starts on April 5, 2024, and continues through April 14, 2024?",Booth Build & Midway Cam,spring_carnival.txt,,jialu,,
+What,"What special event is scheduled for April 10, 2024, at 8:00 AM?",Here to Stay: Celebrating 40 Years at the Architecture Archives,spring_carnival.txt,,jialu,,
+What,"What is happening at 3:00 PM on April 10, 2024?",WRCT Radio Buggy Preview,spring_carnival.txt,,jialu,,
+What,What are the primary areas of focus for the Ph.D. in Language and Information Technology at Carnegie Mellon University?,Developing the next generation of scientific and entrepreneurial leaders.,LTI_programs.txt,,jialu,,
+What,What are the course unit requirements for a Ph.D. in Language and Information Technologies at CMU?,96 units of graduate-level courses,LTI_programs.txt,,jialu,,
+What,What is the final application deadline for Fall 2024 admission to LTI's graduate programs?,"December 13, 2023, at 3 p.m. EST.",LTI_programs.txt,,jialu,,
+What,What are the two options available for completing the Master of Computational Data Science program?,Standard Timing (16 months) and Extended Timing (20 months),LTI_programs.txt,,jialu,,
+What,What is the focus of the Master of Science in Intelligent Information Systems degree?,"Recognizing and extracting meaning from text, spoken language, and video.",LTI_programs.txt,,jialu,,
+How,How long is the standard track for the MIIS-16 program?,16 months,LTI_programs.txt,,jialu,,
+How,How many semesters does the MSAII degree typically take to complete?,Five consecutive semesters,Handbook-MSAII-2022-2023.txt,,jialu,,
+What,What GPA is required for applying to the MSAII program?,A GPA of 3.0 or higher,Handbook-MSAII-2022-2023.txt,,jialu,,
+Who,Who should be contacted for specific application or admissions questions related to the MSAII program?,"Michael I. Shamos, Amber Vivis, Carolyn Penstein Rosé",Handbook-MSAII-2022-2023.txt,,jialu,,
+Who,Who is the Director of the MSAII program?,Michael I. Shamos,Handbook-MSAII-2022-2023.txt,,jialu,,
+What,What are the three areas of concentration in the MCDS program?,"Analytics, Systems, and Human-Centered Data Science",MCDS Handbook 23-24 AY.txt,,jialu,,
+T/F,Is there a thesis or dissertation requirement in the MCDS program?,No,MCDS Handbook 23-24 AY.txt,,jialu,,
+Who,Who is the Program Director of the MIIS program?,Teruko Mitamura,MIIS Handbook_2023 - 2024.txt,,jialu,,
+T/F,Are part-time study options available in the MIIS program?,Yes,MIIS Handbook_2023 - 2024.txt,,jialu,,
+What,What is the policy for grade appeals in the MIIS program?,"Final grades will be changed only in exceptional circumstances and only with the approval of the instructor and the department, unit or program.",MIIS Handbook_2023 - 2024.txt,,jialu,,
+What,What is the duration of the MLT program?,Two calendar years (24 months),MLT Student Handbook 2023 - 2024.txt,,jialu,,
+What,What support is provided for graduate student funding in the MLT program?,Full funding (tuition plus stipend) is guaranteed for the first year,MLT Student Handbook 2023 - 2024.txt,,jialu,,

@@ -68,9 +68,6 @@ For Spring 2024, When is Last Day of Classes?
 For Spring 2024, When is Semester & Mini-4 voucher deadline?
 For Spring 2024, When is Final Examinations?
 For Spring 2024, When is Reading Day?
-For Spring 2024, When is Final Examinations?
-For Spring 2024, When is Reading Days?
-For Spring 2024, When is Final Examinations?
 For Spring 2024, When is Semester & Mini-4 Faculty Course Evaluations close?
 For Spring 2024, When is Make-Up Final Examinations?
 For Spring 2024, When is Graduating Final Grades Due by 4 pm?
@@ -243,11 +240,11 @@ Who is the contact for Diploma Ceremonies for Statistics & Data Science (Master'
 Who is the contact for Diploma Ceremonies for Tepper School of Business (Master's)?
 Who is the contact for Diploma Ceremonies for Tepper School of Business (Doctor's)?
 When is CMU Spring Carnival 2024
-When is the Booth, Rides, and Dog Houses event scheduled to begin on Thursday?
+When is the Booth, Rides, and Dog Houses event scheduled on Thursday?
 What are the Carnival Headquarters Tent hours on Thursday?
 What time do Friday's Preliminary Sweepstakes Races start?
 What are the Scotch'n'Soda Performance times for Thursday?
-What event starts on February 5, 2024, and continues until April 15, 2024?
+What dates are Faces of Carnival Photo Mosaic scheduled?
 What event starts on April 5, 2024, and continues through April 14, 2024?
 What special event is scheduled for April 10, 2024, at 8:00 AM?
 What is happening at 3:00 PM on April 10, 2024?
@@ -255,7 +252,6 @@ What are the primary areas of focus for the Ph.D. in Language and Information Te
 What are the course unit requirements for a Ph.D. in Language and Information Technologies at CMU?
 What is the final application deadline for Fall 2024 admission to LTI's graduate programs?
 What are the two options available for completing the Master of Computational Data Science program?
-What is the minimum number of course credits required for the MCDS program?
 What is the focus of the Master of Science in Intelligent Information Systems degree?
 How long is the standard track for the MIIS-16 program?
 How many semesters does the MSAII degree typically take to complete?
