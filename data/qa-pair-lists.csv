@@ -67,11 +67,8 @@ When,"For Spring 2024, When is Mini-4 pass/no pass & withdrawal deadline?",April
 When,"For Spring 2024, When is Semester & Mini-4 Faculty Course Evaluations open?",April 15,2324-academic-calendar-list-view.txt,,jialu
 When,"For Spring 2024, When is Last Day of Classes?",April 26,2324-academic-calendar-list-view.txt,,jialu
 When,"For Spring 2024, When is Semester & Mini-4 voucher deadline?",April 26,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Final Examinations?",April 29,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Reading Day?",May 01,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Final Examinations?",May 02,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Reading Days?",May 04,2324-academic-calendar-list-view.txt,,jialu
-When,"For Spring 2024, When is Final Examinations?",May 06,2324-academic-calendar-list-view.txt,,jialu
+When,"For Spring 2024, When is Final Examinations?","April 29 - April 30, May 2 - May 3, May 6",2324-academic-calendar-list-view.txt,,jialu
+When,"For Spring 2024, When is Reading Day?","May 01, May 4 -May 5",2324-academic-calendar-list-view.txt,,jialu
 When,"For Spring 2024, When is Semester & Mini-4 Faculty Course Evaluations close?",May 06,2324-academic-calendar-list-view.txt,,jialu
 When,"For Spring 2024, When is Make-Up Final Examinations?",May 07,2324-academic-calendar-list-view.txt,,jialu
 When,"For Spring 2024, When is Graduating Final Grades Due by 4 pm?",May 08,2324-academic-calendar-list-view.txt,,jialu
@@ -256,17 +253,16 @@ What,What are the primary areas of focus for the Ph.D. in Language and Informati
 What,What are the course unit requirements for a Ph.D. in Language and Information Technologies at CMU?,96 units of graduate-level courses,LTI_programs.txt,,jialu
 What,What is the final application deadline for Fall 2024 admission to LTI's graduate programs?,"December 13, 2023, at 3 p.m. EST.",LTI_programs.txt,,jialu
 What,What are the two options available for completing the Master of Computational Data Science program?,Standard Timing (16 months) and Extended Timing (20 months),LTI_programs.txt,,jialu
-What,What is the minimum number of course credits required for the MCDS program?,A minimum of 144 units,LTI_programs.txt,,jialu
 What,What is the focus of the Master of Science in Intelligent Information Systems degree?,"Recognizing and extracting meaning from text, spoken language, and video.",LTI_programs.txt,,jialu
 How,How long is the standard track for the MIIS-16 program?,16 months,LTI_programs.txt,,jialu
-How,How many semesters does the MSAII degree typically take to complete?,Four semesters,Handbook-MSAII-2022-2023.txt,,jialu
+How,How many semesters does the MSAII degree typically take to complete?,Five consecutive semesters,Handbook-MSAII-2022-2023.txt,,jialu
 What,What GPA is required for applying to the MSAII program?,A GPA of 3.0 or higher,Handbook-MSAII-2022-2023.txt,,jialu
-Who,Who should be contacted for specific application or admissions questions related to the MSAII program?,Amber Vivis,Handbook-MSAII-2022-2023.txt,,jialu
+Who,Who should be contacted for specific application or admissions questions related to the MSAII program?,"Michael I. Shamos, Amber Vivis  Carolyn Penstein Rosé",Handbook-MSAII-2022-2023.txt,,jialu
 Who,Who is the Director of the MSAII program?,Michael I. Shamos,Handbook-MSAII-2022-2023.txt,,jialu
 What,What are the three areas of concentration in the MCDS program?,"Analytics, Systems, and Human-Centered Data Science",MCDS Handbook 23-24 AY.txt,,jialu
 T/F,Is there a thesis or dissertation requirement in the MCDS program?,No,MCDS Handbook 23-24 AY.txt,,jialu
 Who,Who is the Program Director of the MIIS program?,Teruko Mitamura,MIIS Handbook_2023 - 2024.txt,,jialu
 T/F,Are part-time study options available in the MIIS program?,Yes,MIIS Handbook_2023 - 2024.txt,,jialu
-What,What is the policy for grade appeals in the MIIS program?,Final grades are changed only in exceptional circumstances with the instructor's approval,MIIS Handbook_2023 - 2024.txt,,jialu
+What,What is the policy for grade appeals in the MIIS program?,"Final grades will be changed only in exceptional circumstances and only with the approval of the instructor and the department, unit or program.",MIIS Handbook_2023 - 2024.txt,,jialu
 What,What is the duration of the MLT program?,Two calendar years (24 months),MLT Student Handbook 2023 - 2024.txt,,jialu
 What,What support is provided for graduate student funding in the MLT program?,Full funding (tuition plus stipend) is guaranteed for the first year,MLT Student Handbook 2023 - 2024.txt,,jialu
