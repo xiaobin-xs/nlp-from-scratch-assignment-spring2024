@@ -7,7 +7,7 @@ from utils import load_txt_file_all_rows
 
 parser = argparse.ArgumentParser(description="Evaluation RAG output for Anlp hw2")
 parser.add_argument('--reference_ans_path', type=str, default="/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/reference_answers.txt")
-parser.add_argument('--output_path', type=str, default='/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/system_output_500_0_chroma_sentence-transformer_llama_20240310_223117.txt')
+parser.add_argument('--output_path', type=str, default='/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/system_output_250_0_faiss_sentence-transformer_llama_20240311_022722.txt')
 parser.add_argument('--qa_pair_path', type=str, default='/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/qa-pair-lists.csv')
 args = parser.parse_args()
 
@@ -63,3 +63,7 @@ for category, metrics in category_metrics.items():
     print(f'Average Rouge-2: {ave_rouge_2}')
     print(f'Average Rouge-L: {ave_rouge_l}')
     print('---')
+
+
+# Note: The answer to "When" question is significantly worse than other question
+# Note: chunk size of 250 with k=10 can provide more related infomation, but lead to lower performance.

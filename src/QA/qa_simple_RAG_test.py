@@ -34,7 +34,7 @@ dt_string = now.strftime("%Y%m%d_%H%M%S")
 ## default hyperparams
 chunk_size = 500 # e.g. 300, 500, 1000
 chunk_overlap = 0
-vecstore = "chroma" # 'faiss' or 'chroma'
+vecstore = "faiss" # 'faiss' or 'chroma'
 retrieve_k_docs = 5
 embed_model = 'gpt4all' # 'gpt4all', 'llama', or 'sentence-transformer'
 llm = "llama" # 'gpt4all' or 'llama'
