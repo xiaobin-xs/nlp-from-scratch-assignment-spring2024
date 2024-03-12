@@ -15,12 +15,7 @@ def load_txt_file_all_rows(file_path):
         questions = file.readlines()
     return [q.strip() for q in questions]
 
-def format_docs(docs, retrieve_result_path='/home/ubuntu/nlp-from-scratch-assignment-spring2024/src/data/test/retrieval_result.txt'):
-    # with open(retrieve_result_path, "a") as f:
-    #     for doc in docs:
-    #         f.write(f"\tDocument Name: {doc.page_content}\n")
-    # for doc in docs:
-    #     print(f"Document Name: {doc.metadata['source']}")
+def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 def clean_output_answer(text):
@@ -42,8 +37,8 @@ def custom_rag_prompt(context, question):
     return formatted_input
 
 
-def generate_answer(question, vectorstore, llm, retrieve_k_docs=4, advanced_prompt=True,
-                    verbose=False, verbose_log_path="/home/ubuntu/nlp-from-scratch-assignment-spring2024/src/data/test/retrieval_result.txt"):
+def generate_answer(question, vectorstore, llm, retriever, fewshot=0,
+                    retrieve_k_docs=4, verbose=False, verbose_log_path="/home/ubuntu/nlp-from-scratch-assignment-spring2024/src/data/test/retrieval_result.txt"):
     docs = vectorstore.similarity_search(question, k=retrieve_k_docs)
     if verbose:
         with open(verbose_log_path, "a") as f:
@@ -54,47 +49,66 @@ def generate_answer(question, vectorstore, llm, retrieve_k_docs=4, advanced_prom
                 f.write(f"\t\tDocument Content: {doc.page_content}\n")
             f.write('-'*300 + '\n')
 
+    if fewshot == 0:
+        prompt_template = """
+You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. 
 
-    # template = """You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. 
-    # If you don't know the answer, just say that you don't know. Here are two example Questions and Answers, you should answer the question in a similar way:
-    # Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
-    # Answer: Torello
+Now, based on the context provided below, what is the direct answer to the following question?
 
-    # Question: For Fall 2023, When is Mini-1 Last Day of Classes?
-    # Answer: October 13, 2023
+Context: {context} 
 
-    # Question: {question} 
-    # Context: {context} 
-    # Answer: """
+The direct answer to the question "{question}" is: 
+"""
+    elif fewshot == 1:
+        print('1-shot learning.. ')
+        prompt_template = \
+"""
+You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. 
 
+Here are two example Questions and Answers, you should answer the question in a similar way:
+Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
+Answer: Torello
 
-    template = \
-    """
-    You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. 
+Question: For Fall 2023, When is Mini-1 Last Day of Classes?
+Answer: October 13, 2023
 
-    Here are two example Questions and Answers, you should answer the question in a similar way:
-    Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
-    Answer: Torello
+Now, based on the context provided below, what is the direct answer to the following question?
 
-    Question: For Fall 2023, When is Mini-1 Last Day of Classes?
-    Answer: October 13, 2023
+Question: {question} 
+Context: {context} 
+The direct answer to the question "{question}" is: 
+"""
+    elif fewshot == 3:
+        print('3-shot learning.. ')
+        prompt_template = \
+"""
+You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. 
 
-    Now, based on the context provided below, what is the direct answer to the following question?
+Here are two example Questions and Answers, you should answer the question in a similar way:
+Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
+Answer: Torello
 
-    Question: {question} 
-    Context: {context} 
-    The direct answer to the question "{question}" is: 
-    """
-    
-    if advanced_prompt:
-        rag_prompt = PromptTemplate.from_template(template)
+Question: For Fall 2023, When is Mini-1 Last Day of Classes?
+Answer: October 13, 2023
+
+Question: Where is the Diploma Ceremony for Heinz College?
+Answer: Petersen Events Center, University of Pittsburgh
+
+Now, based on the context provided below, what is the direct answer to the following question?
+
+Question: {question} 
+Context: {context} 
+The direct answer to the question "{question}" is: 
+"""
     else:
-        rag_prompt = hub.pull("rlm/rag-prompt")
+        raise ValueError(f'fewshot value {fewshot} not defined')
 
-    retriever = vectorstore.as_retriever()
+    # rag_prompt = hub.pull("rlm/rag-prompt")
+    rag_prompt_custom = PromptTemplate.from_template(prompt_template)
+
     qa_chain = (
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
-        | rag_prompt
+        | rag_prompt_custom
         | llm
         | StrOutputParser()
     )
