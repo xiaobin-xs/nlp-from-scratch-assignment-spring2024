@@ -5,8 +5,8 @@ Steps:
 0. **Install required packages** [ToDo: update requirements.txt]
 1. **Prepare the dataset**
     - scrape from websites or obtain data from APIs using code in `src/data/`
-    - annotate the QA pairs for testing `src/data/generate_QA.ipynb` [ToDo: Jialu also add something?]
-    - evaluate the annotations `src/data/process_qa_annotator.ipynb`, `src/QA/evaluate_iaa.ipynb` [ToDo: double check which one?]
+    - annotate the QA pairs for testing `src/data/generate_QA.ipynb`, `src/data/process_calendar.ipynb` 
+    - evaluate the annotations `src/data/evaluate_iaa.ipynb` 
 2. **Download LLM model to local**
     - e.g. run `wget "https://gpt4all.io/models/gguf/gpt4all-13b-snoozy-q4_0.gguf"` to get the gpt4all model, make sure to save the model to `model/`
 3. **Run Experiments with RAG**
