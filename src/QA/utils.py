@@ -68,29 +68,42 @@ def generate_answer(question, vectorstore, llm, retrieve_k_docs=4, advanced_prom
     # Answer: """
 
 
+    # template = \
+    # """
+    # You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. 
+
+    # Here are two example Questions and Answers, you should answer the question in a similar way:
+    # Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
+    # Answer: Torello
+
+    # Question: For Fall 2023, When is Mini-1 Last Day of Classes?
+    # Answer: October 13, 2023
+
+    # Now, based on the context provided below, what is the direct answer to the following question?
+
+    # Question: {question} 
+    # Context: {context} 
+    # The direct answer to the question "{question}" is: 
+    # """
+    
+    # zero shot template
     template = \
     """
-    You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. 
-
-    Here are two example Questions and Answers, you should answer the question in a similar way:
-    Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
-    Answer: Torello
-
-    Question: For Fall 2023, When is Mini-1 Last Day of Classes?
-    Answer: October 13, 2023
+    You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. Please be sure to only output the answer. 
 
     Now, based on the context provided below, what is the direct answer to the following question?
-
-    Question: {question} 
+    
+    Question: {question}
     Context: {context} 
     The direct answer to the question "{question}" is: 
     """
-    
+        
     if advanced_prompt:
         rag_prompt = PromptTemplate.from_template(template)
     else:
         rag_prompt = hub.pull("rlm/rag-prompt")
 
+    # print("prompt is ",rag_prompt)
     retriever = vectorstore.as_retriever()
     qa_chain = (
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
