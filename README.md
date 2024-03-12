@@ -3,9 +3,18 @@
 Steps:
 
 0. **Install required packages** [ToDo: update requirements.txt]
-1. **Prepare the dataset**: scrape from websites or obtain data from APIs using code in `src/data/`
-2. **Download LLM model to local**: e.g. run `wget "https://gpt4all.io/models/gguf/gpt4all-13b-snoozy-q4_0.gguf"` to get the gpt4all model, make sure to save the model to `model/`
-2. **Test**: 
+1. **Prepare the dataset**
+    - scrape from websites or obtain data from APIs using code in `src/data/`
+    - annotate the QA pairs for testing `src/data/generate_QA.ipynb` [ToDo: Jialu also add something?]
+    - evaluate the annotations `src/data/process_qa_annotator.ipynb`, `src/QA/evaluate_iaa.ipynb` [ToDo: double check which one?]
+2. **Download LLM model to local**
+    - e.g. run `wget "https://gpt4all.io/models/gguf/gpt4all-13b-snoozy-q4_0.gguf"` to get the gpt4all model, make sure to save the model to `model/`
+3. **Run Experiments with RAG**
+    - run `src/QA/run.sh` file with different config (you can try other config)
+4. **Evaluate system output**
+    - To evaluate the result of the retrival part, run `src/QA/check_retrieve.py`
+    - To get metrics like recall, precision, F1 score, run `src/QA/evaluate_qa.py`, `src/QA/evaluate_by_type_qa.py` (evaluate by different types of questions)
+    - To do paired bootstrap test on two sets of system output, run `src/QA/evaluate_paired_bootstrap.py`. Make sure the change the experiment name of the two sets of system output when running the script.
 
 
 Below is the original homework instruction.
