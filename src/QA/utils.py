@@ -51,10 +51,11 @@ def generate_answer(question, vectorstore, llm, retriever, fewshot=0,
 
     if fewshot == 0:
         prompt_template = """
-You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. 
+You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences.  
 
 Now, based on the context provided below, what is the direct answer to the following question?
 
+Question: {question} 
 Context: {context} 
 
 The direct answer to the question "{question}" is: 
@@ -72,19 +73,18 @@ Answer: Torello
 Question: For Fall 2023, When is Mini-1 Last Day of Classes?
 Answer: October 13, 2023
 
-Now, based on the context provided below, what is the direct answer to the following question?
+Now, based on the context provided below, what is the direct answer to the following question? Be sure to only output the answer. 
 
-Question: {question} 
-Context: {context} 
-The direct answer to the question "{question}" is: 
-"""
+Context: {context}
+Question: {question}  
+Answer: """
     elif fewshot == 3:
         print('3-shot learning.. ')
         prompt_template = \
 """
 You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. 
 
-Here are two example Questions and Answers, you should answer the question in a similar way:
+Here are three example Questions and Answers, you should answer the question in a similar way:
 Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
 Answer: Torello
 
@@ -94,18 +94,17 @@ Answer: October 13, 2023
 Question: Where is the Diploma Ceremony for Heinz College?
 Answer: Petersen Events Center, University of Pittsburgh
 
-Now, based on the context provided below, what is the direct answer to the following question?
+Now, based on the context provided below, what is the direct answer to the following question? Be sure to only output the answer. 
 
-Question: {question} 
-Context: {context} 
-The direct answer to the question "{question}" is: 
-"""
+Context: {context}
+Question: {question}  
+Answer: """
     else:
         raise ValueError(f'fewshot value {fewshot} not defined')
 
     # rag_prompt = hub.pull("rlm/rag-prompt")
     rag_prompt_custom = PromptTemplate.from_template(prompt_template)
-
+  
     qa_chain = (
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
         | rag_prompt_custom
@@ -114,5 +113,6 @@ The direct answer to the question "{question}" is:
     )
 
     result = qa_chain.invoke(question)
+    print(result)
 
     return result

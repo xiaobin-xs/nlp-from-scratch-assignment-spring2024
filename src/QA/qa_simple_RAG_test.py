@@ -45,7 +45,7 @@ elif llm == 'gpt4all':
     model_path = '../../model/gpt4all-13b-snoozy-q4_0.gguf'
 else:
     raise ValueError(f'llm model {llm} not defined')
-fewshot = 1 # 0, 1, or 3
+fewshot = 0 # 0, 1, or 3
 
 
 parser= argparse.ArgumentParser(description="RAG QA system for Anlp hw2")
@@ -66,8 +66,8 @@ parser.add_argument('--exp_name', type=str, default="default")
 
 args = parser.parse_args()
 
-exp_name = f'{chunk_size}_{chunk_overlap}_{vecstore}_{retriever}_{retrieve_k_docs}_{embed_model}_{llm}_{fewshot}-shot_{dt_string}'
-print(exp_name)
+exp_name = f'{args.chunk_size}_{args.chunk_overlap}_{args.vecstore}_{args.retriever}_{args.retrieve_k_docs}_{args.emb_model}_{args.gen_model}_{args.fewshot}-shot_{dt_string}'
+print("exp name is",exp_name)
 
 
 question_file_path = args.question_path
@@ -101,7 +101,7 @@ if args.retriever == 'vecstore':
         # vectorstore = FAISS.from_documents(documents=all_splits, embedding=embedding_function)
         if os.path.exists(vecdb_path):
             print(f'Loading vectorstore from {vecdb_path} ...')
-            vectorstore = FAISS.load_local(vecdb_path, embeddings=embedding_function)
+            vectorstore = FAISS.load_local(vecdb_path, embeddings=embedding_function, allow_dangerous_deserialization=True)
         else:
             print(f'Creating vectorstore and saving to {vecdb_path} ...')
             vectorstore = FAISS.from_documents(documents=all_splits, embedding=embedding_function)
@@ -190,3 +190,5 @@ res = [clean_output_answer(r) for r in res]
 with open(args.output_folder + f'system_output_{exp_name}.txt', 'w') as f:
     for item in res:
         f.write("%s\n" % item)
+        
+print("output saved to", args.output_folder + f'system_output_{exp_name}.txt')

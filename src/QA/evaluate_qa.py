@@ -40,4 +40,16 @@ print(f'Average Rouge-1: {ave_rouge_1}')
 print(f'Average Rouge-2: {ave_rouge_2}')
 print(f'Average Rouge-L: {ave_rouge_l}')
 
+# Save eval results to local file
+# file_path = args.output_path.replace("system_output","eval_result")
+# with open(file_path, 'a') as file:
+#     file.write(f'Average Precision: {avg_precision}\n')
+#     file.write(f'Average Recall: {avg_recall}\n')
+#     file.write(f'Average F1: {avg_f1}\n')
+#     file.write(f'Average Exact Match: {avg_em}\n')
+#     file.write(f'Average Rouge-1: {ave_rouge_1}\n')
+#     file.write(f'Average Rouge-2: {ave_rouge_2}\n')
+#     file.write(f'Average Rouge-L: {ave_rouge_l}\n')
+#     file.write('---\n')
+
 # python3 evaluate_by_type_qa.py --output_path /home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/system_output_500_0_chroma_sentence-transformer_llama_20240311_000912.txt

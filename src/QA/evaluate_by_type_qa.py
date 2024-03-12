@@ -44,6 +44,9 @@ for i, question in enumerate(questions):
     category_metrics[category]['em'].append(em)
     category_metrics[category]['rouge'].append(rouge)
 
+# Save eval results to local file
+file_path = args.output_path.replace("system_output","eval_result")
+
 # Compute and print average metrics for each category
 for category, metrics in category_metrics.items():
     avg_precision = sum([x[0] for x in metrics['precision_recall_f1']]) / len(metrics['precision_recall_f1'])
@@ -63,6 +66,19 @@ for category, metrics in category_metrics.items():
     print(f'Average Rouge-2: {ave_rouge_2}')
     print(f'Average Rouge-L: {ave_rouge_l}')
     print('---')
+    
+    # with open(file_path, 'a') as file:
+    #     file.write(f'Category: {category}\n')
+    #     file.write(f'Average Precision: {avg_precision}\n')
+    #     file.write(f'Average Recall: {avg_recall}\n')
+    #     file.write(f'Average F1: {avg_f1}\n')
+    #     file.write(f'Average Exact Match: {avg_em}\n')
+    #     file.write(f'Average Rouge-1: {ave_rouge_1}\n')
+    #     file.write(f'Average Rouge-2: {ave_rouge_2}\n')
+    #     file.write(f'Average Rouge-L: {ave_rouge_l}\n')
+    #     file.write('---\n')
+    
+    
 
 
 # Note: The answer to "When" question is significantly worse than other question
