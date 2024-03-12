@@ -64,7 +64,7 @@ def main(retrieval_results_file_path, csv_file_path, answered_questions_file_pat
         print("No questions found in the retrieval results.")
 
 # Specify the paths to your files
-retrieval_results_file_path = "/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/log/retrieval_result_250_0_faiss_sentence-transformer_llama_20240311_022722.txt"
+retrieval_results_file_path = "/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/log/retrieval_result_1000_0_faiss_sentence-transformer_llama_20240312_035304.txt"
 csv_file_path = "/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/qa-pair-lists.csv"
 answered_questions_file_path = "/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/answered_questions_llama.txt"
 unanswered_questions_file_path = "/home/ubuntu/nlp-from-scratch-assignment-spring2024/data/test/unanswered_questions_llama.txt"

@@ -42,7 +42,7 @@ def custom_rag_prompt(context, question):
     return formatted_input
 
 
-def generate_answer(question, vectorstore, llm, retrieve_k_docs=4, 
+def generate_answer(question, vectorstore, llm, retrieve_k_docs=4, advanced_prompt=True,
                     verbose=False, verbose_log_path="/home/ubuntu/nlp-from-scratch-assignment-spring2024/src/data/test/retrieval_result.txt"):
     docs = vectorstore.similarity_search(question, k=retrieve_k_docs)
     if verbose:
@@ -55,41 +55,43 @@ def generate_answer(question, vectorstore, llm, retrieve_k_docs=4,
             f.write('-'*300 + '\n')
 
 
-    template = """You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. 
-    If you don't know the answer, just say that you don't know. Here are two example Questions and Answers, you should answer the question in a similar way:
+    # template = """You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. 
+    # If you don't know the answer, just say that you don't know. Here are two example Questions and Answers, you should answer the question in a similar way:
+    # Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
+    # Answer: Torello
+
+    # Question: For Fall 2023, When is Mini-1 Last Day of Classes?
+    # Answer: October 13, 2023
+
+    # Question: {question} 
+    # Context: {context} 
+    # Answer: """
+
+
+    template = \
+    """
+    You are an assistant for question-answering tasks. Based on the retrieved context, your goal is to provide the answer in the shortest form possible, focusing solely on the key information requested in the question. Avoid any elaboration, additional context, or restating the question. Think of your responses as if they were data entries rather than sentences. 
+
+    Here are two example Questions and Answers, you should answer the question in a similar way:
     Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
     Answer: Torello
 
     Question: For Fall 2023, When is Mini-1 Last Day of Classes?
     Answer: October 13, 2023
 
+    Now, based on the context provided below, what is the direct answer to the following question?
+
     Question: {question} 
     Context: {context} 
-    Answer: """
-
-    # Does not work at all
-    template = """
-    You are a knowledgeable assistant specializing in question-answering tasks, with a focus on providing accurate and succinct responses based on provided context. When answering, draw directly from the given context to ensure accuracy. If the answer is not contained within the context, respond with "I don't know." Below are examples illustrating how to use context to answer questions accurately:
-
-    Example 1:
-    Question: Who is offering the Exploring Pittsburgh course in Spring 2024?
-    Answer: Torello
-
-    Example 2:
-    Question: For Fall 2023, when is the Mini-1 last day of classes?
-    Answer: October 13, 2023
-
-    Given the above examples, please answer the following question using the provided context. Ensure your answer is clear and directly supported by the context.
-
-    Question: {question}
-    Context: {context}
-    Answer:
+    The direct answer to the question "{question}" is: 
     """
+    
+    if advanced_prompt:
+        rag_prompt = PromptTemplate.from_template(template)
+    else:
+        rag_prompt = hub.pull("rlm/rag-prompt")
 
-    rag_prompt = hub.pull("rlm/rag-prompt")
-    rag_prompt_custom = PromptTemplate.from_template(template)
-
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 1})
+    retriever = vectorstore.as_retriever()
     qa_chain = (
         {"context": retriever | format_docs, "question": RunnablePassthrough()}
         | rag_prompt

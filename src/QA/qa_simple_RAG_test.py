@@ -37,10 +37,10 @@ chunk_size = 500 # e.g. 300, 500, 1000
 chunk_overlap = 0
 vecstore = "faiss" # 'faiss' or 'chroma'
 retrieve_k_docs = 5
-embed_model = 'gpt4all' # 'gpt4all', 'llama', or 'sentence-transformer'
+embed_model = 'sentence-transformer' # 'gpt4all', 'llama', or 'sentence-transformer'
 llm = "llama" # 'gpt4all' or 'llama'
 if llm == 'llama':
-    model_path = '../../model/llama-2-13b-chat.Q4_0.gguf'
+    model_path = '../../model/llama-2-13b-chat.Q4_K_M.gguf'
 elif llm == 'gpt4all':
     model_path = '../../model/gpt4all-13b-snoozy-q4_0.gguf'
 else:
@@ -58,10 +58,12 @@ parser.add_argument('--retrieve_k_docs', type=int, default=retrieve_k_docs)
 parser.add_argument('--emb_model', type=str, default=embed_model)
 parser.add_argument('--gen_model', type=str, default=llm)
 parser.add_argument('--model_path', type=str, default=model_path)
+parser.add_argument('--advanced_prompt', type=bool, default=True)
+parser.add_argument('--exp_name', type=str, default="default")
 
 args = parser.parse_args()
 
-exp_name = f'{args.chunk_size}_{args.chunk_overlap}_{args.vecstore}_{args.emb_model}_{args.gen_model}_{dt_string}'
+exp_name = f'{args.chunk_size}_{args.chunk_overlap}_{args.vecstore}_{args.emb_model}_{args.gen_model}_{args.exp_name}_{dt_string}'
 
 
 question_file_path = args.question_path
@@ -72,7 +74,7 @@ print(f'A random question: {question}')
 
 
 print('Loading documents...')
-loader = DirectoryLoader(args.document_folder, glob="*.txt", recursive=False, show_progress=True, loader_cls=TextLoader)
+loader = DirectoryLoader(args.document_folder, glob="*.txt", recursive=True, show_progress=True, loader_cls=TextLoader)
 documents = loader.load()
 print(f'Total Document Size: {len(documents)}')
 
@@ -93,7 +95,7 @@ if args.vecstore == 'faiss':
     # vectorstore = FAISS.from_documents(documents=all_splits, embedding=embedding_function)
     if os.path.exists(vecdb_path):
         print(f'Loading vectorstore from {vecdb_path} ...')
-        vectorstore = FAISS.load_local(vecdb_path, embeddings=embedding_function)
+        vectorstore = FAISS.load_local(vecdb_path, embeddings=embedding_function, allow_dangerous_deserialization=True)
     else:
         print(f'Creating vectorstore and saving to {vecdb_path} ...')
         vectorstore = FAISS.from_documents(documents=all_splits, embedding=embedding_function)
@@ -137,21 +139,16 @@ else:
 
 qa_log_file_path = args.output_folder + f'qa_log_{exp_name}.txt'  # New code
 
-<<<<<<< Updated upstream
 res = []
 with open(qa_log_file_path, 'w') as qa_log_file:  # New code
     for q in tqdm(question_list):
         result = generate_answer(q, vectorstore, llm, 
-                                 retrieve_k_docs=args.retrieve_k_docs, 
+                                 retrieve_k_docs=args.retrieve_k_docs, advanced_prompt=args.advanced_prompt,
                                  verbose=True,
                                  verbose_log_path=args.output_folder + f'log/retrieval_result_{exp_name}.txt')
         res.append(result)
         clean_result = clean_output_answer(result)
         qa_log_file.write(f"Question: {q}\nAnswer: {clean_result}\n\n")  # New code
-=======
-# def clean_output_answer(text):
-#     return text.replace('\n', ' ').strip()
->>>>>>> Stashed changes
 
 res = [clean_output_answer(r) for r in res]
 
