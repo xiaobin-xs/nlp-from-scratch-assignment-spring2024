@@ -60,6 +60,7 @@ parser.add_argument('--retrieve_k_docs', type=int, default=retrieve_k_docs)
 parser.add_argument('--emb_model', type=str, default=embed_model)
 parser.add_argument('--gen_model', type=str, default=llm)
 parser.add_argument('--model_path', type=str, default=model_path)
+parser.add_argument('--fewshot', type=int, default=fewshot)
 parser.add_argument('--advanced_prompt', type=bool, default=True)
 parser.add_argument('--exp_name', type=str, default="default")
 
