@@ -140,5 +140,6 @@ reference_ans = [normalize_answer(ans) for ans in reference_ans]
 
 print('System 1:', args.exp_name1)
 print('System 2:', args.exp_name2)
+print('Evaluation type:', args.eval_type)
 eval_with_paired_bootstrap(reference_ans, system_output1, system_output2, 
                            eval_type=args.eval_type, num_samples=10000, sample_ratio=0.5)
