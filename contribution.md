@@ -11,3 +11,8 @@
 - Ziqi: retriever tuning and llama2 model selection and inference
 - Xiaobin: retriever tuning and gpt4all model inference
 - Jialu: llama2 model inference and experiments
+
+## evaluation contributions
+- Jialu: evaluation of annotation IAA
+- Xiaobin: evaluation of system performance; paired bootstrap analysis
+- Ziqi: evaluation of retrieval quality; evaluation of system performance by question type
