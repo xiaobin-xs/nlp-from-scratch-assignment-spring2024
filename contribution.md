@@ -1,10 +1,10 @@
 ## data collection and preparation contributions
-- Ziqi: Research papers by LTI faculty and their metadata, TODO(add more)
-- Xiaobin: LTI faculty, LTI handbooks, CMU courses, CMU history, CMU events
+- Ziqi: Research papers by LTI faculty and their metadata, LTI handbooks, schedule of classes, academic calendars
+- Xiaobin: LTI faculty, commencement schedules, CMU history, CMU events, schedule of classes, academic calendars
 - Jialu: LTI programs, CMU facts, CMU history, CMU events
 
 ## data annotation contributions
-- Jialu: calendars, commencement schedules, spring carnival, LTI programs, program handbooks
+- Jialu: academic calendars, commencement schedules, spring carnival, LTI programs, program handbooks
 - Xiaobin: papers, LTI department data, CMU facts, course schedules
 
 ## modelling contributions
