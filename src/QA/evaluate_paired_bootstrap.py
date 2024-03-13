@@ -113,8 +113,8 @@ def eval_with_paired_bootstrap(gold, sys1, sys2,
     
 
 
-exp_name1 = '250_0_faiss_vecstore_10_sentence-transformer_gpt4all_0-shot_20240312_152816'
-exp_name2 = '500_0_faiss_vecstore_4_sentence-transformer_gpt4all_fewshot0_20240311_234553'
+exp_name1 = '500_0_faiss_vecstore_5_sentence-transformer_llama_1-shot_20240312_211600'
+exp_name2 = '500_0_faiss_vecstore_5_sentence-transformer_llama_3-shot_20240312_213517'
 reference_ans_path = '../../data/test/reference_answers.txt'
 
 parser = argparse.ArgumentParser()
