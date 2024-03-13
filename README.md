@@ -2,7 +2,7 @@
 
 Steps:
 
-0. **Install required packages** [ToDo: update requirements.txt]
+0. **Install required packages**
 1. **Prepare the dataset**
     - scrape from websites or obtain data from APIs using code in `src/data/`
     - annotate the QA pairs for testing `src/data/generate_QA.ipynb`, `src/data/process_calendar.ipynb` 
